@@ -8,12 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TGC_Engine extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	Texture mainScreen_Editor;
+	Texture mainScreen_Options;
+	Texture mainScreen_Play;
+	Texture mainScreen_Splash;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		//create main menu images
+		mainScreen_Editor = new Texture("MainScreen_Editor.png");
+		mainScreen_Options = new Texture("MainScreen_Options.png");
+		mainScreen_Play = new Texture("MainScreen_Play.png");
+		mainScreen_Splash = new Texture("MainScreen_Splash.png");
 	}
 
 	@Override
@@ -21,7 +28,11 @@ public class TGC_Engine extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		//draw main menu
+		batch.draw(mainScreen_Splash, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(mainScreen_Editor, Gdx.graphics.getWidth()*2/3, 0, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+		batch.draw(mainScreen_Options, Gdx.graphics.getWidth()/3, 0, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+		batch.draw(mainScreen_Play, 0, 0, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
 		batch.end();
 	}
 }
