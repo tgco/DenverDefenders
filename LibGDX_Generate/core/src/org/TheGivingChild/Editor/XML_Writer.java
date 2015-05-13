@@ -23,6 +23,7 @@ public class XML_Writer {
 	 *		<ELEMENT_JUAN ATTRIBUTE="VALUE">
 	 *			<ELEMENT_TWO ATTR="VAL"/>
 	 *		</ELEMENT_JUAN>
+	 *	6: then just write the string to the file
 	 */
 	
 	public void XML_test(){

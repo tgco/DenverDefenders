@@ -14,6 +14,30 @@ public class GameObject {
 		speed = s;
 		
 	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public ArrayList<Point> getPath() {
+		return path;
+	}
+
+	public void setPath(ArrayList<Point> path) {
+		this.path = path;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
 	
 	
 }
