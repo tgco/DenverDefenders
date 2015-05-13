@@ -15,7 +15,6 @@ INDEX VERSION 1.127+Z:\FieldSession\Eclipse_Workspace\.metadata\.plugins\org.ecl
 2632802029.index
 874232938.index
 3136745806.index
-1834493916.index
 1457951913.index
 4157139387.index
 4091573460.index
