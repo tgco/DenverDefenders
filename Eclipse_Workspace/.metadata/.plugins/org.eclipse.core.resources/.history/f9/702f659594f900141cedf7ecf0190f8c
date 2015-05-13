@@ -1,0 +1,17 @@
+package org.TheGivingChild.Engine;
+
+import com.badlogic.gdx.graphics.Texture;
+
+//This clas defines level characteristics.
+public class Level {
+	private String levelName;
+	private Texture levelThumbnail;
+	
+	public Level(String levelName, String levelImage){
+		levelName = levelName;
+		levelThumbnail = new Texture("levelImage.png");
+		
+	}
+	
+	
+}

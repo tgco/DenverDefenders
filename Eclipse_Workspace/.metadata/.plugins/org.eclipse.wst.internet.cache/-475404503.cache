@@ -1,0 +1,5 @@
+Source code for the GWT project has moved to https://gwt.googlesource.com
+
+The file you're looking for can be now found at
+https://gwt.googlesource.com/gwt/+/master/./distro-source/core/src/gwt-module.dtd
+(if it's not been deleted or renamed since then.)
