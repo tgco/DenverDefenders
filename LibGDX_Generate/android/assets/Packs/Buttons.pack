@@ -1,0 +1,52 @@
+
+Buttons.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ButtonPressed_MainScreen_Editor
+  rotate: false
+  xy: 1, 605
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Options
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Play
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+
+Buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Button_MainScreen_Editor
+  rotate: false
+  xy: 1, 605
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Options
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Play
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
