@@ -3,7 +3,6 @@ package org.TheGivingChild.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,8 +17,8 @@ public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private Stage stage;
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play",/* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	private ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen(this)};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", /* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new HowToPlay(this), new OptionsScreen(this)};
 	//fonts
     //private BitmapFont font;
     
