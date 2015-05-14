@@ -27,7 +27,7 @@ public class TGC_Engine extends Game {
     //create tables for the UI
     private Table rootTable;
     private Table mainScreenTable;
-    private Array<Level> levels;
+    private Array<Level> levels = new Array<Level>();
     
 	@Override
 	public void create () {
@@ -99,7 +99,7 @@ public class TGC_Engine extends Game {
 	}
 	
 	public Array<Level> getLevels(){
-		return this.levels;
+		return levels;
 	}
 	
 	public void addLevels(Array<Level> levels){

@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Array;
 
 public class ScreenLevelManager extends ScreenAdapter{
+	
 	//reference to the main engine
 	private TGC_Engine game;
 	//list of packets for each level set.
@@ -22,13 +22,15 @@ public class ScreenLevelManager extends ScreenAdapter{
 	//constructor. Initialize the variables.
 	public ScreenLevelManager(TGC_Engine game) {
 		this.game = game;
-		packets = new Array<LevelPacket>();
-		createPackets();
-		packetTable = createLevelPacketButtons();
+		//packets = new Array<LevelPacket>();
+		//createPackets();
+		//packetTable = createLevelPacketButtons();
 		
 		
 	}
+	/*
 	//fill packets with newly created packets for levels with matching level types.
+	
 	public void createPackets(){
 		for(Level l: game.getLevels()){
 			//packet name to add to
@@ -94,7 +96,7 @@ public class ScreenLevelManager extends ScreenAdapter{
 	public void showPacketTable(){
 		game.addTable(packetTable);
 	}
-	
+	*/
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1,0,1,1);
