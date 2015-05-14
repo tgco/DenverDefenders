@@ -32,8 +32,10 @@ public class TGC_Engine extends Game {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
+		ScreenAdapter htp = new HowToPlay(this);
+		screens[1] = htp;
 		ScreenAdapter options = new OptionsScreen(this);
-		screens[1]= options;
+		screens[2]= options;
 	}
 
 	@Override
