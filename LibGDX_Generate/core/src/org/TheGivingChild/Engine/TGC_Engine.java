@@ -17,47 +17,52 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
-	Stage stage;
-	String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play",/* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen(this)};
+	private Stage stage;
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play",/* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen(this)};
 	//fonts
-    BitmapFont font;
+    //private BitmapFont font;
     
-    //button styling	
-    TextButtonStyle buttonStyleMainMenyPlay;
-    TextButtonStyle buttonStyleMainMenyEditor;
-    TextButtonStyle buttonStyleMainMenyOptions;
-    Skin skin;
-    TextureAtlas buttonAtlas;
-    //buttons
-    //TextButton buttonMainMenuPlay;
-    //TextButton buttonMainMenuOptions;
-    //TextButton buttonMainMenuEditor;
+    //button styling
+    //private Skin skin;
+    //private TextureAtlas buttonAtlas;
+    //private int widthDividider;
+    private float buttonHeight;
     //create tables for the UI
-    Table rootTable;
-    
-	//create needed textures
-	Texture mainScreen_Splash;
-	
-	//testing git pulls comment
+    private Table rootTable;
+    private Table mainScreenTable;
 	@Override
 	public void create () {
+		createStage();
+		mainScreenTable = createMainScreenTable();
+		showMainScreenTable();
+	}
+
+	@Override
+	public void render () {
+		super.render();
+		stage.draw();
+	}
+	
+	public void createStage(){
 		stage = new Stage();
 		//create main menu images
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
+	}
+	
+	public Table createMainScreenTable(){
 		//button stuff
-        font = new BitmapFont();
-        skin = new Skin();
+        BitmapFont font = new BitmapFont();
+        Skin skin = new Skin();
         //make an atlas using the button texture pack
-        buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
+        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
         //define the regions
         skin.addRegions(buttonAtlas);
         //create a table for the buttons
         Table table = new Table();
         //variable to keep track of button height for table positioning
-        float buttonHeight = 0;
         int widthDividider = (buttonAtlasNamesArray.length/2);
         //iterate over button pack names in order to check
         for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
@@ -75,18 +80,22 @@ public class TGC_Engine extends Game {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					setScreen(screens[j/2]);
+					hideMainScreenTable();
 				}
         	});
         }
-        rootTable.add(table);
+        table.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
+        return table;
+	}
+	
+	public void showMainScreenTable(){
+		rootTable.add(mainScreenTable);
         rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
         stage.addActor(rootTable);
 	}
-
-	@Override
-	public void render () {
-		super.render();
-		stage.draw();
+	
+	public void hideMainScreenTable(){
+		rootTable.removeActor(mainScreenTable);
 	}
 	
 }
