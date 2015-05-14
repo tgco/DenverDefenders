@@ -27,14 +27,16 @@ public class TGC_Engine extends Game {
     //create tables for the UI
     private Table rootTable;
     private Table mainScreenTable;
-    private Array<Level> levels;
+    private Array<Level> levels = new Array<Level>();
     
 	@Override
 	public void create () {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
-		ScreenAdapter options = new EditorScreen(this);
+		ScreenAdapter htp = new HowToPlay(this);
+		screens[1] = htp;
+		ScreenAdapter options = new OptionsScreen(this);
 		screens[2]= options;
 	}
 
@@ -99,7 +101,7 @@ public class TGC_Engine extends Game {
 	}
 	
 	public Array<Level> getLevels(){
-		return this.levels;
+		return levels;
 	}
 	
 	public void addLevels(Array<Level> levels){
