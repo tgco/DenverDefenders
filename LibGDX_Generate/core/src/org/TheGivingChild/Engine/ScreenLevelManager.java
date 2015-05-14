@@ -22,13 +22,12 @@ public class ScreenLevelManager extends ScreenAdapter{
 	//constructor. Initialize the variables.
 	public ScreenLevelManager(TGC_Engine game) {
 		this.game = game;
-		//packets = new Array<LevelPacket>();
+		packets = new Array<LevelPacket>();
 		//createPackets();
-		//packetTable = createLevelPacketButtons();
+		packetTable = createLevelPacketButtons();
 		
 		
 	}
-	/*
 	//fill packets with newly created packets for levels with matching level types.
 	
 	public void createPackets(){
@@ -69,8 +68,13 @@ public class ScreenLevelManager extends ScreenAdapter{
 		//create a table to add buttons to.
 		Table table = new Table();
 		//create a font for the buttons
-		BitmapFont font = new BitmapFont();
+        BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.font = font;
+		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		
 		for(LevelPacket p: packets){
 			String packetName = p.getPacketName();
 			TextButton textButton = new TextButton(packetName, textButtonStyle);
@@ -96,7 +100,7 @@ public class ScreenLevelManager extends ScreenAdapter{
 	public void showPacketTable(){
 		game.addTable(packetTable);
 	}
-	*/
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1,0,1,1);

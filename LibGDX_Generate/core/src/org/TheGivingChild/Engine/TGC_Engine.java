@@ -19,9 +19,13 @@ public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private Stage stage;
-	
+	//button atlas reference names
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", /* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-
+	//skin from atlas
+	private Skin skin = new Skin();
+	//bitmap font for buttons
+	private BitmapFont bitmapFontButton;
+	
 	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new ScreenLevelManager(this), new ScreenLevelManager(this)};
     private float buttonHeight;
     //create tables for the UI
@@ -34,6 +38,8 @@ public class TGC_Engine extends Game {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
+		ScreenAdapter levelManager = new ScreenLevelManager(this);
+		screens[0] = levelManager;
 		ScreenAdapter options = new EditorScreen(this);
 		screens[2]= options;
 	}
@@ -54,8 +60,7 @@ public class TGC_Engine extends Game {
 	
 	public Table createMainScreenTable(){
 		//button stuff
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
+        bitmapFontButton = new BitmapFont();
         //make an atlas using the button texture pack
         TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
         //define the regions
@@ -67,7 +72,7 @@ public class TGC_Engine extends Game {
         //iterate over button pack names in order to check
         for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
         	TextButtonStyle bs = new TextButtonStyle();
-        	bs.font = font;
+        	bs.font = bitmapFontButton;
         	bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
         	bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
         	TextButton b = new TextButton("", bs);
@@ -131,6 +136,14 @@ public class TGC_Engine extends Game {
 	}
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
+	}
+	
+	public Skin getButtonAtlasSkin(){
+		return skin;
+	}
+	
+	public BitmapFont getBitmapFontButton(){
+		return bitmapFontButton;
 	}
 	
 }
