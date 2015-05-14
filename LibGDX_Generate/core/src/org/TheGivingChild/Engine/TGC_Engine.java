@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -32,9 +30,9 @@ public class TGC_Engine extends Game {
     Skin skin;
     TextureAtlas buttonAtlas;
     //buttons
-    TextButton buttonMainMenuPlay;
-    TextButton buttonMainMenuOptions;
-    TextButton buttonMainMenuEditor;
+    //TextButton buttonMainMenuPlay;
+    //TextButton buttonMainMenuOptions;
+    //TextButton buttonMainMenuEditor;
     //create tables for the UI
     Table rootTable;
     
@@ -68,8 +66,8 @@ public class TGC_Engine extends Game {
         	bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
         	bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
         	TextButton b = new TextButton("", bs);
-        	b.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/widthDividider);
-        	table.add(b).size(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/widthDividider);
+        	b.setSize(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
+        	table.add(b).size(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
         	buttonHeight = b.getHeight();
         	final int j = i;
         	//button to transition to different screens.
