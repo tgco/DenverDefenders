@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HowToPlay extends ScreenAdapter{
 	private TGC_Engine game;
@@ -34,6 +35,7 @@ public class HowToPlay extends ScreenAdapter{
 		batch = new SpriteBatch();
 	}
 	
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 1, 1, 1);
@@ -42,5 +44,6 @@ public class HowToPlay extends ScreenAdapter{
 		batch.draw(title, 30, 280);
 		batch.draw(message, 50, 80);
 		batch.end();
+		
 	}
 }
