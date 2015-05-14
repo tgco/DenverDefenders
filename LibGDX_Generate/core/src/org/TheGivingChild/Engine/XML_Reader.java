@@ -8,6 +8,8 @@ import java.io.FileReader;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.reflect.Method;
+//import com.badlogic.gdx.utils.reflect.Method;
 
 //Use this to read the XML File into a Level
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
@@ -19,10 +21,11 @@ public class XML_Reader {
 	
 	//the main method is for testing only
 	public static void main(String cheese[]){
-		XML_Reader swag = new XML_Reader();
+		XML_Reader test = new XML_Reader();
 		String filename = "testMinigame.xml";
-		swag.setupNewFile(filename);
-		Array<GameObject> testObjects = swag.compileGameObjects();
+		test.setupNewFile(filename);
+		Array<GameObject> testObjects = test.compileGameObjects();
+		
 		
 	}
 	
@@ -47,8 +50,8 @@ public class XML_Reader {
 			String attributes[] = currentObject.getAttribute("attributes").split(",");
 			for(String currentAttribute:attributes){
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				System.out.println("asl");
-				temp.getMethod(currentAttribute);
+				temp.addValidAttribute(currentAttribute);
+				
 			}
 		}
 		return listOfObjects;
@@ -75,6 +78,6 @@ public class XML_Reader {
 	}
 	
 	public Level getLevel(){//compiles all the data into a level and returns it
-		return new Level("PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new ArrayList<GameObject>());
+		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new ArrayList<GameObject>());
 	}
 }

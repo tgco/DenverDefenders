@@ -1,5 +1,7 @@
+<!--All attributes start with lower case, all -->
+
 <isthisthingon packageName="" levelName="">
-	<GameObject attributes="DisappearsOnPress,Health,MovesOnSetPath">
+	<GameObject attributes="disappearsOnPress,health,movesOnSetPath">
 		<health value="100"/>
 		<disappearsOnPress />
 	</GameObject>
