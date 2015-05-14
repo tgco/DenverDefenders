@@ -17,8 +17,9 @@ public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private Stage stage;
+	
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", /* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new HowToPlay(this), new OptionsScreen(this)};
+	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new ScreenLevelManager(this), new ScreenLevelManager(this)};
 	//fonts
     //private BitmapFont font;
     
@@ -35,6 +36,8 @@ public class TGC_Engine extends Game {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
+		ScreenAdapter options = new OptionsScreen(this);
+		screens[1]= options;
 	}
 
 	@Override
