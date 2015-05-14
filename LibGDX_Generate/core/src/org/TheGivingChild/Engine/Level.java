@@ -12,7 +12,6 @@ public class Level {
 	private LevelGoal levelGoal;
 	private ArrayList<GameObject> actors = new ArrayList<GameObject>();
 	
-	
 	public Level(String name, String packetName, String levelImage, LevelGoal goal, ArrayList<GameObject> objects){
 		levelName = name;
 		this.packetName = name;
