@@ -37,12 +37,22 @@ public class EditorScreen extends ScreenAdapter{
 		}
 		batch.end();
 	}
+	
+	@Override
+	public void dispose() {
+		batch.dispose();
+		ballImage.dispose();
+		
+	}
 	private void spawnBall() {
 		Rectangle ball = new Rectangle();
-		ball.x = Gdx.input.getX();
-		ball.y = Gdx.graphics.getHeight()-Gdx.input.getY();
+
 		ball.width = 64;
 		ball.height = 64;
+		ball.x = Gdx.input.getX() - ball.getWidth()/2;
+		ball.y = Gdx.graphics.getHeight()-Gdx.input.getY() - ball.getHeight()/2;
+		
 		balls.add(ball);
 	}
+
 }

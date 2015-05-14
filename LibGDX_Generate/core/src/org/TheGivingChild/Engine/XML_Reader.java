@@ -81,6 +81,7 @@ public class XML_Reader {
 	}
 	
 	public Level getLevel(){//compiles all the data into a level and returns it
-		return new Level("PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new ArrayList<GameObject>());
+		//return new Level("PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new ArrayList<GameObject>());
+		return null;
 	}
 }
