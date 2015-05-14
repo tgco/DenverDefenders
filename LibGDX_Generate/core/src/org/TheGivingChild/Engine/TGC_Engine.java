@@ -69,7 +69,7 @@ public class TGC_Engine extends ApplicationAdapter {
         //variable to keep track of button height for table positioning
         float buttonHeight = 0;
         //iterate over button pack names in order to check 
-        for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
+        for(int i = 0, j = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
         	TextButtonStyle bs = new TextButtonStyle();
         	bs.font = font;
         	bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
