@@ -1,8 +1,10 @@
-<isthisthingon>
-	<GameObject 
-		health="100"
-		speed="9001"
-		path="10,20;30,40;50,60;70,80;90,100"
-		image="filename.stuff">
+<isthisthingon packageName="" levelName="">
+	<GameObject attributes="DisappearsOnPress,Health,MovesOnSetPath">
+		<health value="100"/>
+		<disappearsOnPress />
+	</GameObject>
+	
+	<GameObject attributes="color">
+		<color value="red"/>
 	</GameObject>
 </isthisthingon>

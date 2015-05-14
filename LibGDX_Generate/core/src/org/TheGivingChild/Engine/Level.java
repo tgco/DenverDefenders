@@ -12,10 +12,7 @@ public class Level {
 	private ArrayList<GameObject> actors = new ArrayList<GameObject>();
 	
 	public Level(String name, String levelImage, LevelGoal goal, ArrayList<GameObject> objects){
-		levelName = name;
-		levelThumbnail = new Texture("levelImage.png");
-		levelGoal = goal;
-		actors.addAll(objects);
+		
 	}
 	
 	

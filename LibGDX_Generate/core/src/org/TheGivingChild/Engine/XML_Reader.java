@@ -7,12 +7,11 @@ import java.io.FileReader;
 
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.*;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import com.badlogic.gdx.utils.Array;
 
 //Use this to read the XML File into a Level
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
-public class XML_Reader {	
+public class XML_Reader {
 	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
@@ -23,15 +22,8 @@ public class XML_Reader {
 		XML_Reader swag = new XML_Reader();
 		String filename = "testMinigame.xml";
 		swag.setupNewFile(filename);
-		ArrayList<GameObject> testObjects = swag.compileGameObjects();
-		System.out.println(testObjects.size());
-		for(GameObject current:testObjects){
-			System.out.println("HP: " + current.getHealth() + "\nSpeed: " + current.getSpeed() + "Path: ");
-			for(Point currentPoint:current.getPath()){
-				System.out.println(currentPoint.getX() + ", " + currentPoint.getY());
-			}
-			
-		}
+		Array<GameObject> testObjects = swag.compileGameObjects();
+		
 	}
 	
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
@@ -47,15 +39,17 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	private ArrayList<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
-		ArrayList<GameObject> listOfObjects = new ArrayList<GameObject>();
-		com.badlogic.gdx.utils.Array<Element> gameObjects = root.getChildrenByName("GameObject");
-		for(Element child:gameObjects){
-			int health = Integer.parseInt(child.getAttribute("health"));
-			double speed = Double.parseDouble(child.getAttribute("speed"));
-			ArrayList<Point> path = stringToPath(child.getAttribute("path"));
-			//GameObject temp = new GameObject(health,path,speed);//ASSUMING PATH IS NOT EMPTY
-			listOfObjects.add(new GameObject(health,path,speed));
+	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
+		Array<GameObject> listOfObjects = new Array<GameObject>();
+		Array<Element> gameObjects = root.getChildrenByName("GameObject");
+		for(Element currentObject:gameObjects){
+			GameObject temp = new GameObject();
+			String attributes[] = currentObject.getAttribute("attributes").split(",");
+			for(String currentAttribute:attributes){
+				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
+				System.out.println("asl");
+				//temp.getMethod(currentAttribute);
+			}
 		}
 		return listOfObjects;
 	}

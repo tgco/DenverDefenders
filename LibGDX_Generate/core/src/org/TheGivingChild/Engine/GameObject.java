@@ -2,42 +2,25 @@ package org.TheGivingChild.Engine;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
+import org.TheGivingChild.Engine.Attributes.*;
 
-public class GameObject {
-	private int health;
-	private ArrayList<Point> path = new ArrayList<Point>();
-	private double speed;
+public class GameObject extends Actor{//libGDX actors have all the listeners we will need 
+	private Array<Attribute> attributes;
 	
-	public GameObject(int hp, ArrayList<Point> p, double s){
-		health = hp;
-		path.addAll(p);
-		speed = s;
+	
+	public GameObject(){
 		
 	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public ArrayList<Point> getPath() {
-		return path;
-	}
-
-	public void setPath(ArrayList<Point> path) {
-		this.path = path;
-	}
-
-	public double getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
+	
+	public void update(){
+		for(Attribute current:attributes){
+			current.update(this);
+		}
 	}
 	
-	
+	public void addAttribute(Attribute newAttribute){
+		attributes.add(newAttribute);
+	}
 }
