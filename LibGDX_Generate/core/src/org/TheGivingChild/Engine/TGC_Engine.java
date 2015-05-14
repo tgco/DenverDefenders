@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -102,6 +103,33 @@ public class TGC_Engine extends Game {
 	
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
+	}
+	
+	public void playLevels(LevelPacket packet){
+		//this is where each level in the packet should be played in order.
+		//currently just creates labels to show what levels are in the packet.
+		Table displayLevelsTable = new Table();
+		for(Level l: packet){
+			Label levelName = new Label(l.getLevelName(), new Skin());
+			displayLevelsTable.add(levelName);
+			displayLevelsTable.row();
+		}
+		TextButton backButton = new TextButton("back", new Skin());
+		backButton.addListener(new ChangeListener(){
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				setScreen(new ScreenAdapter());
+				showMainScreenTable();
+			}
+    	});
+		
+	}
+	
+	public void addTable(Table t){
+		rootTable.add(t);
+	}
+	public void removeTable(Table t){
+		rootTable.removeActor(t);
 	}
 	
 }
