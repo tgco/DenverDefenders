@@ -71,9 +71,9 @@ public class ScreenLevelManager extends ScreenAdapter{
         BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = font;
-		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
-		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
-		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		//textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		//textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		//textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
 		
 		for(LevelPacket p: packets){
 			String packetName = p.getPacketName();
@@ -89,7 +89,9 @@ public class ScreenLevelManager extends ScreenAdapter{
 			table.add(textButton);
 		}
 		//position the table in the middle of the screen.
-		table.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+		table.setPosition(
+				game.getWidth()/2,
+				game.getHeight()/2);
 		return table;
 	}
 	

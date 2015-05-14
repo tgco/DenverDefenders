@@ -33,11 +33,16 @@ public class TGC_Engine extends Game {
     private Table mainScreenTable;
     private Array<Level> levels = new Array<Level>();
     
+    private float width;
+    private float height;
+    
 	@Override
 	public void create () {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		ScreenAdapter levelManager = new ScreenLevelManager(this);
 		screens[0] = levelManager;
 		ScreenAdapter options = new EditorScreen(this);
@@ -144,6 +149,13 @@ public class TGC_Engine extends Game {
 	
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
+	}
+	
+	public float getWidth(){
+		return width;
+	}
+	public float getHeight(){
+		return height;
 	}
 	
 }
