@@ -21,7 +21,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	Stage stage;
 	String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play",/* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen()};
+	ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen(this)};
 	//fonts
     BitmapFont font;
     
