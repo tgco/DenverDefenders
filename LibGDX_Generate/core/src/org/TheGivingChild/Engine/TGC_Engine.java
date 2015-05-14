@@ -19,7 +19,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private Stage stage;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play",/* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	private ScreenAdapter[] screens = {new ScreenLevelManager(), new OptionsScreen(this)};
+	private ScreenAdapter[] screens = {new ScreenLevelManager(), new ScreenLevelManager()};
 	//fonts
     //private BitmapFont font;
     
@@ -36,6 +36,8 @@ public class TGC_Engine extends Game {
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
+		ScreenAdapter options = new OptionsScreen(this);
+		screens[1]= options;
 	}
 
 	@Override
