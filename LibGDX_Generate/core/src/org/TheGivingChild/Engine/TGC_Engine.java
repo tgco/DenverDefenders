@@ -100,4 +100,8 @@ public class TGC_Engine extends Game {
 		return this.levels;
 	}
 	
+	public void addLevels(Array<Level> levels){
+			this.levels.addAll(levels);
+	}
+	
 }
