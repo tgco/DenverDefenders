@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 
 public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
@@ -20,17 +21,12 @@ public class TGC_Engine extends Game {
 	
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", /* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new ScreenLevelManager(this), new ScreenLevelManager(this)};
-	//fonts
-    //private BitmapFont font;
-    
-    //button styling
-    //private Skin skin;
-    //private TextureAtlas buttonAtlas;
-    //private int widthDividider;
     private float buttonHeight;
     //create tables for the UI
     private Table rootTable;
     private Table mainScreenTable;
+    private Array<Level> levels;
+    
 	@Override
 	public void create () {
 		createStage();
@@ -98,6 +94,10 @@ public class TGC_Engine extends Game {
 	
 	public void hideMainScreenTable(){
 		rootTable.removeActor(mainScreenTable);
+	}
+	
+	public Array<Level> getLevels(){
+		return this.levels;
 	}
 	
 }

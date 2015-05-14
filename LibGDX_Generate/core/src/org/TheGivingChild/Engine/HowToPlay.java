@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class HowToPlay extends ScreenAdapter{
-	private Game game;
+	private TGC_Engine game;
 	private Texture title;
 	private OrthographicCamera camera;
 	private Batch batch;
 	
-	public HowToPlay(Game game) {
+	public HowToPlay(TGC_Engine game) {
 		this.game = game;
 		camera = new OrthographicCamera();
 		//title = new Texture(Gdx.files.internal("howToPlay.png"));
