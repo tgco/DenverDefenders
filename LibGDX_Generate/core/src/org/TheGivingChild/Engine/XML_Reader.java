@@ -48,7 +48,7 @@ public class XML_Reader {
 			for(String currentAttribute:attributes){
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
 				System.out.println("asl");
-				//temp.getMethod(currentAttribute);
+				temp.getMethod(currentAttribute);
 			}
 		}
 		return listOfObjects;
