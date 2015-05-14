@@ -11,11 +11,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class OptionsScreen extends ScreenAdapter {
-	private Game mainGame;
+	private TGC_Engine mainGame;
 	private Texture titleImage;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	public OptionsScreen(Game mainGame) {
+	public OptionsScreen(TGC_Engine mainGame) {
 		this.mainGame = mainGame;
 		camera = new OrthographicCamera();
 

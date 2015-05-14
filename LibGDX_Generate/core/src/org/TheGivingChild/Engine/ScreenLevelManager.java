@@ -4,10 +4,24 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class ScreenLevelManager extends ScreenAdapter{
-	public ScreenLevelManager(Game game) {
-		// TODO Auto-generated constructor stub
+	private TGC_Engine game;
+	public ScreenLevelManager(TGC_Engine game) {
+		this.game = game;
+	}
+	
+	public Table createLevelPacketButtons(){
+		Table table = new Table();
+		BitmapFont font = new BitmapFont();
+		
+		for(Level l: game.getLevels()){
+			
+		}
+		
+		return table;
 	}
 	
 	@Override
