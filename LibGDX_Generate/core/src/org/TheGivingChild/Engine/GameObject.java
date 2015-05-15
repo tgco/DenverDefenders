@@ -1,43 +1,38 @@
 package org.TheGivingChild.Engine;
 
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.Map;
 
-public class GameObject {
-	private int health;
-	private ArrayList<Point> path = new ArrayList<Point>();
-	private double speed;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
+import org.TheGivingChild.Engine.Attributes.*;
+
+public class GameObject extends Actor{//libGDX actors have all the listeners we will need
+	//private Array<Attribute> attributes;
+	private Array<String> validAttributes;
 	
-	public GameObject(int hp, ArrayList<Point> p, double s){
-		health = hp;
-		path.addAll(p);
-		speed = s;
+	public GameObject(){
 		
 	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public ArrayList<Point> getPath() {
-		return path;
-	}
-
-	public void setPath(ArrayList<Point> path) {
-		this.path = path;
-	}
-
-	public double getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
+	
+	public void update(){
+		
 	}
 	
+	public void addValidAttribute(String newAttribute){
+		validAttributes.add(newAttribute);
+	}
 	
+	public void attribute_health(GameObject object){
+		System.out.println("HEALTH");
+	}
+	
+	public void attribute_color(GameObject object){
+		System.out.println("COLOR");
+	}
+	
+	public void attribute_disappearsOnPress(GameObject object){
+		System.out.println("DISAPPEARSONPRESS");
+	}
 }

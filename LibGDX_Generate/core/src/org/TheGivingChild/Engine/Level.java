@@ -11,8 +11,8 @@ public class Level {
 	private LevelGoal levelGoal;
 	private Array<GameObject> actors = new Array<GameObject>();
 	
-	
 	public Level(String name, String packetName, String levelImage, LevelGoal goal, Array<GameObject> objects){
+
 		levelName = name;
 		this.packetName = packetName;
 		//levelThumbnail = new Texture("levelImage.png");
