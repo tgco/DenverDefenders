@@ -78,7 +78,6 @@ public class ScreenLevelManager extends ScreenAdapter{
 		int i = 0;
 		for(LevelPacket p: packets){
 			String packetName = p.getPacketName();
-			System.out.println(packetName+"\n");
 			TextButton textButton = new TextButton(packetName, textButtonStyle);
 			textButton.setSize(textButton.getWidth()/packets.size,textButton.getHeight()/packets.size);
 			//final variable to access within change listener
