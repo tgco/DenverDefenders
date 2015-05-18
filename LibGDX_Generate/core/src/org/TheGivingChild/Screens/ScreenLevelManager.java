@@ -42,8 +42,6 @@ public class ScreenLevelManager extends ScreenAdapter{
 		//TODO: create slider to move between packets on screen
 		//display 3 packets on the screen at once, with spacing.
 	
-		
-		
 		SliderStyle sliderStyle = new SliderStyle();
 		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
 		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("SliderKnob");
@@ -77,7 +75,7 @@ public class ScreenLevelManager extends ScreenAdapter{
 					//hide the current screen
 					hide();
 					//call play levels on the packet called.
-					game.playLevels(packets.get(j));
+					game.setScreen(game.screens[3]);
 				}
         	});
 			//increment the packets index
@@ -86,12 +84,16 @@ public class ScreenLevelManager extends ScreenAdapter{
 			packetsRow.addActor(textButton);
 		}
 		//create a vertical group to add the slider and horizontal group to.
-		VerticalGroup verticalGroup = new VerticalGroup();
+		//VerticalGroup verticalGroup = new VerticalGroup();
 		//add the elements
-		verticalGroup.addActor(packetsRow);
-		verticalGroup.addActor(slider);
+		//verticalGroup.addActor(packetsRow);
+		//verticalGroup.addActor(slider);
 		
-		table.add(verticalGroup);
+		//table.add(verticalGroup);
+		table.add(packetsRow);
+		table.row();
+		table.add(slider);
+		
 		
 		return table;
 	}
