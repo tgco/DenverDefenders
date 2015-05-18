@@ -3,6 +3,7 @@ package org.TheGivingChild.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,8 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 public class TGC_Engine extends Game {
+	final static int DESKTOP_WIDTH = 1024;
+	final static int DESKTOP_HEIGHT = 576;
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private Stage stage;
@@ -38,6 +42,15 @@ public class TGC_Engine extends Game {
     
 	@Override
 	public void create () {
+		switch(Gdx.app.getType()){
+			case Android:
+				
+			case Desktop:
+				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+			case iOS:
+				
+		}
+		
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
