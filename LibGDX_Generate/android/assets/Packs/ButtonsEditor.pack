@@ -5,14 +5,28 @@ filter: Nearest,Nearest
 repeat: none
 ButtonPressed_Editor_Back
   rotate: false
-  xy: 1, 1
+  xy: 1, 305
+  size: 300, 150
+  orig: 300, 150
+  offset: 0, 0
+  index: -1
+ButtonPressed_Editor_Ball
+  rotate: false
+  xy: 1, 153
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 Button_Editor_Back
   rotate: false
-  xy: 303, 1
+  xy: 303, 305
+  size: 300, 150
+  orig: 300, 150
+  offset: 0, 0
+  index: -1
+Button_Editor_Ball
+  rotate: false
+  xy: 1, 1
   size: 300, 150
   orig: 300, 150
   offset: 0, 0

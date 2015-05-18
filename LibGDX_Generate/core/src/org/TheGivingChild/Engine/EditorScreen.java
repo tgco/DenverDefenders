@@ -28,7 +28,7 @@ public class EditorScreen extends ScreenAdapter{
 	private Stage stage;
 	private TextButton ballButton;
 	private TextButton backButton;
-	TextButtonStyle textButtonStyle;
+	TextButtonStyle textButtonStyleBack;
 
 	private BitmapFont font;
 	private Skin skinBack;
@@ -63,10 +63,10 @@ public class EditorScreen extends ScreenAdapter{
 		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
 		skinTable.addRegions(buttonAtlas);
 		TextButton button = createButtons();
-		SelectBox<String[]> box = createSelectBox();
+		//SelectBox<String[]> box = createSelectBox();
 		button.setSize(150,300);
 		editorTable.add(button);
-		editorTable.add(box);
+		//editorTable.add(box);
 		editorTable.setPosition(0, 0);
 	}
 	private void createStage() {
@@ -79,12 +79,12 @@ public class EditorScreen extends ScreenAdapter{
 		skinBack = new Skin();
 		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
 		skinBack.addRegions(buttonAtlas);
-		textButtonStyle = new TextButtonStyle();
-		textButtonStyle.font = font;
-		textButtonStyle.up = skinBack.getDrawable("Button_Editor_Back");
-		textButtonStyle.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
-		TextButton button = new TextButton("", textButtonStyle);
-
+		textButtonStyleBack = new TextButtonStyle();
+		textButtonStyleBack.font = font;
+		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
+		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
+		TextButton button = new TextButton("", textButtonStyleBack);
+		
 		button.addListener(new ChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -92,28 +92,43 @@ public class EditorScreen extends ScreenAdapter{
 				mainGame.setScreen(mainGame.screens[3]);
 			}
 		});
+		
+		TextButtonStyle styleBall = new TextButtonStyle();
+		styleBall.font = font;
+		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
+		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
+		TextButton ballButton = new TextButton("", styleBall);
+		
+		ballButton.addListener(new ChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("Ball Button Pressed");
+				spawnBall();
+			}
+		});		
+		editorTable.add(ballButton);
 		return button;
 	}
-	
-	private SelectBox<String[]> createSelectBox() {
-		skinBox = new Skin();
-        BitmapFont font = mainGame.getBitmapFontButton();
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skinBox.addRegions(buttonAtlas);
-		SelectBoxStyle style = new SelectBoxStyle();
-		
-		style.font =  font;
-		style.background = skinBox.getDrawable("ButtonPressed_Editor_Back");
-		
-		
-		SelectBox<String[]> box =  new SelectBox<String[]>();
-		System.out.println(box.getHeight());
-		String[] options = new String[2];
-		options[0] = "Ball";
-		options[1] = "Box";
-		box.setItems(options);
-		return box;
-	}
+//	
+//	private SelectBox<String[]> createSelectBox() {
+//		skinBox = new Skin();
+//        BitmapFont font = mainGame.getBitmapFontButton();
+//        buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
+//		skinBox.addRegions(buttonAtlas);
+//		SelectBoxStyle style = new SelectBoxStyle();
+//		
+//		style.font =  font;
+//		style.background = skinBox.getDrawable("ButtonPressed_Editor_Back");
+//		
+//		
+//		SelectBox<String[]> box =  new SelectBox<String[]>();
+//		System.out.println(box.getHeight());
+//		String[] options = new String[2];
+//		options[0] = "Ball";
+//		options[1] = "Box";
+//		box.setItems(options);
+//		return box;
+//	}
 	
 	@Override
 	public void render(float delta) {
@@ -126,12 +141,12 @@ public class EditorScreen extends ScreenAdapter{
 //			spawnBall();
 //		}
 //
-//		batch.begin();
+	batch.begin();
 //		backButton.draw(batch, 1);
-//		//		for (Rectangle ball : balls) {
-//		//			batch.draw(ballImage, ball.x, ball.y);
-//		//		}
-//		batch.end();
+				for (Rectangle ball : balls) {
+					batch.draw(ballImage, ball.x, ball.y);
+		}
+		batch.end();
 		
 	}
 	@Override
@@ -156,7 +171,6 @@ public class EditorScreen extends ScreenAdapter{
 		ball.height = 64;
 		ball.x = Gdx.input.getX() - ball.getWidth()/2;
 		ball.y = Gdx.graphics.getHeight()-Gdx.input.getY() - ball.getHeight()/2;
-
 		balls.add(ball);
 	}
 
