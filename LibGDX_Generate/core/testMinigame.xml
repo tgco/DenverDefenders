@@ -1,12 +1,17 @@
 <!--All attributes start with lower case, all -->
 
 <isthisthingon packageName="" levelName="">
-	<GameObject attributes="disappearsOnPress,health,movesOnSetPath">
+	<GameObject ID="1" attributes="disappearsOnPress,health,movesOnSetPath">
 		<health value="100"/>
 		<disappearsOnPress />
 	</GameObject>
 	
-	<GameObject attributes="color">
+	<GameObject ID="2" attributes="color">
 		<color value="red"/>
 	</GameObject>
+	
+	<LevelGoal> <!-- possible: Object of ID collides with another object of ID, timer expires, objects of ID exist/don't exist-->
+		<win condition=""/>
+		<lose condition=""/>
+	</LevelGoal>
 </isthisthingon>
