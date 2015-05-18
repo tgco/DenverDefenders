@@ -82,7 +82,7 @@ public class ScreenLevelManager extends ScreenAdapter{
 		float textButtonWidth = 0;
 		float textButtonHeight = 0;
 		//get the number of rows to make, when the number of packets in each column = 3;
-		int rows = packets.size/3 + 2;
+		int rows = packets.size/3 + 1;
 		//create an empty array of groups for the rows
 		Array<HorizontalGroup> buttonsRows = new Array<HorizontalGroup>();
 		//create the needed groups for the arrays base on the number of rows
@@ -90,7 +90,7 @@ public class ScreenLevelManager extends ScreenAdapter{
 			buttonsRows.add(new HorizontalGroup());
 		}
 		//set the size to be a ratio of number of packets to be displayed each page.
-		float sizeRatio = (packets.size/rows);
+		float sizeRatio = (packets.size);
 		//iterate over each packet
 		for(LevelPacket p: packets){
 			//get the name, create a button, fetch the correct sizes.
@@ -99,7 +99,10 @@ public class ScreenLevelManager extends ScreenAdapter{
 			textButtonWidth = textButton.getWidth()/sizeRatio;
 			textButtonHeight = textButton.getHeight()/sizeRatio;
 			//set the button size
-			textButton.setSize(textButtonWidth, textButtonHeight);
+			//textButton.setSize(textButtonWidth, textButtonHeight);
+			textButton.setHeight(textButtonHeight);
+			textButton.setWidth(textButtonWidth);
+			//textButton.pad(400);
 			//final variable to access within change listener
 			final int j = i;
 			//Transition to the ScreenPacketLevels Screen
@@ -115,9 +118,9 @@ public class ScreenLevelManager extends ScreenAdapter{
 			//increment the packets index
 			i++;
 			//add the button to the row
-			buttonsRows.get(i%rows).addActor(textButton);
+			buttonsRows.get(buttonsRows.size-1 - i%rows).addActor(textButton);
 			//create a new row if 3 packets are on the current row.
-			if(i%rows == 0 && i != 0) table.row();
+			//if(i%rows == 0 && i != 0) table.row();
 		}
 		//add each row to a vertical container
 		VerticalGroup rowContainer = new VerticalGroup();
@@ -126,9 +129,9 @@ public class ScreenLevelManager extends ScreenAdapter{
 		}
 		table.add(rowContainer);
 		//set the size of the table
-		table.setSize(textButtonWidth*3, textButtonHeight*rows);
+		//table.setSize(textButtonWidth*3, textButtonHeight*rows);
 		//position the table in the middle of the screen.
-		table.setPosition(game.getWidth()/2,game.getHeight());
+		//table.setPosition(game.getWidth()/2,0);
 		return table;
 	}
 	
