@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -10,6 +9,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.math.GridPoint2;
 
 //Use this to read the XML File into a Level
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
@@ -29,12 +29,6 @@ public class XML_Reader {
 		for(GameObject bob: testObjects){
 			bob.update();
 		}
-		/*ObjectMap<String,String> testest = new ObjectMap<String,String>();
-		testest.put("1","A");
-		testest.put("1","B");
-		System.out.println(testest.get("1"));
-		System.out.println(testest.get("2"));
-		*/
 		
 	}
 	
@@ -54,7 +48,7 @@ public class XML_Reader {
 	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
-			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
+			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"));//hardcoded values which must always be written down in the .xml file
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
 				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
@@ -71,18 +65,18 @@ public class XML_Reader {
 		return listOfObjects;
 	}
 	
-	//helper method for compileGameObjects
-	private Array<Point> stringToPath(String sPath){//Working
-		Array<Point> newPath = new Array<Point>();
+	//helper method for compileGameObjects, not sure if even needed anymore
+	private Array<GridPoint2> stringToPath(String sPath){//Working
+		Array<GridPoint2> newPath = new Array<GridPoint2>();
 		String points[] = sPath.split(";");
-		String temp[];
 		for(int i = 0; i < points.length; i++){
-			temp = points[i].split(",");
-			Point temp_P = new Point();//herd u liek temps.
-			temp_P.setLocation(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
-			newPath.add(temp_P);
+			newPath.add(stringToPoint(points[i]));
 		}
 		return newPath;
+	}
+	private GridPoint2 stringToPoint(String toPoint){
+		String temp[] = toPoint.split(",");
+		return new GridPoint2(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
 	}
 	
 	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions

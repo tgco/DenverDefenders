@@ -1,13 +1,13 @@
 <!--All attributes start with lower case, all -->
 
 <isthisthingon packageName="" levelName="">
-	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath" imageFilename="test.png">
-		<health value="100" value2 = "420"/>
+	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath" imageFilename="test.png" initialLocation="10,10">
+		<health value="100" value2 = "420" value3="blaze"/>
 		<disappearsOnPress />
 		<movesOnSetPath value="fgh"/>
 	</GameObject>
 	
-	<GameObject ID="2" attributes="color">
+	<GameObject ID="2" attributes="color" imageFilename="test.png" initialLocation="10,10">
 		<color value="red"/>
 	</GameObject>
 	

@@ -9,17 +9,25 @@ import com.badlogic.gdx.utils.ObjectMap;
 import org.TheGivingChild.Engine.Attributes.*;
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
+import com.badlogic.gdx.math.GridPoint2;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private ObjectMap<String,Integer> validAttributes;
 	private ObjectMap<String,Array<String>> attributeValues;//attribute_health mapped to whatever it needs to use, it's own storage
 	private int ID;
+	private String imageFilename;
+	private GridPoint2 location;
 	
-	public GameObject(int newID){
+	public GameObject(int newID, String img){
 		ID = newID;
+		imageFilename = img;
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
 		System.out.println("\nNew object, ID: " + ID);
+	}
+	
+	public String toString(){
+		return "ID: " + ID + ", Image filename: " + imageFilename;
 	}
 	
 	public void update(){
@@ -41,13 +49,16 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 			validAttributes.put(newAttribute,1);
 			attributeValues.put(newAttribute,new Array<String>());
 		}
-		//System.out.println("Attribute successfully set to true: " + newAttribute);
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
+	}
+	
+	public void draw(){//called by render in TGC_Engine
+		
 	}
 	
 	
 	
-	//ATTRIBUTES
+	//ATTRIBUTES, pray to Gaben we can find a way to refactor this.
 	
 	public void attribute_health(){
 		System.out.println("health called");
