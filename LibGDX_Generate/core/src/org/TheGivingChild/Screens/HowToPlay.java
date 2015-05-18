@@ -55,8 +55,8 @@ public class HowToPlay extends ScreenAdapter{
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.getButtonStates()) {
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
-			tbs.down = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
-			tbs.up = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
+			tbs.down = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i]);
+			tbs.up = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);

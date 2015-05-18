@@ -45,8 +45,8 @@ public class ScreenLevelManager extends ScreenAdapter{
 		
 		
 		SliderStyle sliderStyle = new SliderStyle();
-		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("Buttons/SliderBackground");
-		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("Buttons/SliderKnob");
+		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
+		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("SliderKnob");
 		
 		//slide that ranges from 0 to size-1 index of packets.
 		Slider slider = new Slider(0, packets.size-1, 1, false, sliderStyle);
@@ -57,9 +57,9 @@ public class ScreenLevelManager extends ScreenAdapter{
         BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = font;
-		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("Buttons/ButtonChecked_LevelPackIcon");
-		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Buttons/Button_LevelPackIcon");
-		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Buttons/ButtonChecked_LevelPackIcon");
+		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
+		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		
 		//indexer for finding which packet to play when button is clicked.
 		int i = 0;

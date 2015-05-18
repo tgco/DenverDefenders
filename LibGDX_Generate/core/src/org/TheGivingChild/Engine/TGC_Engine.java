@@ -10,13 +10,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
 public class TGC_Engine extends Game {
@@ -33,10 +29,8 @@ public class TGC_Engine extends Game {
 	private BitmapFont bitmapFontButton;
 	
 	public ScreenAdapter[] screens;
-	private float buttonHeight;
     //create tables for the UI
     private Table rootTable;
-    private Table mainScreenTable;
     private Array<Level> levels = new Array<Level>();
     
     private float width;
@@ -73,10 +67,14 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		
+		//button stuff
+        bitmapFontButton = new BitmapFont();
+        //make an atlas using the button texture pack
+        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
+        //define the regions
+        skin.addRegions(buttonAtlas);
 		
 		createStage();
-		mainScreenTable = createMainScreenTable();
-		showMainScreenTable();
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		screens = new ScreenAdapter[4];
@@ -91,41 +89,6 @@ public class TGC_Engine extends Game {
 		setScreen(screens[3]);
 	}
 	
-	public Table createMainScreenTable(){
-		//button stuff
-        bitmapFontButton = new BitmapFont();
-        //make an atlas using the button texture pack
-        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        //define the regions
-        skin.addRegions(buttonAtlas);
-        //create a table for the buttons
-        Table table = new Table();
-        //variable to keep track of button height for table positioning
-        int widthDividider = (buttonAtlasNamesArray.length/2);
-        //iterate over button pack names in order to check
-        for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
-        	TextButtonStyle bs = new TextButtonStyle();
-        	bs.font = bitmapFontButton;
-        	bs.down = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
-        	bs.up = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
-        	TextButton b = new TextButton("", bs);
-        	b.setSize(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
-        	table.add(b).size(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
-        	buttonHeight = b.getHeight();
-        	final int j = i;
-        	//button to transition to different screens.
-        	b.addListener(new ChangeListener(){
-				@Override
-				public void changed(ChangeEvent event, Actor actor) {
-					setScreen(screens[j/2]);
-					hideMainScreenTable();
-				}
-        	});
-        }
-        table.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        return table;
-	}
-	
 	public void createStage(){
 		stage = new Stage();
 		//create main menu images
@@ -136,6 +99,10 @@ public class TGC_Engine extends Game {
 	
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
+	}
+	
+	public String[] getButtonAtlasNamesArray() {
+		return buttonAtlasNamesArray;
 	}
 	
 	public Skin getButtonAtlasSkin(){
@@ -153,12 +120,17 @@ public class TGC_Engine extends Game {
 	public Array<Level> getLevels(){
 		return levels;
 	}
-	public float getWidth(){
-		return width;
+	
+	public Table getRootTable() {
+		return rootTable;
 	}
 	
-	public void hideMainScreenTable(){
-		rootTable.removeActor(mainScreenTable);
+	public Stage getStage() {
+		return stage;
+	}	
+	
+	public float getWidth(){
+		return width;
 	}
 	
 	public void playLevels(LevelPacket packet){
@@ -167,7 +139,6 @@ public class TGC_Engine extends Game {
 			System.out.println(l.getLevelName());
 		}
 	}
-	
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
 	}
@@ -176,11 +147,6 @@ public class TGC_Engine extends Game {
 	public void render () {
 		super.render();
 		stage.draw();
-	}
-	public void showMainScreenTable(){
-		rootTable.add(mainScreenTable);
-        rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        stage.addActor(rootTable);
 	}
 	
 }
