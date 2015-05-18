@@ -1,14 +1,10 @@
 package org.TheGivingChild.Engine;
 
-import java.awt.Point;
 import java.lang.reflect.Method;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import org.TheGivingChild.Engine.Attributes.*;
-import com.badlogic.gdx.utils.reflect.*;
-import com.badlogic.gdx.utils.reflect.Method.*;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private ObjectMap<String,Integer> validAttributes;
@@ -22,6 +18,34 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		System.out.println("\nNew object, ID: " + ID);
 	}
 	
+	public void addValidAttribute(String newAttribute,String value){
+		if(validAttributes.get(newAttribute) == null){
+			validAttributes.put(newAttribute,1);
+			attributeValues.put(newAttribute,new Array<String>());
+		}
+		//System.out.println("Attribute successfully set to true: " + newAttribute);
+		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
+	}
+	
+	public void attribute_color(){
+		System.out.println("color called");
+		System.out.println(attributeValues.get("color"));
+	}
+	
+	//ATTRIBUTES	
+	public void attribute_disappearsOnPress(){
+		System.out.println("disappearsOnPress called");
+		System.out.println(attributeValues.get("disappearsOnPress"));
+	}
+	
+	public void attribute_health(){
+		System.out.println("health called");
+		System.out.println(attributeValues.get("health"));
+	}
+	public void attribute_movesOnSetPath(){
+		System.out.println("movesOnSetPath called");
+		System.out.println(attributeValues.get("movesOnSetPath"));
+	}
 	public void update(){
 		for(Method currentMethod:this.getClass().getMethods()){
 			if(validAttributes.containsKey(currentMethod.getName().replaceAll("attribute_",""))){
@@ -36,34 +60,4 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		}
 	}
 	
-	public void addValidAttribute(String newAttribute,String value){
-		if(validAttributes.get(newAttribute) == null){
-			validAttributes.put(newAttribute,1);
-			attributeValues.put(newAttribute,new Array<String>());
-		}
-		//System.out.println("Attribute successfully set to true: " + newAttribute);
-		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
-	}
-	
-	//ATTRIBUTES
-	
-	public void attribute_health(){
-		//System.out.println("health called");
-		System.out.println(attributeValues.get("health"));
-	}
-	
-	public void attribute_color(){
-		//System.out.println("color called");
-		System.out.println(attributeValues.get("color"));
-	}
-	
-	public void attribute_disappearsOnPress(){
-		//System.out.println("disappearsOnPress called");
-		System.out.println(attributeValues.get("disappearsOnPress"));
-	}
-	
-	public void attribute_movesOnSetPath(){
-		//System.out.println("movesOnSetPath called");
-		System.out.println(attributeValues.get("movesOnSetPath"));
-	}
 }

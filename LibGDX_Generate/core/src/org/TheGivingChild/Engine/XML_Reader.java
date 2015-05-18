@@ -15,10 +15,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
 public class XML_Reader {
 	
-	private XmlReader reader = new XmlReader();
-	private String xml_file;
-	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
-	
 	//the main method is for testing only
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
@@ -37,6 +33,40 @@ public class XML_Reader {
 		*/
 		
 	}
+	private XmlReader reader = new XmlReader();
+	private String xml_file;
+	
+	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
+	
+	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
+		Array<GameObject> listOfObjects = new Array<GameObject>();
+		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
+			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
+			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
+				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
+				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
+					for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
+						temp.addValidAttribute(currentAttribute, currentValue);
+						System.out.println(currentAttribute + ", " + currentValue);
+					}
+				}else{
+					temp.addValidAttribute(currentAttribute, null);
+				}
+			}
+			listOfObjects.add(temp);
+		}
+		return listOfObjects;
+	}
+	
+	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions
+		LevelGoal levelGoal = new LevelGoal();
+		//that code tho
+		return levelGoal;
+	}
+	
+	public Level getLevel(){//compiles all the data into a level and returns it
+		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
+	}
 	
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
 		xml_file ="";
@@ -51,24 +81,6 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
-		Array<GameObject> listOfObjects = new Array<GameObject>();
-		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
-			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
-			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
-					for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
-						temp.addValidAttribute(currentAttribute, currentValue);
-						System.out.println(currentAttribute + ", " + currentValue);
-					}
-				}
-			}
-			listOfObjects.add(temp);
-		}
-		return listOfObjects;
-	}
-	
 	//helper method for compileGameObjects
 	private Array<Point> stringToPath(String sPath){//Working
 		Array<Point> newPath = new Array<Point>();
@@ -81,15 +93,5 @@ public class XML_Reader {
 			newPath.add(temp_P);
 		}
 		return newPath;
-	}
-	
-	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions
-		LevelGoal levelGoal = new LevelGoal();
-		//that code tho
-		return levelGoal;
-	}
-	
-	public Level getLevel(){//compiles all the data into a level and returns it
-		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
 	}
 }

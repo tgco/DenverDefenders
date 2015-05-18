@@ -1,4 +1,6 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Screens;
+
+import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -41,19 +43,6 @@ public class HowToPlay extends ScreenAdapter{
 	}
 	
 	
-	@Override
-	public void render(float delta) {
-		//creates background color
-		Gdx.gl.glClearColor(0, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//shows HTP title and text
-		batch.begin();
-		batch.draw(title, 230, 350);
-		batch.draw(message, 250, 150);
-		batch.end();
-		
-	}
-	
 	//Function for making the play and options buttons in the HTP screen
 	public Table createButtons() {
 		//create table for buttons
@@ -63,11 +52,11 @@ public class HowToPlay extends ScreenAdapter{
 		//variable to help with table positioning
 		int widthDivider = buttonAtlasNamesArray.length;
 		//iterates over button names, allows for more buttons to be added
-		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.BUTTON_STATES) {
+		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.getButtonStates()) {
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
-			tbs.down = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
-			tbs.up = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
+			tbs.down = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i]);
+			tbs.up = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
@@ -90,13 +79,26 @@ public class HowToPlay extends ScreenAdapter{
 	}
 	
 	@Override
-	public void show() {
-		game.addTable(table);
+	public void hide() {
+		game.removeTable(table);
 	}
 	
 	@Override
-	public void hide() {
-		game.removeTable(table);
+	public void render(float delta) {
+		//creates background color
+		Gdx.gl.glClearColor(0, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//shows HTP title and text
+		batch.begin();
+		batch.draw(title, 230, 350);
+		batch.draw(message, 250, 150);
+		batch.end();
+		
+	}
+	
+	@Override
+	public void show() {
+		game.addTable(table);
 	}
 	
 }
