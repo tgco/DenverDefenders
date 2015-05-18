@@ -12,12 +12,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
@@ -29,7 +31,10 @@ public class EditorScreen extends ScreenAdapter{
 	TextButtonStyle textButtonStyle;
 
 	private BitmapFont font;
-	private Skin skin;
+	private Skin skinBack;
+	private Skin skinBox;
+	private Skin skinTable;
+	
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
 	private TGC_Engine mainGame;
@@ -54,12 +59,14 @@ public class EditorScreen extends ScreenAdapter{
 	private void createEditorTable() {
 		editorTable = new Table();
 		font = new BitmapFont();
-		skin = new Skin();
+		skinTable = new Skin();
 		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skin.addRegions(buttonAtlas);
+		skinTable.addRegions(buttonAtlas);
 		TextButton button = createButtons();
+		SelectBox<String[]> box = createSelectBox();
 		button.setSize(150,300);
 		editorTable.add(button);
+		editorTable.add(box);
 		editorTable.setPosition(0, 0);
 	}
 	private void createStage() {
@@ -69,13 +76,13 @@ public class EditorScreen extends ScreenAdapter{
 	}
 	private TextButton createButtons() {
 		font = new BitmapFont();
-		skin = new Skin();
+		skinBack = new Skin();
 		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skin.addRegions(buttonAtlas);
+		skinBack.addRegions(buttonAtlas);
 		textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = font;
-		textButtonStyle.up = skin.getDrawable("Button_Editor_Back");
-		textButtonStyle.down = skin.getDrawable("ButtonPressed_Editor_Back");
+		textButtonStyle.up = skinBack.getDrawable("Button_Editor_Back");
+		textButtonStyle.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
 		TextButton button = new TextButton("", textButtonStyle);
 
 		button.addListener(new ChangeListener() { 			
@@ -87,6 +94,27 @@ public class EditorScreen extends ScreenAdapter{
 		});
 		return button;
 	}
+	
+	private SelectBox<String[]> createSelectBox() {
+		skinBox = new Skin();
+        BitmapFont font = mainGame.getBitmapFontButton();
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
+		skinBox.addRegions(buttonAtlas);
+		SelectBoxStyle style = new SelectBoxStyle();
+		
+		style.font =  font;
+		style.background = skinBox.getDrawable("ButtonPressed_Editor_Back");
+		
+		
+		SelectBox<String[]> box =  new SelectBox<String[]>();
+		System.out.println(box.getHeight());
+		String[] options = new String[2];
+		options[0] = "Ball";
+		options[1] = "Box";
+		box.setItems(options);
+		return box;
+	}
+	
 	@Override
 	public void render(float delta) {
 //		//		super.render(delta);
