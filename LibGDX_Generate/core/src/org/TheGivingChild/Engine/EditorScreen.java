@@ -45,14 +45,18 @@ public class EditorScreen extends ScreenAdapter{
 	private TGC_Engine mainGame;
 	private Texture ballImage;
 	private Texture objectImage;
+	private Texture boxImage;
+	
 	private SpriteBatch batch;
 	private Array<Rectangle> balls;
+	private Array<Rectangle> boxes;
 	private Array<String> objBox;
 	private SelectBox<String> selection;
 
 	private Array<Rectangle> grid;
 	private Texture gridImage;
 	
+	private boolean ballOrBox = true;
 	
 	public EditorScreen(final TGC_Engine mainGame) {
 		this.mainGame = mainGame;
@@ -63,7 +67,8 @@ public class EditorScreen extends ScreenAdapter{
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
-		
+		boxes = new Array<Rectangle>();
+		boxImage = new Texture(Gdx.files.internal("Box.png"));
 		gridImage = new Texture(Gdx.files.internal("Grid.png"));
 		grid = new Array<Rectangle>();
 		fillGrid();
@@ -125,8 +130,8 @@ public class EditorScreen extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				System.out.println("Ball Button Pressed");
-				selectImage(1);
-
+				selectImage();
+				System.out.println(objectImage.toString());
 			}
 		});		
 		editorTable.add(ballButton);
@@ -169,6 +174,9 @@ public class EditorScreen extends ScreenAdapter{
 		for (Rectangle ball : balls) {
 			batch.draw(ballImage, ball.x, ball.y);
 		}
+		for (Rectangle box : boxes) {
+			batch.draw(boxImage, box.x, box.y);
+		}
 		for (Rectangle gridPiece : grid) {
 			batch.draw(gridImage, gridPiece.x, gridPiece.y);
 		}
@@ -204,11 +212,19 @@ public class EditorScreen extends ScreenAdapter{
 				break;
 			}
 		}
-		balls.add(object);
+		if (ballOrBox) 
+			balls.add(object);
+		else
+			boxes.add(object);
 	}
-	private void selectImage(int image) {
-		if (image == 1) {
+	private void selectImage() {
+		if (ballOrBox) {
 			objectImage = ballImage;
+			ballOrBox = !ballOrBox;
+		}
+		else {
+			objectImage = boxImage;
+			ballOrBox = !ballOrBox;
 		}
 	}
 }
