@@ -24,7 +24,10 @@ public class XML_Reader {
 		String filename = "testMinigame.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
-		
+		System.out.println(testObjects.size);
+		for(GameObject bob: testObjects){
+			bob.update();
+		}
 		
 	}
 	
@@ -45,13 +48,14 @@ public class XML_Reader {
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		Array<Element> gameObjects = root.getChildrenByName("GameObject");
 		for(Element currentObject:gameObjects){
-			GameObject temp = new GameObject();
+			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
 			String attributes[] = currentObject.getAttribute("attributes").split(",");
 			for(String currentAttribute:attributes){
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				temp.addValidAttribute(currentAttribute);
+				temp.addValidAttribute(currentAttribute,currentObject.getChildByName(currentAttribute).getAttribute("value"));
 				
 			}
+			listOfObjects.add(temp);
 		}
 		return listOfObjects;
 	}
