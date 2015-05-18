@@ -4,6 +4,7 @@
 	<GameObject ID="1" attributes="disappearsOnPress,health,movesOnSetPath">
 		<health value="100"/>
 		<disappearsOnPress />
+		<movesOnSetPath />
 	</GameObject>
 	
 	<GameObject ID="2" attributes="color">

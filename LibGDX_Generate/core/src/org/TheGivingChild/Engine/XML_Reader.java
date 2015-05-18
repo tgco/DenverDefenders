@@ -52,7 +52,7 @@ public class XML_Reader {
 			String attributes[] = currentObject.getAttribute("attributes").split(",");
 			for(String currentAttribute:attributes){
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				temp.addValidAttribute(currentAttribute);
+				temp.addValidAttribute(currentAttribute,currentObject.getChildByName(currentAttribute).getAttribute("value"));
 				
 			}
 			listOfObjects.add(temp);
