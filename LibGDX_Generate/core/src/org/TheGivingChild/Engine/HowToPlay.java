@@ -43,19 +43,26 @@ public class HowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
+		//creates background color
 		Gdx.gl.glClearColor(0, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//shows HTP title and text
 		batch.begin();
-		batch.draw(title, 30, 280);
-		//batch.draw(message, 50, 80);
+		batch.draw(title, 230, 350);
+		batch.draw(message, 250, 150);
 		batch.end();
 		
 	}
 	
+	//Function for making the play and options buttons in the HTP screen
 	public Table createButtons() {
+		//create table for buttons
 		Table t = new Table();
+		//set font for buttons
 		BitmapFont font = game.getBitmapFontButton();
+		//variable to help with table positioning
 		int widthDivider = buttonAtlasNamesArray.length/2;
+		//iterates over button names, allows for more buttons to be added
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.BUTTON_STATES) {
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
@@ -66,6 +73,7 @@ public class HowToPlay extends ScreenAdapter{
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
 			buttonHeight = tb.getHeight();
 			final int j = i;
+			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
