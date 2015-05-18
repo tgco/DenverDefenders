@@ -29,7 +29,7 @@ public class HowToPlay extends ScreenAdapter{
 	private OrthographicCamera camera;
 	private Batch batch;
 	private Table table;
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor"};
 	private float buttonHeight;
 	
 	
