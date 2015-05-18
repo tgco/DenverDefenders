@@ -67,13 +67,16 @@ public class TGC_Engine extends Game {
 		showMainScreenTable();
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		screens = new ScreenAdapter[3];
+		screens = new ScreenAdapter[4];
 		ScreenAdapter levelManager = new ScreenLevelManager(this);
 		screens[0] = levelManager;
 		ScreenAdapter howToPlay = new HowToPlay(this);
 		screens[1] = howToPlay;
 		ScreenAdapter options = new EditorScreen(this);
 		screens[2]= options;
+		ScreenAdapter mainScreen = new MainScreen(this);
+		screens[3] = mainScreen;
+		setScreen(screens[3]);
 	}
 
 	@Override

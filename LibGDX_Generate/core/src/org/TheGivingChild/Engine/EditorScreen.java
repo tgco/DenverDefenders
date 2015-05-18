@@ -89,7 +89,7 @@ public class EditorScreen extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				System.out.println("Back Button Pressed");
-				mainGame.setScreen(mainGame.screens[0]);
+				mainGame.setScreen(mainGame.screens[3]);
 			}
 		});
 		return button;
