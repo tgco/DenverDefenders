@@ -13,7 +13,7 @@ import org.TheGivingChild.Engine.Attributes.*;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private ObjectMap<String,Integer> validAttributes;
-	private ObjectMap<String,String> attributeValues;
+	private ObjectMap<String,String> attributeValues;//attribute_health mapped to whatever it needs to use, it's own storage
 	private int ID;
 	
 	public GameObject(int newID){
@@ -36,8 +36,9 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		}
 	}
 	
-	public void addValidAttribute(String newAttribute){
+	public void addValidAttribute(String newAttribute,String value){
 		validAttributes.put(newAttribute,1);
+		attributeValues.put("attribute_" + newAttribute, value);
 		System.out.println(newAttribute);
 	}
 	
@@ -52,6 +53,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	
 	public void attribute_health(){
 		System.out.println("HEALTH");
+		System.out.println(attributeValues.get("health"));
 	}
 	
 	public void attribute_color(){
