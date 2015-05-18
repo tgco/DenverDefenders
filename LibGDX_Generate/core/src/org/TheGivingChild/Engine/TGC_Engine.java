@@ -31,10 +31,8 @@ public class TGC_Engine extends Game {
 	private BitmapFont bitmapFontButton;
 	
 	public ScreenAdapter[] screens;
-	private float buttonHeight;
     //create tables for the UI
     private Table rootTable;
-    private Table mainScreenTable;
     private Array<Level> levels = new Array<Level>();
     
     private float width;
@@ -61,10 +59,14 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		
+		//button stuff
+        bitmapFontButton = new BitmapFont();
+        //make an atlas using the button texture pack
+        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
+        //define the regions
+        skin.addRegions(buttonAtlas);
 		
 		createStage();
-		mainScreenTable = createMainScreenTable();
-		showMainScreenTable();
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		screens = new ScreenAdapter[4];
@@ -93,51 +95,6 @@ public class TGC_Engine extends Game {
 		rootTable = new Table();
 	}
 	
-	public Table createMainScreenTable(){
-		//button stuff
-        bitmapFontButton = new BitmapFont();
-        //make an atlas using the button texture pack
-        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        //define the regions
-        skin.addRegions(buttonAtlas);
-        //create a table for the buttons
-        Table table = new Table();
-        //variable to keep track of button height for table positioning
-        int widthDividider = (buttonAtlasNamesArray.length/2);
-        //iterate over button pack names in order to check
-        for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
-        	TextButtonStyle bs = new TextButtonStyle();
-        	bs.font = bitmapFontButton;
-        	bs.down = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
-        	bs.up = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
-        	TextButton b = new TextButton("", bs);
-        	b.setSize(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
-        	table.add(b).size(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
-        	buttonHeight = b.getHeight();
-        	final int j = i;
-        	//button to transition to different screens.
-        	b.addListener(new ChangeListener(){
-				@Override
-				public void changed(ChangeEvent event, Actor actor) {
-					setScreen(screens[j/2]);
-					hideMainScreenTable();
-				}
-        	});
-        }
-        table.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        return table;
-	}
-	
-	public void showMainScreenTable(){
-		rootTable.add(mainScreenTable);
-        rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        stage.addActor(rootTable);
-	}
-	
-	public void hideMainScreenTable(){
-		rootTable.removeActor(mainScreenTable);
-	}
-	
 	public Array<Level> getLevels(){
 		return levels;
 	}
@@ -164,6 +121,10 @@ public class TGC_Engine extends Game {
 		return skin;
 	}
 	
+	public String[] getButtonAtlasNamesArray() {
+		return buttonAtlasNamesArray;
+	}
+	
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
@@ -173,6 +134,14 @@ public class TGC_Engine extends Game {
 	}
 	public float getHeight(){
 		return height;
+	}
+	
+	public Stage getStage() {
+		return stage;
+	}
+	
+	public Table getRootTable() {
+		return rootTable;
 	}
 	
 }
