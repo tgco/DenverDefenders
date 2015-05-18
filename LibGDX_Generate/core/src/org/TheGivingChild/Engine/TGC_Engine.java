@@ -1,21 +1,23 @@
 package org.TheGivingChild.Engine;
 
+import org.TheGivingChild.Screens.EditorScreen;
+import org.TheGivingChild.Screens.HowToPlay;
+import org.TheGivingChild.Screens.MainScreen;
+import org.TheGivingChild.Screens.ScreenLevelManager;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 public class TGC_Engine extends Game {
 	final static int DESKTOP_WIDTH = 1024;
@@ -40,6 +42,14 @@ public class TGC_Engine extends Game {
     private float width;
     private float height;
     
+	public void addLevels(Array<Level> levels){
+			this.levels.addAll(levels);
+	}
+
+	public void addTable(Table t){
+		rootTable.add(t);
+	}
+	
 	@Override
 	public void create () {
 		switch(Gdx.app.getType()){
@@ -48,6 +58,8 @@ public class TGC_Engine extends Game {
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
 			case iOS:
+			default:
+				break;
 				
 		}
 		
@@ -77,20 +89,6 @@ public class TGC_Engine extends Game {
 		ScreenAdapter mainScreen = new MainScreen(this);
 		screens[3] = mainScreen;
 		setScreen(screens[3]);
-	}
-
-	@Override
-	public void render () {
-		super.render();
-		stage.draw();
-	}
-	
-	public void createStage(){
-		stage = new Stage();
-		//create main menu images
-		Gdx.input.setInputProcessor(stage);
-		//initialize root Table
-		rootTable = new Table();
 	}
 	
 	public Table createMainScreenTable(){
@@ -128,22 +126,39 @@ public class TGC_Engine extends Game {
         return table;
 	}
 	
-	public void showMainScreenTable(){
-		rootTable.add(mainScreenTable);
-        rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        stage.addActor(rootTable);
+	public void createStage(){
+		stage = new Stage();
+		//create main menu images
+		Gdx.input.setInputProcessor(stage);
+		//initialize root Table
+		rootTable = new Table();
 	}
 	
-	public void hideMainScreenTable(){
-		rootTable.removeActor(mainScreenTable);
+	public BitmapFont getBitmapFontButton(){
+		return bitmapFontButton;
+	}
+	
+	public Skin getButtonAtlasSkin(){
+		return skin;
+	}
+	
+	public int getButtonStates(){
+		return BUTTON_STATES;
+	}
+	
+	public float getHeight(){
+		return height;
 	}
 	
 	public Array<Level> getLevels(){
 		return levels;
 	}
+	public float getWidth(){
+		return width;
+	}
 	
-	public void addLevels(Array<Level> levels){
-			this.levels.addAll(levels);
+	public void hideMainScreenTable(){
+		rootTable.removeActor(mainScreenTable);
 	}
 	
 	public void playLevels(LevelPacket packet){
@@ -153,26 +168,19 @@ public class TGC_Engine extends Game {
 		}
 	}
 	
-	public void addTable(Table t){
-		rootTable.add(t);
-	}
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
 	}
 	
-	public Skin getButtonAtlasSkin(){
-		return skin;
+	@Override
+	public void render () {
+		super.render();
+		stage.draw();
 	}
-	
-	public BitmapFont getBitmapFontButton(){
-		return bitmapFontButton;
-	}
-	
-	public float getWidth(){
-		return width;
-	}
-	public float getHeight(){
-		return height;
+	public void showMainScreenTable(){
+		rootTable.add(mainScreenTable);
+        rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
+        stage.addActor(rootTable);
 	}
 	
 }

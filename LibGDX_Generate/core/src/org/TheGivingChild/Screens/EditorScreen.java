@@ -1,4 +1,6 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Screens;
+
+import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -56,24 +58,6 @@ public class EditorScreen extends ScreenAdapter{
 		//	backButton.setVisible(true);
 
 	}
-	private void createEditorTable() {
-		editorTable = new Table();
-		font = new BitmapFont();
-		skinTable = new Skin();
-		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skinTable.addRegions(buttonAtlas);
-		TextButton button = createButtons();
-		//SelectBox<String[]> box = createSelectBox();
-		button.setSize(150,300);
-		editorTable.add(button);
-		//editorTable.add(box);
-		editorTable.setPosition(0, 0);
-	}
-	private void createStage() {
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		//editorTable = new Table();
-	}
 	private TextButton createButtons() {
 		font = new BitmapFont();
 		skinBack = new Skin();
@@ -129,7 +113,29 @@ public class EditorScreen extends ScreenAdapter{
 //		box.setItems(options);
 //		return box;
 //	}
+	private void createEditorTable() {
+		editorTable = new Table();
+		font = new BitmapFont();
+		skinTable = new Skin();
+		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
+		skinTable.addRegions(buttonAtlas);
+		TextButton button = createButtons();
+		//SelectBox<String[]> box = createSelectBox();
+		button.setSize(150,300);
+		editorTable.add(button);
+		//editorTable.add(box);
+		editorTable.setPosition(0, 0);
+	}
+	private void createStage() {
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+		//editorTable = new Table();
+	}
 	
+	@Override
+	public void hide() {
+		mainGame.removeTable(editorTable);
+	}
 	@Override
 	public void render(float delta) {
 //		//		super.render(delta);
@@ -148,15 +154,11 @@ public class EditorScreen extends ScreenAdapter{
 		}
 		batch.end();
 		
-	}
-	@Override
-	public void show() {
-		mainGame.addTable(editorTable);
 	};
 	
 	@Override
-	public void hide() {
-		mainGame.removeTable(editorTable);
+	public void show() {
+		mainGame.addTable(editorTable);
 	};
 //	@Override
 //	public void dispose() {
