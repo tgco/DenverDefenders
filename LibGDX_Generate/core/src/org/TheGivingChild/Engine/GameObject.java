@@ -6,7 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import org.TheGivingChild.Engine.Attributes.*;
+//import org.TheGivingChild.Engine.Attributes.*;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	//private Array<Attribute> attributes;
