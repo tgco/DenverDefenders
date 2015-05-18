@@ -1,4 +1,6 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Screens;
+
+import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -34,11 +36,11 @@ public class MainScreen extends ScreenAdapter{
         //variable to keep track of button height for table positioning
         int widthDivider = (game.getButtonAtlasNamesArray().length/2);
         //iterate over button pack names in order to check
-        for(int i = 0; i < game.getButtonAtlasNamesArray().length-1; i+=game.BUTTON_STATES){
+        for(int i = 0; i < game.getButtonAtlasNamesArray().length-1; i+=game.getButtonStates()){
         	TextButtonStyle bs = new TextButtonStyle();
         	bs.font = bitmapFontButton;
-        	bs.down = game.getButtonAtlasSkin().getDrawable("Buttons/"+game.getButtonAtlasNamesArray()[i]);
-        	bs.up = game.getButtonAtlasSkin().getDrawable("Buttons/"+game.getButtonAtlasNamesArray()[i+1]);
+        	bs.down = game.getButtonAtlasSkin().getDrawable(game.getButtonAtlasNamesArray()[i]);
+        	bs.up = game.getButtonAtlasSkin().getDrawable(game.getButtonAtlasNamesArray()[i+1]);
         	TextButton b = new TextButton("", bs);
         	b.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
         	table.add(b).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);

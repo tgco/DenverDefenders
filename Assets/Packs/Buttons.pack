@@ -3,39 +3,46 @@ Buttons.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Buttons/ButtonPressed_MainScreen_Editor
+ButtonPressed_MainScreen_Editor
   rotate: false
   xy: 1, 605
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Buttons/ButtonPressed_MainScreen_HowToPlay
+ButtonPressed_MainScreen_HowToPlay
   rotate: false
   xy: 1, 303
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Buttons/ButtonPressed_MainScreen_Options
+ButtonPressed_MainScreen_Options
+  rotate: true
+  xy: 536, 372
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Play
   rotate: false
   xy: 1, 1
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Buttons/ButtonChecked_LevelPackIcon
+ButtonChecked_LevelPackIcon
   rotate: false
-  xy: 536, 605
+  xy: 536, 70
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
-Buttons/Button_LevelPackIcon
+SliderKnob
   rotate: false
-  xy: 536, 303
-  size: 300, 300
-  orig: 300, 300
+  xy: 838, 860
+  size: 45, 45
+  orig: 45, 45
   offset: 0, 0
   index: -1
 
@@ -43,25 +50,39 @@ Buttons2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Buttons/ButtonPressed_MainScreen_Play
+Button_MainScreen_Editor
   rotate: false
   xy: 1, 605
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Buttons/Button_MainScreen_Editor
+Button_MainScreen_HowToPlay
   rotate: false
   xy: 1, 303
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Buttons/Button_MainScreen_HowToPlay
+Button_MainScreen_Options
+  rotate: true
+  xy: 536, 372
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Play
   rotate: false
   xy: 1, 1
   size: 533, 300
   orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_LevelPackIcon
+  rotate: false
+  xy: 536, 70
+  size: 300, 300
+  orig: 300, 300
   offset: 0, 0
   index: -1
 
@@ -69,17 +90,10 @@ Buttons3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Buttons/Button_MainScreen_Options
-  rotate: false
-  xy: 1, 303
-  size: 533, 300
-  orig: 533, 300
-  offset: 0, 0
-  index: -1
-Buttons/Button_MainScreen_Play
+SliderBackground
   rotate: false
   xy: 1, 1
-  size: 533, 300
-  orig: 533, 300
+  size: 1600, 45
+  orig: 1600, 45
   offset: 0, 0
   index: -1

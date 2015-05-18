@@ -1,4 +1,6 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Screens;
+
+import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -75,32 +77,7 @@ public class EditorScreen extends ScreenAdapter{
 		//	backButton.setVisible(true);
 
 	}
-	private void fillGrid() {
-		for (int i=0; i<10; i++) {
-			for (int j=mainGame.DESKTOP_HEIGHT; j>150; j-=100) {
-				Rectangle gridPiece = new Rectangle(i*100,j, 100, 100);
-				grid.add(gridPiece);
-			}
-		}
-	}
-	private void createEditorTable() {
-		editorTable = new Table();
-		font = new BitmapFont();
-		skinTable = new Skin();
-		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skinTable.addRegions(buttonAtlas);
-		TextButton button = createButtons();
-		//SelectBox<String[]> box = createSelectBox();
-		button.setSize(150,300);
-		editorTable.add(button);
-		//editorTable.add(box);
-		editorTable.setPosition(0, 0);
-	}
-	private void createStage() {
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		//editorTable = new Table();
-	}
+
 	private TextButton createButtons() {
 		font = new BitmapFont();
 		skinBack = new Skin();
@@ -137,7 +114,7 @@ public class EditorScreen extends ScreenAdapter{
 		editorTable.add(ballButton);
 		return button;
 	}
-//	
+	//	
 //	private SelectBox<String[]> createSelectBox() {
 //		skinBox = new Skin();
 //        BitmapFont font = mainGame.getBitmapFontButton();
@@ -158,6 +135,39 @@ public class EditorScreen extends ScreenAdapter{
 //		return box;
 //	}
 	
+	private void createEditorTable() {
+		editorTable = new Table();
+		font = new BitmapFont();
+		skinTable = new Skin();
+		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
+		skinTable.addRegions(buttonAtlas);
+		TextButton button = createButtons();
+		//SelectBox<String[]> box = createSelectBox();
+		button.setSize(150,300);
+		editorTable.add(button);
+		//editorTable.add(box);
+		editorTable.setPosition(0, 0);
+	}
+	
+	private void createStage() {
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+		//editorTable = new Table();
+	}
+
+	private void fillGrid() {
+		for (int i=0; i<10; i++) {
+			for (int j=(int) mainGame.getHeight(); j>150; j-=100) {
+				Rectangle gridPiece = new Rectangle(i*100,j, 100, 100);
+				grid.add(gridPiece);
+			}
+		}
+	}
+	
+	@Override
+	public void hide() {
+		mainGame.removeTable(editorTable);
+	}
 	@Override
 	public void render(float delta) {
 //		//		super.render(delta);
@@ -182,15 +192,11 @@ public class EditorScreen extends ScreenAdapter{
 		}
 		batch.end();
 
-	}
-	@Override
-	public void show() {
-		mainGame.addTable(editorTable);
 	};
 	
 	@Override
-	public void hide() {
-		mainGame.removeTable(editorTable);
+	public void show() {
+		mainGame.addTable(editorTable);
 	};
 //	@Override
 //	public void dispose() {
