@@ -45,25 +45,27 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
 	}
 	
+	
+	
 	//ATTRIBUTES
 	
 	public void attribute_health(){
-		//System.out.println("health called");
+		System.out.println("health called");
 		System.out.println(attributeValues.get("health"));
 	}
 	
 	public void attribute_color(){
-		//System.out.println("color called");
+		System.out.println("color called");
 		System.out.println(attributeValues.get("color"));
 	}
 	
 	public void attribute_disappearsOnPress(){
-		//System.out.println("disappearsOnPress called");
+		System.out.println("disappearsOnPress called");
 		System.out.println(attributeValues.get("disappearsOnPress"));
 	}
 	
 	public void attribute_movesOnSetPath(){
-		//System.out.println("movesOnSetPath called");
+		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath"));
 	}
 }

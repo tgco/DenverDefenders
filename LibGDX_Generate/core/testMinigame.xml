@@ -1,7 +1,7 @@
 <!--All attributes start with lower case, all -->
 
 <isthisthingon packageName="" levelName="">
-	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath">
+	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath" imageFilename="test.png">
 		<health value="100" value2 = "420"/>
 		<disappearsOnPress />
 		<movesOnSetPath value="fgh"/>

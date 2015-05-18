@@ -62,6 +62,8 @@ public class XML_Reader {
 						temp.addValidAttribute(currentAttribute, currentValue);
 						System.out.println(currentAttribute + ", " + currentValue);
 					}
+				}else{
+					temp.addValidAttribute(currentAttribute, null);
 				}
 			}
 			listOfObjects.add(temp);
