@@ -6,10 +6,9 @@ import java.lang.reflect.Method;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import org.TheGivingChild.Engine.Attributes.*;
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
-
-import org.TheGivingChild.Engine.Attributes.*;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private ObjectMap<String,Integer> validAttributes;
