@@ -4,11 +4,12 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import com.badlogic.gdx.utils.ArrayMap.Values;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.reflect.Method;
-//import com.badlogic.gdx.utils.reflect.Method;
+import com.badlogic.gdx.utils.ObjectMap;
 
 //Use this to read the XML File into a Level
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
@@ -24,10 +25,10 @@ public class XML_Reader {
 		String filename = "testMinigame.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
-		System.out.println(testObjects.size);
 		for(GameObject bob: testObjects){
 			bob.update();
 		}
+		
 		
 	}
 	
@@ -46,14 +47,15 @@ public class XML_Reader {
 	
 	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
-		Array<Element> gameObjects = root.getChildrenByName("GameObject");
-		for(Element currentObject:gameObjects){
+		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
-			String attributes[] = currentObject.getAttribute("attributes").split(",");
-			for(String currentAttribute:attributes){
+			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				temp.addValidAttribute(currentAttribute,currentObject.getChildByName(currentAttribute).getAttribute("value"));
-				
+					if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
+						for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
+							System.out.println(currentAttribute + ": " + currentValue);
+					}
+				}
 			}
 			listOfObjects.add(temp);
 		}
