@@ -21,10 +21,16 @@ public class XML_Reader {
 		String filename = "testMinigame.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
+		System.out.println("\nUPDATING");
 		for(GameObject bob: testObjects){
 			bob.update();
 		}
-		
+		/*ObjectMap<String,String> testest = new ObjectMap<String,String>();
+		testest.put("1","A");
+		testest.put("1","B");
+		System.out.println(testest.get("1"));
+		System.out.println(testest.get("2"));
+		*/
 		
 	}
 	private XmlReader reader = new XmlReader();
@@ -38,10 +44,13 @@ public class XML_Reader {
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"));
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-					if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
-						for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
-							System.out.println(currentAttribute + ": " + currentValue);
+				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
+					for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
+						temp.addValidAttribute(currentAttribute, currentValue);
+						System.out.println(currentAttribute + ", " + currentValue);
 					}
+				}else{
+					temp.addValidAttribute(currentAttribute, null);
 				}
 			}
 			listOfObjects.add(temp);
