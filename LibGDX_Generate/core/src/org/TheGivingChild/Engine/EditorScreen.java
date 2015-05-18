@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,6 +26,8 @@ import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
 public class EditorScreen extends ScreenAdapter{
+	private OrthographicCamera camera;
+	
 	private Stage stage;
 	private TextButton ballButton;
 	private TextButton backButton;
@@ -44,17 +47,33 @@ public class EditorScreen extends ScreenAdapter{
 	private Array<String> objBox;
 	private SelectBox<String> selection;
 
+	private Array<Rectangle> grid;
+	private Texture gridImage;
+	
+	
 	public EditorScreen(final TGC_Engine mainGame) {
 		this.mainGame = mainGame;
-
+		//camera = new OrthographicCamera(5,5);
 		//createStage();
 		createEditorTable();
 
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
+		
+		gridImage = new Texture(Gdx.files.internal("Grid.png"));
+		grid = new Array<Rectangle>();
+		fillGrid();
 		//	backButton.setVisible(true);
 
+	}
+	private void fillGrid() {
+		for (int i=0; i<10; i++) {
+			for (int j=mainGame.DESKTOP_HEIGHT; j>150; j-=100) {
+				Rectangle gridPiece = new Rectangle(i*100,j, 100, 100);
+				grid.add(gridPiece);
+			}
+		}
 	}
 	private void createEditorTable() {
 		editorTable = new Table();
@@ -141,13 +160,16 @@ public class EditorScreen extends ScreenAdapter{
 //			spawnBall();
 //		}
 //
-	batch.begin();
-//		backButton.draw(batch, 1);
-				for (Rectangle ball : balls) {
-					batch.draw(ballImage, ball.x, ball.y);
+		batch.begin();
+		//		backButton.draw(batch, 1);
+		for (Rectangle ball : balls) {
+			batch.draw(ballImage, ball.x, ball.y);
+		}
+		for (Rectangle gridPiece : grid) {
+			batch.draw(gridImage, gridPiece.x, gridPiece.y);
 		}
 		batch.end();
-		
+
 	}
 	@Override
 	public void show() {
