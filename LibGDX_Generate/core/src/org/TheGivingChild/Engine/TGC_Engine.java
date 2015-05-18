@@ -133,12 +133,6 @@ public class TGC_Engine extends Game {
 		return width;
 	}
 	
-	public void playLevels(LevelPacket packet){
-		//this is where each level in the packet should be played in order.
-		for(Level l: packet){
-			System.out.println(l.getLevelName());
-		}
-	}
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
 	}

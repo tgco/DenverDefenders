@@ -90,9 +90,9 @@ public class ScreenLevelManager extends ScreenAdapter{
 		//verticalGroup.addActor(slider);
 		
 		//table.add(verticalGroup);
-		table.add(packetsRow);
+		table.add(packetsRow).height(100);
 		table.row();
-		table.add(slider);
+		table.add(slider).width(game.getWidth());
 		
 		
 		return table;
