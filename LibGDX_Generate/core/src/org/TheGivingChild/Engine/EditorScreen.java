@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -42,6 +44,7 @@ public class EditorScreen extends ScreenAdapter{
 	private Table editorTable;
 	private TGC_Engine mainGame;
 	private Texture ballImage;
+	private Texture objectImage;
 	private SpriteBatch batch;
 	private Array<Rectangle> balls;
 	private Array<String> objBox;
@@ -122,7 +125,8 @@ public class EditorScreen extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				System.out.println("Ball Button Pressed");
-				spawnBall();
+				selectImage(1);
+
 			}
 		});		
 		editorTable.add(ballButton);
@@ -156,9 +160,9 @@ public class EditorScreen extends ScreenAdapter{
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //
-//		if(Gdx.input.isTouched()) {
-//			spawnBall();
-//		}
+		if(Gdx.input.isTouched()) {
+			spawnObject();
+		}
 //
 		batch.begin();
 		//		backButton.draw(batch, 1);
@@ -186,14 +190,25 @@ public class EditorScreen extends ScreenAdapter{
 //		ballImage.dispose();
 //
 //	}
-	private void spawnBall() {
-		Rectangle ball = new Rectangle();
+	private void spawnObject() {
+		Rectangle object = new Rectangle();
 
-		ball.width = 64;
-		ball.height = 64;
-		ball.x = Gdx.input.getX() - ball.getWidth()/2;
-		ball.y = Gdx.graphics.getHeight()-Gdx.input.getY() - ball.getHeight()/2;
-		balls.add(ball);
+		object.width = 64;
+		object.height = 64;
+		object.x = Gdx.input.getX() - object.getWidth()/2;
+		object.y = Gdx.graphics.getHeight()-Gdx.input.getY() - object.getHeight()/2;
+		for (Rectangle gridPos : grid) {
+			if (gridPos.contains(object.x, object.y)) {
+				object.x = gridPos.x;
+				object.y = gridPos.y;
+				break;
+			}
+		}
+		balls.add(object);
 	}
-
+	private void selectImage(int image) {
+		if (image == 1) {
+			objectImage = ballImage;
+		}
+	}
 }
