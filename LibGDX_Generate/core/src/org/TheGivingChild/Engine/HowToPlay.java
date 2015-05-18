@@ -61,7 +61,7 @@ public class HowToPlay extends ScreenAdapter{
 		//set font for buttons
 		BitmapFont font = game.getBitmapFontButton();
 		//variable to help with table positioning
-		int widthDivider = buttonAtlasNamesArray.length/2;
+		int widthDivider = buttonAtlasNamesArray.length;
 		//iterates over button names, allows for more buttons to be added
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.BUTTON_STATES) {
 			TextButtonStyle tbs = new TextButtonStyle();
@@ -69,8 +69,8 @@ public class HowToPlay extends ScreenAdapter{
 			tbs.down = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
 			tbs.up = game.getButtonAtlasSkin().getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
-			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
+			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
 			buttonHeight = tb.getHeight();
 			final int j = i;
 			//listener to change screens on button press
