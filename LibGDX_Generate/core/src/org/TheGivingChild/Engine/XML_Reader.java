@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import java.util.ArrayList;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -58,8 +57,8 @@ public class XML_Reader {
 	}
 	
 	//helper method for compileGameObjects
-	private ArrayList<Point> stringToPath(String sPath){//Working
-		ArrayList<Point> newPath = new ArrayList<Point>();
+	private Array<Point> stringToPath(String sPath){//Working
+		Array<Point> newPath = new Array<Point>();
 		String points[] = sPath.split(";");
 		String temp[];
 		for(int i = 0; i < points.length; i++){
@@ -78,6 +77,6 @@ public class XML_Reader {
 	}
 	
 	public Level getLevel(){//compiles all the data into a level and returns it
-		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new ArrayList<GameObject>());
+		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
 	}
 }

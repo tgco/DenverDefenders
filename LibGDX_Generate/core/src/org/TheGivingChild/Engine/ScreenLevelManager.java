@@ -18,21 +18,20 @@ public class ScreenLevelManager extends ScreenAdapter{
 	//list of packets for each level set.
 	private Array<LevelPacket> packets;
 	private Table packetTable;
-	
+	private Array<Level> levels;
 	//constructor. Initialize the variables.
 	public ScreenLevelManager(TGC_Engine game) {
 		this.game = game;
-		//packets = new Array<LevelPacket>();
-		//createPackets();
-		//packetTable = createLevelPacketButtons();
-		
+		packets = new Array<LevelPacket>();
+		levels = new Array<Level>(game.getLevels());
+		createPackets();
+		packetTable = createLevelPacketButtons();
 		
 	}
-	/*
 	//fill packets with newly created packets for levels with matching level types.
 	
 	public void createPackets(){
-		for(Level l: game.getLevels()){
+		for(Level l: levels){
 			//packet name to add to
 			String packetName = l.getPacketName();
 			boolean packetFound = false;
@@ -69,34 +68,47 @@ public class ScreenLevelManager extends ScreenAdapter{
 		//create a table to add buttons to.
 		Table table = new Table();
 		//create a font for the buttons
-		BitmapFont font = new BitmapFont();
+        BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.font = font;
+		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("Buttons/ButtonChecked_LevelPackIcon");
+		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Buttons/Button_LevelPackIcon");
+		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Buttons/ButtonChecked_LevelPackIcon");
+		//indexer for finding which packet to play when button is clicked.
+		int i = 0;
 		for(LevelPacket p: packets){
 			String packetName = p.getPacketName();
 			TextButton textButton = new TextButton(packetName, textButtonStyle);
-			//Transition to the ScreenPacketLevels Screen.
+			textButton.setSize(textButton.getWidth()/packets.size,textButton.getHeight()/packets.size);
+			//final variable to access within change listener
+			final int j = i;
+			//Transition to the ScreenPacketLevels Screen
 			textButton.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					game.setScreen(new ScreenAdapter());
-					hidePacketTable();
+					hide();
+					game.playLevels(packets.get(j));
 				}
         	});
+			i++;
 			table.add(textButton);
+			if(i%2 == 0 && i != 0) table.row();
 		}
 		//position the table in the middle of the screen.
-		table.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+		table.setPosition(game.getWidth()/2,game.getHeight());
 		return table;
 	}
 	
-	public void hidePacketTable(){
-		game.removeTable(packetTable);
-	}
-	
-	public void showPacketTable(){
+	@Override
+	public void show() {
 		game.addTable(packetTable);
-	}
-	*/
+	};
+	
+	@Override
+	public void hide() {
+		game.removeTable(packetTable);
+	};
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1,0,1,1);

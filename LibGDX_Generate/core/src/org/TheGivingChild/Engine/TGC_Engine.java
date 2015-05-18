@@ -19,24 +19,47 @@ public class TGC_Engine extends Game {
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private Stage stage;
-	
+	//button atlas reference names
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", /* "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",*/ "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-
-	private ScreenAdapter[] screens = {new ScreenLevelManager(this), new ScreenLevelManager(this), new ScreenLevelManager(this)};
-    private float buttonHeight;
+	//skin from atlas
+	private Skin skin = new Skin();
+	//bitmap font for buttons
+	private BitmapFont bitmapFontButton;
+	
+	public ScreenAdapter[] screens;
+	private float buttonHeight;
     //create tables for the UI
     private Table rootTable;
     private Table mainScreenTable;
     private Array<Level> levels = new Array<Level>();
     
+    private float width;
+    private float height;
+    
 	@Override
 	public void create () {
+		//levels for testing packet manager.
+		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level3", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level4", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level5", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level6", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		
+		
 		createStage();
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
-		ScreenAdapter htp = new HowToPlay(this);
-		screens[1] = htp;
-		ScreenAdapter options = new OptionsScreen(this);
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		screens = new ScreenAdapter[3];
+		ScreenAdapter levelManager = new ScreenLevelManager(this);
+		screens[0] = levelManager;
+		ScreenAdapter howToPlay = new HowToPlay(this);
+		screens[1] = howToPlay;
+		ScreenAdapter options = new EditorScreen(this);
 		screens[2]= options;
 	}
 
@@ -56,8 +79,7 @@ public class TGC_Engine extends Game {
 	
 	public Table createMainScreenTable(){
 		//button stuff
-        BitmapFont font = new BitmapFont();
-        Skin skin = new Skin();
+        bitmapFontButton = new BitmapFont();
         //make an atlas using the button texture pack
         TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
         //define the regions
@@ -69,9 +91,9 @@ public class TGC_Engine extends Game {
         //iterate over button pack names in order to check
         for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
         	TextButtonStyle bs = new TextButtonStyle();
-        	bs.font = font;
-        	bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
-        	bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
+        	bs.font = bitmapFontButton;
+        	bs.down = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i]);
+        	bs.up = skin.getDrawable("Buttons/"+buttonAtlasNamesArray[i+1]);
         	TextButton b = new TextButton("", bs);
         	b.setSize(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
         	table.add(b).size(Gdx.graphics.getWidth()/widthDividider, Gdx.graphics.getHeight()/3);
@@ -110,22 +132,9 @@ public class TGC_Engine extends Game {
 	
 	public void playLevels(LevelPacket packet){
 		//this is where each level in the packet should be played in order.
-		//currently just creates labels to show what levels are in the packet.
-		Table displayLevelsTable = new Table();
 		for(Level l: packet){
-			Label levelName = new Label(l.getLevelName(), new Skin());
-			displayLevelsTable.add(levelName);
-			displayLevelsTable.row();
+			System.out.println(l.getLevelName());
 		}
-		TextButton backButton = new TextButton("back", new Skin());
-		backButton.addListener(new ChangeListener(){
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				setScreen(new ScreenAdapter());
-				showMainScreenTable();
-			}
-    	});
-		
 	}
 	
 	public void addTable(Table t){
@@ -133,6 +142,21 @@ public class TGC_Engine extends Game {
 	}
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
+	}
+	
+	public Skin getButtonAtlasSkin(){
+		return skin;
+	}
+	
+	public BitmapFont getBitmapFontButton(){
+		return bitmapFontButton;
+	}
+	
+	public float getWidth(){
+		return width;
+	}
+	public float getHeight(){
+		return height;
 	}
 	
 }
