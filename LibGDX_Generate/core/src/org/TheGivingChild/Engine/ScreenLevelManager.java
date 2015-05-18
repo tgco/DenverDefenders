@@ -5,8 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
@@ -76,24 +78,55 @@ public class ScreenLevelManager extends ScreenAdapter{
 		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("Buttons/ButtonChecked_LevelPackIcon");
 		//indexer for finding which packet to play when button is clicked.
 		int i = 0;
+		//width and height placeholders
+		float textButtonWidth = 0;
+		float textButtonHeight = 0;
+		//get the number of rows to make, when the number of packets in each column = 3;
+		int rows = packets.size/3 + 2;
+		//create an empty array of groups for the rows
+		Array<HorizontalGroup> buttonsRows = new Array<HorizontalGroup>();
+		//create the needed groups for the arrays base on the number of rows
+		for(int k = 0; k < rows; k++){
+			buttonsRows.add(new HorizontalGroup());
+		}
+		//set the size to be a ratio of number of packets to be displayed each page.
+		float sizeRatio = (packets.size/rows);
+		//iterate over each packet
 		for(LevelPacket p: packets){
+			//get the name, create a button, fetch the correct sizes.
 			String packetName = p.getPacketName();
 			TextButton textButton = new TextButton(packetName, textButtonStyle);
-			textButton.setSize(textButton.getWidth()/packets.size,textButton.getHeight()/packets.size);
+			textButtonWidth = textButton.getWidth()/sizeRatio;
+			textButtonHeight = textButton.getHeight()/sizeRatio;
+			//set the button size
+			textButton.setSize(textButtonWidth, textButtonHeight);
 			//final variable to access within change listener
 			final int j = i;
 			//Transition to the ScreenPacketLevels Screen
 			textButton.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					//hide the current screen
 					hide();
+					//call play levels on the packet called.
 					game.playLevels(packets.get(j));
 				}
         	});
+			//increment the packets index
 			i++;
-			table.add(textButton);
-			if(i%2 == 0 && i != 0) table.row();
+			//add the button to the row
+			buttonsRows.get(i%rows).addActor(textButton);
+			//create a new row if 3 packets are on the current row.
+			if(i%rows == 0 && i != 0) table.row();
 		}
+		//add each row to a vertical container
+		VerticalGroup rowContainer = new VerticalGroup();
+		for(HorizontalGroup h: buttonsRows){
+			rowContainer.addActor(h);
+		}
+		table.add(rowContainer);
+		//set the size of the table
+		table.setSize(textButtonWidth*3, textButtonHeight*rows);
 		//position the table in the middle of the screen.
 		table.setPosition(game.getWidth()/2,game.getHeight());
 		return table;
