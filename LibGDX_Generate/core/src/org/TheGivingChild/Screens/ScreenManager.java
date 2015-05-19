@@ -30,7 +30,7 @@ public final class ScreenManager {
     public void show(ScreenEnums screenEnum) {
         if (null == game) return;
         if (!screens.containsKey(screenEnum.ordinal())) {
-            screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
+            //screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
         }
         game.setScreen(screens.get(screenEnum.ordinal()));
     }
@@ -46,4 +46,5 @@ public final class ScreenManager {
         }
         screens.clear();
         instance = null;
-    } 
+    }
+}
