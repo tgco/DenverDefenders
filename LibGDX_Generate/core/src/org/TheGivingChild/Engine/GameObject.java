@@ -32,7 +32,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		return "ID: " + ID + ", Image filename: " + imageFilename;
 	}
 	
-	public void update(){
+	public void update(){//working
 		for(Method currentMethod:this.getClass().getMethods()){
 			if(validAttributes.containsKey(currentMethod.getName().replaceAll("attribute_",""))){
 				try{
@@ -46,7 +46,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		}
 	}
 	
-	public void addValidAttribute(String newAttribute,String value){
+	public void addValidAttribute(String newAttribute,String value){//working
 		if(validAttributes.get(newAttribute) == null){
 			validAttributes.put(newAttribute,1);
 			attributeValues.put(newAttribute,new Array<String>());
