@@ -224,7 +224,7 @@ public class EditorScreen extends ScreenAdapter{
 //	}
 	private void spawnObject() {
 		Rectangle object = new Rectangle();
-		
+		boolean inGrid = false;
 		object.width = objectSize ;
 		object.height = objectSize;
 		object.x = Gdx.input.getX(); //- object.getWidth()/2;
@@ -236,13 +236,16 @@ public class EditorScreen extends ScreenAdapter{
 				System.out.println("Mouse Pos:" + object.toString());
 				object.x = gridPos.x;
 				object.y = gridPos.y;
+				inGrid = true;
 				break;
 			}
 		}
-		if (ballOrBox) 
-			balls.add(object);
-		else
-			boxes.add(object);
+		if (inGrid) {
+			if (ballOrBox) 
+				balls.add(object);
+			else
+				boxes.add(object);
+		}
 	}
 	private void selectImage() {
 		if (ballOrBox) {
