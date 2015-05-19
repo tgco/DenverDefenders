@@ -88,9 +88,11 @@ public class XML_Writer {
 	}
 	
 	private String compileGameObjectsToString(Array<GameObject> gameObjects){
+		StringWriter stringWriter = new StringWriter();
+		XmlWriter writer = new XmlWriter(stringWriter);
 		String XML_String="";
 		for(GameObject currentGameObject:gameObjects){
-			XML_String+="\n" + currentGameObject;
+			
 		}
 		return XML_String;
 	}
