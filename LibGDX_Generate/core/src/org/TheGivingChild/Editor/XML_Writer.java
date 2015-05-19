@@ -52,6 +52,7 @@ public class XML_Writer {
 		testObjectArray.add(testObj3);
 		
 		XML_Writer sally = new XML_Writer();
+		sally.setupNewFile("testOut.xml", "", "testLevel");
 		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
 	}
 	
@@ -68,30 +69,37 @@ public class XML_Writer {
 		String Level_String="";
 		
 		try{//compile xml string
-			writer.element("level");
+			/*writer.element("level");
 			writer.attribute("packageName",packageName);
-			writer.attribute("levelName", levelName);
+			writer.attribute("levelName", levelName);*/
+			stringWriter.write("<level packageName=\"" + packageName + "\" levelName=\"" + levelName + "\">");
 			stringWriter.write(compileGameObjectsToString(gameObjects));
 			stringWriter.write(compileLevelToString(level));
 			
-			writer.pop();
+			stringWriter.write("\n<\\level>");
 			
+			
+			XML_String = stringWriter.toString();
 			//write to file
 			FileWriter fileWriter = new FileWriter(filename);
 			fileWriter.write(XML_String);
+			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
 	
 	private String compileGameObjectsToString(Array<GameObject> gameObjects){
+		StringWriter stringWriter = new StringWriter();
+		XmlWriter writer = new XmlWriter(stringWriter);
 		String XML_String="";
 		for(GameObject currentGameObject:gameObjects){
-			XML_String+=currentGameObject;
+			
 		}
-		return "";
+		return XML_String;
 	}
 	
 	private String compileLevelToString(Level level){
-		return "";
+		String levelString = "";
+		return levelString;
 	}
 	
 	public void XML_test(){
