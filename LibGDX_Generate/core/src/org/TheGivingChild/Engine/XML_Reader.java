@@ -34,7 +34,7 @@ public class XML_Reader {
 	private String xml_file;
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
-	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
+	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file

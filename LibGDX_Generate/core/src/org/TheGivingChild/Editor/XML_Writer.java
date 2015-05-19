@@ -31,9 +31,10 @@ public class XML_Writer {
 	 *		</ELEMENT_JUAN>
 	 *	6: then just write the string to the file with a FileWriter
 	 */
-	private String XML_String = "";
+	//private String XML_String = "";
 	private String filename = "";
 	private String packageName = "";
+	private String levelName = "";
 	
 	//main method for testing
 	public static void main(String cheese[]){
@@ -54,19 +55,25 @@ public class XML_Writer {
 		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
 	}
 	
-	public void setupNewFile(String newfilename,String packagename){
+	public void setupNewFile(String newfilename,String packagename,String newLevelName){
 		filename = newfilename;
 		packageName = packagename;
+		levelName = newLevelName;
 	}
 	
 	public void writeToFile(Array<GameObject> gameObjects, Level level){//sets up .xml file, calls the 2 compile methods, and adds their outputs together
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
+		String XML_String="";
+		String Level_String="";
+		
 		try{//compile xml string
-			writer.element("root");
-			for(GameObject currentGameObject:gameObjects){
-				System.out.println(currentGameObject);
-			}
+			writer.element("level");
+			writer.attribute("packageName",packageName);
+			writer.attribute("levelName", levelName);
+			stringWriter.write(compileGameObjectsToString(gameObjects));
+			stringWriter.write(compileLevelToString(level));
+			
 			writer.pop();
 			
 			//write to file
@@ -76,6 +83,10 @@ public class XML_Writer {
 	}
 	
 	private String compileGameObjectsToString(Array<GameObject> gameObjects){
+		String XML_String="";
+		for(GameObject currentGameObject:gameObjects){
+			XML_String+=currentGameObject;
+		}
 		return "";
 	}
 	
