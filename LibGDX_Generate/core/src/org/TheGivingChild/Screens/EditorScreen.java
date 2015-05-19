@@ -1,5 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import java.awt.GridBagLayoutInfo;
+
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Game;
@@ -62,7 +64,8 @@ public class EditorScreen extends ScreenAdapter{
 	
 	public EditorScreen(final TGC_Engine mainGame) {
 		this.mainGame = mainGame;
-		//camera = new OrthographicCamera(5,5);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
 		//createStage();
 		createEditorTable();
 
@@ -72,6 +75,7 @@ public class EditorScreen extends ScreenAdapter{
 		boxes = new Array<Rectangle>();
 		boxImage = new Texture(Gdx.files.internal("Box.png"));
 		gridImage = new Texture(Gdx.files.internal("Grid.png"));
+
 		grid = new Array<Rectangle>();
 		fillGrid();
 		//	backButton.setVisible(true);
@@ -156,8 +160,8 @@ public class EditorScreen extends ScreenAdapter{
 	}
 
 	private void fillGrid() {
-		for (int i=0; i<10; i++) {
-			for (int j=(int) mainGame.getHeight(); j>150; j-=100) {
+		for (int i=0; i*100<Gdx.graphics.getWidth(); i++) {
+			for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=100) {
 				Rectangle gridPiece = new Rectangle(i*100,j, 100, 100);
 				grid.add(gridPiece);
 			}
@@ -174,12 +178,15 @@ public class EditorScreen extends ScreenAdapter{
 //		//		stage.draw();
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
+		
+		camera.update();
+		
 		if(Gdx.input.isTouched()) {
 			spawnObject();
 		}
 //
 		batch.begin();
+		
 		//		backButton.draw(batch, 1);
 		for (Rectangle ball : balls) {
 			batch.draw(ballImage, ball.x, ball.y);
@@ -189,6 +196,8 @@ public class EditorScreen extends ScreenAdapter{
 		}
 		for (Rectangle gridPiece : grid) {
 			batch.draw(gridImage, gridPiece.x, gridPiece.y);
+			//System.out.println("Height: " + gridImage.getHeight());
+			//System.out.println(gridPiece.height + " " + gridPiece.getAspectRatio() + " " + gridPiece.getX());
 		}
 		batch.end();
 
@@ -207,12 +216,15 @@ public class EditorScreen extends ScreenAdapter{
 	private void spawnObject() {
 		Rectangle object = new Rectangle();
 
-		object.width = 64;
+		object.width = 64 ;
 		object.height = 64;
 		object.x = Gdx.input.getX() - object.getWidth()/2;
 		object.y = Gdx.graphics.getHeight()-Gdx.input.getY() - object.getHeight()/2;
 		for (Rectangle gridPos : grid) {
+			System.out.println(gridPos.toString());
 			if (gridPos.contains(object.x, object.y)) {
+				System.out.println("Tripped Square: " + gridPos.toString());
+				System.out.println("Mouse Pos:" + object.toString());
 				object.x = gridPos.x;
 				object.y = gridPos.y;
 				break;
@@ -233,4 +245,13 @@ public class EditorScreen extends ScreenAdapter{
 			ballOrBox = !ballOrBox;
 		}
 	}
+//	private void imageResize() {
+//		float x = Gdx.graphics.getWidth();
+//		float y = Gdx.graphics.getHeight();
+//		
+//		float changeX = x / mainGame.getWidth();
+//		float changeY = y / mainGame.getHeight();
+//		
+//		ballImage.x
+//	}
 }
