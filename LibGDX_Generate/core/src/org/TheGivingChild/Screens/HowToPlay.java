@@ -27,7 +27,7 @@ public class HowToPlay extends ScreenAdapter{
 	
 	public HowToPlay(TGC_Engine game) {
 		this.game = game;
-		title = new Texture(Gdx.files.internal("howToPlay.png"));
+		title = new Texture(Gdx.files.internal("HowToPlay.png"));
 		message = new Texture(Gdx.files.internal("HowToPlayMessage.png"));
 		batch = new SpriteBatch();
 		table = createButtons();
