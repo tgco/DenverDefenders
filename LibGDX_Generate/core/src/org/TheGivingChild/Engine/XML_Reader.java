@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.GridPoint2;
 public class XML_Reader {
 	
 	//the main method is for testing only
+	/*
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
 		String filename = "testMinigame.xml";
@@ -27,9 +28,10 @@ public class XML_Reader {
 		}
 		
 	}
+	*/
+	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
-	
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
 	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
@@ -37,8 +39,7 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
-				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
+				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
 					for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++)//go to each value in each attribute
 						temp.addValidAttribute(currentAttribute, currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 				}else temp.addValidAttribute(currentAttribute, null);
@@ -47,8 +48,7 @@ public class XML_Reader {
 		}
 		return listOfObjects;
 	}
-	//helper method for compileGameObjects, not sure if even needed anymore
-
+	
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
 		xml_file ="";
 		try{
