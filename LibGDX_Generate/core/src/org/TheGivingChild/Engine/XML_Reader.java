@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.GridPoint2;
 public class XML_Reader {
 	
 	//the main method is for testing only
-	
+	/*
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
 		String filename = "testOut.xml";
@@ -25,8 +25,7 @@ public class XML_Reader {
 		for(GameObject bob: testObjects){
 			bob.update();
 		}
-		
-	}
+	}*/
 	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
