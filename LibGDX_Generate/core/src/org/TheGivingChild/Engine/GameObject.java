@@ -23,7 +23,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
 	
-	
 	public GameObject(int newID, String img,GridPoint2 initLoc){
 		ID = newID;
 		imageFilename = img;
@@ -59,11 +58,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
 	}
 	
-	public ObjectMap<String, Integer> getValidAttributes() {
-		return validAttributes;
+	public Array<String> getAttributes() {
+		return attributeValues.keys().toArray();
 	}
-
-	public ObjectMap<String, Array<String>> getAttributeValues() {
+	
+	public ObjectMap<String,Array<String>> getAttributeValues(){
 		return attributeValues;
 	}
 
@@ -81,23 +80,23 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	
 	//ATTRIBUTES
 
-	private void attribute_health(){
+	public void attribute_health(){
 		System.out.println("health called");
-		System.out.println(attributeValues.get("health"));
+		System.out.println(attributeValues.get("health") + "\n");
 	}
 	
-	private void attribute_color(){
+	public void attribute_color(){
 		System.out.println("color called");
-		System.out.println(attributeValues.get("color"));
+		System.out.println(attributeValues.get("color") + "\n");
 	}
 	
-	private void attribute_disappearsOnPress(){
+	public void attribute_disappearsOnPress(){
 		System.out.println("disappearsOnPress called");
-		System.out.println(attributeValues.get("disappearsOnPress"));
+		System.out.println(attributeValues.get("disappearsOnPress") + "\n");
 	}
 	
-	private void attribute_movesOnSetPath(){
+	public void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
-		System.out.println(attributeValues.get("movesOnSetPath"));
+		System.out.println(attributeValues.get("movesOnSetPath") + "\n");
 	}	
 }
