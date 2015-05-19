@@ -52,21 +52,8 @@ public class XML_Reader {
 		return listOfObjects;
 	}
 	
-<<<<<<< HEAD
 	//helper method for compileGameObjects, not sure if even needed anymore
-	private Array<GridPoint2> stringToPath(String sPath){//Working
-		Array<GridPoint2> newPath = new Array<GridPoint2>();
-=======
-	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions
-		LevelGoal levelGoal = new LevelGoal();
-		//that code tho
-		return levelGoal;
-	}
-	
-	public Level getLevel(){//compiles all the data into a level and returns it
-		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
-	}
-	
+
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
 		xml_file ="";
 		try{
@@ -81,16 +68,15 @@ public class XML_Reader {
 	}
 	
 	//helper method for compileGameObjects
-	private Array<Point> stringToPath(String sPath){//Working
-		Array<Point> newPath = new Array<Point>();
->>>>>>> 68f2e8b87ca9fbb8639ac314ac4bcbd7db2fb45f
+	private Array<GridPoint2> stringToPath(String sPath){//Working
+		Array<GridPoint2> newPath = new Array<GridPoint2>();
 		String points[] = sPath.split(";");
 		for(int i = 0; i < points.length; i++){
 			newPath.add(stringToPoint(points[i]));
 		}
 		return newPath;
 	}
-<<<<<<< HEAD
+	
 	private GridPoint2 stringToPoint(String toPoint){
 		String temp[] = toPoint.split(",");
 		return new GridPoint2(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
@@ -105,6 +91,4 @@ public class XML_Reader {
 	public Level getLevel(){//compiles all the data into a level and returns it
 		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
 	}
-=======
->>>>>>> 68f2e8b87ca9fbb8639ac314ac4bcbd7db2fb45f
 }
