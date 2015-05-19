@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import java.awt.Point;
 import java.lang.reflect.Method;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -70,13 +69,18 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		System.out.println(attributeValues.get("color"));
 	}
 	
+	//ATTRIBUTES	
 	public void attribute_disappearsOnPress(){
 		System.out.println("disappearsOnPress called");
 		System.out.println(attributeValues.get("disappearsOnPress"));
 	}
 	
+	public void attribute_health(){
+		System.out.println("health called");
+		System.out.println(attributeValues.get("health"));
+	}
 	public void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath"));
-	}
+	}	
 }

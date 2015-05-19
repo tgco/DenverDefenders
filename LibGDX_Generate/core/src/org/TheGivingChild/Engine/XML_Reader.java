@@ -15,10 +15,6 @@ import com.badlogic.gdx.math.GridPoint2;
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
 public class XML_Reader {
 	
-	private XmlReader reader = new XmlReader();
-	private String xml_file;
-	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
-	
 	//the main method is for testing only
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
@@ -31,19 +27,10 @@ public class XML_Reader {
 		}
 		
 	}
+	private XmlReader reader = new XmlReader();
+	private String xml_file;
 	
-	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
-		xml_file ="";
-		try{
-			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
-			while(fileReader.ready()){
-				xml_file+=fileReader.readLine();//might need to clean up the xml here
-			}
-		}catch(Exception e){
-			System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);
-		}
-		root = reader.parse(xml_file);
-	}
+	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
 	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
@@ -65,15 +52,45 @@ public class XML_Reader {
 		return listOfObjects;
 	}
 	
+<<<<<<< HEAD
 	//helper method for compileGameObjects, not sure if even needed anymore
 	private Array<GridPoint2> stringToPath(String sPath){//Working
 		Array<GridPoint2> newPath = new Array<GridPoint2>();
+=======
+	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions
+		LevelGoal levelGoal = new LevelGoal();
+		//that code tho
+		return levelGoal;
+	}
+	
+	public Level getLevel(){//compiles all the data into a level and returns it
+		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
+	}
+	
+	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
+		xml_file ="";
+		try{
+			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
+			while(fileReader.ready()){
+				xml_file+=fileReader.readLine();//might need to clean up the xml here
+			}
+		}catch(Exception e){
+			System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);
+		}
+		root = reader.parse(xml_file);
+	}
+	
+	//helper method for compileGameObjects
+	private Array<Point> stringToPath(String sPath){//Working
+		Array<Point> newPath = new Array<Point>();
+>>>>>>> 68f2e8b87ca9fbb8639ac314ac4bcbd7db2fb45f
 		String points[] = sPath.split(";");
 		for(int i = 0; i < points.length; i++){
 			newPath.add(stringToPoint(points[i]));
 		}
 		return newPath;
 	}
+<<<<<<< HEAD
 	private GridPoint2 stringToPoint(String toPoint){
 		String temp[] = toPoint.split(",");
 		return new GridPoint2(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
@@ -88,4 +105,6 @@ public class XML_Reader {
 	public Level getLevel(){//compiles all the data into a level and returns it
 		return new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>());
 	}
+=======
+>>>>>>> 68f2e8b87ca9fbb8639ac314ac4bcbd7db2fb45f
 }
