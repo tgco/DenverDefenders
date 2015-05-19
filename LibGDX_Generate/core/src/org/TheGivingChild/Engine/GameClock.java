@@ -7,10 +7,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 //GameClock measured in nanoseconds
 public final class  GameClock {
 
-	private static long gameStartTime;			
-	private long totalGameTime;
-	private long levelLength;			
-	private long currentLevelTimeRemaining;	
+	private static long gameStartTime;		//Start time of game	
+	private long totalGameTime = 0;				
+	private long levelLength;				//Time remaining in level
 	private boolean outOfTime = false;
 	
 	private static GameClock clock;
@@ -20,6 +19,7 @@ public final class  GameClock {
 		if (null == clock){
 			clock = new GameClock();
 			gameStartTime = TimeUtils.nanoTime();
+			
 		}
 		
 		return clock;
