@@ -3,7 +3,7 @@ package org.TheGivingChild.Engine;
 import org.TheGivingChild.Screens.EditorScreen;
 import org.TheGivingChild.Screens.HowToPlay;
 import org.TheGivingChild.Screens.MainScreen;
-import org.TheGivingChild.Screens.ScreenLevelManager;
+import org.TheGivingChild.Screens.ScreenLevelPackets;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -78,7 +78,7 @@ public class TGC_Engine extends Game {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		screens = new ScreenAdapter[4];
-		ScreenAdapter levelManager = new ScreenLevelManager(this);
+		ScreenAdapter levelManager = new ScreenLevelPackets(this);
 		screens[0] = levelManager;
 		ScreenAdapter howToPlay = new HowToPlay(this);
 		screens[1] = howToPlay;
