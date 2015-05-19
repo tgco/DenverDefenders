@@ -59,11 +59,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
 	}
 	
-	public ObjectMap<String, Integer> getValidAttributes() {
-		return validAttributes;
+	public Array<String> getValidAttributes() {
+		return attributeValues.keys().toArray();
 	}
-
-	public ObjectMap<String, Array<String>> getAttributeValues() {
+	
+	public ObjectMap<String,Array<String>> getAttributeValues(){
 		return attributeValues;
 	}
 
