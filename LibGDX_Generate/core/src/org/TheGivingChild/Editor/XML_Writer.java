@@ -31,7 +31,6 @@ public class XML_Writer {
 	 *		</ELEMENT_JUAN>
 	 *	6: then just write the string to the file with a FileWriter
 	 */
-	//private String XML_String = "";
 	private String filename = "";
 	private String packageName = "";
 	private String levelName = "";
@@ -40,7 +39,7 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",new GridPoint2(1,1));
 		testObj1.addValidAttribute("health", "100");
-		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
+		//GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
 		testObj3.addValidAttribute("health", "9001");
 		testObj3.addValidAttribute("health", "9002");
@@ -50,7 +49,7 @@ public class XML_Writer {
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
-		testObjectArray.add(testObj2);
+		//testObjectArray.add(testObj2);
 		testObjectArray.add(testObj3);
 		
 		XML_Writer sally = new XML_Writer();
@@ -74,9 +73,6 @@ public class XML_Writer {
 			writer.element("level");
 			writer.attribute("packageName",packageName);
 			writer.attribute("levelName", levelName);
-			//stringWriter.write("<level packageName=\"" + packageName + "\" levelName=\"" + levelName + "\">\n");
-			//stringWriter.write(compileGameObjectsToString(gameObjects));
-			//stringWriter.write(compileLevelToString(level));
 			for(GameObject currentGameObject:gameObjects){
 				writer.element("GameObject");
 				writer.attribute("ID",currentGameObject.getID());
