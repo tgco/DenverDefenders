@@ -44,7 +44,9 @@ public class XML_Writer {
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
 		testObj3.addValidAttribute("health", "9001");
 		testObj3.addValidAttribute("health", "9002");
+		testObj3.addValidAttribute("health", "o0o0o0o0o");
 		testObj3.addValidAttribute("color","fuchesa");
+		testObj3.addValidAttribute("color","asehcuf");
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
@@ -69,14 +71,30 @@ public class XML_Writer {
 		String Level_String="";
 		
 		try{//compile xml string
-			/*writer.element("level");
+			writer.element("level");
 			writer.attribute("packageName",packageName);
-			writer.attribute("levelName", levelName);*/
-			stringWriter.write("<level packageName=\"" + packageName + "\" levelName=\"" + levelName + "\">");
-			stringWriter.write(compileGameObjectsToString(gameObjects));
-			stringWriter.write(compileLevelToString(level));
-			
-			stringWriter.write("\n<\\level>");
+			writer.attribute("levelName", levelName);
+			//stringWriter.write("<level packageName=\"" + packageName + "\" levelName=\"" + levelName + "\">\n");
+			//stringWriter.write(compileGameObjectsToString(gameObjects));
+			//stringWriter.write(compileLevelToString(level));
+			for(GameObject currentGameObject:gameObjects){
+				writer.element("GameObject");
+				writer.attribute("ID",currentGameObject.getID());
+				writer.attribute("attributes",compileAttributeList(currentGameObject));
+				writer.attribute("imageFilename", currentGameObject.getImageFilename());
+				writer.attribute("initialLocation", currentGameObject.getLocation().x + "," + currentGameObject.getLocation().y);
+				for(String currentAttribute:currentGameObject.getValidAttributes()){//for each attribute, make an element of it and get its values
+					writer.element(currentAttribute);
+					int count = 1;
+					for(String currentValue:currentGameObject.getAttributeValues().get(currentAttribute)){
+						writer.attribute("value" + count, currentValue);
+						count++;
+					}
+					writer.pop();
+				}
+				writer.pop();
+			}
+			writer.pop();
 			
 			
 			XML_String = stringWriter.toString();
@@ -86,15 +104,35 @@ public class XML_Writer {
 			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
-	
-	private String compileGameObjectsToString(Array<GameObject> gameObjects){
+	/*private String compileGameObjectsToString(Array<GameObject> gameObjects){
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
-		String XML_String="";
-		for(GameObject currentGameObject:gameObjects){
-			
+		//String XML_String="";
+		try{
+			for(GameObject currentGameObject:gameObjects){
+				writer.element("GameObject");
+				writer.attribute("ID",currentGameObject.getID());
+				writer.attribute("attributes",compileAttributeList(currentGameObject));
+					
+					
+					writer.pop();
+				writer.pop();
+			}
+			writer.close();
+		}catch(Exception e){System.out.println("error: " + e);}
+		return stringWriter.toString();
+	}*/
+	
+	private String compileAttributeList(GameObject obj){		
+		String temp = "";
+		for(String currentKey: obj.getAttributeValues().keys().toArray()){
+			temp+=currentKey + ",";
 		}
-		return XML_String;
+		//remove last character
+		String temp2="";
+		if(temp.length()>1)
+			temp2 = temp.substring(0,temp.length()-1);
+		return temp2;
 	}
 	
 	private String compileLevelToString(Level level){

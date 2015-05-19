@@ -16,10 +16,10 @@ import com.badlogic.gdx.math.GridPoint2;
 public class XML_Reader {
 	
 	//the main method is for testing only
-	/*
+	
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
-		String filename = "testMinigame.xml";
+		String filename = "testOut.xml";//"testMinigame.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
 		System.out.println("\nUPDATING");
@@ -28,7 +28,7 @@ public class XML_Reader {
 		}
 		
 	}
-	*/
+	
 	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
