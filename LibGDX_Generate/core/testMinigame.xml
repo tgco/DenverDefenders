@@ -1,14 +1,18 @@
-<!--All attributes start with lower case, all -->
+<!--RULES: 
+1: All attributes start with lower case
+2: All attribute values must be of form: "value1, value2,value3....etc, this is so they are added in order
+3: A value is not required for an attribute
+-->
 
 <isthisthingon packageName="" levelName="">
-	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath" imageFilename="test.png">
-		<health value="100" value2 = "420"/>
+	<GameObject ID="1" attributes="health,disappearsOnPress,movesOnSetPath" imageFilename="test.png" initialLocation="10,10">
+		<health value1="asd" value2 = "dfg" value3="ghj"/>
 		<disappearsOnPress />
-		<movesOnSetPath value="fgh"/>
+		<movesOnSetPath value1="fgh"/>
 	</GameObject>
 	
-	<GameObject ID="2" attributes="color">
-		<color value="red"/>
+	<GameObject ID="2" attributes="color" imageFilename="test.png" initialLocation="10,10">
+		<color value1="red"/>
 	</GameObject>
 	
 	<LevelGoal> <!-- possible: Object of ID collides with another object of ID, timer expires, objects of ID exist/don't exist-->

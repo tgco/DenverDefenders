@@ -2,31 +2,23 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class HowToPlay extends ScreenAdapter{
 	private TGC_Engine game;
 	private Texture title;
 	private Texture message;
-	private OrthographicCamera camera;
 	private Batch batch;
 	private Table table;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor"};
@@ -35,8 +27,7 @@ public class HowToPlay extends ScreenAdapter{
 	
 	public HowToPlay(TGC_Engine game) {
 		this.game = game;
-		camera = new OrthographicCamera();
-		title = new Texture(Gdx.files.internal("howToPlay.png"));
+		title = new Texture(Gdx.files.internal("HowToPlay.png"));
 		message = new Texture(Gdx.files.internal("HowToPlayMessage.png"));
 		batch = new SpriteBatch();
 		table = createButtons();
@@ -90,8 +81,8 @@ public class HowToPlay extends ScreenAdapter{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//shows HTP title and text
 		batch.begin();
-		batch.draw(title, 230, 350);
-		batch.draw(message, 250, 150);
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+		batch.draw(message, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
 		batch.end();
 		
 	}
