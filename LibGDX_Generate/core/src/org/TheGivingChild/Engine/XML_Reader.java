@@ -39,13 +39,9 @@ public class XML_Reader {
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
 				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
-					for(String currentValue:currentObject.getChildByName(currentAttribute).getAttributes().values()){
-						temp.addValidAttribute(currentAttribute, currentValue);
-						System.out.println(currentAttribute + ", " + currentValue);
-					}
-				}else{
-					temp.addValidAttribute(currentAttribute, null);
-				}
+					for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++)//go to each value in each attribute
+						temp.addValidAttribute(currentAttribute, currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+				}else temp.addValidAttribute(currentAttribute, null);
 			}
 			listOfObjects.add(temp);
 		}
@@ -58,9 +54,7 @@ public class XML_Reader {
 		xml_file ="";
 		try{
 			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
-			while(fileReader.ready()){
-				xml_file+=fileReader.readLine();//might need to clean up the xml here
-			}
+			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
 		}catch(Exception e){
 			System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);
 		}
