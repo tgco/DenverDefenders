@@ -60,22 +60,22 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	}
 	//ATTRIBUTES, pray to Gaben we can find a way to refactor this.
 	
-	public void attribute_health(){
+	private void attribute_health(){
 		System.out.println("health called");
 		System.out.println(attributeValues.get("health"));
 	}
 	
-	public void attribute_color(){
+	private void attribute_color(){
 		System.out.println("color called");
 		System.out.println(attributeValues.get("color"));
 	}
 	
-	public void attribute_disappearsOnPress(){
+	private void attribute_disappearsOnPress(){
 		System.out.println("disappearsOnPress called");
 		System.out.println(attributeValues.get("disappearsOnPress"));
 	}
 	
-	public void attribute_movesOnSetPath(){
+	private void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath"));
 	}	
