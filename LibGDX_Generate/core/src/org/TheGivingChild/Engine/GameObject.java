@@ -16,7 +16,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	private int ID;
 	private String imageFilename;
 	private GridPoint2 location;
-	private double rotation;//RADIANS OR DEGREES?
+	//private double rotation;//RADIANS OR DEGREES?
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -28,7 +28,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		ID = newID;
 		imageFilename = img;
 		location = initLoc;
-		rotation = 0;
+		//rotation = 0;
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
 	}
@@ -58,24 +58,45 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		}
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
 	}
-	//ATTRIBUTES, pray to Gaben we can find a way to refactor this.
 	
-	public void attribute_health(){
+	public Array<String> getValidAttributes() {
+		return attributeValues.keys().toArray();
+	}
+	
+	public ObjectMap<String,Array<String>> getAttributeValues(){
+		return attributeValues;
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public String getImageFilename() {
+		return imageFilename;
+	}
+
+	public GridPoint2 getLocation() {
+		return location;
+	}
+	
+	//ATTRIBUTES
+
+	private void attribute_health(){
 		System.out.println("health called");
 		System.out.println(attributeValues.get("health"));
 	}
 	
-	public void attribute_color(){
+	private void attribute_color(){
 		System.out.println("color called");
 		System.out.println(attributeValues.get("color"));
 	}
 	
-	public void attribute_disappearsOnPress(){
+	private void attribute_disappearsOnPress(){
 		System.out.println("disappearsOnPress called");
 		System.out.println(attributeValues.get("disappearsOnPress"));
 	}
 	
-	public void attribute_movesOnSetPath(){
+	private void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath"));
 	}	

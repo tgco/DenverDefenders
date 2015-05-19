@@ -16,10 +16,10 @@ import com.badlogic.gdx.math.GridPoint2;
 public class XML_Reader {
 	
 	//the main method is for testing only
-	/*
+	
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
-		String filename = "testMinigame.xml";
+		String filename = "testOut.xml";//"testMinigame.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
 		System.out.println("\nUPDATING");
@@ -28,13 +28,13 @@ public class XML_Reader {
 		}
 		
 	}
-	*/
+	
 	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
-	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
+	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file

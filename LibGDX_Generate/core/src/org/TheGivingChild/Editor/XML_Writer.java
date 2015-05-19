@@ -31,9 +31,10 @@ public class XML_Writer {
 	 *		</ELEMENT_JUAN>
 	 *	6: then just write the string to the file with a FileWriter
 	 */
-	private String XML_String = "";
+	//private String XML_String = "";
 	private String filename = "";
 	private String packageName = "";
+	private String levelName = "";
 	
 	//main method for testing
 	public static void main(String cheese[]){
@@ -43,7 +44,9 @@ public class XML_Writer {
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
 		testObj3.addValidAttribute("health", "9001");
 		testObj3.addValidAttribute("health", "9002");
+		testObj3.addValidAttribute("health", "o0o0o0o0o");
 		testObj3.addValidAttribute("color","fuchesa");
+		testObj3.addValidAttribute("color","asehcuf");
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
@@ -51,36 +54,90 @@ public class XML_Writer {
 		testObjectArray.add(testObj3);
 		
 		XML_Writer sally = new XML_Writer();
+		sally.setupNewFile("testOut.xml", "", "testLevel");
 		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
 	}
 	
-	public void setupNewFile(String newfilename,String packagename){
+	public void setupNewFile(String newfilename,String packagename,String newLevelName){
 		filename = newfilename;
 		packageName = packagename;
+		levelName = newLevelName;
 	}
 	
 	public void writeToFile(Array<GameObject> gameObjects, Level level){//sets up .xml file, calls the 2 compile methods, and adds their outputs together
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
+		String XML_String="";
+		String Level_String="";
+		
 		try{//compile xml string
-			writer.element("root");
+			writer.element("level");
+			writer.attribute("packageName",packageName);
+			writer.attribute("levelName", levelName);
+			//stringWriter.write("<level packageName=\"" + packageName + "\" levelName=\"" + levelName + "\">\n");
+			//stringWriter.write(compileGameObjectsToString(gameObjects));
+			//stringWriter.write(compileLevelToString(level));
 			for(GameObject currentGameObject:gameObjects){
-				System.out.println(currentGameObject);
+				writer.element("GameObject");
+				writer.attribute("ID",currentGameObject.getID());
+				writer.attribute("attributes",compileAttributeList(currentGameObject));
+				writer.attribute("imageFilename", currentGameObject.getImageFilename());
+				writer.attribute("initialLocation", currentGameObject.getLocation().x + "," + currentGameObject.getLocation().y);
+				for(String currentAttribute:currentGameObject.getValidAttributes()){//for each attribute, make an element of it and get its values
+					writer.element(currentAttribute);
+					int count = 1;
+					for(String currentValue:currentGameObject.getAttributeValues().get(currentAttribute)){
+						writer.attribute("value" + count, currentValue);
+						count++;
+					}
+					writer.pop();
+				}
+				writer.pop();
 			}
 			writer.pop();
 			
+			
+			XML_String = stringWriter.toString();
 			//write to file
 			FileWriter fileWriter = new FileWriter(filename);
 			fileWriter.write(XML_String);
+			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
+	/*private String compileGameObjectsToString(Array<GameObject> gameObjects){
+		StringWriter stringWriter = new StringWriter();
+		XmlWriter writer = new XmlWriter(stringWriter);
+		//String XML_String="";
+		try{
+			for(GameObject currentGameObject:gameObjects){
+				writer.element("GameObject");
+				writer.attribute("ID",currentGameObject.getID());
+				writer.attribute("attributes",compileAttributeList(currentGameObject));
+					
+					
+					writer.pop();
+				writer.pop();
+			}
+			writer.close();
+		}catch(Exception e){System.out.println("error: " + e);}
+		return stringWriter.toString();
+	}*/
 	
-	private String compileGameObjectsToString(Array<GameObject> gameObjects){
-		return "";
+	private String compileAttributeList(GameObject obj){		
+		String temp = "";
+		for(String currentKey: obj.getAttributeValues().keys().toArray()){
+			temp+=currentKey + ",";
+		}
+		//remove last character
+		String temp2="";
+		if(temp.length()>1)
+			temp2 = temp.substring(0,temp.length()-1);
+		return temp2;
 	}
 	
 	private String compileLevelToString(Level level){
-		return "";
+		String levelString = "";
+		return levelString;
 	}
 	
 	public void XML_test(){
