@@ -29,7 +29,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
-public class EditorScreen extends ScreenAdapter{
+class ScreenEditor extends ScreenAdapter{
 	private OrthographicCamera camera;
 	
 	private Stage stage;
@@ -44,7 +44,6 @@ public class EditorScreen extends ScreenAdapter{
 	
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
-	private TGC_Engine mainGame;
 	private Texture ballImage;
 	private Texture objectImage;
 	private Texture boxImage;
@@ -60,8 +59,7 @@ public class EditorScreen extends ScreenAdapter{
 	
 	private boolean ballOrBox = true;
 	
-	public EditorScreen(final TGC_Engine mainGame) {
-		this.mainGame = mainGame;
+	public ScreenEditor() {
 		//camera = new OrthographicCamera(5,5);
 		//createStage();
 		createEditorTable();

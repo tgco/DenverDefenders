@@ -19,10 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
-public class ScreenLevelPackets extends ScreenAdapter{
-	
-	//reference to the main engine
-	private TGC_Engine game;
+class ScreenLevelPackets extends ScreenAdapter{
 	//list of packets for each level set.
 	private Array<LevelPacket> packets;
 	private int currentPacketLevelIndex = 0;
@@ -30,7 +27,7 @@ public class ScreenLevelPackets extends ScreenAdapter{
 	private Array<Level> levels;
 	
 	//constructor. Initialize the variables.
-	public ScreenLevelPackets(TGC_Engine game) {
+	public ScreenLevelPackets() {
 		this.game = game;
 		packets = new Array<LevelPacket>();
 		levels = new Array<Level>(game.getLevels());

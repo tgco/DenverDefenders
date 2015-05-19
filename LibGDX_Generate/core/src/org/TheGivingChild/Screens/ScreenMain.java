@@ -12,13 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class MainScreen extends ScreenAdapter{
-	private TGC_Engine game;
+class ScreenMain extends ScreenAdapter{
 	private BitmapFont bitmapFontButton;
 	private float buttonHeight;
     private Table mainScreenTable;
 	
-	public MainScreen(TGC_Engine game) {
+	public ScreenMain() {
 		this.game = game;
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
@@ -73,5 +72,11 @@ public class MainScreen extends ScreenAdapter{
 	@Override
 	public void show() {
 		showMainScreenTable();
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		hideMainScreenTable();
 	}
 }

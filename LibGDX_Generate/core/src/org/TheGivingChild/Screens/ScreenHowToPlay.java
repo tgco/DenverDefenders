@@ -15,8 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class HowToPlay extends ScreenAdapter{
-	private TGC_Engine game;
+class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
 	private Texture message;
 	private Batch batch;
@@ -25,7 +24,7 @@ public class HowToPlay extends ScreenAdapter{
 	private float buttonHeight;
 	
 	
-	public HowToPlay(TGC_Engine game) {
+	public ScreenHowToPlay() {
 		this.game = game;
 		title = new Texture(Gdx.files.internal("HowToPlay.png"));
 		message = new Texture(Gdx.files.internal("HowToPlayMessage.png"));
