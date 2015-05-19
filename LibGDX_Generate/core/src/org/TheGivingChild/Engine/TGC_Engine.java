@@ -4,6 +4,7 @@ import org.TheGivingChild.Screens.EditorScreen;
 import org.TheGivingChild.Screens.HowToPlay;
 import org.TheGivingChild.Screens.MainScreen;
 import org.TheGivingChild.Screens.ScreenLevelManager;
+import org.TheGivingChild.Screens.Splash;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -86,7 +87,7 @@ public class TGC_Engine extends Game {
 		screens[2]= options;
 		ScreenAdapter mainScreen = new MainScreen(this);
 		screens[3] = mainScreen;
-		setScreen(screens[3]);
+		setScreen(new Splash());
 	}
 	
 	public void createStage(){
