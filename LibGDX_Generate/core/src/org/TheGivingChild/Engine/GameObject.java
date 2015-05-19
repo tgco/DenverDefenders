@@ -16,10 +16,13 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	private int ID;
 	private String imageFilename;
 	private GridPoint2 location;
+	private double rotation;//RADIANS OR DEGREES?
 	
-	public GameObject(int newID, String img){
+	public GameObject(int newID, String img,GridPoint2 initLoc){
 		ID = newID;
 		imageFilename = img;
+		location = initLoc;
+		rotation = 0;
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
 		System.out.println("\nNew object, ID: " + ID);
@@ -50,13 +53,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		}
 		attributeValues.get(newAttribute).add(value);//adds that value to the list of values that function can get
 	}
-	
-	public void draw(){//called by render in TGC_Engine
-		
-	}
-	
-	
-	
 	//ATTRIBUTES, pray to Gaben we can find a way to refactor this.
 	
 	public void attribute_health(){

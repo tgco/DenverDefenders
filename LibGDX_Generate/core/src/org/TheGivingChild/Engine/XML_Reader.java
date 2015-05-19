@@ -35,7 +35,7 @@ public class XML_Reader {
 	private Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
-			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"));//hardcoded values which must always be written down in the .xml file
+			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 				//look up the object of name currentAttribute and add it to currentObject's list of Attributes.
 				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){
@@ -47,7 +47,6 @@ public class XML_Reader {
 		}
 		return listOfObjects;
 	}
-	
 	//helper method for compileGameObjects, not sure if even needed anymore
 
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
