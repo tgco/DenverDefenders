@@ -18,6 +18,12 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	private GridPoint2 location;
 	private double rotation;//RADIANS OR DEGREES?
 	
+	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
+	 * 	2: Each object's attributes are then elements within the object
+	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
+	 */
+	
+	
 	public GameObject(int newID, String img,GridPoint2 initLoc){
 		ID = newID;
 		imageFilename = img;
@@ -25,11 +31,10 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		rotation = 0;
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
-		System.out.println("\nNew object, ID: " + ID);
 	}
 	
 	public String toString(){
-		return "ID: " + ID + ", Image filename: " + imageFilename;
+		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + location.x + " Y: " + location.y;
 	}
 	
 	public void update(){//working

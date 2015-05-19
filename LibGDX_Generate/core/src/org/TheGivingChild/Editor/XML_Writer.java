@@ -4,6 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import org.TheGivingChild.Engine.*;
+
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlWriter;
 
 public class XML_Writer {
@@ -26,37 +31,56 @@ public class XML_Writer {
 	 *		</ELEMENT_JUAN>
 	 *	6: then just write the string to the file with a FileWriter
 	 */
-	private String XML_File = "";
+	private String XML_String = "";
 	private String filename = "";
 	private String packageName = "";
-	//main method for testing onry
+	
+	//main method for testing
 	public static void main(String cheese[]){
+		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",new GridPoint2(1,1));
+		testObj1.addValidAttribute("health", "100");
+		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
+		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
+		testObj3.addValidAttribute("health", "9001");
+		testObj3.addValidAttribute("health", "9002");
+		testObj3.addValidAttribute("color","fuchesa");
+		
+		Array<GameObject> testObjectArray = new Array<GameObject>();
+		testObjectArray.add(testObj1);
+		testObjectArray.add(testObj2);
+		testObjectArray.add(testObj3);
+		
 		XML_Writer sally = new XML_Writer();
-		sally.writeToFile("testOut.xml");
+		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
 	}
 	
-	public void XML_Writer(){
-		
+	public void setupNewFile(String newfilename,String packagename){
+		filename = newfilename;
+		packageName = packagename;
 	}
 	
-	public void writeToFile(String newFilename){
-		filename = newFilename;
-		StringWriter text = new StringWriter();
-		XmlWriter test = new XmlWriter(text);
-		FileWriter bob;
-		try{
-			bob = new FileWriter(newFilename);
-			test.element("TESTJUAN");
-			test.attribute("TEST2", "SWAG");
-			test.attribute("TEST3","HOLLER");
-			test.pop();
-			bob.write(text.toString());
-			bob.close();
-		}catch(Exception e){ System.out.println("ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");}
+	public void writeToFile(Array<GameObject> gameObjects, Level level){//sets up .xml file, calls the 2 compile methods, and adds their outputs together
+		StringWriter stringWriter = new StringWriter();
+		XmlWriter writer = new XmlWriter(stringWriter);
+		try{//compile xml string
+			writer.element("root");
+			for(GameObject currentGameObject:gameObjects){
+				System.out.println(currentGameObject);
+			}
+			writer.pop();
+			
+			//write to file
+			FileWriter fileWriter = new FileWriter(filename);
+			fileWriter.write(XML_String);
+		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
 	
-	public void compileXML_String(){
-		
+	private String compileGameObjectsToString(Array<GameObject> gameObjects){
+		return "";
+	}
+	
+	private String compileLevelToString(Level level){
+		return "";
 	}
 	
 	public void XML_test(){
