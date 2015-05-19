@@ -28,7 +28,6 @@ public class XML_Reader {
 		
 	}
 	
-	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
@@ -57,9 +56,7 @@ public class XML_Reader {
 		try{
 			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
 			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
-		}catch(Exception e){
-			System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);
-		}
+		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
 		root = reader.parse(xml_file);
 	}
 	
