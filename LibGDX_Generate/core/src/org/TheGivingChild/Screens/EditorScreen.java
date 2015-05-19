@@ -72,7 +72,7 @@ public class EditorScreen extends ScreenAdapter{
 		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
 		//createStage();
 		createEditorTable();
-		textureSize();
+		//textureSize();
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
@@ -198,10 +198,10 @@ public class EditorScreen extends ScreenAdapter{
 		
 		//		backButton.draw(batch, 1);
 		for (Rectangle ball : balls) {
-			batch.draw(ballImage, ball.x, ball.y, objectSize, objectSize);
+			batch.draw(ballImage, ball.x, ball.y);
 		}
 		for (Rectangle box : boxes) {
-			batch.draw(boxImage, box.x, box.y, objectSize, objectSize);
+			batch.draw(boxImage, box.x, box.y);
 		}
 		for (Rectangle gridPiece : grid) {
 			batch.draw(gridImage, gridPiece.x, gridPiece.y);
@@ -229,7 +229,6 @@ public class EditorScreen extends ScreenAdapter{
 		object.height = objectSize;
 		object.x = Gdx.input.getX(); //- object.getWidth()/2;
 		object.y = Gdx.graphics.getHeight()-Gdx.input.getY(); // - object.getHeight()/2;
-		//object.y = Gdx.input.getY();
 		for (Rectangle gridPos : grid) {
 			//System.out.println(gridPos.toString());
 			if (gridPos.contains(object.x, object.y)) {
@@ -259,10 +258,10 @@ public class EditorScreen extends ScreenAdapter{
 		float x = Gdx.graphics.getWidth();
 		float y = Gdx.graphics.getHeight();
 		
-		float changeX = 1024 / mainGame.getWidth();
-		float changeY = (576*2) / mainGame.getHeight();
+		float changeX = x / mainGame.getWidth();
+		float changeY = y / mainGame.getHeight();
 		
 		objectSize = objectSize * changeX; 
-		gridSize =  100;
+		gridSize =  gridSize * changeX;
 	}
 }
