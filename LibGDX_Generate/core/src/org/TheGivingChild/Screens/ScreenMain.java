@@ -22,10 +22,10 @@ class ScreenMain extends ScreenAdapter {
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
 		mainScreenTable = createMainScreenTable();
-		showMainScreenTable();
 	}
 
 	private Table createMainScreenTable() {
+		//font for the buttons
 		bitmapFontButton = game.getBitmapFontButton();
 		//create a table for the buttons
         Table table = new Table();
@@ -47,7 +47,6 @@ class ScreenMain extends ScreenAdapter {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.values()[j/2]);
-					hideMainScreenTable();
 				}
         	});
         }
@@ -55,15 +54,17 @@ class ScreenMain extends ScreenAdapter {
         return table;
 	}
 
-	private void showMainScreenTable() {
+	/*private void showMainScreenTable() {
+		//adds mainScreenTable to rootTable of Game so it can be displayed
 		game.getRootTable().add(mainScreenTable);
 		game.getRootTable().setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
 		game.getStage().addActor(game.getRootTable());
-	}
+	}*/
 
-	protected void hideMainScreenTable() {
-		game.getRootTable().removeActor(mainScreenTable);
-	}
+	/*protected void hideMainScreenTable() {
+		//removes mainScreenTable from rootTable
+		mainScreenTable.remove();
+	}*/
 
 	@Override
 	public void render(float delta) {
@@ -73,12 +74,11 @@ class ScreenMain extends ScreenAdapter {
 	
 	@Override
 	public void show() {
-		showMainScreenTable();
+		game.getStage().addActor(mainScreenTable);
 	}
 	
 	@Override
 	public void hide() {
-		super.hide();
-		hideMainScreenTable();
+		mainScreenTable.remove();
 	}
 }
