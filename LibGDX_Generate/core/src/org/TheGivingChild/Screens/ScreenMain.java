@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-class ScreenMain extends ScreenAdapter{
+class ScreenMain extends ScreenAdapter {
 	private BitmapFont bitmapFontButton;
 	private float buttonHeight;
     private Table mainScreenTable;

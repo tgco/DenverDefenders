@@ -3,21 +3,19 @@ package org.TheGivingChild.Engine.XML;
 import java.lang.reflect.Method;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-import org.TheGivingChild.Engine.XML.*;
-
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
-import com.badlogic.gdx.math.GridPoint2;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
-	private ObjectMap<String,Integer> validAttributes;
+	private ObjectMap<String,Integer> validAttributes;//change this to map to a method instead to increase performance?
 	private ObjectMap<String,Array<String>> attributeValues;//attribute_health mapped to whatever it needs to use, it's own storage
+	//private Array<String> listenerNames;
 	private int ID;
 	private String imageFilename;
-	private GridPoint2 location;
 	//private double rotation;//RADIANS OR DEGREES?
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
@@ -25,17 +23,17 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
 	
-	public GameObject(int newID, String img,GridPoint2 initLoc){
+	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
-		location = initLoc;
-		//rotation = 0;
+		setPosition(newPosition[0],newPosition[1]);
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
+		//listenerNames = new Array<String>();
 	}
 	
 	public String toString(){
-		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + location.x + " Y: " + location.y;
+		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 	
 	public void update(){//working
@@ -75,9 +73,27 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String getImageFilename() {
 		return imageFilename;
 	}
-
-	public GridPoint2 getLocation() {
-		return location;
+	
+	//will probably be needed with a path attribute
+	private Array<float[]> stringToPath(String sPath){
+		Array<float[]> newPath = new Array<float[]>();
+		String points[] = sPath.split(";");
+		for(int i = 0; i < points.length; i++){
+			newPath.add(stringToPoint(points[i]));
+		}
+		return newPath;
+	}
+	private float[] stringToPoint(String toPoint){
+		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
+		return temp;
+	}
+	
+	public String getListenersAsString(){//dont use, will be in use later after we decide how listeners will be implemented
+		String temp="";
+		for(EventListener listener:getListeners()){
+			temp+=","+listener.toString();
+		}
+		return temp.replaceFirst(",", "");
 	}
 	
 	//ATTRIBUTES
@@ -100,5 +116,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath") + "\n");
-	}	
+		
+	}
 }

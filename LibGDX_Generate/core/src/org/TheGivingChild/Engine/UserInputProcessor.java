@@ -4,8 +4,10 @@ import org.TheGivingChild.Engine.XML.GameObject;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 
-public abstract class UserInputProcessor implements InputProcessor {
+public class UserInputProcessor implements InputProcessor, GestureListener {
 
 	GameObject o;
 	
@@ -34,7 +36,7 @@ public abstract class UserInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user touched down screen at " + screenX + ", " + screenY);
+		System.out.println("user has either pressed a button or moved the mouse");
 		 	return true;
 	}
 
@@ -63,6 +65,64 @@ public abstract class UserInputProcessor implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		System.out.println("user has scrolled the mouse by " + amount);
+		return true;
+	}
+
+	@Override
+	public boolean tap(float x, float y, int count, int button) {
+		// TODO Auto-generated method stub
+		System.out.println("user tapped on their device at point " + x + " , " + y );
+		return true;
+		
+	}
+
+	@Override
+	public boolean longPress(float x, float y) {
+		// TODO Auto-generated method stub
+		System.out.println("user long pressed their device");
+		return true;
+	}
+
+	@Override
+	public boolean fling(float velocityX, float velocityY, int button) {
+		// TODO Auto-generated method stub
+		System.out.println("user dragged their finger across screen, I know the velcoity in x an y directions");
+		return true;
+	}
+
+	@Override
+	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		// TODO Auto-generated method stub
+		System.out.println("user dragged their finger over their device, i know delta x and delta y");
+		return false;
+	}
+
+	@Override
+	public boolean panStop(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		System.out.println("not panning anymore");
+		return true;
+	}
+
+	@Override
+	public boolean zoom(float initialDistance, float distance) {
+		// TODO Auto-generated method stub
+		System.out.println("user perfomed a zoom pinch from a distance of " + initialDistance + " in pixels.");
+		return true;
+	}
+
+	@Override
+	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
+			Vector2 pointer1, Vector2 pointer2) {
+		System.out.println("user pinched, i know the origional finger positions");
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean touchDown(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		System.out.println("user touched down their device");
 		return true;
 	}
 

@@ -102,7 +102,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 	public void createPackets(){
 		for(Level l: levels){
 			//packet name to add to
-			String packetName = l.getPacketName();
+			String packetName = l.getPackageName();
 			boolean packetFound = false;
 			//keep track of array variable accessed when searching for packet
 			int i = 0;

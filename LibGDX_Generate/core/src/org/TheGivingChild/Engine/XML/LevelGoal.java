@@ -1,11 +1,16 @@
 package org.TheGivingChild.Engine.XML;
 
 public class LevelGoal {
-	boolean goalReached = false;
-	public boolean getGoalState(){
-		return goalReached;
+	boolean win = false;
+	boolean lose = false;
+	
+	public boolean getWin(){
+		return win;
 	}
-	public void setGoalFinished(){
-		goalReached = true;
+	
+	public boolean getLose(){
+		return lose;
 	}
+	
+	
 }
