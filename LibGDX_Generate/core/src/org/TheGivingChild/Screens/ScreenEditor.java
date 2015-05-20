@@ -7,9 +7,11 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,6 +19,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,14 +30,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
-class ScreenEditor extends ScreenAdapter{
-	private OrthographicCamera camera;
-	
+class ScreenEditor extends ScreenAdapter{	
 	private TextButton ballButton;
 	private TextButton backButton;
 	private TextButtonStyle textButtonStyleBack;
@@ -55,7 +58,7 @@ class ScreenEditor extends ScreenAdapter{
 	private boolean canSetObj = false;
 //	private Array<String> objBox;
 //	private Skin skinBox;
-//	private SelectBox<String> selection;
+	private SelectBox<String> selection;
 
 	private Array<Rectangle> grid;
 	private Texture gridImage;
@@ -66,15 +69,21 @@ class ScreenEditor extends ScreenAdapter{
 	//create placeholder game
 	private TGC_Engine mainGame;
 	
+	private Skin boxSkin;
+//	private Drawable background;
+//	private ScrollPaneStyle paneStyle;
+//	private ListStyle listStyle;
 	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		mainGame = ScreenAdapterManager.getInstance().game;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
+
 		//createStage();
 		createEditorTable();
 		//textureSize();
+		
+		//selection = new SelectBox<String>(skinTable);
+		
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
@@ -84,7 +93,7 @@ class ScreenEditor extends ScreenAdapter{
 		grid = new Array<Rectangle>();
 		
 		selectImage();
-		
+		createSelectBox();
 		objectSize = objectImage.getHeight();
 		gridSize = gridImage.getHeight();
 		
@@ -102,9 +111,7 @@ class ScreenEditor extends ScreenAdapter{
 //		//		stage.draw();
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		camera.update();
-		
+				
 		if(Gdx.input.isTouched()) {
 			//System.out.println("X: " + Gdx.input.getX());
 			//System.out.println("Y: " + Gdx.input.getY());
@@ -239,6 +246,9 @@ class ScreenEditor extends ScreenAdapter{
 			objectImage = boxImage;
 			ballOrBox = !ballOrBox;
 		}
+	}
+	
+	private void createSelectBox() {
 	}
 	
 //	private void textureSize() {
