@@ -26,6 +26,7 @@ class ScreenMain extends ScreenAdapter {
 	}
 
 	private Table createMainScreenTable() {
+		//font for the buttons
 		bitmapFontButton = game.getBitmapFontButton();
 		//create a table for the buttons
         Table table = new Table();
@@ -56,12 +57,14 @@ class ScreenMain extends ScreenAdapter {
 	}
 
 	private void showMainScreenTable() {
+		//adds mainScreenTable to rootTable of Game so it can be displayed
 		game.getRootTable().add(mainScreenTable);
 		game.getRootTable().setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
 		game.getStage().addActor(game.getRootTable());
 	}
 
 	protected void hideMainScreenTable() {
+		//removes mainScreenTable from rootTable
 		game.getRootTable().removeActor(mainScreenTable);
 	}
 

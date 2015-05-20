@@ -20,21 +20,21 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private Texture message;
 	private Batch batch;
 	private Table table;
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	private float buttonHeight;
 	
 	private TGC_Engine game;
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
-		title = new Texture(Gdx.files.internal("HowToPlay.png"));
-		message = new Texture(Gdx.files.internal("HowToPlayMessage.png"));
+		title = game.getAssetManager().get("HowToPlay.png");
+		message = game.getAssetManager().get("HowToPlayMessage.png");
 		batch = new SpriteBatch();
 		table = createButtons();
 	}
 	
 	
-	//Function for making the play and options buttons in the HTP screen
+	//Function for making buttons in the HTP screen
 	public Table createButtons() {
 		//create table for buttons
 		Table t = new Table();
@@ -49,23 +49,25 @@ class ScreenHowToPlay extends ScreenAdapter{
 			tbs.down = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i]);
 			tbs.up = game.getButtonAtlasSkin().getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
-			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/4);
+			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
 			buttonHeight = tb.getHeight();
-			final int j = i;
+			final int j = i/2;
 			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					if(j == 0)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL_PACKETS);
-					else
+					else if(j == 1)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
+					else
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
 					hide();
 				}
 			});
 		}
-		t.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
+		t.setPosition(Gdx.graphics.getWidth()/widthDivider, buttonHeight/3);
 		return t;
 	}
 	

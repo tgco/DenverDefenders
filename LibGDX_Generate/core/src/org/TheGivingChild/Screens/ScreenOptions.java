@@ -24,7 +24,7 @@ class ScreenOptions extends ScreenAdapter {
 		camera = new OrthographicCamera();
 
 		
-		titleImage = new Texture(Gdx.files.internal("optionsTitle.png"));
+		titleImage = game.getAssetManager().get("optionsTitle.png");
 		batch = new SpriteBatch();
 	}
 	@Override
