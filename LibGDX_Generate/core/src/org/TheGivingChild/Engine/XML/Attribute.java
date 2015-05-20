@@ -10,7 +10,7 @@ public enum Attribute {
 	HEALTH{
 		private int health;
 		public void update(){
-			
+			System.out.println("Health Update");
 		}
 		public void setValues(Array<String> newValues){//each implementation of setValues translates the array of strings into whatever datatype it wants
 			health = Integer.parseInt(newValues.first().toString());
@@ -26,7 +26,7 @@ public enum Attribute {
 	COLOR{
 		private String color;
 		public void update(){
-			
+			System.out.println("Color Update");
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -41,35 +41,35 @@ public enum Attribute {
 		public String getXMLName(){return "color";}
 	},
 	MOVESONSETPATH{
-		private Array<float[]> points;
+		private Array<float[]> path;
 		public void update(){
-			
+			System.out.println("MovesOnSetPath Update");
+			//for(float[] currentPoint:path)
+			//	System.out.println(currentPoint[0] + ", " + currentPoint[1]);
 		}
 		
 		public void setValues(Array<String> newValues){
-			points = stringToPath(newValues.get(0));
+			path = stringToPath(newValues.get(0));
 		}
 		
 		public Array<String> getValues(){
 			Array<String> temp = new Array<String>();
 			String tempS = "";
-			for(float[] point:points)
+			for(float[] point:path)
 				tempS+=";" + point[0] + "," + point[1];
 			temp.add(tempS.replaceFirst(";",""));
 			return temp;
 		}
 		
-		private Array<float[]> stringToPath(String sPath){
+		private Array<float[]> stringToPath(String sPath){//takes in string of format "1.0,1.0;2.0,2.0;3.0,3.0" and returns an Array of 2 element float arrays representing a path
 			Array<float[]> newPath = new Array<float[]>();
 			String points[] = sPath.split(";");
-			for(int i = 0; i < points.length; i++){
+			for(int i = 0; i < points.length; i++)
 				newPath.add(stringToPoint(points[i]));
-			}
 			return newPath;
 		}
 		
-		private float[] stringToPoint(String toPoint){
-			System.out.println(toPoint);
+		private float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
 			float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
 			return temp;
 		}
@@ -77,18 +77,12 @@ public enum Attribute {
 	},
 	DISAPPEARSONPRESS{
 		public void update(){
-			
+			System.out.println("DisappearsOnPress Update");
 		}
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
 		public String getXMLName(){return "disappearsOnPress";}
-	};	
-	
-	
-	
-	
-	
-	
+	};
 	
 	public abstract void setValues(Array<String> newValues);
 	public abstract Array<String> getValues();

@@ -20,12 +20,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
 	
-	public GameObject(){
-		ID = 1;
-		imageFilename = "TEST";
-		attributes = new Array<Attribute>();
-	}
-	
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
@@ -33,11 +27,12 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		attributes = new Array<Attribute>();
 	}
 	
-	public void update(){//working
-		
+	public void update(){
+		for(Attribute currentAttribute:attributes)
+			currentAttribute.update();
 	}
 	
-	public Array<Attribute> getAttributes(){//returns list of attributes
+	public Array<Attribute> getAttributes(){
 		return attributes;
 	}
 	
