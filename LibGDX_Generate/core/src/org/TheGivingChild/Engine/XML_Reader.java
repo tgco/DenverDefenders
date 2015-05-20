@@ -19,16 +19,13 @@ public class XML_Reader {
 	/*
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
-		String filename = "testMinigame.xml";
+		String filename = "testOut.xml";
 		test.setupNewFile(filename);
 		Array<GameObject> testObjects = test.compileGameObjects();
-		System.out.println("\nUPDATING");
 		for(GameObject bob: testObjects){
 			bob.update();
 		}
-		
-	}
-	*/
+	}*/
 	
 	private XmlReader reader = new XmlReader();
 	private String xml_file;
@@ -38,10 +35,14 @@ public class XML_Reader {
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file
+			//System.out.println(temp.getID());
 			for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
+				//System.out.println("\t" + currentAttribute);
 				if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
-					for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++)//go to each value in each attribute
+					for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){//go to each value in each attribute
 						temp.addValidAttribute(currentAttribute, currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+						//System.out.println("\t\t" + currentAttribute + "; " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+					}
 				}else temp.addValidAttribute(currentAttribute, null);
 			}
 			listOfObjects.add(temp);
@@ -54,9 +55,7 @@ public class XML_Reader {
 		try{
 			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
 			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
-		}catch(Exception e){
-			System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);
-		}
+		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
 		root = reader.parse(xml_file);
 	}
 	
