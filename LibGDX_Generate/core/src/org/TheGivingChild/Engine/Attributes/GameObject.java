@@ -7,16 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-import org.TheGivingChild.Engine.Attributes.*;
-
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
-import com.badlogic.gdx.math.GridPoint2;
 
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private ObjectMap<String,Integer> validAttributes;//change this to map to a method instead to increase performance?
 	private ObjectMap<String,Array<String>> attributeValues;//attribute_health mapped to whatever it needs to use, it's own storage
-	private Array<String> listenerNames;
+	//private Array<String> listenerNames;
 	private int ID;
 	private String imageFilename;
 	//private double rotation;//RADIANS OR DEGREES?
@@ -32,7 +29,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		setPosition(newPosition[0],newPosition[1]);
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
-		listenerNames = new Array<String>();
+		//listenerNames = new Array<String>();
 	}
 	
 	public String toString(){
@@ -78,20 +75,20 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	}
 	
 	//will probably be needed with a path attribute
-	private Array<GridPoint2> stringToPath(String sPath){//Working
-		Array<GridPoint2> newPath = new Array<GridPoint2>();
+	private Array<float[]> stringToPath(String sPath){
+		Array<float[]> newPath = new Array<float[]>();
 		String points[] = sPath.split(";");
 		for(int i = 0; i < points.length; i++){
 			newPath.add(stringToPoint(points[i]));
 		}
 		return newPath;
 	}
-	private GridPoint2 stringToPoint(String toPoint){
-		String temp[] = toPoint.split(",");
-		return new GridPoint2(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+	private float[] stringToPoint(String toPoint){
+		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
+		return temp;
 	}
 	
-	public String getListenersAsString(){
+	public String getListenersAsString(){//dont use, will be in use later after we decide how listeners will be implemented
 		String temp="";
 		for(EventListener listener:getListeners()){
 			temp+=","+listener.toString();
@@ -119,5 +116,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public void attribute_movesOnSetPath(){
 		System.out.println("movesOnSetPath called");
 		System.out.println(attributeValues.get("movesOnSetPath") + "\n");
+		
 	}
 }

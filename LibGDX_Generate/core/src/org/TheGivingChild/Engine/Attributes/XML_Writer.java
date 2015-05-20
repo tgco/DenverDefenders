@@ -1,15 +1,10 @@
 package org.TheGivingChild.Engine.Attributes;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.StringWriter;
 
-import org.TheGivingChild.Engine.*;
-
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.XmlWriter;
 
 public class XML_Writer {
 	private Level currentLevel;
@@ -28,6 +23,7 @@ public class XML_Writer {
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
 		//testObj3.addValidAttribute("movesOnSetPath", "3,3");//start point
 		testObj3.addValidAttribute("movesOnSetPath", "3,3;4,4;5,5;6,6");
+		testObj3.addValidAttribute("movesOnSetPath", "100");//speed
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
@@ -73,7 +69,7 @@ public class XML_Writer {
 			
 			//write levelGoal
 				writer.element("levelGoal");
-				
+				writer.element()
 				writer.pop();
 			writer.pop();
 			
@@ -96,10 +92,5 @@ public class XML_Writer {
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);
 		return temp2;
-	}
-	
-	private String compileLevelToString(Level level){
-		String levelString = "";
-		return levelString;
 	}
 }
