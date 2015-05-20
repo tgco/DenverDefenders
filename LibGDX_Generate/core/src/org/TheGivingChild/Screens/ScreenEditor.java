@@ -84,12 +84,12 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//selection = new SelectBox<String>(skinTable);
 		
-		ballImage = new Texture(Gdx.files.internal("ball.png"));
+		ballImage = new Texture(Gdx.files.internal("editorAssets/ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
 		boxes = new Array<Rectangle>();
-		boxImage = new Texture(Gdx.files.internal("BoxHalf.png"));
-		gridImage = new Texture(Gdx.files.internal("Grid.png"));
+		boxImage = new Texture(Gdx.files.internal("editorAssets/BoxHalf.png"));
+		gridImage = new Texture(Gdx.files.internal("editorAssets/Grid.png"));
 		grid = new Array<Rectangle>();
 		
 		selectImage();
