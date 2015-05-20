@@ -2,10 +2,14 @@ package org.TheGivingChild.Engine.Attributes;
 
 import java.lang.reflect.Method;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+
 import org.TheGivingChild.Engine.Attributes.*;
+
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
 import com.badlogic.gdx.math.GridPoint2;
@@ -30,6 +34,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		//rotation = 0;
 		validAttributes = new ObjectMap<String,Integer>();//map from function name to int representing if it's allowed to be used
 		attributeValues = new ObjectMap<String,Array<String>>();//map from function name to the variables it has stored and can use, pseudo OO because java hates reflection and fun and children
+	
 	}
 	
 	public String toString(){

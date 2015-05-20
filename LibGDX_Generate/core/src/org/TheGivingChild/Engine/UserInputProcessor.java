@@ -6,12 +6,14 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+
 
 public class UserInputProcessor implements InputProcessor, GestureListener {
-
-	GameObject o;
-	
-	
+		
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
@@ -108,22 +110,20 @@ public class UserInputProcessor implements InputProcessor, GestureListener {
 	public boolean zoom(float initialDistance, float distance) {
 		// TODO Auto-generated method stub
 		System.out.println("user perfomed a zoom pinch from a distance of " + initialDistance + " in pixels.");
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
 			Vector2 pointer1, Vector2 pointer2) {
-		System.out.println("user pinched, i know the origional finger positions");
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user touched down their device");
-		return true;
+		return false;
 	}
 
 }
