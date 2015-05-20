@@ -27,12 +27,18 @@ class ScreenEditor extends ScreenAdapter{
 		
 		private Texture texture;
 		private String filename = "editorAssets/";
+		private String file;
+		
 		private objectTextures(String file) {
+			this.file = file;
 			filename = filename.concat(file);
 			texture = new Texture(Gdx.files.internal(filename));
 		}
 		public Texture getTexture() {
 			return texture;
+		}
+		public String getFile() {
+			return file;
 		}
 	}
 	
@@ -76,7 +82,6 @@ class ScreenEditor extends ScreenAdapter{
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		mainGame = ScreenAdapterManager.getInstance().game;
-
 		//createStage();
 		createEditorTable();
 		//textureSize();
