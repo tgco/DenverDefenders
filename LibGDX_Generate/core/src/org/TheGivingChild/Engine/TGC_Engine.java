@@ -87,7 +87,7 @@ public class TGC_Engine extends Game {
 		screens[2]= options;
 		ScreenAdapter mainScreen = new MainScreen(this);
 		screens[3] = mainScreen;
-		setScreen(new Splash());
+		setScreen(new Splash(this));
 	}
 	
 	public void createStage(){

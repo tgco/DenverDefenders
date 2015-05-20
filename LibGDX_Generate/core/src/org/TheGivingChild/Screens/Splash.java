@@ -14,12 +14,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.Game;
 
 public class Splash implements Screen{
-	private Texture texture = new Texture(Gdx.files.internal("img/badlogic.jpg"));
+	private Texture texture = new Texture(Gdx.files.internal("Packs/Badlogic.jpg"));
 	private Image splashImage = new Image(texture);
 	private Stage stage = new Stage();
 	private Skin skin = Assets.skin;
+	private TGC_Engine game;
 	
 	public boolean animationDone = false;
+	
+	public Splash(TGC_Engine game) {
+		this.game = game;
+	}
 	
 	@Override
 	public void render(float delta) {
@@ -31,7 +36,7 @@ public class Splash implements Screen{
 		if(Assets.update()) {
 			if(animationDone) {
 				Assets.setSkin();
-				((Game)Gdx.app.getApplicationListener()).setScreen(new Splash());
+				((Game)Gdx.app.getApplicationListener()).setScreen(new MainScreen(game));
 			}
 		}
 	}
