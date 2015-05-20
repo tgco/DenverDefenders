@@ -3,15 +3,10 @@ package org.TheGivingChild.Engine.Attributes;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
-import com.badlogic.gdx.utils.ArrayMap.Values;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.reflect.Method;
-import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.math.GridPoint2;
 
 //Use this to read the XML File into a Level
 //will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
