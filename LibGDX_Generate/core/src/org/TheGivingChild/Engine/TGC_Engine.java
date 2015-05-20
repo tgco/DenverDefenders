@@ -38,7 +38,7 @@ public class TGC_Engine extends Game {
     private float height;
     
     private SpriteBatch batch;
-    //private boolean managerIsNotDone = true;
+    private int delay = 0;
     
     private AssetManager manager = new AssetManager();
     
@@ -156,7 +156,7 @@ public class TGC_Engine extends Game {
 	
 	@Override
 	public void render () {
-		if(!manager.update()) {
+		if(!manager.update() && delay<100000) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
@@ -173,7 +173,7 @@ public class TGC_Engine extends Game {
 			//show the main screen to be displayed first
 			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 		}
-		
+		delay++;
 	}
 	
 }
