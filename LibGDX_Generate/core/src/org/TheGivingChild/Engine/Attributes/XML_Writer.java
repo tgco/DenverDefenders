@@ -72,7 +72,7 @@ public class XML_Writer {
 				writer.pop();
 			}
 			
-			//write level
+			//write levelGoal
 				writer.element("levelGoal");
 				
 				writer.pop();
