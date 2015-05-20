@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.Attributes;
 
 public class LevelGoal {
 	boolean goalReached = false;
