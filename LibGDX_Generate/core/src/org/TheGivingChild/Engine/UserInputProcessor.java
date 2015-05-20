@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine;
 
+import org.TheGivingChild.Engine.Attributes.GameObject;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;

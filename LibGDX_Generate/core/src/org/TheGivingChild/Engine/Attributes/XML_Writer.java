@@ -1,4 +1,4 @@
-package org.TheGivingChild.Editor;
+package org.TheGivingChild.Engine.Attributes;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,16 +12,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlWriter;
 
 public class XML_Writer {
-	private String filename = "";
-	private String packageName = "";
-	private String levelName = "";
+	private Level currentLevel;
 	
 	//main method for testing
-	/*
+	
 	public static void main(String cheese[]){
 		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",new GridPoint2(1,1));
 		testObj1.addValidAttribute("health", "100");
-		//GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
+		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
 		testObj3.addValidAttribute("health", "9001");
 		testObj3.addValidAttribute("health", "9002");
@@ -31,31 +29,32 @@ public class XML_Writer {
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
-		//testObjectArray.add(testObj2);
+		testObjectArray.add(testObj2);
 		testObjectArray.add(testObj3);
 		
 		XML_Writer sally = new XML_Writer();
-		sally.setupNewFile("testOut.xml", "", "testLevel");
-		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
-	}*/
-	
-	public void setupNewFile(String newfilename,String packagename,String newLevelName){
-		filename = newfilename;
-		packageName = packagename;
-		levelName = newLevelName;
+		//sally.setupNewFile("testOut.xml", "", "testLevel");
+		sally.createLevel(new Level("testOut","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),testObjectArray));
 	}
 	
-	public void writeToFile(Array<GameObject> gameObjects, Level level){//sets up .xml file, calls the 2 compile methods, and adds their outputs together
+	public void createLevel(Level newLevel){//this is who you gonna call
+		currentLevel = newLevel;
+		writeToFile();
+	}
+	
+	public void writeToFile(){//writes whole level to an xml file
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
 		String XML_String="";
 		String Level_String="";
 		
 		try{//compile xml string
+			System.out.println("WRITING");
 			writer.element("level");
-			writer.attribute("packageName",packageName);
-			writer.attribute("levelName", levelName);
-			for(GameObject currentGameObject:gameObjects){
+			writer.attribute("packageName",currentLevel.getPackageName());
+			writer.attribute("levelName", currentLevel.getLevelName());
+			writer.attribute("levelImage",currentLevel.getLevelImage());
+			for(GameObject currentGameObject:currentLevel.getGameObjects()){
 				writer.element("GameObject");
 				writer.attribute("ID",currentGameObject.getID());
 				writer.attribute("attributes",compileAttributeList(currentGameObject));
@@ -72,12 +71,17 @@ public class XML_Writer {
 				}
 				writer.pop();
 			}
+			
+			//write level
+				writer.element("levelGoal");
+				
+				writer.pop();
 			writer.pop();
 			
-			
+			writer.close();
 			XML_String = stringWriter.toString();
 			//write to file
-			FileWriter fileWriter = new FileWriter(filename);
+			FileWriter fileWriter = new FileWriter(currentLevel.getLevelName() + ".xml");
 			fileWriter.write(XML_String);
 			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}

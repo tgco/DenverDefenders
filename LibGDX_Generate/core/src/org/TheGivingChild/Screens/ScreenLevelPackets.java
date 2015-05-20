@@ -1,8 +1,8 @@
 package org.TheGivingChild.Screens;
 
-import org.TheGivingChild.Engine.Level;
-import org.TheGivingChild.Engine.LevelPacket;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Attributes.Level;
+import org.TheGivingChild.Engine.Attributes.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,17 +19,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
-public class ScreenLevelManager extends ScreenAdapter{
-	
-	//reference to the main engine
-	private TGC_Engine game;
+class ScreenLevelPackets extends ScreenAdapter{
 	//list of packets for each level set.
 	private Array<LevelPacket> packets;
+	private int currentPacketLevelIndex = 0;
 	private Table packetTable;
 	private Array<Level> levels;
+	
+	private TGC_Engine game;
+	
 	//constructor. Initialize the variables.
-	public ScreenLevelManager(TGC_Engine game) {
-		this.game = game;
+	public ScreenLevelPackets() {
+		game = ScreenAdapterManager.getInstance().game;
 		packets = new Array<LevelPacket>();
 		levels = new Array<Level>(game.getLevels());
 		createPackets();
@@ -72,10 +73,9 @@ public class ScreenLevelManager extends ScreenAdapter{
 			textButton.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					//hide the current screen
-					hide();
-					//call play levels on the packet called.
-					game.setScreen(game.screens[3]);
+					currentPacketLevelIndex = j;
+					//hide the current screen, load the main screen
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 				}
         	});
 			//increment the packets index
@@ -130,6 +130,10 @@ public class ScreenLevelManager extends ScreenAdapter{
 				packets.add(packet);
 			}
 		}
+	}
+	
+	public LevelPacket getPacketToPlay(){
+		return packets.get(currentPacketLevelIndex);
 	}
 	
 	@Override

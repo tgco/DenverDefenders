@@ -12,13 +12,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class OptionsScreen extends ScreenAdapter {
-	private TGC_Engine mainGame;
+class ScreenOptions extends ScreenAdapter {
 	private Texture titleImage;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	public OptionsScreen(TGC_Engine mainGame) {
-		this.mainGame = mainGame;
+	
+	private TGC_Engine game;
+	
+	public ScreenOptions() {
+		game = ScreenAdapterManager.getInstance().game;
 		camera = new OrthographicCamera();
 
 		

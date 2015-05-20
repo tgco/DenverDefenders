@@ -31,22 +31,19 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
-public class EditorScreen extends ScreenAdapter{
+class ScreenEditor extends ScreenAdapter{
 	private OrthographicCamera camera;
 	
-	private Stage stage;
 	private TextButton ballButton;
 	private TextButton backButton;
-	TextButtonStyle textButtonStyleBack;
+	private TextButtonStyle textButtonStyleBack;
 
 	private BitmapFont font;
 	private Skin skinBack;
-	private Skin skinBox;
 	private Skin skinTable;
 	
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
-	private TGC_Engine mainGame;
 	private Texture ballImage;
 	private Texture objectImage;
 	private Texture boxImage;
@@ -54,20 +51,25 @@ public class EditorScreen extends ScreenAdapter{
 	private SpriteBatch batch;
 	private Array<Rectangle> balls;
 	private Array<Rectangle> boxes;
-	private Array<String> objBox;
-	private SelectBox<String> selection;
+	
+	private boolean canSetObj = false;
+//	private Array<String> objBox;
+//	private Skin skinBox;
+//	private SelectBox<String> selection;
 
 	private Array<Rectangle> grid;
 	private Texture gridImage;
 	
 	private boolean ballOrBox = true;
+	private float objectSize;
+	private float gridSize;
+	//create placeholder game
+	private TGC_Engine mainGame;
 	
-	private float objectSize = 64;
-	private float gridSize = 100;
 	
-	
-	public EditorScreen(final TGC_Engine mainGame) {
-		this.mainGame = mainGame;
+	public ScreenEditor() {
+		//fill the placeholder from the ScreenManager
+		mainGame = ScreenAdapterManager.getInstance().game;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
 		//createStage();
@@ -77,107 +79,23 @@ public class EditorScreen extends ScreenAdapter{
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
 		boxes = new Array<Rectangle>();
-		boxImage = new Texture(Gdx.files.internal("Box.png"));
+		boxImage = new Texture(Gdx.files.internal("BoxHalf.png"));
 		gridImage = new Texture(Gdx.files.internal("Grid.png"));
 		grid = new Array<Rectangle>();
+		
+		selectImage();
+		
+		objectSize = objectImage.getHeight();
+		gridSize = gridImage.getHeight();
+		
 		fillGrid();
-		//	backButton.setVisible(true);
-
-	}
-
-	private TextButton createButtons() {
-		font = new BitmapFont();
-		skinBack = new Skin();
-		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skinBack.addRegions(buttonAtlas);
-		textButtonStyleBack = new TextButtonStyle();
-		textButtonStyleBack.font = font;
-		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
-		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
-		TextButton button = new TextButton("", textButtonStyleBack);
-		
-		button.addListener(new ChangeListener() { 			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Back Button Pressed");
-				mainGame.setScreen(mainGame.screens[3]);
-			}
-		});
-		
-		TextButtonStyle styleBall = new TextButtonStyle();
-		styleBall.font = font;
-		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
-		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
-		TextButton ballButton = new TextButton("", styleBall);
-		
-		ballButton.addListener(new ChangeListener() { 			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Ball Button Pressed");
-				selectImage();
-				System.out.println(objectImage.toString());
-			}
-		});		
-		editorTable.add(ballButton);
-		return button;
-	}
-	//	
-//	private SelectBox<String[]> createSelectBox() {
-//		skinBox = new Skin();
-//        BitmapFont font = mainGame.getBitmapFontButton();
-//        buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-//		skinBox.addRegions(buttonAtlas);
-//		SelectBoxStyle style = new SelectBoxStyle();
-//		
-//		style.font =  font;
-//		style.background = skinBox.getDrawable("ButtonPressed_Editor_Back");
-//		
-//		
-//		SelectBox<String[]> box =  new SelectBox<String[]>();
-//		System.out.println(box.getHeight());
-//		String[] options = new String[2];
-//		options[0] = "Ball";
-//		options[1] = "Box";
-//		box.setItems(options);
-//		return box;
-//	}
-	
-	private void createEditorTable() {
-		editorTable = new Table();
-		font = new BitmapFont();
-		skinTable = new Skin();
-		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skinTable.addRegions(buttonAtlas);
-		TextButton button = createButtons();
-		//SelectBox<String[]> box = createSelectBox();
-		button.setSize(150,300);
-		editorTable.add(button);
-		//editorTable.add(box);
-		editorTable.setPosition(0, 0);
-	}
-	
-	private void createStage() {
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		//editorTable = new Table();
-	}
-
-	private void fillGrid() {
-		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
-			for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
-				System.out.println("grid X" + i*gridSize);
-				System.out.println("grid Y" + j);
-
-				Rectangle gridPiece = new Rectangle(i*gridSize,j, gridSize, gridSize);
-				grid.add(gridPiece);
-			}
-		}
 	}
 	
 	@Override
 	public void hide() {
 		mainGame.removeTable(editorTable);
 	}
+	
 	@Override
 	public void render(float delta) {
 //		//		super.render(delta);
@@ -188,8 +106,8 @@ public class EditorScreen extends ScreenAdapter{
 		camera.update();
 		
 		if(Gdx.input.isTouched()) {
-			System.out.println("X: " + Gdx.input.getX());
-			System.out.println("Y: " + Gdx.input.getY());
+			//System.out.println("X: " + Gdx.input.getX());
+			//System.out.println("Y: " + Gdx.input.getY());
 
 			spawnObject();
 		}
@@ -216,13 +134,76 @@ public class EditorScreen extends ScreenAdapter{
 	public void show() {
 		mainGame.addTable(editorTable);
 	};
+	
 //	@Override
 //	public void dispose() {
 //		batch.dispose();
 //		ballImage.dispose();
 //
 //	}
+
+	private void createEditorTable() {
+		editorTable = new Table();
+		font = new BitmapFont();
+		skinTable = new Skin();
+		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
+		skinTable.addRegions(buttonAtlas);
+		TextButton button = createButtons();
+		button.setSize(150,300);
+		editorTable.add(button);
+		editorTable.setPosition(0, 0);
+	}
+	
+	private TextButton createButtons() {
+		font = new BitmapFont();
+		skinBack = new Skin();
+		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
+		skinBack.addRegions(buttonAtlas);
+		textButtonStyleBack = new TextButtonStyle();
+		textButtonStyleBack.font = font;
+		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
+		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
+		TextButton button = new TextButton("", textButtonStyleBack);
+		
+		button.addListener(new ChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			}
+		});
+		
+		TextButtonStyle styleBall = new TextButtonStyle();
+		styleBall.font = font;
+		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
+		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
+		TextButton ballButton = new TextButton("", styleBall);
+		
+		ballButton.addListener(new ChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				selectImage();
+				canSetObj = true;
+			}
+		});		
+		editorTable.add(ballButton);
+		return button;
+	}
+	
+	private void fillGrid() {
+		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
+			for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
+				//System.out.println("grid X" + i*gridSize);
+				//System.out.println("grid Y" + j);
+
+				Rectangle gridPiece = new Rectangle(i*gridSize,j, gridSize, gridSize);
+				grid.add(gridPiece);
+			}
+		}
+	}
+	
 	private void spawnObject() {
+		if (!canSetObj)
+			return;
 		Rectangle object = new Rectangle();
 		boolean inGrid = false;
 		object.width = objectSize ;
@@ -232,8 +213,8 @@ public class EditorScreen extends ScreenAdapter{
 		for (Rectangle gridPos : grid) {
 			//System.out.println(gridPos.toString());
 			if (gridPos.contains(object.x, object.y)) {
-				System.out.println("Tripped Square: " + gridPos.toString());
-				System.out.println("Mouse Pos:" + object.toString());
+				//System.out.println("Tripped Square: " + gridPos.toString());
+				//System.out.println("Mouse Pos:" + object.toString());
 				object.x = gridPos.x;
 				object.y = gridPos.y;
 				inGrid = true;
@@ -246,7 +227,9 @@ public class EditorScreen extends ScreenAdapter{
 			else
 				boxes.add(object);
 		}
+		canSetObj = false;
 	}
+	
 	private void selectImage() {
 		if (ballOrBox) {
 			objectImage = ballImage;
@@ -257,14 +240,15 @@ public class EditorScreen extends ScreenAdapter{
 			ballOrBox = !ballOrBox;
 		}
 	}
-	private void textureSize() {
-		float x = Gdx.graphics.getWidth();
-		float y = Gdx.graphics.getHeight();
-		
-		float changeX = x / mainGame.getWidth();
-		float changeY = y / mainGame.getHeight();
-		
-		objectSize = objectSize * changeX; 
-		gridSize =  gridSize * changeX;
-	}
+	
+//	private void textureSize() {
+//		float x = Gdx.graphics.getWidth();
+//		float y = Gdx.graphics.getHeight();
+//		
+//		float changeX = x / mainGame.getWidth();
+//		float changeY = y / mainGame.getHeight();
+//		
+//		objectSize = objectSize * changeX; 
+//		gridSize =  gridSize * changeX;
+//	}
 }

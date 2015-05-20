@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.Attributes;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -6,15 +6,15 @@ import com.badlogic.gdx.utils.Array;
 //This clas defines level characteristics.
 public class Level {
 	private String levelName;
-	private String packetName;
+	private String packageName;
 	private Texture levelThumbnail;
 	private LevelGoal levelGoal;
 	private Array<GameObject> actors = new Array<GameObject>();
 	
-	public Level(String name, String packetName, String levelImage, LevelGoal goal, Array<GameObject> objects){
+	public Level(String name, String packagename, String levelImage, LevelGoal goal, Array<GameObject> objects){
 
 		levelName = name;
-		this.packetName = packetName;
+		packageName=packagename;
 		//levelThumbnail = new Texture("levelImage.png");
 		levelGoal = goal;
 		actors.addAll(objects);
@@ -24,7 +24,15 @@ public class Level {
 		return levelName;
 	}
 
-	public String getPacketName(){
-		return packetName;
+	public String getPackageName(){
+		return packageName;
+	}
+	
+	public String getLevelImage(){
+		return "LEVELIMAGESTRING";
+	}
+	
+	public Array<GameObject> getGameObjects(){
+		return actors;
 	}
 }
