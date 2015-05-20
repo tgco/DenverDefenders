@@ -8,7 +8,10 @@ import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -34,6 +37,11 @@ public class TGC_Engine extends Game {
     private float width;
     private float height;
     
+    private SpriteBatch batch;
+    //private boolean managerIsNotDone = true;
+    
+    private AssetManager manager = new AssetManager();
+    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
 	}
@@ -56,7 +64,12 @@ public class TGC_Engine extends Game {
 			default:
 				break;
 		}
+		manager.load("MainScreen_Splash.png", Texture.class);
+		manager.update();
+		manager.load("Packs/Buttons.pack", TextureAtlas.class);
+		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		
+		batch = new SpriteBatch();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
@@ -67,14 +80,13 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		
+		
 		//button stuff
         bitmapFontButton = new BitmapFont();
-        
         //make an atlas using the button texture pack
-        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        
+        //TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
         //define the regions
-        skin.addRegions(buttonAtlas);
+        
         
 		//create the stage
 		createStage();
@@ -82,11 +94,8 @@ public class TGC_Engine extends Game {
 		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		//initialize the Screen manager, passing the engine to it for reference
-		ScreenAdapterManager.getInstance().initialize(this);
-		//show the main screen to be displayed first
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-
+		
+		
 	}
 	
 	public void createStage(){
@@ -147,8 +156,24 @@ public class TGC_Engine extends Game {
 	
 	@Override
 	public void render () {
-		super.render();
-		stage.draw();
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		else {
+			super.render();
+			stage.draw();
+			//managerIsNotDone = false;
+			if(manager.isLoaded("Packs/Buttons.pack")) {
+	        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
+	        }
+			//initialize the Screen manager, passing the engine to it for reference
+			ScreenAdapterManager.getInstance().initialize(this);
+			//show the main screen to be displayed first
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
+		
 	}
 	
 }
