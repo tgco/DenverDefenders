@@ -19,11 +19,16 @@ public class XML_Reader {
 		String filename = "testOut.xml";
 		test.setupNewFile(filename);
 		Level larry = test.compileLevel();
-		/*for(GameObject curObj:larry.getGameObjects()){
-			curObj.addListener(new DragListener());
-			System.out.println(curObj.getListenersAsString());
-		}*/
-		System.out.println(larry);
+		
+		for(GameObject currentObject:larry.getGameObjects()){
+			System.out.println("|" + currentObject);
+			for(Attribute current:currentObject.getAttributes()){
+				System.out.println("\t|" + current.getXMLName());
+				for(String currentValue:current.getValues()){
+					System.out.println("\t\t|" + currentValue);
+				}
+			}
+		}
 	}
 	
 	private XmlReader reader = new XmlReader();
@@ -38,17 +43,16 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file
 			//System.out.println(temp.getID());
-			//if(!currentObject.getAttribute("attributes").isEmpty()){
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					//System.out.println("\t|" + currentAttribute);
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
-						for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){//go to each value in each attribute
-							temp.addValidAttribute(currentAttribute, currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
-							//System.out.println("\t\t" + currentAttribute + "; " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
-						}
-					}else temp.addValidAttribute(currentAttribute, null);
+						Array<String> valuesToAdd = new Array<String>();
+						for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++)
+							valuesToAdd.add(currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+							//System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+						temp.addAttribute(currentAttribute, valuesToAdd);
+					}
 				}
-			//}else{System.out.println("NULL ATTRIBUTE LIST");}
 			listOfObjects.add(temp);
 		}
 		return listOfObjects;
@@ -64,7 +68,7 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	private float[] stringToPoint(String toPoint){
+	private static float[] stringToPoint(String toPoint){
 		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
 		return temp;
 	}
