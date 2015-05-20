@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 public class TGC_Engine extends Game {
@@ -50,7 +51,7 @@ public class TGC_Engine extends Game {
 	}
 
 	public void addTable(Table t){
-		rootTable.add(t);
+		rootTable.add(t).align(Align.bottomLeft);
 	}
 	
 	@Override
@@ -111,6 +112,8 @@ public class TGC_Engine extends Game {
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
+		//add the rootTable to the stage
+		stage.addActor(rootTable);
 	}
 	
 	//dispose of resources, done when the game is destroyed
@@ -166,8 +169,7 @@ public class TGC_Engine extends Game {
 		if(!manager.update()) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();
-					
+			batch.end();			
 		}
 		else {
 			if(screenTransitionTimeLeft <= 0){
