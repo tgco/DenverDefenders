@@ -7,9 +7,11 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,9 +36,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
-public class EditorScreen extends ScreenAdapter{
-	private OrthographicCamera camera;
-	
+class ScreenEditor extends ScreenAdapter{	
 	private TextButton ballButton;
 	private TextButton backButton;
 	private TextButtonStyle textButtonStyleBack;
@@ -47,7 +47,6 @@ public class EditorScreen extends ScreenAdapter{
 	
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
-	private TGC_Engine mainGame;
 	private Texture ballImage;
 	private Texture objectImage;
 	private Texture boxImage;
@@ -65,26 +64,25 @@ public class EditorScreen extends ScreenAdapter{
 	private Texture gridImage;
 	
 	private boolean ballOrBox = true;
-	
 	private float objectSize;
 	private float gridSize;
+	//create placeholder game
+	private TGC_Engine mainGame;
 	
-	private Drawable background;
-	private ScrollPaneStyle paneStyle;
-	private ListStyle listStyle;
+	private Skin boxSkin;
+//	private Drawable background;
+//	private ScrollPaneStyle paneStyle;
+//	private ListStyle listStyle;
 	
-	public EditorScreen(final TGC_Engine mainGame) {
-		this.mainGame = mainGame;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
+	public ScreenEditor() {
+		//fill the placeholder from the ScreenManager
+		mainGame = ScreenAdapterManager.getInstance().game;
+
 		//createStage();
 		createEditorTable();
 		//textureSize();
 		
 		//selection = new SelectBox<String>(skinTable);
-		
-		paneStyle = new ScrollPaneStyle();
-		listStyle = new ListStyle();
 		
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
@@ -95,7 +93,7 @@ public class EditorScreen extends ScreenAdapter{
 		grid = new Array<Rectangle>();
 		
 		selectImage();
-		
+		createSelectBox();
 		objectSize = objectImage.getHeight();
 		gridSize = gridImage.getHeight();
 		
@@ -113,9 +111,7 @@ public class EditorScreen extends ScreenAdapter{
 //		//		stage.draw();
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		camera.update();
-		
+				
 		if(Gdx.input.isTouched()) {
 			//System.out.println("X: " + Gdx.input.getX());
 			//System.out.println("Y: " + Gdx.input.getY());
@@ -179,7 +175,7 @@ public class EditorScreen extends ScreenAdapter{
 		button.addListener(new ChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				mainGame.setScreen(mainGame.screens[3]);
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		});
 		
@@ -250,6 +246,9 @@ public class EditorScreen extends ScreenAdapter{
 			objectImage = boxImage;
 			ballOrBox = !ballOrBox;
 		}
+	}
+	
+	private void createSelectBox() {
 	}
 	
 //	private void textureSize() {

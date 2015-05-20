@@ -1,14 +1,13 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Screens.EditorScreen;
-import org.TheGivingChild.Screens.HowToPlay;
-import org.TheGivingChild.Screens.MainScreen;
-import org.TheGivingChild.Screens.ScreenLevelManager;
-import org.TheGivingChild.Screens.Splash;
+import org.TheGivingChild.Engine.Attributes.GameObject;
+import org.TheGivingChild.Engine.Attributes.Level;
+import org.TheGivingChild.Engine.Attributes.LevelGoal;
+import org.TheGivingChild.Screens.ScreenAdapterEnums;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,14 +22,12 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private Stage stage;
 	//button atlas reference names
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",/* "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"*/};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	//skin from atlas
 	private Skin skin = new Skin();
 	//bitmap font for buttons
 	private BitmapFont bitmapFontButton;
-	
-	public ScreenAdapter[] screens;
-    //create tables for the UI
+	//create tables for the UI
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
     
@@ -49,13 +46,15 @@ public class TGC_Engine extends Game {
 	public void create () {
 		switch(Gdx.app.getType()){
 			case Android:
-				
+				break;
+			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				break;
 			case iOS:
+				break;
 			default:
 				break;
-				
 		}
 		
 		//levels for testing packet manager.
@@ -70,24 +69,24 @@ public class TGC_Engine extends Game {
 		
 		//button stuff
         bitmapFontButton = new BitmapFont();
+        
         //make an atlas using the button texture pack
         TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
+        
         //define the regions
         skin.addRegions(buttonAtlas);
-		
+        
+		//create the stage
 		createStage();
+		
+		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		screens = new ScreenAdapter[4];
-		ScreenAdapter levelManager = new ScreenLevelManager(this);
-		screens[0] = levelManager;
-		ScreenAdapter howToPlay = new HowToPlay(this);
-		screens[1] = howToPlay;
-		ScreenAdapter options = new EditorScreen(this);
-		screens[2]= options;
-		ScreenAdapter mainScreen = new MainScreen(this);
-		screens[3] = mainScreen;
-		//setScreen(new Splash());
+		//initialize the Screen manager, passing the engine to it for reference
+		ScreenAdapterManager.getInstance().initialize(this);
+		//show the main screen to be displayed first
+		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+
 	}
 	
 	public void createStage(){
@@ -97,6 +96,14 @@ public class TGC_Engine extends Game {
 		//initialize root Table
 		rootTable = new Table();
 	}
+	
+	//dispose of resources, done when the game is destroyed
+	@Override
+	public void dispose(){
+		super.dispose();
+		//dispose the screen manager, and in doing so all screens
+		ScreenAdapterManager.getInstance().dispose();
+	};
 	
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
