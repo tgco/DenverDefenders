@@ -1,11 +1,13 @@
-package org.TheGivingChild.Engine.Attributes;
+package org.TheGivingChild.Engine.XML;
 
 import java.lang.reflect.Method;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import org.TheGivingChild.Engine.Attributes.*;
+
+import org.TheGivingChild.Engine.XML.*;
+
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
 import com.badlogic.gdx.math.GridPoint2;

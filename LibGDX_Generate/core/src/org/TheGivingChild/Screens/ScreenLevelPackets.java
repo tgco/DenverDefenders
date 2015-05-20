@@ -1,8 +1,8 @@
 package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelPacket;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -49,8 +51,11 @@ class ScreenLevelPackets extends ScreenAdapter{
 		
 		//slide that ranges from 0 to size-1 index of packets.
 		Slider slider = new Slider(0, packets.size-1, 1, false, sliderStyle);
-		
-		HorizontalGroup packetsRow = new HorizontalGroup();
+		//row for the packet buttons
+		Table packetsRow = new Table();
+		//padding dimensions for the packets
+		float padWidth = game.getWidth()/24;
+		float padHeight = game.getHeight()/3;
 		
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
@@ -58,7 +63,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		textButtonStyle.font = font;
 		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
-		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
+		//textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		
 		//indexer for finding which packet to play when button is clicked.
 		int i = 0;
@@ -80,20 +85,16 @@ class ScreenLevelPackets extends ScreenAdapter{
         	});
 			//increment the packets index
 			i++;
-			//add the button to the correct row
-			packetsRow.addActor(textButton);
+			//add the button to the row, with padding
+			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight() - padHeight).padLeft(padWidth).padRight(padWidth);
 		}
-		//create a vertical group to add the slider and horizontal group to.
-		//VerticalGroup verticalGroup = new VerticalGroup();
-		//add the elements
-		//verticalGroup.addActor(packetsRow);
-		//verticalGroup.addActor(slider);
+		ScrollPaneStyle sps = new ScrollPaneStyle();
+		sps.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
 		
-		//table.add(verticalGroup);
-		table.add(packetsRow).height(100);
-		table.row();
-		table.add(slider).width(game.getWidth());
-		
+		//packetsRow.setPosition(packetsRow.getWidth() - packetsRow.getMaxWidth()*3, 0);
+		ScrollPane buttonScrollPane = new ScrollPane(packetsRow, sps);
+		//add the row of buttons and slider to the screen
+		table.add(buttonScrollPane).expandX().expandY();
 		
 		return table;
 	}

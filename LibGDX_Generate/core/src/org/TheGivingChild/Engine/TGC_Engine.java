@@ -1,8 +1,8 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.GameObject;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelGoal;
+import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -50,6 +50,7 @@ public class TGC_Engine extends Game {
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				
 				break;
 			case iOS:
 				break;
