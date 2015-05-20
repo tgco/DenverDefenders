@@ -20,6 +20,13 @@ public class Level {
 		actors.addAll(objects);
 	}
 	
+	public String toString(){
+		String levelString="Name: " + levelName + " Package: " + packageName + "\n";
+		for(GameObject curObj:actors)
+			levelString+="Obj:\t" + curObj.toString() + "\n";
+		return levelString+"\n";
+	}
+	
 	public String getLevelName(){
 		return levelName;
 	}
