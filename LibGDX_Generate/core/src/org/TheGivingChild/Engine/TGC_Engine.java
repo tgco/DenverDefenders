@@ -1,18 +1,22 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.GameObject;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelGoal;
+import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 public class TGC_Engine extends Game {
@@ -31,15 +35,23 @@ public class TGC_Engine extends Game {
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
     
+    private boolean screenManagerLoaded = false;
+    
     private float width;
     private float height;
+    private final static float SCREEN_TRANSITION_TIMER = 3.0f;
+    private float screenTransitionTimeLeft;
+    private SpriteBatch batch;
+    //private boolean managerIsNotDone = true;
+    
+    private AssetManager manager = new AssetManager();
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
 	}
 
 	public void addTable(Table t){
-		rootTable.add(t);
+		rootTable.add(t).align(Align.bottomLeft);
 	}
 	
 	@Override
@@ -50,6 +62,7 @@ public class TGC_Engine extends Game {
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				
 				break;
 			case iOS:
 				break;
@@ -57,6 +70,14 @@ public class TGC_Engine extends Game {
 				break;
 		}
 		
+		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
+		
+		manager.load("MainScreen_Splash.png", Texture.class);
+		manager.update();
+		manager.load("Packs/Buttons.pack", TextureAtlas.class);
+		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
+		
+		batch = new SpriteBatch();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
@@ -67,14 +88,13 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
 		
+		
 		//button stuff
         bitmapFontButton = new BitmapFont();
-        
         //make an atlas using the button texture pack
-        TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        
+        //TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
         //define the regions
-        skin.addRegions(buttonAtlas);
+        
         
 		//create the stage
 		createStage();
@@ -82,11 +102,8 @@ public class TGC_Engine extends Game {
 		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		//initialize the Screen manager, passing the engine to it for reference
-		ScreenAdapterManager.getInstance().initialize(this);
-		//show the main screen to be displayed first
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-
+		
+		
 	}
 	
 	public void createStage(){
@@ -95,7 +112,7 @@ public class TGC_Engine extends Game {
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
-		stage.addActor(anActor);
+
 	}
 	
 	
@@ -150,8 +167,32 @@ public class TGC_Engine extends Game {
 	
 	@Override
 	public void render () {
-		super.render();
-		stage.draw();
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();			
+		}
+		else {
+			if(screenTransitionTimeLeft <= 0){
+				super.render();
+				stage.draw();
+				//managerIsNotDone = false;
+				if(manager.isLoaded("Packs/Buttons.pack")) {
+		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
+		        }
+				if(!screenManagerLoaded){
+					//initialize the Screen manager, passing the engine to it for reference
+					ScreenAdapterManager.getInstance().initialize(this);
+					//show the main screen to be displayed first
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					screenManagerLoaded = true;
+				}
+			}
+		}
+		if(screenTransitionTimeLeft >= 0){
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		}
+		
 	}
 	
 }

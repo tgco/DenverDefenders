@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine.Attributes;
+package org.TheGivingChild.Engine.XML;
 
 import java.io.FileWriter;
 import java.io.StringWriter;
@@ -16,14 +16,20 @@ public class XML_Writer {
 		float temp2[] = {2,2};
 		float temp3[] = {3,3};
 		
+		Array<String> test1 = new Array<String>();
+		test1.add("100");
+		Array<String> test2 = new Array<String>();
+		test2.add("redred");
+		Array<String> test3 = new Array<String>();
+		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
+		
 		
 		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
-		testObj1.addValidAttribute("health", "100");
+		testObj1.addAttribute("health", test1);
 		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",temp2);
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
-		//testObj3.addValidAttribute("movesOnSetPath", "3,3");//start point
-		testObj3.addValidAttribute("movesOnSetPath", "3,3;4,4;5,5;6,6");
-		testObj3.addValidAttribute("movesOnSetPath", "100");//speed
+		testObj3.addAttribute("movesOnSetPath", test3);
+		testObj3.addAttribute("color", test2);
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
@@ -52,13 +58,13 @@ public class XML_Writer {
 			for(GameObject currentGameObject:currentLevel.getGameObjects()){
 				writer.element("GameObject");
 				writer.attribute("ID",currentGameObject.getID());
-				writer.attribute("attributes",compileAttributeList(currentGameObject));
+				writer.attribute("attributes",compileAttributeList(currentGameObject));//wrong
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
 				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());
-				for(String currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
-					writer.element(currentAttribute);
+				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
+					writer.element(currentAttribute.getXMLName());
 					int count = 1;
-					for(String currentValue:currentGameObject.getAttributeValues().get(currentAttribute)){
+					for(String currentValue:currentAttribute.getValues()){
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}
@@ -69,12 +75,11 @@ public class XML_Writer {
 			
 			//write levelGoal
 				writer.element("levelGoal");
-				writer.element()
+				
 				writer.pop();
 			writer.pop();
 			
 			writer.close();
-			//String XML_String = stringWriter.toString();
 			//write to file
 			FileWriter fileWriter = new FileWriter(currentLevel.getLevelName() + ".xml");
 			fileWriter.write(stringWriter.toString());
@@ -84,9 +89,8 @@ public class XML_Writer {
 	
 	private String compileAttributeList(GameObject obj){		
 		String temp = "";
-		for(String currentKey: obj.getAttributeValues().keys().toArray()){
-			temp+=currentKey + ",";
-		}
+		for(Attribute currentAttribute: obj.getAttributes())
+			temp+=currentAttribute.getXMLName() + ",";
 		//remove last character
 		String temp2="";
 		if(temp.length()>1)

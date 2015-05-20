@@ -1,15 +1,18 @@
 package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelPacket;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenLevelPackets extends ScreenAdapter{
@@ -35,22 +39,14 @@ class ScreenLevelPackets extends ScreenAdapter{
 		levels = new Array<Level>(game.getLevels());
 		createPackets();
 		packetTable = createLevelPacketButtons();
-		
 	}
 	
 	public Table createLevelPacketButtons(){
 		Table table = new Table();
-		//TODO: create slider to move between packets on screen
-		//display 3 packets on the screen at once, with spacing.
-	
-		SliderStyle sliderStyle = new SliderStyle();
-		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
-		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("SliderKnob");
-		
-		//slide that ranges from 0 to size-1 index of packets.
-		Slider slider = new Slider(0, packets.size-1, 1, false, sliderStyle);
-		
-		HorizontalGroup packetsRow = new HorizontalGroup();
+		//row for the packet buttons
+		Table packetsRow = new Table();
+		//padding dimensions for the packets
+		float padWidth = game.getWidth()/24;
 		
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
@@ -58,7 +54,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		textButtonStyle.font = font;
 		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
-		textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
+		//textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		
 		//indexer for finding which packet to play when button is clicked.
 		int i = 0;
@@ -80,21 +76,17 @@ class ScreenLevelPackets extends ScreenAdapter{
         	});
 			//increment the packets index
 			i++;
-			//add the button to the correct row
-			packetsRow.addActor(textButton);
+			//add the button to the row, with padding
+			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight()/2).padLeft(padWidth).padRight(padWidth);
 		}
-		//create a vertical group to add the slider and horizontal group to.
-		//VerticalGroup verticalGroup = new VerticalGroup();
-		//add the elements
-		//verticalGroup.addActor(packetsRow);
-		//verticalGroup.addActor(slider);
+		//ScrollPane to scroll through packets
+		ScrollPaneStyle sps = new ScrollPaneStyle();
+		ScrollPane buttonScrollPane = new ScrollPane(packetsRow, sps);
 		
-		//table.add(verticalGroup);
-		table.add(packetsRow).height(100);
-		table.row();
-		table.add(slider).width(game.getWidth());
-		
-		
+		table.add(buttonScrollPane).fill().expand();
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.align(Align.bottomLeft);
+		table.setPosition(0, 0);
 		return table;
 	}
 	
@@ -138,17 +130,20 @@ class ScreenLevelPackets extends ScreenAdapter{
 	
 	@Override
 	public void hide() {
-		game.removeTable(packetTable);
+		//game.removeTable(packetTable);
+		packetTable.remove();
 	};
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1,0,1,1);
+		Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		game.getStage().act();
 	};
 	
 	@Override
 	public void show() {
-		game.addTable(packetTable);
+		//game.addTable(packetTable);
+		game.getStage().addActor(packetTable);
 	}
 }

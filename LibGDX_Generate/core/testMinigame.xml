@@ -15,8 +15,8 @@
 		<color value1="red"/>
 	</GameObject>
 	
-	<LevelGoal win="winConditionOne" lose="loseConditionOne"> <!-- possible: Object of ID collides with another object of ID, timer expires, objects of ID exist/don't exist-->
+	<LevelGoal win="winConditionOne" lose="timeExpires"> <!-- possible: Object of ID collides with another object of ID, timer expires, objects of ID exist/don't exist-->
 		<winConditionOne value1="101"/>
-		<loseConditionOne value1="100"/>
+		<timeExpires value1="120"/>
 	</LevelGoal>
 </isthisthingon>

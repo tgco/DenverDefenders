@@ -7,6 +7,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,6 +38,21 @@ import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
 class ScreenEditor extends ScreenAdapter{	
+	public enum objectTextures {
+		BALL_TEXTURE(Gdx.files.internal("editorAssets/ball.png")),
+		HALF_BOX_TEXTURE(Gdx.files.internal("editorAssets/BoxHalf.png"));
+		
+		private Texture texture;
+		private FileHandle file;
+		private objectTextures(FileHandle file) {
+			this.file = file;
+			texture = new Texture(this.file);
+		}
+		public Texture getTexture() {
+			return texture;
+		}
+	}
+	
 	private TextButton ballButton;
 	private TextButton backButton;
 	private TextButtonStyle textButtonStyleBack;
@@ -84,11 +100,11 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//selection = new SelectBox<String>(skinTable);
 		
-		ballImage = new Texture(Gdx.files.internal("editorAssets/ball.png"));
+		ballImage = objectTextures.BALL_TEXTURE.getTexture();
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
 		boxes = new Array<Rectangle>();
-		boxImage = new Texture(Gdx.files.internal("editorAssets/BoxHalf.png"));
+		boxImage = objectTextures.HALF_BOX_TEXTURE.getTexture();
 		gridImage = new Texture(Gdx.files.internal("editorAssets/Grid.png"));
 		grid = new Array<Rectangle>();
 		
