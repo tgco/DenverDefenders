@@ -17,15 +17,17 @@ public class XML_Writer {
 	//main method for testing
 	
 	public static void main(String cheese[]){
-		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",new GridPoint2(1,1));
+		float temp1[] = {1,1};
+		float temp2[] = {2,2};
+		float temp3[] = {3,3};
+		
+		
+		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
 		testObj1.addValidAttribute("health", "100");
-		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
-		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
-		testObj3.addValidAttribute("health", "9001");
-		testObj3.addValidAttribute("health", "9002");
-		testObj3.addValidAttribute("health", "o0o0o0o0o");
-		testObj3.addValidAttribute("color","fuchesa");
-		testObj3.addValidAttribute("color","asehcuf");
+		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",temp2);
+		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
+		//testObj3.addValidAttribute("movesOnSetPath", "3,3");//start point
+		testObj3.addValidAttribute("movesOnSetPath", "3,3;4,4;5,5;6,6");
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
@@ -45,13 +47,10 @@ public class XML_Writer {
 	public void writeToFile(){//writes whole level to an xml file
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
-		String XML_String="";
-		String Level_String="";
 		
 		try{//compile xml string
-			System.out.println("WRITING");
 			writer.element("level");
-			writer.attribute("packageName",currentLevel.getPackageName());
+			writer.attribute("packageName",currentLevel.getPackageName());//might wanna make this dynamic.
 			writer.attribute("levelName", currentLevel.getLevelName());
 			writer.attribute("levelImage",currentLevel.getLevelImage());
 			for(GameObject currentGameObject:currentLevel.getGameObjects()){
@@ -59,7 +58,7 @@ public class XML_Writer {
 				writer.attribute("ID",currentGameObject.getID());
 				writer.attribute("attributes",compileAttributeList(currentGameObject));
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
-				writer.attribute("initialLocation", currentGameObject.getLocation().x + "," + currentGameObject.getLocation().y);
+				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());
 				for(String currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute);
 					int count = 1;
@@ -79,10 +78,10 @@ public class XML_Writer {
 			writer.pop();
 			
 			writer.close();
-			XML_String = stringWriter.toString();
+			//String XML_String = stringWriter.toString();
 			//write to file
 			FileWriter fileWriter = new FileWriter(currentLevel.getLevelName() + ".xml");
-			fileWriter.write(XML_String);
+			fileWriter.write(stringWriter.toString());
 			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
