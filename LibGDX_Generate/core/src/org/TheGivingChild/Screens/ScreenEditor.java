@@ -48,9 +48,7 @@ class ScreenEditor extends ScreenAdapter{
 		}
 	}
 	
-	//Buttons and the style
-	private TextButton ballButton;
-	private TextButton backButton;
+	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
 
 	//Skins and the font
