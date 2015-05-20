@@ -9,6 +9,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenLevelPackets extends ScreenAdapter{
@@ -37,25 +39,14 @@ class ScreenLevelPackets extends ScreenAdapter{
 		levels = new Array<Level>(game.getLevels());
 		createPackets();
 		packetTable = createLevelPacketButtons();
-		
 	}
 	
 	public Table createLevelPacketButtons(){
 		Table table = new Table();
-		//TODO: create slider to move between packets on screen
-		//display 3 packets on the screen at once, with spacing.
-	
-		SliderStyle sliderStyle = new SliderStyle();
-		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
-		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("SliderKnob");
-		
-		//slide that ranges from 0 to size-1 index of packets.
-		Slider slider = new Slider(0, packets.size-1, 1, false, sliderStyle);
 		//row for the packet buttons
 		Table packetsRow = new Table();
 		//padding dimensions for the packets
 		float padWidth = game.getWidth()/24;
-		float padHeight = game.getHeight()/3;
 		
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
@@ -86,16 +77,16 @@ class ScreenLevelPackets extends ScreenAdapter{
 			//increment the packets index
 			i++;
 			//add the button to the row, with padding
-			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight() - padHeight).padLeft(padWidth).padRight(padWidth);
+			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight()/2).padLeft(padWidth).padRight(padWidth);
 		}
+		//ScrollPane to scroll through packets
 		ScrollPaneStyle sps = new ScrollPaneStyle();
-		sps.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
 		ScrollPane buttonScrollPane = new ScrollPane(packetsRow, sps);
-		buttonScrollPane.setWidget(packetsRow);
-		buttonScrollPane.setFillParent(true);
-		//add the row of buttons and slider to the screen
-		table.add(buttonScrollPane);
 		
+		table.add(buttonScrollPane).fill().expand();
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.align(Align.bottomLeft);
+		table.setPosition(0, 0);
 		return table;
 	}
 	
@@ -139,17 +130,20 @@ class ScreenLevelPackets extends ScreenAdapter{
 	
 	@Override
 	public void hide() {
-		game.removeTable(packetTable);
+		//game.removeTable(packetTable);
+		packetTable.remove();
 	};
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0,0,0,0);
+		Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		game.getStage().act();
 	};
 	
 	@Override
 	public void show() {
-		game.addTable(packetTable);
+		//game.addTable(packetTable);
+		game.getStage().addActor(packetTable);
 	}
 }
