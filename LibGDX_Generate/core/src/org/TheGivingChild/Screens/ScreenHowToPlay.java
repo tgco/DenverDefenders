@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Align;
 
 class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
@@ -67,13 +68,16 @@ class ScreenHowToPlay extends ScreenAdapter{
 				}
 			});
 		}
-		t.setPosition(Gdx.graphics.getWidth()/widthDivider, buttonHeight/3);
+		//t.setPosition(Gdx.graphics.getWidth()/widthDivider, buttonHeight/3);
+		t.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		t.align(Align.bottomLeft);
+		t.setPosition(Gdx.graphics.getWidth()/4, 0);
 		return t;
 	}
 	
 	@Override
 	public void hide() {
-		game.removeTable(table);
+		table.remove();
 	}
 	
 	@Override
@@ -91,7 +95,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void show() {
-		game.addTable(table);
+		game.getStage().addActor(table);
 	}
 	
 }
