@@ -26,9 +26,11 @@ class ScreenLevelPackets extends ScreenAdapter{
 	private Table packetTable;
 	private Array<Level> levels;
 	
+	private TGC_Engine game;
+	
 	//constructor. Initialize the variables.
 	public ScreenLevelPackets() {
-		this.game = game;
+		game = ScreenAdapterManager.getInstance().game;
 		packets = new Array<LevelPacket>();
 		levels = new Array<Level>(game.getLevels());
 		createPackets();
@@ -73,7 +75,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 				public void changed(ChangeEvent event, Actor actor) {
 					currentPacketLevelIndex = j;
 					//hide the current screen, load the main screen
-					game.setScreen(game.screens[3]);
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 				}
         	});
 			//increment the packets index

@@ -16,8 +16,11 @@ class ScreenOptions extends ScreenAdapter {
 	private Texture titleImage;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	
+	private TGC_Engine game;
+	
 	public ScreenOptions() {
-		this.mainGame = mainGame;
+		game = ScreenAdapterManager.getInstance().game;
 		camera = new OrthographicCamera();
 
 		

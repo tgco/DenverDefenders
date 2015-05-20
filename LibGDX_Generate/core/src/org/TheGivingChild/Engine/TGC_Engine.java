@@ -2,10 +2,8 @@ package org.TheGivingChild.Engine;
 
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -85,7 +83,7 @@ public class TGC_Engine extends Game {
 		ScreenAdapterManager.getInstance().initialize(this);
 		//show the main screen to be displayed first
 		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-		
+
 	}
 	
 	public void createStage(){

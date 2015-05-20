@@ -23,9 +23,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor"};
 	private float buttonHeight;
 	
+	private TGC_Engine game;
 	
 	public ScreenHowToPlay() {
-		this.game = game;
+		game = ScreenAdapterManager.getInstance().game;
 		title = new Texture(Gdx.files.internal("HowToPlay.png"));
 		message = new Texture(Gdx.files.internal("HowToPlayMessage.png"));
 		batch = new SpriteBatch();
@@ -57,9 +58,9 @@ class ScreenHowToPlay extends ScreenAdapter{
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					if(j == 0)
-						game.setScreen(game.screens[0]);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL_PACKETS);
 					else
-						game.setScreen(game.screens[2]);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
 					hide();
 				}
 			});

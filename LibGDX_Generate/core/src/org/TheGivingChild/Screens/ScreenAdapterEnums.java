@@ -3,11 +3,32 @@ package org.TheGivingChild.Screens;
 import com.badlogic.gdx.ScreenAdapter;
 //Enumerations for the screens that our manager switches between.
 public enum ScreenAdapterEnums {
+	//The level packet screen, returns a new ScreenLevelPackets
+	LEVEL_PACKETS{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+            return new ScreenLevelPackets();
+        }
+	},
+	//The how to play screen, returns a new ScreenHowToPlay
+	HOW_TO_PLAY{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+            return new ScreenHowToPlay();
+        }
+	}, 
 	//The editor screen, returns a new ScreenEditor
 	EDITOR{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
             return new ScreenEditor();
+        }
+	},
+	//The options screen, returns a new ScreenOptions
+	OPTIONS{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+            return new ScreenOptions();
         }
 	},
 	//The main screen, returns a new ScreenMain
@@ -16,28 +37,11 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
             return new ScreenMain();
         }
-	}, 
-	//The how to play screen, returns a new ScreenHowToPlay
-	HOW_TO_PLAY{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-            return new ScreenHowToPlay();
-        }
-	}, 
-	//The options screen, returns a new ScreenOptions
-	OPTIONS{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-            return new ScreenOptions();
-        }
-	}, 
-	//The level packet screen, returns a new ScreenLevelPackets
-	LEVEL_PACKETS{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-            return new ScreenLevelPackets();
-        }
 	};
+	 
+	
+	
+	
 	//abstract protected class that the manager uses to return a ScreenAdapter
 	protected abstract ScreenAdapter getScreenInstance();
 }

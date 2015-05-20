@@ -17,8 +17,10 @@ class ScreenMain extends ScreenAdapter{
 	private float buttonHeight;
     private Table mainScreenTable;
 	
+    private TGC_Engine game;
+    
 	public ScreenMain() {
-		this.game = game;
+		game = ScreenAdapterManager.getInstance().game;
 		mainScreenTable = createMainScreenTable();
 		showMainScreenTable();
 	}
@@ -44,7 +46,7 @@ class ScreenMain extends ScreenAdapter{
         	b.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					game.setScreen(game.screens[j/2]);
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.values()[j/2]);
 					hideMainScreenTable();
 				}
         	});

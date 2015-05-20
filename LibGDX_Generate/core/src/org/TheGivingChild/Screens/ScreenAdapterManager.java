@@ -12,7 +12,7 @@ public final class ScreenAdapterManager {
 	//variable for the instance of the manager.
     private static ScreenAdapterManager instance;
     //variable to refer to the game.
-    private TGC_Engine game;
+    protected TGC_Engine game;
     //map of screenAdapters built from enums
     private IntMap<ScreenAdapter> screens;
     //Constructor: initializes an instance of the adapter. initializes the empty map.
