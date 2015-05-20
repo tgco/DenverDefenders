@@ -22,14 +22,14 @@ import com.badlogic.gdx.utils.Array;
 
 class ScreenEditor extends ScreenAdapter{	
 	public enum objectTextures {
-		BALL_TEXTURE(Gdx.files.internal("editorAssets/ball.png")),
-		HALF_BOX_TEXTURE(Gdx.files.internal("editorAssets/BoxHalf.png"));
+		BALL_TEXTURE("ball.png"),
+		HALF_BOX_TEXTURE("BoxHalf.png");
 		
 		private Texture texture;
-		private FileHandle file;
-		private objectTextures(FileHandle file) {
-			this.file = file;
-			texture = new Texture(this.file);
+		private String filename = "editorAssets/";
+		private objectTextures(String file) {
+			filename = filename.concat(file);
+			texture = new Texture(Gdx.files.internal(filename));
 		}
 		public Texture getTexture() {
 			return texture;
