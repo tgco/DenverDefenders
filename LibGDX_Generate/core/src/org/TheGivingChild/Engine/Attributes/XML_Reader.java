@@ -3,6 +3,8 @@ package org.TheGivingChild.Engine.Attributes;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.ArrayMap.Values;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -21,18 +23,17 @@ public class XML_Reader {
 		XML_Reader test = new XML_Reader();
 		String filename = "testOut.xml";
 		test.setupNewFile(filename);
-		Array<GameObject> testObjects = test.compileGameObjects();
-		for(GameObject bob: testObjects){
-			bob.update();
-		}
 		Level larry = test.compileLevel();
-		
+		/*for(GameObject curObj:larry.getGameObjects()){
+			curObj.addListener(new DragListener());
+			System.out.println(curObj.getListenersAsString());
+		}*/
+		System.out.println(larry);
 	}
 	
 	private XmlReader reader = new XmlReader();
-	private String xml_file;
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
-	
+	//THIS IS THE METHOD YOU CALL TO READ IN A WHOLE LEVEL
 	public Level compileLevel(){		
 		return new Level(root.getAttribute("levelName"),root.getAttribute("packageName"),root.getAttribute("levelImage"),compileLevelGoal(),compileGameObjects());
 	}
@@ -59,7 +60,7 @@ public class XML_Reader {
 	}
 	
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
-		xml_file ="";
+		String xml_file ="";
 		try{
 			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
 			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
@@ -68,19 +69,9 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	//helper method for compileGameObjects
-	private Array<GridPoint2> stringToPath(String sPath){//Working
-		Array<GridPoint2> newPath = new Array<GridPoint2>();
-		String points[] = sPath.split(";");
-		for(int i = 0; i < points.length; i++){
-			newPath.add(stringToPoint(points[i]));
-		}
-		return newPath;
-	}
-	
-	private GridPoint2 stringToPoint(String toPoint){
-		String temp[] = toPoint.split(",");
-		return new GridPoint2(Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+	private float[] stringToPoint(String toPoint){
+		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
+		return temp;
 	}
 	
 	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions

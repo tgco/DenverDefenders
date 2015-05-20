@@ -38,9 +38,6 @@ public enum ScreenAdapterEnums {
             return new ScreenMain();
         }
 	};
-	 
-	
-	
 	
 	//abstract protected class that the manager uses to return a ScreenAdapter
 	protected abstract ScreenAdapter getScreenInstance();
