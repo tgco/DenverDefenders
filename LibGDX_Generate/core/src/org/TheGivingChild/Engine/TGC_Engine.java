@@ -42,7 +42,7 @@ public class TGC_Engine extends Game {
     
     private float width;
     private float height;
-    private final static float SCREEN_TRANSITION_TIMER = 3.0f;
+    private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
     private SpriteBatch batch;
     //Asset Manager to store assets

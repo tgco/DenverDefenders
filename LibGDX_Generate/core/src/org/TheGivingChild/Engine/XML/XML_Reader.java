@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
 
-//Use this to read the XML File into a Level
-//will read in XML fle, translate into LevelGoals, GameObjects, and other data, compile them into a level, then pass that level up 
 public class XML_Reader {
 	
 	//the main method is for testing only
@@ -20,7 +18,7 @@ public class XML_Reader {
 		test.setupNewFile(filename);
 		Level larry = test.compileLevel();
 		
-		for(GameObject currentObject:larry.getGameObjects()){
+		/*for(GameObject currentObject:larry.getGameObjects()){
 			System.out.println("|" + currentObject);
 			for(Attribute current:currentObject.getAttributes()){
 				System.out.println("\t|" + current.getXMLName());
@@ -28,11 +26,13 @@ public class XML_Reader {
 					System.out.println("\t\t|" + currentValue);
 				}
 			}
-		}
+		}*/
+		larry.update();
 	}
 	
 	private XmlReader reader = new XmlReader();
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
+	
 	//THIS IS THE METHOD YOU CALL TO READ IN A WHOLE LEVEL
 	public Level compileLevel(){		
 		return new Level(root.getAttribute("levelName"),root.getAttribute("packageName"),root.getAttribute("levelImage"),compileLevelGoal(),compileGameObjects());
@@ -68,7 +68,7 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	private static float[] stringToPoint(String toPoint){
+	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
 		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
 		return temp;
 	}

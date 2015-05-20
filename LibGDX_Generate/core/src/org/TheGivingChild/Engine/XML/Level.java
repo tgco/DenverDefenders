@@ -20,6 +20,11 @@ public class Level {
 		actors.addAll(objects);
 	}
 	
+	public void update(){
+		for(GameObject currentObject:actors)
+			currentObject.update();
+	}
+	
 	public String toString(){
 		String levelString="Name: " + levelName + " Package: " + packageName + "\n";
 		for(GameObject curObj:actors)
