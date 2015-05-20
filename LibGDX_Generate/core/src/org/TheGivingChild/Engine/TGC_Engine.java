@@ -1,5 +1,8 @@
 package org.TheGivingChild.Engine;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
@@ -40,8 +43,7 @@ public class TGC_Engine extends Game {
     private float height;
     
     private SpriteBatch batch;
-    private int delay = 0;
-    
+               
     private AssetManager manager = new AssetManager();
     
 	public void addLevels(Array<Level> levels){
@@ -71,7 +73,6 @@ public class TGC_Engine extends Game {
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
-		
 		batch = new SpriteBatch();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
@@ -159,7 +160,7 @@ public class TGC_Engine extends Game {
 	
 	@Override
 	public void render () {
-		if(!manager.update() && delay<100000) {
+		if(!manager.update()) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
@@ -179,7 +180,7 @@ public class TGC_Engine extends Game {
 				screenManagerLoaded = true;
 			}
 		}
-		delay++;
+		
 	}
 	
 }
