@@ -95,7 +95,10 @@ public class TGC_Engine extends Game {
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
+		stage.addActor(anActor);
 	}
+	
+	
 	
 	//dispose of resources, done when the game is destroyed
 	@Override
