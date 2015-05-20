@@ -1,66 +1,60 @@
 package org.TheGivingChild.Engine.Attributes;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.StringWriter;
 
-import org.TheGivingChild.Engine.*;
-
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.XmlWriter;
 
 public class XML_Writer {
-	private String filename = "";
-	private String packageName = "";
-	private String levelName = "";
+	private Level currentLevel;
 	
 	//main method for testing
-	/*
+	
 	public static void main(String cheese[]){
-		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",new GridPoint2(1,1));
+		float temp1[] = {1,1};
+		float temp2[] = {2,2};
+		float temp3[] = {3,3};
+		
+		
+		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
 		testObj1.addValidAttribute("health", "100");
-		//GameObject testObj2 = new GameObject(2,"testObj2FILENAME",new GridPoint2(2,2));
-		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",new GridPoint2(3,3));
-		testObj3.addValidAttribute("health", "9001");
-		testObj3.addValidAttribute("health", "9002");
-		testObj3.addValidAttribute("health", "o0o0o0o0o");
-		testObj3.addValidAttribute("color","fuchesa");
-		testObj3.addValidAttribute("color","asehcuf");
+		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",temp2);
+		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
+		//testObj3.addValidAttribute("movesOnSetPath", "3,3");//start point
+		testObj3.addValidAttribute("movesOnSetPath", "3,3;4,4;5,5;6,6");
+		testObj3.addValidAttribute("movesOnSetPath", "100");//speed
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
-		//testObjectArray.add(testObj2);
+		testObjectArray.add(testObj2);
 		testObjectArray.add(testObj3);
 		
 		XML_Writer sally = new XML_Writer();
-		sally.setupNewFile("testOut.xml", "", "testLevel");
-		sally.writeToFile(testObjectArray,new Level("PLACEHOLDER","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),new Array<GameObject>()));
-	}*/
-	
-	public void setupNewFile(String newfilename,String packagename,String newLevelName){
-		filename = newfilename;
-		packageName = packagename;
-		levelName = newLevelName;
+		//sally.setupNewFile("testOut.xml", "", "testLevel");
+		sally.createLevel(new Level("testOut","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),testObjectArray));
 	}
 	
-	public void writeToFile(Array<GameObject> gameObjects, Level level){//sets up .xml file, calls the 2 compile methods, and adds their outputs together
+	public void createLevel(Level newLevel){//this is who you gonna call
+		currentLevel = newLevel;
+		writeToFile();
+	}
+	
+	public void writeToFile(){//writes whole level to an xml file
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
-		String XML_String="";
-		String Level_String="";
 		
 		try{//compile xml string
 			writer.element("level");
-			writer.attribute("packageName",packageName);
-			writer.attribute("levelName", levelName);
-			for(GameObject currentGameObject:gameObjects){
+			writer.attribute("packageName",currentLevel.getPackageName());//might wanna make this dynamic.
+			writer.attribute("levelName", currentLevel.getLevelName());
+			writer.attribute("levelImage",currentLevel.getLevelImage());
+			for(GameObject currentGameObject:currentLevel.getGameObjects()){
 				writer.element("GameObject");
 				writer.attribute("ID",currentGameObject.getID());
 				writer.attribute("attributes",compileAttributeList(currentGameObject));
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
-				writer.attribute("initialLocation", currentGameObject.getLocation().x + "," + currentGameObject.getLocation().y);
+				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());
 				for(String currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute);
 					int count = 1;
@@ -72,13 +66,18 @@ public class XML_Writer {
 				}
 				writer.pop();
 			}
+			
+			//write levelGoal
+				writer.element("levelGoal");
+				writer.element()
+				writer.pop();
 			writer.pop();
 			
-			
-			XML_String = stringWriter.toString();
+			writer.close();
+			//String XML_String = stringWriter.toString();
 			//write to file
-			FileWriter fileWriter = new FileWriter(filename);
-			fileWriter.write(XML_String);
+			FileWriter fileWriter = new FileWriter(currentLevel.getLevelName() + ".xml");
+			fileWriter.write(stringWriter.toString());
 			fileWriter.close();
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
@@ -93,10 +92,5 @@ public class XML_Writer {
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);
 		return temp2;
-	}
-	
-	private String compileLevelToString(Level level){
-		String levelString = "";
-		return levelString;
 	}
 }
