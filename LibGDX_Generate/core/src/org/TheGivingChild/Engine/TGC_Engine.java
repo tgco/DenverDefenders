@@ -82,7 +82,6 @@ public class TGC_Engine extends Game {
 		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		
 		//initialize the Screen manager, passing the engine to it for reference
 		ScreenAdapterManager.getInstance().initialize(this);
 		//show the main screen to be displayed first

@@ -52,6 +52,7 @@ class ScreenEditor extends ScreenAdapter{
 	private Array<Rectangle> balls;
 	private Array<Rectangle> boxes;
 	
+	private boolean canSetObj = false;
 //	private Array<String> objBox;
 //	private Skin skinBox;
 //	private SelectBox<String> selection;
@@ -105,8 +106,8 @@ class ScreenEditor extends ScreenAdapter{
 		camera.update();
 		
 		if(Gdx.input.isTouched()) {
-			System.out.println("X: " + Gdx.input.getX());
-			System.out.println("Y: " + Gdx.input.getY());
+			//System.out.println("X: " + Gdx.input.getX());
+			//System.out.println("Y: " + Gdx.input.getY());
 
 			spawnObject();
 		}
@@ -181,6 +182,7 @@ class ScreenEditor extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				selectImage();
+				canSetObj = true;
 			}
 		});		
 		editorTable.add(ballButton);
@@ -200,6 +202,8 @@ class ScreenEditor extends ScreenAdapter{
 	}
 	
 	private void spawnObject() {
+		if (!canSetObj)
+			return;
 		Rectangle object = new Rectangle();
 		boolean inGrid = false;
 		object.width = objectSize ;
@@ -209,8 +213,8 @@ class ScreenEditor extends ScreenAdapter{
 		for (Rectangle gridPos : grid) {
 			//System.out.println(gridPos.toString());
 			if (gridPos.contains(object.x, object.y)) {
-				System.out.println("Tripped Square: " + gridPos.toString());
-				System.out.println("Mouse Pos:" + object.toString());
+				//System.out.println("Tripped Square: " + gridPos.toString());
+				//System.out.println("Mouse Pos:" + object.toString());
 				object.x = gridPos.x;
 				object.y = gridPos.y;
 				inGrid = true;
@@ -223,6 +227,7 @@ class ScreenEditor extends ScreenAdapter{
 			else
 				boxes.add(object);
 		}
+		canSetObj = false;
 	}
 	
 	private void selectImage() {
