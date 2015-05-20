@@ -1,8 +1,8 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.GameObject;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelGoal;
+import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -34,9 +34,12 @@ public class TGC_Engine extends Game {
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
     
+    private boolean screenManagerLoaded = false;
+    
     private float width;
     private float height;
-    
+    private final static float SCREEN_TRANSITION_TIMER = 3.0f;
+    private float screenTransitionTimeLeft;
     private SpriteBatch batch;
     //private boolean managerIsNotDone = true;
     
@@ -58,12 +61,16 @@ public class TGC_Engine extends Game {
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				
 				break;
 			case iOS:
 				break;
 			default:
 				break;
 		}
+		
+		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
+		
 		manager.load("MainScreen_Splash.png", Texture.class);
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
@@ -160,18 +167,27 @@ public class TGC_Engine extends Game {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
+					
 		}
 		else {
-			super.render();
-			stage.draw();
-			//managerIsNotDone = false;
-			if(manager.isLoaded("Packs/Buttons.pack")) {
-	        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
-	        }
-			//initialize the Screen manager, passing the engine to it for reference
-			ScreenAdapterManager.getInstance().initialize(this);
-			//show the main screen to be displayed first
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			if(screenTransitionTimeLeft <= 0){
+				super.render();
+				stage.draw();
+				//managerIsNotDone = false;
+				if(manager.isLoaded("Packs/Buttons.pack")) {
+		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
+		        }
+				if(!screenManagerLoaded){
+					//initialize the Screen manager, passing the engine to it for reference
+					ScreenAdapterManager.getInstance().initialize(this);
+					//show the main screen to be displayed first
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					screenManagerLoaded = true;
+				}
+			}
+		}
+		if(screenTransitionTimeLeft >= 0){
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		
 	}
