@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
@@ -56,7 +59,7 @@ public class EditorScreen extends ScreenAdapter{
 	private boolean canSetObj = false;
 //	private Array<String> objBox;
 //	private Skin skinBox;
-//	private SelectBox<String> selection;
+	private SelectBox<String> selection;
 
 	private Array<Rectangle> grid;
 	private Texture gridImage;
@@ -66,6 +69,10 @@ public class EditorScreen extends ScreenAdapter{
 	private float objectSize;
 	private float gridSize;
 	
+	private Drawable background;
+	private ScrollPaneStyle paneStyle;
+	private ListStyle listStyle;
+	
 	public EditorScreen(final TGC_Engine mainGame) {
 		this.mainGame = mainGame;
 		camera = new OrthographicCamera();
@@ -73,6 +80,12 @@ public class EditorScreen extends ScreenAdapter{
 		//createStage();
 		createEditorTable();
 		//textureSize();
+		
+		//selection = new SelectBox<String>(skinTable);
+		
+		paneStyle = new ScrollPaneStyle();
+		listStyle = new ListStyle();
+		
 		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		batch = new SpriteBatch();
 		balls = new Array<Rectangle>();
