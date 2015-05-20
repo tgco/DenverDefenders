@@ -30,11 +30,15 @@ public class XML_Writer {
 		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
 		testObj3.addAttribute("movesOnSetPath", test3);
 		testObj3.addAttribute("color", test2);
+		GameObject testObj4 = new GameObject(4,"testObj4FILENAME",temp3);
+		testObj4.addAttribute("disappearsOnPress", new Array<String>());
+		
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
 		testObjectArray.add(testObj2);
 		testObjectArray.add(testObj3);
+		testObjectArray.add(testObj4);
 		
 		XML_Writer sally = new XML_Writer();
 		//sally.setupNewFile("testOut.xml", "", "testLevel");

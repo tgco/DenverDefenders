@@ -10,7 +10,7 @@ public enum Attribute {
 	HEALTH{
 		private int health;
 		public void update(){
-			System.out.println("Health Update");
+			System.out.println("\nHealth Update\n" + health);
 		}
 		public void setValues(Array<String> newValues){//each implementation of setValues translates the array of strings into whatever datatype it wants
 			health = Integer.parseInt(newValues.first().toString());
@@ -26,7 +26,7 @@ public enum Attribute {
 	COLOR{
 		private String color;
 		public void update(){
-			System.out.println("Color Update");
+			System.out.println("\nColor Update\n" + color);
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -43,9 +43,9 @@ public enum Attribute {
 	MOVESONSETPATH{
 		private Array<float[]> path;
 		public void update(){
-			System.out.println("MovesOnSetPath Update");
-			//for(float[] currentPoint:path)
-			//	System.out.println(currentPoint[0] + ", " + currentPoint[1]);
+			System.out.println("\nMovesOnSetPath Update");
+			for(float[] currentPoint:path)
+				System.out.println(currentPoint[0] + ", " + currentPoint[1]);
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -77,7 +77,7 @@ public enum Attribute {
 	},
 	DISAPPEARSONPRESS{
 		public void update(){
-			System.out.println("DisappearsOnPress Update");
+			System.out.println("\nDisappearsOnPress Update");
 		}
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
