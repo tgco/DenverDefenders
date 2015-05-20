@@ -1,6 +1,6 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.GameObject;
+import org.TheGivingChild.Engine.XML.GameObject;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;

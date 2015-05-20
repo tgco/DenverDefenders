@@ -1,8 +1,8 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.GameObject;
-import org.TheGivingChild.Engine.Attributes.Level;
-import org.TheGivingChild.Engine.Attributes.LevelGoal;
+import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -34,6 +34,8 @@ public class TGC_Engine extends Game {
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
     
+    private boolean screenManagerLoaded = false;
+    
     private float width;
     private float height;
     
@@ -58,6 +60,7 @@ public class TGC_Engine extends Game {
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
 				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				
 				break;
 			case iOS:
 				break;
@@ -168,10 +171,13 @@ public class TGC_Engine extends Game {
 			if(manager.isLoaded("Packs/Buttons.pack")) {
 	        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
 	        }
-			//initialize the Screen manager, passing the engine to it for reference
-			ScreenAdapterManager.getInstance().initialize(this);
-			//show the main screen to be displayed first
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			if(!screenManagerLoaded){
+				//initialize the Screen manager, passing the engine to it for reference
+				ScreenAdapterManager.getInstance().initialize(this);
+				//show the main screen to be displayed first
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+				screenManagerLoaded = true;
+			}
 		}
 		
 	}
