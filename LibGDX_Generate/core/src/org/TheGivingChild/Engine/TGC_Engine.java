@@ -1,7 +1,11 @@
 package org.TheGivingChild.Engine;
 
+import org.TheGivingChild.Engine.Attributes.GameObject;
+import org.TheGivingChild.Engine.Attributes.Level;
+import org.TheGivingChild.Engine.Attributes.LevelGoal;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,7 +22,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private Stage stage;
 	//button atlas reference names
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor",/* "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"*/};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	//skin from atlas
 	private Skin skin = new Skin();
 	//bitmap font for buttons

@@ -1,8 +1,8 @@
 package org.TheGivingChild.Screens;
 
-import org.TheGivingChild.Engine.Level;
-import org.TheGivingChild.Engine.LevelPacket;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Attributes.Level;
+import org.TheGivingChild.Engine.Attributes.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
