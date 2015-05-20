@@ -49,6 +49,10 @@ class ScreenLevelPackets extends ScreenAdapter{
 		sliderStyle.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
 		sliderStyle.knob = game.getButtonAtlasSkin().getDrawable("SliderKnob");
 		
+		ScrollPaneStyle sps = new ScrollPaneStyle();
+		sps.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
+		ScrollPane buttonScrollPane = new ScrollPane(null, sps);
+		
 		//slide that ranges from 0 to size-1 index of packets.
 		Slider slider = new Slider(0, packets.size-1, 1, false, sliderStyle);
 		//row for the packet buttons
@@ -86,13 +90,9 @@ class ScreenLevelPackets extends ScreenAdapter{
 			//increment the packets index
 			i++;
 			//add the button to the row, with padding
-			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight() - padHeight).padLeft(padWidth).padRight(padWidth);
+			buttonScrollPane.addActor(textButton);
 		}
-		ScrollPaneStyle sps = new ScrollPaneStyle();
-		sps.background = game.getButtonAtlasSkin().getDrawable("SliderBackground");
 		
-		//packetsRow.setPosition(packetsRow.getWidth() - packetsRow.getMaxWidth()*3, 0);
-		ScrollPane buttonScrollPane = new ScrollPane(packetsRow, sps);
 		//add the row of buttons and slider to the screen
 		table.add(buttonScrollPane).expandX().expandY();
 		
