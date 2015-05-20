@@ -31,7 +31,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Select;
 import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
-public class EditorScreen extends ScreenAdapter{
+class ScreenEditor extends ScreenAdapter{
 	private OrthographicCamera camera;
 	
 	private TextButton ballButton;
@@ -44,7 +44,6 @@ public class EditorScreen extends ScreenAdapter{
 	
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
-	private TGC_Engine mainGame;
 	private Texture ballImage;
 	private Texture objectImage;
 	private Texture boxImage;
@@ -53,6 +52,7 @@ public class EditorScreen extends ScreenAdapter{
 	private Array<Rectangle> balls;
 	private Array<Rectangle> boxes;
 	
+	private boolean canSetObj = false;
 //	private Array<String> objBox;
 //	private Skin skinBox;
 //	private SelectBox<String> selection;
@@ -61,12 +61,15 @@ public class EditorScreen extends ScreenAdapter{
 	private Texture gridImage;
 	
 	private boolean ballOrBox = true;
-	
 	private float objectSize;
 	private float gridSize;
+	//create placeholder game
+	private TGC_Engine mainGame;
 	
-	public EditorScreen(final TGC_Engine mainGame) {
-		this.mainGame = mainGame;
+	
+	public ScreenEditor() {
+		//fill the placeholder from the ScreenManager
+		mainGame = ScreenAdapterManager.getInstance().game;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, mainGame.getHeight(), mainGame.getWidth());
 		//createStage();
@@ -103,8 +106,8 @@ public class EditorScreen extends ScreenAdapter{
 		camera.update();
 		
 		if(Gdx.input.isTouched()) {
-			System.out.println("X: " + Gdx.input.getX());
-			System.out.println("Y: " + Gdx.input.getY());
+			//System.out.println("X: " + Gdx.input.getX());
+			//System.out.println("Y: " + Gdx.input.getY());
 
 			spawnObject();
 		}
@@ -165,7 +168,7 @@ public class EditorScreen extends ScreenAdapter{
 		button.addListener(new ChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				mainGame.setScreen(mainGame.screens[3]);
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		});
 		
@@ -179,6 +182,7 @@ public class EditorScreen extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				selectImage();
+				canSetObj = true;
 			}
 		});		
 		editorTable.add(ballButton);
@@ -198,6 +202,8 @@ public class EditorScreen extends ScreenAdapter{
 	}
 	
 	private void spawnObject() {
+		if (!canSetObj)
+			return;
 		Rectangle object = new Rectangle();
 		boolean inGrid = false;
 		object.width = objectSize ;
@@ -207,8 +213,8 @@ public class EditorScreen extends ScreenAdapter{
 		for (Rectangle gridPos : grid) {
 			//System.out.println(gridPos.toString());
 			if (gridPos.contains(object.x, object.y)) {
-				System.out.println("Tripped Square: " + gridPos.toString());
-				System.out.println("Mouse Pos:" + object.toString());
+				//System.out.println("Tripped Square: " + gridPos.toString());
+				//System.out.println("Mouse Pos:" + object.toString());
 				object.x = gridPos.x;
 				object.y = gridPos.y;
 				inGrid = true;
@@ -221,6 +227,7 @@ public class EditorScreen extends ScreenAdapter{
 			else
 				boxes.add(object);
 		}
+		canSetObj = false;
 	}
 	
 	private void selectImage() {

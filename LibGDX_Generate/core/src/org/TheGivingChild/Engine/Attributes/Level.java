@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.Attributes;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;

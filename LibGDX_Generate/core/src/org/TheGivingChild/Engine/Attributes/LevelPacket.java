@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.Attributes;
 
 import java.util.Iterator;
 

@@ -28,3 +28,7 @@ Changes to Assets should be done so through the Android projects Assets folder, 
 Do not push to the Master Branch if your code does not work. If you want to push code that you are working on, do so in a custom branch.
 If you are working on a seperate branch and want to merge with Master, pull from Master, fix any conflicts, then push to Master.
 
+
+
+Relevant links for project:
+https://github.com/libgdx/libgdx/wiki/Managing-your-assets
