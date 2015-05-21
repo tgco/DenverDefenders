@@ -65,12 +65,11 @@ class ScreenEditor extends ScreenAdapter{
 	private SpriteBatch batch;
 	
 	//Variables used for the grid, its data structure, texture, and size
-	private Array<Rectangle> grid;
 	private Texture gridImage;
 	private float gridSize;
 	private int gridRows = 0;
 	private int gridCol = 0;
-	private Rectangle gr[][];
+	private Rectangle grid[][];
 	//Sees if object can be placed, goes to true when ballButton is hit
 	private boolean canSetObj = false;
 	
@@ -93,9 +92,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
-		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");
-		grid = new Array<Rectangle>();
-		
+		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
 		//Instantiate Array for the gameObjects
 		gameObjects = new Array<ScreenEditor.EditorGameObject>();
 		
@@ -128,7 +125,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
-				batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), gr[i][j].x, gr[i][j].y);
+				batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
 			}
 		}
 		
@@ -214,10 +211,10 @@ class ScreenEditor extends ScreenAdapter{
 			gridRows++;
 		}
 		
-		gr = new Rectangle[gridCol][gridRows];
+		grid = new Rectangle[gridCol][gridRows];
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
-				gr[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
+				grid[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
 			}
 		}
 
@@ -239,15 +236,15 @@ class ScreenEditor extends ScreenAdapter{
 		
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
-				if (gr[i][j].contains(x,y)) {
-					x = gr[i][j].x;
-					y = gr[i][j].y;
+				if (grid[i][j].contains(x,y)) {
+					x = grid[i][j].x;
+					y = grid[i][j].y;
 					float[] pnt =  {x, y};
-					
-					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(),pnt);
+					int[] gridPos = {i, j};
+					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), pnt, gridPos);
 					for (int k=0; k<gameObjects.size; k++) {
-						//If there is an object in the grid peice already, it gets replaced
-						if(gameObjects.get(k).getX() == x && gameObjects.get(k).getY() == y) {
+						//If there is an object in the grid piece already, it gets replaced
+						if(gameObjects.get(k).getCol() == gridPos[0] && gameObjects.get(k).getRow() == gridPos[1]) {
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -281,10 +278,11 @@ class ScreenEditor extends ScreenAdapter{
 		//Stores the Texture Enum and a rectangle
 		private ObjectTexture texture;
 		private Rectangle rectangle;
-		
+		private int grid[];
 		//
-		public EditorGameObject(int newID, String img, float[] newPosition) {
+		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
 			super(newID, img, newPosition);
+			grid = gridPos;
 			//Goes through all the enums and when it finds the correct one, it stores it to the variable
 			for (ObjectTexture itr : ObjectTexture.values()) {
 				if (img.equals(itr.getFile())) {
@@ -306,6 +304,12 @@ class ScreenEditor extends ScreenAdapter{
 		}
 		public Texture getTexture() {
 			return texture.getTexture();
+		}
+		public int  getRow() {
+			return grid[1];
+		}
+		public int getCol() {
+			return grid[0];
 		}
 	}
 }
