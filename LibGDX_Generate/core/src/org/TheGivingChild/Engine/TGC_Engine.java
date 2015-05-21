@@ -3,9 +3,11 @@ package org.TheGivingChild.Engine;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
+import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -94,14 +96,14 @@ public class TGC_Engine extends Game {
 		manager.load("editorAssets/Grid.png", Texture.class);
 		batch = new SpriteBatch();
 		//levels for testing packet manager.
-		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level3", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level4", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level5", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level6", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level3", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level4", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level5", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level6", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level7", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		
 		
 		//button stuff
