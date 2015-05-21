@@ -1,8 +1,20 @@
 package org.TheGivingChild.Engine.XML;
 
+//<<<<<<< HEAD
+import java.lang.reflect.Method;
+
+import org.TheGivingChild.Engine.UserInputProcessor;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.reflect.*;
+import com.badlogic.gdx.utils.reflect.Method.*;
+//=======
+//>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 
 //GameObject is essentially a sotrage container for all the information associated with each object on the screen
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
@@ -14,7 +26,18 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	2: Each object's attributes are then elements within the object
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
+		
 	
+//<<<<<<< HEAD
+	public GameObject(){
+		ID = 1;
+		imageFilename = "TEST";
+		attributes = new Array<Attribute>();
+			
+	}
+	
+//=======
+///>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
@@ -56,4 +79,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
+	
+	
+	
 }
