@@ -14,9 +14,10 @@ public class XML_Writer {
 	//main method for testing
 	
 	public static void main(String cheese[]){
+		//screen 576x1024
 		float temp1[] = {1,1};
 		float temp2[] = {2,2};
-		float temp3[] = {100,100};
+		float temp3[] = {100,576};
 		
 		Array<String> test1 = new Array<String>();
 		test1.add("100");
@@ -25,7 +26,7 @@ public class XML_Writer {
 		Array<String> test3 = new Array<String>();
 		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
 		Array<String> test4 = new Array<String>();
-		test4.add("10");
+		test4.add("100");
 		
 		
 		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
