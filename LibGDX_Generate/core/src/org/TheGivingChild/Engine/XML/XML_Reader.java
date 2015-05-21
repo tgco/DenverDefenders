@@ -14,9 +14,6 @@ import com.badlogic.gdx.utils.Array;
 public class XML_Reader {
 	
 	//the main method is for testing only
-	
-	
-	
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
 		String filename = "testOut.xml";
@@ -39,6 +36,16 @@ public class XML_Reader {
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
 	//THIS IS THE METHOD YOU CALL TO READ IN A WHOLE LEVEL
+	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
+		String xml_file ="";
+		try{
+			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
+			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
+			fileReader.close();
+		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
+		root = reader.parse(xml_file);
+	}
+	
 	public Level compileLevel(){		
 		return new Level(root.getAttribute("levelName"),root.getAttribute("packageName"),root.getAttribute("levelImage"),compileWinConditions(),compileLoseConditions(),compileGameObjects());
 	}
@@ -98,16 +105,6 @@ public class XML_Reader {
 			}
 		}
 		return loseEnums;
-	}
-	
-	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
-		String xml_file ="";
-		try{
-			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
-			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
-			fileReader.close();
-		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
-		root = reader.parse(xml_file);
 	}
 	
 	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats

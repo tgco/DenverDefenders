@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -9,7 +10,7 @@ public enum Attribute {
 	 */
 	HEALTH{
 		private int health;
-		public void update(){
+		public void update(GameObject myObject){
 			System.out.println("\nHealth Update\n" + health);
 		}
 		public void setValues(Array<String> newValues){//each implementation of setValues translates the array of strings into whatever datatype it wants
@@ -25,7 +26,7 @@ public enum Attribute {
 	},
 	COLOR{
 		private String color;
-		public void update(){
+		public void update(GameObject myObject){
 			System.out.println("\nColor Update\n" + color);
 		}
 		
@@ -42,7 +43,7 @@ public enum Attribute {
 	},
 	MOVESONSETPATH{
 		private Array<float[]> path;
-		public void update(){
+		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
 			for(float[] currentPoint:path)
 				System.out.println(currentPoint[0] + ", " + currentPoint[1]);
@@ -76,17 +77,33 @@ public enum Attribute {
 		public String getXMLName(){return "movesOnSetPath";}
 	},
 	DISAPPEARSONPRESS{
-		public void update(){
+		public void update(GameObject myObject){
 			System.out.println("\nDisappearsOnPress Update");
 		}
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
 		public String getXMLName(){return "disappearsOnPress";}
+	},
+	FALLSATSETRATE{
+		private int rate;
+		public void update(GameObject myObject){
+			System.out.println("\nfallsAtSetRate Update");
+			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
+		}
+		public void setValues(Array<String> newValues){
+			rate = Integer.parseInt(newValues.get(0));
+		}
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(rate+"");
+			return temp;
+		}
+		public String getXMLName(){return "fallsAtSetRate";}
 	};
 	
 	public abstract void setValues(Array<String> newValues);
 	public abstract Array<String> getValues();
-	public abstract void update();
+	public abstract void update(GameObject myObject);
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
 	
 	public static Attribute newType(String type){
