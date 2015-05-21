@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.Attributes.WinEnum;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
@@ -10,14 +12,16 @@ public class Level {
 	private Texture levelThumbnail;
 	private LevelGoal levelGoal;
 	private Array<GameObject> actors = new Array<GameObject>();
+	private Array<WinEnum> winConditions;
+	private Array<LoseEnum> lossConditions;
 	
 	public Level(String name, String packagename, String levelImage, LevelGoal goal, Array<GameObject> objects){
-
 		levelName = name;
 		packageName=packagename;
 		//levelThumbnail = new Texture("levelImage.png");
 		levelGoal = goal;
 		actors.addAll(objects);
+		winConditions = new Array<WinEnum>();
 	}
 	
 	public void update(){
@@ -46,5 +50,13 @@ public class Level {
 	
 	public Array<GameObject> getGameObjects(){
 		return actors;
+	}
+	
+	public void addWinCondition(WinEnum newWinCondition){
+		winConditions.add(newWinCondition);
+	}
+	
+	public Array<WinEnum> getWinConditions(){
+		return winConditions;
 	}
 }

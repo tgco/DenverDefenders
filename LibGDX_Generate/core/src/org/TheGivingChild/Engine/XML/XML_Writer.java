@@ -79,7 +79,7 @@ public class XML_Writer {
 			
 			//write levelGoal
 				writer.element("levelGoal");
-				
+				writer.attribute("win", value)
 				writer.pop();
 			writer.pop();
 			
