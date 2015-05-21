@@ -31,13 +31,20 @@ public enum ScreenAdapterEnums {
             return new ScreenOptions();
         }
 	},
+	//The options screen, returns a new ScreenOptions
+	CHARACTER_CREATOR{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+            return new ScreenCharacterCreator();
+        }
+	},
 	//The main screen, returns a new ScreenMain
 	MAIN{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
             return new ScreenMain();
         }
-	};
+	};//add any new screens after MAIN, following the same format as above.
 	
 	//abstract protected class that the manager uses to return a ScreenAdapter
 	protected abstract ScreenAdapter getScreenInstance();

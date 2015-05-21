@@ -1,7 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
@@ -29,7 +27,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private Stage stage;
 	//button atlas reference names
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_CharacterCreator", "Button_MainScreen_CharacterCreator"};
 	//skin from atlas
 	private Skin skin = new Skin();
 	//bitmap font for buttons
