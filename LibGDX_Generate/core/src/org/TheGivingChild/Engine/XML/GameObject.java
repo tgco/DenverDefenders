@@ -33,7 +33,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	
 	public void update(){
 		for(Attribute currentAttribute:attributes)
-			currentAttribute.update();
+			currentAttribute.update(this);
+	}
+	
+	public void input(){
+		
 	}
 	
 	public Array<Attribute> getAttributes(){

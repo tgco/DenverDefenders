@@ -10,6 +10,9 @@
 	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="testObj4FILENAME" initialLocation="3.0,3.0">
 		<disappearsOnPress/>
 	</GameObject>
+	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="testObj5FILENAME" initialLocation="3.0,3.0">
+		<fallsAtSetRate value1="10"/>
+	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout" lose="collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>
 		<timeout lose1="42"/>
