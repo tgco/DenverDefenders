@@ -1,0 +1,18 @@
+<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
+	<GameObject ID="1" attributes="health" imageFilename="testObj1FILENAME" initialLocation="1.0,1.0">
+		<health value1="100"/>
+	</GameObject>
+	<GameObject ID="2" attributes="" imageFilename="testObj2FILENAME" initialLocation="2.0,2.0"/>
+	<GameObject ID="3" attributes="movesOnSetPath,color" imageFilename="testObj3FILENAME" initialLocation="3.0,3.0">
+		<movesOnSetPath value1="3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0"/>
+		<color value1="redred"/>
+	</GameObject>
+	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="testObj4FILENAME" initialLocation="3.0,3.0">
+		<disappearsOnPress/>
+	</GameObject>
+	<levelGoals win="collisionWithObjectWin" lose="timeout" lose="collisionWithObjectLose">
+		<collisionWithObjectWin win1="420" win2="9001"/>
+		<timeout lose1="42"/>
+		<collisionWithObjectLose lose2="42" lose3="72"/>
+	</levelGoals>
+</level>
