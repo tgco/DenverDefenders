@@ -121,4 +121,13 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		System.out.println(attributeValues.get("movesOnSetPath") + "\n");
 		
 	}
+	
+	
+	//INPUT
+	
+//	public void 
+	
+	
+	
+	
 }

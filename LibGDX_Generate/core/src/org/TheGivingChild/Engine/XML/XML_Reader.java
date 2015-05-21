@@ -14,6 +14,8 @@ public class XML_Reader {
 	
 	//the main method is for testing only
 	
+	
+	
 	public static void main(String cheese[]){
 		XML_Reader test = new XML_Reader();
 		String filename = "testOut.xml";
