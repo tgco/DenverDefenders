@@ -45,6 +45,7 @@ public class ScreenLevel extends ScreenAdapter{
 		for (GameObject g : level.getGameObjects()) {
 			batch.draw((Texture) ScreenAdapterManager.getInstance().game.getAssetManager().get(g.getImageFilename()), g.getX(), g.getY());
 		}
+		level.update();
 		batch.end();
 	}
 }

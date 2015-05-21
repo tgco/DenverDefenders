@@ -111,7 +111,9 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		
 		reader = new XML_Reader();
-		reader.setupNewFile("../testOut.xml");
+		boolean exists = Gdx.files.internal("testOut.xml").exists();
+		System.out.println(exists);
+		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
 		levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
