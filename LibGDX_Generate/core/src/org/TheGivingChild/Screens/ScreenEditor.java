@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenEditor extends ScreenAdapter{	
@@ -106,7 +107,7 @@ class ScreenEditor extends ScreenAdapter{
 	//When hidden removes it's table
 	@Override
 	public void hide() {
-		mainGame.removeTable(editorTable);
+		editorTable.remove();
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
@@ -135,7 +136,7 @@ class ScreenEditor extends ScreenAdapter{
 	//Shows the table when called upon
 	@Override
 	public void show() {
-		mainGame.addTable(editorTable);
+		mainGame.getStage().addActor(editorTable);
 	};
 	
 	//Dispose, will be implemented later
@@ -153,7 +154,8 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//Creates the buttons and sets table to origin
 		createButtons();
-		editorTable.setPosition(0, 0);
+		editorTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		editorTable.align(Align.bottom);
 	}
 	
 	private void createButtons() {
@@ -178,7 +180,7 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		//Setting the size and adding the Back button to the table
 		backButton.setSize(150,300);
-		editorTable.add(backButton);
+		editorTable.add(backButton).align(Align.bottom);
 		
 		//Uses some of the same variables, so gets images ready for the Ball button
 		TextButtonStyle styleBall = new TextButtonStyle();
@@ -197,7 +199,7 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		});
 		//Adds the Ball button
-		editorTable.add(ballButton);
+		editorTable.add(ballButton).align(Align.bottom);
 	}
 	
 	//Fills the grid according to the gridImage size relative to the screen size

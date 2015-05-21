@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.Align;
 
 class ScreenOptions extends ScreenAdapter {
 	private TextureAtlas atlas;
@@ -42,12 +43,12 @@ class ScreenOptions extends ScreenAdapter {
 	
 	@Override
 	public void show() {
-		game.addTable(optionsTable);
+		game.getStage().addActor(optionsTable);
 	};
 	
 	@Override
 	public void hide() {
-		game.removeTable(optionsTable);
+		optionsTable.remove();
 	}
 	
 	private void createOptionsTable() {
@@ -59,7 +60,8 @@ class ScreenOptions extends ScreenAdapter {
 
 		//Creates the buttons and sets table to origin
 		createButton();
-		optionsTable.setPosition(0, 0);
+		optionsTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		optionsTable.align(Align.bottom);
 	}
 
 	private void createButton() {

@@ -70,8 +70,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 		}
 		//t.setPosition(Gdx.graphics.getWidth()/widthDivider, buttonHeight/3);
 		t.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		t.align(Align.bottomLeft);
-		t.setPosition(Gdx.graphics.getWidth()/4, 0);
+		t.align(Align.bottom);
 		return t;
 	}
 	
