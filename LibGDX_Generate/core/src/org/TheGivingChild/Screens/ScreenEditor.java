@@ -1,280 +1,320 @@
 package org.TheGivingChild.Screens;
 
-import java.awt.GridBagLayoutInfo;
-
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.XML.GameObject;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Select;
-import com.sun.xml.internal.ws.encoding.policy.SelectOptimalEncodingFeatureConfigurator;
 
 class ScreenEditor extends ScreenAdapter{	
-	public enum objectTextures {
-		BALL_TEXTURE(Gdx.files.internal("editorAssets/ball.png")),
-		HALF_BOX_TEXTURE(Gdx.files.internal("editorAssets/BoxHalf.png"));
+	//Enumerator for the textures that we use for the objects
+	public enum ObjectTexture {
+		BALL_TEXTURE("ball.png"),
+		HALF_BOX_TEXTURE("BoxHalf.png"),
+		BOX_TEXTURE("Box.png");
 		
+		//The texture used, the whole file path and the file used like "ball.png"
 		private Texture texture;
-		private FileHandle file;
-		private objectTextures(FileHandle file) {
+		private String filename = "editorAssets/"; //Folder they are stored in
+		private String file;
+		
+		private ObjectTexture(String file) {
 			this.file = file;
-			texture = new Texture(this.file);
+			//Adds the file to the folder path the create the correct path
+			filename = filename.concat(file);
+			//Sets the texture
+			texture = new Texture(Gdx.files.internal(filename));
 		}
+		
+		//Getters
 		public Texture getTexture() {
 			return texture;
 		}
+		public String getFile() {
+			return file;
+		}
 	}
 	
-	private TextButton ballButton;
-	private TextButton backButton;
+	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
 
+	//Skins and the font
 	private BitmapFont font;
 	private Skin skinBack;
 	private Skin skinTable;
 	
+	//TextureAtlas and the Table for the buttons
 	private TextureAtlas buttonAtlas;
 	private Table editorTable;
-	private Texture ballImage;
-	private Texture objectImage;
-	private Texture boxImage;
 	
+	//SpriteBatch that draws the objects
 	private SpriteBatch batch;
-	private Array<Rectangle> balls;
-	private Array<Rectangle> boxes;
 	
-	private boolean canSetObj = false;
-//	private Array<String> objBox;
-//	private Skin skinBox;
-	private SelectBox<String> selection;
-
-	private Array<Rectangle> grid;
+	//Variables used for the grid, its data structure, texture, and size
 	private Texture gridImage;
-	
-	private boolean ballOrBox = true;
-	private float objectSize;
 	private float gridSize;
+	private int gridRows = 0;
+	private int gridCol = 0;
+	private Rectangle grid[][];
+	//Sees if object can be placed, goes to true when ballButton is hit
+	private boolean canSetObj = false;
+	
+	//Toggles the Textures used
+	private int ballOrBox = 1;
+	
 	//create placeholder game
 	private TGC_Engine mainGame;
 	
-	private Skin boxSkin;
-//	private Drawable background;
-//	private ScrollPaneStyle paneStyle;
-//	private ListStyle listStyle;
+	//Stores the texture that is going to be used by the a EditorGameObject
+	private ObjectTexture objectImage;
+	
+	//Stores all created EditorGameObjects that were spawned by the user
+	private Array<EditorGameObject> gameObjects;
 	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		mainGame = ScreenAdapterManager.getInstance().game;
-
-		//createStage();
 		createEditorTable();
-		//textureSize();
 		
-		//selection = new SelectBox<String>(skinTable);
-		
-		ballImage = objectTextures.BALL_TEXTURE.getTexture();
+		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
-		balls = new Array<Rectangle>();
-		boxes = new Array<Rectangle>();
-		boxImage = objectTextures.HALF_BOX_TEXTURE.getTexture();
-		gridImage = new Texture(Gdx.files.internal("editorAssets/Grid.png"));
-		grid = new Array<Rectangle>();
+		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
+		//Instantiate Array for the gameObjects
+		gameObjects = new Array<ScreenEditor.EditorGameObject>();
 		
+		//This is so that there is no nullPointerEx, so objectImage has a texture 
 		selectImage();
-		createSelectBox();
-		objectSize = objectImage.getHeight();
-		gridSize = gridImage.getHeight();
 		
+		//Makes sure the grid is based off the image size and then fills the grid out
+		gridSize = gridImage.getHeight();
 		fillGrid();
 	}
-	
+	//When hidden removes it's table
 	@Override
 	public void hide() {
-		mainGame.removeTable(editorTable);
+		editorTable.remove();
 	}
-	
+	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
 	public void render(float delta) {
-//		//		super.render(delta);
-//		//		stage.draw();
+
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				
+			
+		//If touched, call spawnObjects
 		if(Gdx.input.isTouched()) {
-			//System.out.println("X: " + Gdx.input.getX());
-			//System.out.println("Y: " + Gdx.input.getY());
-
 			spawnObject();
 		}
-//
+		
+		//Draws all EditorGameObjects stored and all grid pieces
 		batch.begin();
 		
-		//		backButton.draw(batch, 1);
-		for (Rectangle ball : balls) {
-			batch.draw(ballImage, ball.x, ball.y);
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
+			}
 		}
-		for (Rectangle box : boxes) {
-			batch.draw(boxImage, box.x, box.y);
-		}
-		for (Rectangle gridPiece : grid) {
-			batch.draw(gridImage, gridPiece.x, gridPiece.y);
-			//System.out.println("Height: " + gridImage.getHeight());
-			//System.out.println(gridPiece.height + " " + gridPiece.getAspectRatio() + " " + gridPiece.getX());
+		
+		for (EditorGameObject obj : gameObjects) {
+			batch.draw(obj.getTexture(), obj.getX(), obj.getY());
 		}
 		batch.end();
 
-	};
-	
+	}
+	//Shows the table when called upon
 	@Override
 	public void show() {
-		mainGame.addTable(editorTable);
+		mainGame.getStage().addActor(editorTable);
 	};
 	
+	//Dispose, will be implemented later
 //	@Override
 //	public void dispose() {
-//		batch.dispose();
-//		ballImage.dispose();
-//
 //	}
 
+	//Function to instantiate the button table
 	private void createEditorTable() {
+		//Sets up the needed variables and parameters
 		editorTable = new Table();
-		font = new BitmapFont();
 		skinTable = new Skin();
-		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skinTable.addRegions(buttonAtlas);
-		TextButton button = createButtons();
-		button.setSize(150,300);
-		editorTable.add(button);
-		editorTable.setPosition(0, 0);
+		skinTable.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		
+		//Creates the buttons and sets table to origin
+		createButtons();
+		editorTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		editorTable.align(Align.bottom);
 	}
 	
-	private TextButton createButtons() {
+	private void createButtons() {
+		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
 		skinBack = new Skin();
-		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skinBack.addRegions(buttonAtlas);
+		skinBack.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		textButtonStyleBack = new TextButtonStyle();
-		textButtonStyleBack.font = font;
+		textButtonStyleBack.font = font; 
 		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
 		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
-		TextButton button = new TextButton("", textButtonStyleBack);
+		TextButton backButton = new TextButton("", textButtonStyleBack);
 		
-		button.addListener(new ChangeListener() { 			
+		//Creates the listener for the Back button
+		backButton.addListener(new ChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				//Calls the screen manager and has main be the shown screen if Back is hit
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		});
+		//Setting the size and adding the Back button to the table
+		backButton.setSize(150,300);
+		editorTable.add(backButton).align(Align.bottom);
 		
+		//Uses some of the same variables, so gets images ready for the Ball button
 		TextButtonStyle styleBall = new TextButtonStyle();
 		styleBall.font = font;
 		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
 		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
 		TextButton ballButton = new TextButton("", styleBall);
 		
+		//Ball button listener
 		ballButton.addListener(new ChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				//Changes the image to be drawn and lets the user place one object
 				selectImage();
 				canSetObj = true;
 			}
-		});		
-		editorTable.add(ballButton);
-		return button;
+		});
+		//Adds the Ball button
+		editorTable.add(ballButton).align(Align.bottom);
 	}
 	
+	//Fills the grid according to the gridImage size relative to the screen size
 	private void fillGrid() {
 		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
-			for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
-				//System.out.println("grid X" + i*gridSize);
-				//System.out.println("grid Y" + j);
-
-				Rectangle gridPiece = new Rectangle(i*gridSize,j, gridSize, gridSize);
-				grid.add(gridPiece);
+			gridCol++;
+		}
+		for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
+			gridRows++;
+		}
+		
+		grid = new Rectangle[gridCol][gridRows];
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				grid[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
 			}
 		}
+
 	}
 	
+	//Called when there is a touch on the screen
 	private void spawnObject() {
+		//If canSetObj is false, no object is spawned
 		if (!canSetObj)
 			return;
-		Rectangle object = new Rectangle();
-		boolean inGrid = false;
-		object.width = objectSize ;
-		object.height = objectSize;
-		object.x = Gdx.input.getX(); //- object.getWidth()/2;
-		object.y = Gdx.graphics.getHeight()-Gdx.input.getY(); // - object.getHeight()/2;
-		for (Rectangle gridPos : grid) {
-			//System.out.println(gridPos.toString());
-			if (gridPos.contains(object.x, object.y)) {
-				//System.out.println("Tripped Square: " + gridPos.toString());
-				//System.out.println("Mouse Pos:" + object.toString());
-				object.x = gridPos.x;
-				object.y = gridPos.y;
-				inGrid = true;
-				break;
+		
+		//Variables used, EditorGameObject to store the new instance and a bool to keep track
+		EditorGameObject obj;
+		boolean added = false;
+		
+		//Store the coordinates of where the user clicked
+		float x = Gdx.input.getX();
+		float y = Gdx.graphics.getHeight()-Gdx.input.getY();
+		
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				if (grid[i][j].contains(x,y)) {
+					x = grid[i][j].x;
+					y = grid[i][j].y;
+					float[] drawPos =  {x, y};
+					int[] gridPos = {i, j};
+					
+					//Create the new editor game object
+					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), drawPos, gridPos);
+					for (int k=0; k<gameObjects.size; k++) {
+						//If there is an object in the grid piece already, it gets replaced
+						if(gameObjects.get(k).getCol() == gridPos[0] && gameObjects.get(k).getRow() == gridPos[1]) {
+							gameObjects.set(k, obj);
+							added = true;
+						}
+					}
+					
+					if (!added)
+						gameObjects.add(obj);
+					break; //Break out of the loop since the position is found.
+				}
 			}
 		}
-		if (inGrid) {
-			if (ballOrBox) 
-				balls.add(object);
-			else
-				boxes.add(object);
-		}
+		
 		canSetObj = false;
+		
 	}
 	
+	//Switches between two images
 	private void selectImage() {
-		if (ballOrBox) {
-			objectImage = ballImage;
-			ballOrBox = !ballOrBox;
+		ballOrBox++;
+		ballOrBox = ballOrBox % 3;
+		if (ballOrBox == 0) {
+			objectImage = ObjectTexture.BALL_TEXTURE;
 		}
-		else {
-			objectImage = boxImage;
-			ballOrBox = !ballOrBox;
+		else if (ballOrBox == 1) {
+			objectImage = ObjectTexture.BOX_TEXTURE;
+		}
+		else if (ballOrBox == 2) {
+			objectImage = ObjectTexture.HALF_BOX_TEXTURE;
 		}
 	}
 	
-	private void createSelectBox() {
+	//Extends the GameObject Class so that it can store the texture and a rectangle
+	private class EditorGameObject extends GameObject{
+		//Stores the Texture Enum and a rectangle
+		private ObjectTexture texture;
+		private Rectangle rectangle;
+		private int grid[];
+		//
+		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
+			super(newID, img, newPosition);
+			grid = gridPos;
+			//Goes through all the enums and when it finds the correct one, it stores it to the variable
+			for (ObjectTexture itr : ObjectTexture.values()) {
+				if (img.equals(itr.getFile())) {
+					texture = itr;
+					break;
+				}
+			}
+			//Sets the rectangle to the correct position and correct dimensions
+			rectangle = new Rectangle(newPosition[0], newPosition[1], 
+					texture.getTexture().getWidth(), texture.getTexture().getHeight());
+		}
+		
+		//Getters for the object
+		public ObjectTexture getEnum() {
+			return texture;
+		}
+		public Rectangle getRectangle() {
+			return rectangle;
+		}
+		public Texture getTexture() {
+			return texture.getTexture();
+		}
+		public int  getRow() {
+			return grid[1];
+		}
+		public int getCol() {
+			return grid[0];
+		}
 	}
-	
-//	private void textureSize() {
-//		float x = Gdx.graphics.getWidth();
-//		float y = Gdx.graphics.getHeight();
-//		
-//		float changeX = x / mainGame.getWidth();
-//		float changeY = y / mainGame.getHeight();
-//		
-//		objectSize = objectSize * changeX; 
-//		gridSize =  gridSize * changeX;
-//	}
 }

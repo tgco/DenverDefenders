@@ -1,9 +1,17 @@
 package org.TheGivingChild.Engine;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
+//<<<<<<< HEAD
 import org.TheGivingChild.Engine.XML.XML_Reader;
+//=======
+import org.TheGivingChild.Engine.XML.LoseEnum;
+//>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -43,11 +51,10 @@ public class TGC_Engine extends Game {
     
     private float width;
     private float height;
-    private final static float SCREEN_TRANSITION_TIMER = 3.0f;
+    private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
     private SpriteBatch batch;
-    //private boolean managerIsNotDone = true;
-    
+    //Asset Manager to store assets
     private AssetManager manager = new AssetManager();
     
 	public void addLevels(Array<Level> levels){
@@ -73,32 +80,41 @@ public class TGC_Engine extends Game {
 			default:
 				break;
 		}
-		
+		//Timer for loading screen delay before transition to main screen
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
-		
+		//Assets to be added to the manager
 		manager.load("MainScreen_Splash.png", Texture.class);
+		//initial update so that the loading screen is loaded before everything
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
-		
+		manager.load("ball.png", Texture.class);
+		manager.load("Box.png", Texture.class);
+		manager.load("BoxHalf.png", Texture.class);
+		manager.load("Grid.png", Texture.class);
+		manager.load("HowToPlay.png", Texture.class);
+		manager.load("HowToPlayMessage.png", Texture.class);
+		manager.load("optionsTitle.png", Texture.class);
+		manager.load("editorAssets/ball.png", Texture.class);
+		manager.load("editorAssets/ballSelected.png", Texture.class);
+		manager.load("editorAssets/Box.png", Texture.class);
+		manager.load("editorAssets/BoxHalf.png", Texture.class);
+		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
+		manager.load("editorAssets/Grid.png", Texture.class);
 		batch = new SpriteBatch();
 		//levels for testing packet manager.
-		levels.add(new Level("level1", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level2", "packet1", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level3", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level4", "packet2", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level5", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level6", "packet3", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level7", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
-		levels.add(new Level("level8", "packet4", "badlogic.jpg", new LevelGoal(), new Array<GameObject>()));
+		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level3", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level4", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level5", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level6", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level7", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		
 		
 		//button stuff
         bitmapFontButton = new BitmapFont();
-        //make an atlas using the button texture pack
-        //TextureAtlas buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        //define the regions
-        
         
 		//create the stage
 		createStage();
@@ -140,6 +156,7 @@ public class TGC_Engine extends Game {
 		ScreenAdapterManager.getInstance().dispose();
 	};
 	
+	//getters for accessing variables in other areas of the engine
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
@@ -176,25 +193,37 @@ public class TGC_Engine extends Game {
 		return width;
 	}
 	
+	public AssetManager getAssetManager() {
+		return manager;
+	}
+	
 	public void removeTable(Table t){
 		rootTable.removeActor(t);
 	}
 	
 	@Override
 	public void render () {
+		//if the manager is not done updating, it will display a loading image
 		if(!manager.update()) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();			
+			batch.end();
 		}
+		//once the manager is done updating, it prepares to switch to the main screen
 		else {
+			//timer to determine whether to continue displaying loading screen
+			//or to switch to displaying the main screen
 			if(screenTransitionTimeLeft <= 0){
 				super.render();
 				stage.draw();
-				//managerIsNotDone = false;
+				//if the texture atlas is loaded, then add it to the skin
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
 		        }
+				if(manager.isLoaded("Packs/ButtonsEditor.pack")) {
+					skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+				}
+				//makes sure the main screen is only loaded once
 				if(!screenManagerLoaded){
 					//initialize the Screen manager, passing the engine to it for reference
 					ScreenAdapterManager.getInstance().initialize(this);
@@ -204,10 +233,9 @@ public class TGC_Engine extends Game {
 				}
 			}
 		}
+		//increments the timer to check if we are still delaying the main screen
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
-		
 	}
-	
 }

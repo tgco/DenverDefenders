@@ -1,18 +1,25 @@
 package org.TheGivingChild.Engine.XML;
 
+//<<<<<<< HEAD
 import java.lang.reflect.Method;
 
 import org.TheGivingChild.Engine.UserInputProcessor;
 
+=======
+>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
+<<<<<<< HEAD
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
+//=======
+//>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 
+//GameObject is essentially a sotrage container for all the information associated with each object on the screen
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private int ID;
 	private String imageFilename;
@@ -24,6 +31,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 */
 		
 	
+//<<<<<<< HEAD
 	public GameObject(){
 		ID = 1;
 		imageFilename = "TEST";
@@ -31,6 +39,8 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 			
 	}
 	
+//=======
+///>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
@@ -38,11 +48,12 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		attributes = new Array<Attribute>();
 	}
 	
-	public void update(){//working
-		
+	public void update(){
+		for(Attribute currentAttribute:attributes)
+			currentAttribute.update();
 	}
 	
-	public Array<Attribute> getAttributes(){//returns list of attributes
+	public Array<Attribute> getAttributes(){
 		return attributes;
 	}
 	
@@ -60,7 +71,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		return imageFilename;
 	}
 	
-	public String getListenersAsString(){//dont use, will be in use later after we decide how listeners will be implemented
+	public String getListenersAsString(){//this is not used, will be used at a later time once we get listeners working, leaving as is for now
 		String temp="";
 		for(EventListener listener:getListeners()){
 			temp+=","+listener.toString();
