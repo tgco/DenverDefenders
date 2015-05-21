@@ -57,6 +57,13 @@ public class XML_Writer {
 		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
 		testLoseArray.add(testLose1);
 		
+		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+		Array<String>testLose2Values =  new Array<String>();
+		testLose2Values.add("42");
+		testLose2Values.add("72");
+		testLose2.setValues(testLose2Values);
+		testLoseArray.add(testLose2);
+		
 		XML_Writer sally = new XML_Writer();
 		//sally.setupNewFile("testOut.xml", "", "testLevel");
 		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
@@ -105,7 +112,7 @@ public class XML_Writer {
 				
 				int count=1;//writing win condition values
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
-					writer.element("win"+count);
+					writer.element(currentWinCondition.getXMLDescription());
 					for(String currentValue:currentWinCondition.getValues()){
 						writer.attribute("win"+count,currentValue);
 						count++;
@@ -115,7 +122,7 @@ public class XML_Writer {
 				
 				count=1;//writing lose condition values
 				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
-					writer.element("lose"+count);
+					writer.element(currentLoseCondition.getXMLDescription());
 					for(String currentValue:currentLoseCondition.getValues()){
 						writer.attribute("lose"+count,currentValue);
 						count++;
@@ -142,5 +149,17 @@ public class XML_Writer {
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);
 		return temp2;
+	}
+	
+	private String compileWinList(){
+		String winList = "";
+		
+		return winList;
+	}
+	
+	private String compileLoseList(){
+		String loseList = "";
+		
+		return loseList;
 	}
 }

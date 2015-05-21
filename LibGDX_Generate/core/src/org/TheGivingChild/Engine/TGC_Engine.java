@@ -5,17 +5,23 @@ import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
+//<<<<<<< HEAD
+import org.TheGivingChild.Engine.XML.XML_Reader;
+//=======
 import org.TheGivingChild.Engine.XML.LoseEnum;
+//>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -37,6 +43,7 @@ public class TGC_Engine extends Game {
 	//create tables for the UI
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
+    private UserInputProcessor input = new UserInputProcessor();
     
     private boolean screenManagerLoaded = false;
     
@@ -113,7 +120,18 @@ public class TGC_Engine extends Game {
 		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
+	
 		
+		//Game input processor
+		//Gdx.input.setInputProcessor(input);
+	
+		InputMultiplexer mp = new InputMultiplexer();
+		mp.addProcessor(stage);
+		mp.addProcessor(input);
+		
+		Gdx.input.setInputProcessor(mp);
+		
+	
 		
 	}
 	
@@ -123,9 +141,10 @@ public class TGC_Engine extends Game {
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
-		//add the rootTable to the stage
-		stage.addActor(rootTable);
+
 	}
+	
+	
 	
 	//dispose of resources, done when the game is destroyed
 	@Override
@@ -216,5 +235,6 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
+		
 	}
 }

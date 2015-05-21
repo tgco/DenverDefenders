@@ -7,6 +7,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -30,13 +31,14 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	//has the loading screen been drawn?
 	boolean loadingScreenDrawn;
 	
-	
-
 	//constructor for the new character creator screen
 	public ScreenCharacterCreator(){
 		game = ScreenAdapterManager.getInstance().game;
+		
+		assetManager = new AssetManager();
 		//get the assetManager
-		AssetManager assetManager = game.getAssetManager();
+		assetManager = game.getAssetManager();
+
 		//load the packs in the assetManager queue
 		assetManager.load("Packs/Heads.pack", TextureAtlas.class);
 		assetManager.load("Packs/Body.pack", TextureAtlas.class);
@@ -44,6 +46,10 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		//while they haven't been loaded yet, display the transition screen
 		//track if the screen was drawn or not
 		loadingScreenDrawn = false;
+		loadingScreen = new Table();
+		headImages = new Array<Image>();
+		bodyImages = new Array<Image>();
+		feetImages = new Array<Image>();
 		
 	}
 	
@@ -52,18 +58,21 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		TextureAtlas bodyAtlas = assetManager.get("Packs/Heads.pack");
 		TextureAtlas feetAtlas = assetManager.get("Packs/Heads.pack");
 		
-		for(Texture t: headAtlas.getTextures()){
+		//add the images to each array based on the textures
+		for(TextureRegion t: headAtlas.getRegions()){
 			Image headImage = new Image(t);
 			headImages.add(headImage);
 		}
-		for(Texture t: bodyAtlas.getTextures()){
+		for(TextureRegion t: bodyAtlas.getRegions()){
 			Image bodyImage = new Image(t);
 			bodyImages.add(bodyImage);
 		}
-		for(Texture t: feetAtlas.getTextures()){
+		for(TextureRegion t: feetAtlas.getRegions()){
 			Image feetImage = new Image(t);
 			feetImages.add(feetImage);
 		}
+
+		
 	}
 	
 	@Override
@@ -88,9 +97,9 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 				loadingScreenDrawn = true;
 			}
 		}
-		//once the manager is done updating, it prepares to switch to the main screen
 		else {
 			loadingScreen.remove();
+			fillImageArrays();
 			characterTable = characterAppearanceTable();
 			game.getStage().addActor(characterTable);
 		}
@@ -100,16 +109,15 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	public Table characterAppearanceTable(){
 		Table characterTable = new Table();
 		Image head = headImages.get(0);
-		Image body = bodyImages.get(0);
-		Image feet = feetImages.get(0);
+		Image body = bodyImages.get(1);
+		Image feet = feetImages.get(2);
 		
-		characterTable.add(head).align(Align.right);
-		characterTable.add(body).align(Align.center);
-		characterTable.add(feet).align(Align.left);
-		
+		characterTable.add(head).row();
+		characterTable.add(body).row();
+		characterTable.add(feet).row();
 
 		characterTable.setSize((int)(Gdx.graphics.getWidth()*.8), Gdx.graphics.getHeight());
-		characterTable.align(Align.bottomLeft);
+		characterTable.align(Align.center);
 		return characterTable;
 	}
 	//fills in data from a saved character file, if one exists.
