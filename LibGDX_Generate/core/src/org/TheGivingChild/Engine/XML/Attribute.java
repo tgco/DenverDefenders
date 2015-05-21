@@ -99,6 +99,23 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "fallsAtSetRate";}
+	},
+	SPINS{
+		private float rate;
+		public void update(GameObject myObject){
+			System.out.println("\nSpins Update");
+			
+		}
+		public void setValues(Array<String> newValues){
+			rate = Float.parseFloat(newValues.get(0));
+		}
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(rate+"");
+			return temp;
+		}
+		public String getXMLName(){return "spins";}
+		
 	};
 	
 	public abstract void setValues(Array<String> newValues);
