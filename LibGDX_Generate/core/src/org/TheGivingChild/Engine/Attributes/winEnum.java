@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.XML.Attribute;
+
 import com.badlogic.gdx.utils.Array;
 
 public enum WinEnum {
@@ -22,11 +24,11 @@ public enum WinEnum {
 			return temp;
 		}
 	},
-	COLLISIONWITHOBJECT{
+	COLLISIONWITHOBJECTWIN{
 		private int objectID1;
 		private int objectID2;
 		public String getXMLDescription(){
-			return "collisionWithObject";
+			return "collisionWithObjectWin";
 		}
 		public boolean checkWin(){
 			return false;
@@ -48,4 +50,8 @@ public enum WinEnum {
 	public abstract String getXMLDescription();
 	public abstract boolean checkWin();
 	public abstract Array<String> getValues();
+	
+	public static WinEnum newType(String type){
+		return valueOf(type.toUpperCase());
+	}
 }
