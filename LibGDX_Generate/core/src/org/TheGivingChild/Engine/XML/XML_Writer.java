@@ -42,7 +42,7 @@ public class XML_Writer {
 		testObjectArray.add(testObj3);
 		testObjectArray.add(testObj4);
 		
-		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECT;
+		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
 		Array<String> testWin1Values = new Array<String>();
 		testWin1Values.add("420");
 		testWin1Values.add("9001");
@@ -95,7 +95,7 @@ public class XML_Writer {
 			}
 			
 			//write levelGoal information, win/lose conditions
-				writer.element("levelGoal");
+				writer.element("levelGoals");
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
 					writer.attribute("win", currentWinCondition.getXMLDescription());//these two loops write the lists of condition types for the <levelGoal/> sections
 				}

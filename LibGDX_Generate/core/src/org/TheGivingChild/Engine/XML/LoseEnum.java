@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.Attributes.WinEnum;
+
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {
@@ -20,4 +22,8 @@ public enum LoseEnum {
 	public abstract String getXMLDescription();
 	public abstract Array<String> getValues();
 	public abstract void setValues(Array<String> newValues);
+	
+	public static LoseEnum newType(String type){
+		return valueOf(type.toUpperCase());
+	}
 }
