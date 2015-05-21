@@ -68,7 +68,9 @@ class ScreenEditor extends ScreenAdapter{
 	private Array<Rectangle> grid;
 	private Texture gridImage;
 	private float gridSize;
-
+	private int gridRows = 0;
+	private int gridCol = 0;
+	private Rectangle gr[][];
 	//Sees if object can be placed, goes to true when ballButton is hit
 	private boolean canSetObj = false;
 	
@@ -124,11 +126,14 @@ class ScreenEditor extends ScreenAdapter{
 		//Draws all EditorGameObjects stored and all grid pieces
 		batch.begin();
 		
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), gr[i][j].x, gr[i][j].y);
+			}
+		}
+		
 		for (EditorGameObject obj : gameObjects) {
 			batch.draw(obj.getTexture(), obj.getX(), obj.getY());
-		}
-		for (Rectangle gridPiece : grid) {
-			batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), gridPiece.x, gridPiece.y);
 		}
 		batch.end();
 
@@ -203,11 +208,19 @@ class ScreenEditor extends ScreenAdapter{
 	//Fills the grid according to the gridImage size relative to the screen size
 	private void fillGrid() {
 		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
-			for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
-				Rectangle gridPiece = new Rectangle(i*gridSize,j, gridSize, gridSize);
-				grid.add(gridPiece); //Stored for when it's called later to be drawn
+			gridCol++;
+		}
+		for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
+			gridRows++;
+		}
+		
+		gr = new Rectangle[gridCol][gridRows];
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				gr[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
 			}
 		}
+
 	}
 	
 	//Called when there is a touch on the screen
@@ -224,32 +237,31 @@ class ScreenEditor extends ScreenAdapter{
 		float x = Gdx.input.getX();
 		float y = Gdx.graphics.getHeight()-Gdx.input.getY();
 		
-		//Goes through each grid piece
-		for (Rectangle gridPos : grid) {
-			//If the grid piece contains the point that was clicked, this is where the obj will go
-			if (gridPos.contains(x, y)) {
-				//Takes the grid piece's coordinates and stores into applicable data structure
-				x = gridPos.x;
-				y = gridPos.y;
-				float[] pnt =  {x, y};
-				
-				//Instantiates EditorGameObject from the current image and its location
-				obj = new EditorGameObject(gameObjects.size, objectImage.getFile(),pnt);
-				for (int i=0; i<gameObjects.size; i++) {
-					//If there is an object in the grid peice already, it gets replaced
-					if(gameObjects.get(i).getX() == x && gameObjects.get(i).getY() == y) {
-						gameObjects.set(i, obj);
-						added = true;
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				if (gr[i][j].contains(x,y)) {
+					x = gr[i][j].x;
+					y = gr[i][j].y;
+					float[] pnt =  {x, y};
+					
+					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(),pnt);
+					for (int k=0; k<gameObjects.size; k++) {
+						//If there is an object in the grid peice already, it gets replaced
+						if(gameObjects.get(k).getX() == x && gameObjects.get(k).getY() == y) {
+							gameObjects.set(k, obj);
+							added = true;
+						}
 					}
+					
+					if (!added)
+						gameObjects.add(obj);
+					break; //Break out of the loop since the position is found.
 				}
-				//If it hasn't been added, it gets stored in the container
-				if (!added)
-					gameObjects.add(obj);
-				break; //Break out of the loop since the position is found.
 			}
 		}
-		// Resets the boolean so only one object can be placed 
+		
 		canSetObj = false;
+		
 	}
 	
 	//Switches between two images
