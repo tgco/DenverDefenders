@@ -91,7 +91,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
-		gridImage = new Texture(Gdx.files.internal("editorAssets/Grid.png"));
+		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");
 		grid = new Array<Rectangle>();
 		
 		//Instantiate Array for the gameObjects
@@ -128,7 +128,7 @@ class ScreenEditor extends ScreenAdapter{
 			batch.draw(obj.getTexture(), obj.getX(), obj.getY());
 		}
 		for (Rectangle gridPiece : grid) {
-			batch.draw(gridImage, gridPiece.x, gridPiece.y);
+			batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), gridPiece.x, gridPiece.y);
 		}
 		batch.end();
 
@@ -149,8 +149,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Sets up the needed variables and parameters
 		editorTable = new Table();
 		skinTable = new Skin();
-		buttonAtlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skinTable.addRegions(buttonAtlas);
+		skinTable.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		
 		//Creates the buttons and sets table to origin
 		createButtons();
@@ -162,8 +161,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
 		skinBack = new Skin();
-		buttonAtlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skinBack.addRegions(buttonAtlas);
+		skinBack.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		textButtonStyleBack = new TextButtonStyle();
 		textButtonStyleBack.font = font; 
 		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
