@@ -108,12 +108,8 @@ public class XML_Writer {
 			
 			//write levelGoal information, win/lose conditions
 				writer.element("levelGoals");
-				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
-					writer.attribute("win", currentWinCondition.getXMLDescription());//these two loops write the lists of condition types for the <levelGoal/> sections
-				}
-				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
-					writer.attribute("lose", currentLoseCondition.getXMLDescription());
-				}
+				writer.attribute("win", compileWinList());
+				writer.attribute("lose", compileLoseList());
 				
 				int count=1;//writing win condition values
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
@@ -158,13 +154,23 @@ public class XML_Writer {
 	
 	private String compileWinList(){
 		String winList = "";
-		
+		if(currentLevel.getWinConditions().size > 0){
+			for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
+				winList+="," + currentWinCondition.getXMLDescription();
+			}
+			winList.replaceFirst(",","");
+		}
 		return winList;
 	}
 	
 	private String compileLoseList(){
 		String loseList = "";
-		
+		if(currentLevel.getLoseConditions().size > 0){
+			for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
+				loseList+="," + currentLoseCondition.getXMLDescription();
+			}
+			loseList.replaceFirst(",","");
+		}
 		return loseList;
 	}
 }
