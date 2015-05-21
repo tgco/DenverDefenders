@@ -81,7 +81,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 				public void changed(ChangeEvent event, Actor actor) {
 					currentPacketLevelIndex = j;
 					//hide the current screen, load the main screen
-					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 				}
         	});
 			//increment the packets index

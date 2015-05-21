@@ -7,38 +7,44 @@ public enum ScreenAdapterEnums {
 	LEVEL_PACKETS{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenLevelPackets();
-        }
+			return new ScreenLevelPackets();
+		}
 	},
 	//The how to play screen, returns a new ScreenHowToPlay
 	HOW_TO_PLAY{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenHowToPlay();
-        }
+			return new ScreenHowToPlay();
+		}
 	}, 
 	//The editor screen, returns a new ScreenEditor
 	EDITOR{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenEditor();
-        }
+			return new ScreenEditor();
+		}
 	},
 	//The options screen, returns a new ScreenOptions
 	OPTIONS{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenOptions();
-        }
+			return new ScreenOptions();
+		}
 	},
 	//The main screen, returns a new ScreenMain
 	MAIN{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenMain();
-        }
+			return new ScreenMain();
+		}
+	},
+	LEVEL{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenLevel();
+		}
 	};
-	
+
 	//abstract protected class that the manager uses to return a ScreenAdapter
 	protected abstract ScreenAdapter getScreenInstance();
 }

@@ -1,17 +1,10 @@
 package org.TheGivingChild.Engine;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
-//<<<<<<< HEAD
-import org.TheGivingChild.Engine.XML.XML_Reader;
-//=======
 import org.TheGivingChild.Engine.XML.LoseEnum;
-//>>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
