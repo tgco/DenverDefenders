@@ -1,7 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
 
-public class DisappearsOnPress implements Attribute{
+public class DisappearsOnPress{
 	public void update(GameObject object){
 		
 	}

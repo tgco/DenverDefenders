@@ -24,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 
 class ScreenOptions extends ScreenAdapter {
-	private TextureAtlas atlas;
 	private Skin skin;
 	private Table optionsTable;
 	private BitmapFont font;
@@ -55,8 +54,7 @@ class ScreenOptions extends ScreenAdapter {
 		//Sets up the needed variables and parameters
 		optionsTable = new Table();
 		skin = new Skin();
-		atlas = new TextureAtlas("Packs/ButtonsEditor.pack");
-		skin.addRegions(atlas);
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
 
 		//Creates the buttons and sets table to origin
 		createButton();
@@ -67,8 +65,7 @@ class ScreenOptions extends ScreenAdapter {
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		atlas = new TextureAtlas(Gdx.files.internal("Packs/ButtonsEditor.pack"));
-		skin.addRegions(atlas);
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
 		style.up = skin.getDrawable("Button_Editor_Back");

@@ -3,6 +3,8 @@ package org.TheGivingChild.Engine.XML;
 import java.io.FileWriter;
 import java.io.StringWriter;
 
+import org.TheGivingChild.Engine.Attributes.WinEnum;
+
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
 
@@ -40,13 +42,28 @@ public class XML_Writer {
 		testObjectArray.add(testObj3);
 		testObjectArray.add(testObj4);
 		
+		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+		Array<String> testWin1Values = new Array<String>();
+		testWin1Values.add("420");
+		testWin1Values.add("9001");
+		testWin1.setValues(testWin1Values);
+		Array<WinEnum> testWinArray = new Array<WinEnum>();
+		testWinArray.add(testWin1);
+		
+		LoseEnum testLose1 = LoseEnum.TIMEOUT;
+		Array<String>testLose1Values =  new Array<String>();
+		testLose1Values.add("42");
+		testLose1.setValues(testLose1Values);
+		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
+		testLoseArray.add(testLose1);
+		
 		XML_Writer sally = new XML_Writer();
 		//sally.setupNewFile("testOut.xml", "", "testLevel");
-		sally.createLevel(new Level("testOut","PLACEHOLDER","PLACEHOLDER",new LevelGoal(),testObjectArray));
+		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
 	}
 	
 	public void createLevel(Level newLevel){//this is who you gonna call
-		currentLevel = newLevel;
+		currentLevel = newLevel;//shallow copy, but das ok
 		writeToFile();
 	}
 	
@@ -59,16 +76,16 @@ public class XML_Writer {
 			writer.attribute("packageName",currentLevel.getPackageName());//might wanna make this dynamic.
 			writer.attribute("levelName", currentLevel.getLevelName());
 			writer.attribute("levelImage",currentLevel.getLevelImage());
-			for(GameObject currentGameObject:currentLevel.getGameObjects()){
-				writer.element("GameObject");
+			for(GameObject currentGameObject:currentLevel.getGameObjects()){//writing game object information
+				writer.element("GameObject");//writing game object and it's required attributes
 				writer.attribute("ID",currentGameObject.getID());
-				writer.attribute("attributes",compileAttributeList(currentGameObject));//wrong
+				writer.attribute("attributes",compileAttributeList(currentGameObject));//writing list of attributes
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
-				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());
+				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());//position
 				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
-					for(String currentValue:currentAttribute.getValues()){
+					for(String currentValue:currentAttribute.getValues()){//writing the values associated with each attribute
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}
@@ -77,9 +94,34 @@ public class XML_Writer {
 				writer.pop();
 			}
 			
-			//write levelGoal
-				writer.element("levelGoal");
+			//write levelGoal information, win/lose conditions
+				writer.element("levelGoals");
+				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
+					writer.attribute("win", currentWinCondition.getXMLDescription());//these two loops write the lists of condition types for the <levelGoal/> sections
+				}
+				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
+					writer.attribute("lose", currentLoseCondition.getXMLDescription());
+				}
 				
+				int count=1;//writing win condition values
+				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
+					writer.element("win"+count);
+					for(String currentValue:currentWinCondition.getValues()){
+						writer.attribute("win"+count,currentValue);
+						count++;
+					}
+					writer.pop();
+				}
+				
+				count=1;//writing lose condition values
+				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
+					writer.element("lose"+count);
+					for(String currentValue:currentLoseCondition.getValues()){
+						writer.attribute("lose"+count,currentValue);
+						count++;
+					}
+					writer.pop();
+				}
 				writer.pop();
 			writer.pop();
 			
