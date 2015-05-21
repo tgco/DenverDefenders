@@ -3,6 +3,8 @@ package org.TheGivingChild.Engine.XML;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.TheGivingChild.Engine.Attributes.WinEnum;
+
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -35,7 +37,7 @@ public class XML_Reader {
 	
 	//THIS IS THE METHOD YOU CALL TO READ IN A WHOLE LEVEL
 	public Level compileLevel(){		
-		return new Level(root.getAttribute("levelName"),root.getAttribute("packageName"),root.getAttribute("levelImage"),compileLevelGoal(),compileGameObjects());
+		return new Level(root.getAttribute("levelName"),root.getAttribute("packageName"),root.getAttribute("levelImage"),compileWinConditions(),compileLoseConditions(),compileGameObjects());
 	}
 	
 	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
@@ -56,6 +58,18 @@ public class XML_Reader {
 			listOfObjects.add(temp);
 		}
 		return listOfObjects;
+	}
+	
+	public Array<WinEnum> compileWinConditions(){
+		Array<WinEnum> winEnums = new Array<WinEnum>();
+		
+		return winEnums;
+	}
+	
+	public Array<LoseEnum> compileLoseConditions(){
+		Array<LoseEnum> loseEnums = new Array<LoseEnum>();
+		
+		return loseEnums;
 	}
 	
 	public void setupNewFile(String XML_Filename){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
