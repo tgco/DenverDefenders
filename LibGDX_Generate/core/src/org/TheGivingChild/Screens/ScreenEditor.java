@@ -74,7 +74,7 @@ class ScreenEditor extends ScreenAdapter{
 	private boolean canSetObj = false;
 	
 	//Toggles the Textures used
-	private boolean ballOrBox = true;
+	private int ballOrBox = 1;
 	
 	//create placeholder game
 	private TGC_Engine mainGame;
@@ -239,9 +239,11 @@ class ScreenEditor extends ScreenAdapter{
 				if (grid[i][j].contains(x,y)) {
 					x = grid[i][j].x;
 					y = grid[i][j].y;
-					float[] pnt =  {x, y};
+					float[] drawPos =  {x, y};
 					int[] gridPos = {i, j};
-					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), pnt, gridPos);
+					
+					//Create the new editor game object
+					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), drawPos, gridPos);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getCol() == gridPos[0] && gameObjects.get(k).getRow() == gridPos[1]) {
@@ -263,13 +265,16 @@ class ScreenEditor extends ScreenAdapter{
 	
 	//Switches between two images
 	private void selectImage() {
-		if (ballOrBox) {
+		ballOrBox++;
+		ballOrBox = ballOrBox % 3;
+		if (ballOrBox == 0) {
 			objectImage = ObjectTexture.BALL_TEXTURE;
-			ballOrBox = !ballOrBox;
 		}
-		else {
+		else if (ballOrBox == 1) {
+			objectImage = ObjectTexture.BOX_TEXTURE;
+		}
+		else if (ballOrBox == 2) {
 			objectImage = ObjectTexture.HALF_BOX_TEXTURE;
-			ballOrBox = !ballOrBox;
 		}
 	}
 	
