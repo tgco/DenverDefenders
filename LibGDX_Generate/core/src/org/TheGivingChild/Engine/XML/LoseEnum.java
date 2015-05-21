@@ -4,7 +4,7 @@ import org.TheGivingChild.Engine.Attributes.WinEnum;
 
 import com.badlogic.gdx.utils.Array;
 
-public enum LoseEnum {
+public enum LoseEnum {//Cannot have any labels in common with WinEnum
 	TIMEOUT{
 		private int time;
 		public String getXMLDescription(){

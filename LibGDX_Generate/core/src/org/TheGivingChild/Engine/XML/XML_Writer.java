@@ -16,7 +16,7 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		float temp1[] = {1,1};
 		float temp2[] = {2,2};
-		float temp3[] = {3,3};
+		float temp3[] = {100,100};
 		
 		Array<String> test1 = new Array<String>();
 		test1.add("100");
