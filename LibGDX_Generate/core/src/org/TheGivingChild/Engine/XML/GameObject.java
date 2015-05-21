@@ -5,14 +5,11 @@ import java.lang.reflect.Method;
 
 import org.TheGivingChild.Engine.UserInputProcessor;
 
-=======
->>>>>>> 39a1384b35772cf8e9a23424c612ac6093ff8190
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
-<<<<<<< HEAD
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.*;
 import com.badlogic.gdx.utils.reflect.Method.*;
