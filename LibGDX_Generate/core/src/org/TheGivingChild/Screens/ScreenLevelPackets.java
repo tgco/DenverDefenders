@@ -8,9 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -27,6 +29,8 @@ class ScreenLevelPackets extends ScreenAdapter{
 	private Table packetTable;
 	//array of levels to fill the packets with
 	private Array<Level> levels;
+	//skin for using textures in the asset manager
+	private Skin skin = new Skin();
 	//reference to the game for adding to stage, etc.
 	private TGC_Engine game;
 	
@@ -52,12 +56,14 @@ class ScreenLevelPackets extends ScreenAdapter{
 		//padding width between the packets
 		float padWidth = game.getWidth()/24;
 		
+		//add regions from the asset manager to skin
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = font;
-		textButtonStyle.down = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
-		textButtonStyle.up = game.getButtonAtlasSkin().getDrawable("Button_LevelPackIcon");
+		textButtonStyle.down = skin.getDrawable("ButtonChecked_LevelPackIcon");
+		textButtonStyle.up = skin.getDrawable("Button_LevelPackIcon");
 		//textButtonStyle.checked = game.getButtonAtlasSkin().getDrawable("ButtonChecked_LevelPackIcon");
 		
 		//indexer for finding which packet to play when button is clicked.
