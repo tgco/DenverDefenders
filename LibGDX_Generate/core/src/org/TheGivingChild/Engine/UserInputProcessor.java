@@ -7,11 +7,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 
-public class UserInputProcessor implements InputProcessor, GestureListener {
-
-	GameObject o;
-	
-	
+public class UserInputProcessor implements InputProcessor, GestureListener{
+		
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
@@ -23,6 +20,7 @@ public class UserInputProcessor implements InputProcessor, GestureListener {
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
 		System.out.println("key released: " + Keys.toString(keycode));
+		
 		return true;
 	}
 
@@ -114,7 +112,6 @@ public class UserInputProcessor implements InputProcessor, GestureListener {
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
 			Vector2 pointer1, Vector2 pointer2) {
-		System.out.println("user pinched, i know the origional finger positions");
 		// TODO Auto-generated method stub
 		return true;
 	}
@@ -122,8 +119,8 @@ public class UserInputProcessor implements InputProcessor, GestureListener {
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user touched down their device");
 		return true;
 	}
 
+	
 }
