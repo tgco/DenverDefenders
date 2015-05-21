@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Engine.XML.LoseEnum;
+import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -30,7 +31,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private Stage stage;
 	//button atlas reference names
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_CharacterCreator", "Button_MainScreen_CharacterCreator"};
 	//skin from atlas
 	private Skin skin = new Skin();
 	//bitmap font for buttons
@@ -49,6 +50,8 @@ public class TGC_Engine extends Game {
     private SpriteBatch batch;
     //Asset Manager to store assets
     private AssetManager manager = new AssetManager();
+    
+    private XML_Reader reader;
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -73,6 +76,8 @@ public class TGC_Engine extends Game {
 			default:
 				break;
 		}
+		
+		
 		//Timer for loading screen delay before transition to main screen
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Assets to be added to the manager
@@ -105,7 +110,9 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level7", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		
-		
+		reader = new XML_Reader();
+		reader.setupNewFile("../testOut.xml");
+		levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
         
@@ -230,5 +237,6 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
+		
 	}
 }

@@ -3,28 +3,28 @@ Buttons.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-ButtonPressed_MainScreen_Editor
+ButtonPressed_MainScreen_CharacterCreator
   rotate: false
   xy: 1, 605
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-ButtonPressed_MainScreen_HowToPlay
+ButtonPressed_MainScreen_Editor
   rotate: false
   xy: 1, 303
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-ButtonPressed_MainScreen_Options
+ButtonPressed_MainScreen_HowToPlay
   rotate: true
   xy: 536, 372
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-ButtonPressed_MainScreen_Play
+ButtonPressed_MainScreen_Options
   rotate: false
   xy: 1, 1
   size: 533, 300
@@ -50,28 +50,28 @@ Buttons2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Button_MainScreen_Editor
+ButtonPressed_MainScreen_Play
   rotate: false
   xy: 1, 605
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Button_MainScreen_HowToPlay
+Button_MainScreen_CharacterCreator
   rotate: false
   xy: 1, 303
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Button_MainScreen_Options
+Button_MainScreen_Editor
   rotate: true
   xy: 536, 372
   size: 533, 300
   orig: 533, 300
   offset: 0, 0
   index: -1
-Button_MainScreen_Play
+Button_MainScreen_HowToPlay
   rotate: false
   xy: 1, 1
   size: 533, 300
@@ -87,6 +87,25 @@ Button_LevelPackIcon
   index: -1
 
 Buttons3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Button_MainScreen_Options
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Play
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+
+Buttons4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
