@@ -39,7 +39,7 @@ public class ScreenLevel extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0.2F, 0.5f, 1);
+		Gdx.gl.glClearColor(1, 0.8F, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		for (GameObject g : level.getGameObjects()) {
