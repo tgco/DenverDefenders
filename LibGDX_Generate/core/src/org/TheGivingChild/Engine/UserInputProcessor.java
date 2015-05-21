@@ -1,7 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.XML.GameObject;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
@@ -41,7 +39,7 @@ public class UserInputProcessor implements InputProcessor, GestureListener{
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user released from scree at" + screenX + ", " + screenY);
+		System.out.println("user released from screen at" + screenX + ", " + screenY);
 		return true;
 	}
 
@@ -112,6 +110,7 @@ public class UserInputProcessor implements InputProcessor, GestureListener{
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
 			Vector2 pointer1, Vector2 pointer2) {
+		System.out.println("user pinched, i know the original finger positions");
 		// TODO Auto-generated method stub
 		return true;
 	}

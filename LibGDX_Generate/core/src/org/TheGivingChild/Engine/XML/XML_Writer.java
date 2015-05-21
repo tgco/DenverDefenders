@@ -16,7 +16,7 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		float temp1[] = {1,1};
 		float temp2[] = {2,2};
-		float temp3[] = {3,3};
+		float temp3[] = {100,100};
 		
 		Array<String> test1 = new Array<String>();
 		test1.add("100");
@@ -24,6 +24,8 @@ public class XML_Writer {
 		test2.add("redred");
 		Array<String> test3 = new Array<String>();
 		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
+		Array<String> test4 = new Array<String>();
+		test4.add("10");
 		
 		
 		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
@@ -34,6 +36,8 @@ public class XML_Writer {
 		testObj3.addAttribute("color", test2);
 		GameObject testObj4 = new GameObject(4,"testObj4FILENAME",temp3);
 		testObj4.addAttribute("disappearsOnPress", new Array<String>());
+		GameObject testObj5 = new GameObject(5,"testObj5FILENAME",temp3);
+		testObj5.addAttribute("fallsAtSetRate",test4);
 		
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
@@ -41,6 +45,7 @@ public class XML_Writer {
 		testObjectArray.add(testObj2);
 		testObjectArray.add(testObj3);
 		testObjectArray.add(testObj4);
+		testObjectArray.add(testObj5);
 		
 		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
 		Array<String> testWin1Values = new Array<String>();
@@ -103,12 +108,8 @@ public class XML_Writer {
 			
 			//write levelGoal information, win/lose conditions
 				writer.element("levelGoals");
-				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
-					writer.attribute("win", currentWinCondition.getXMLDescription());//these two loops write the lists of condition types for the <levelGoal/> sections
-				}
-				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
-					writer.attribute("lose", currentLoseCondition.getXMLDescription());
-				}
+				writer.attribute("win", compileWinList());
+				writer.attribute("lose", compileLoseList());
 				
 				int count=1;//writing win condition values
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
@@ -153,13 +154,23 @@ public class XML_Writer {
 	
 	private String compileWinList(){
 		String winList = "";
-		
+		if(currentLevel.getWinConditions().size > 0){
+			for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
+				winList+="," + currentWinCondition.getXMLDescription();
+			}
+			winList.replaceFirst(",","");
+		}
 		return winList;
 	}
 	
 	private String compileLoseList(){
 		String loseList = "";
-		
+		if(currentLevel.getLoseConditions().size > 0){
+			for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
+				loseList+="," + currentLoseCondition.getXMLDescription();
+			}
+			loseList.replaceFirst(",","");
+		}
 		return loseList;
 	}
 }

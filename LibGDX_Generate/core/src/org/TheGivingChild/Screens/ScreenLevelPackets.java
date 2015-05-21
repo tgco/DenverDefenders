@@ -81,7 +81,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 				public void changed(ChangeEvent event, Actor actor) {
 					currentPacketLevelIndex = j;
 					//hide the current screen, load the main screen
-					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 				}
         	});
 			//increment the packets index
@@ -92,11 +92,13 @@ class ScreenLevelPackets extends ScreenAdapter{
 		//ScrollPane to scroll through packets
 		ScrollPaneStyle sps = new ScrollPaneStyle();
 		ScrollPane buttonScrollPane = new ScrollPane(packetsRow, sps);
-		
+		//set the scroll pane to size to the parent table
 		table.add(buttonScrollPane).fill().expand();
+		//set the size of the table to the size of the screen
 		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//set the table to position itself in the bottom left corner
 		table.align(Align.bottomLeft);
-		table.setPosition(0, 0);
+		//return the table
 		return table;
 	}
 	
