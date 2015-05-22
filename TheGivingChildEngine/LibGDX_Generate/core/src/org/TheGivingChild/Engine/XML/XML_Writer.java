@@ -1,10 +1,10 @@
 package org.TheGivingChild.Engine.XML;
 
-import java.io.FileWriter;
 import java.io.StringWriter;
 
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
 
@@ -16,11 +16,12 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		//screen 576x1024
 		float temp1[] = {1,1};
-		float temp2[] = {2,2};
+		float temp2[] = {1000,2};
 		float temp3[] = {100,576};
 		
 		Array<String> test1 = new Array<String>();
-		test1.add("100");
+		test1.add("100.0");
+		test1.add("100.0");
 		Array<String> test2 = new Array<String>();
 		test2.add("redred");
 		Array<String> test3 = new Array<String>();
@@ -29,22 +30,22 @@ public class XML_Writer {
 		test4.add("100");
 		
 		
-		GameObject testObj1 = new GameObject(1,"testObj1FILENAME",temp1);
-		testObj1.addAttribute("health", test1);
-		GameObject testObj2 = new GameObject(2,"testObj2FILENAME",temp2);
-		GameObject testObj3 = new GameObject(3,"testObj3FILENAME",temp3);
-		testObj3.addAttribute("movesOnSetPath", test3);
-		testObj3.addAttribute("color", test2);
-		GameObject testObj4 = new GameObject(4,"testObj4FILENAME",temp3);
+		GameObject testObj1 = new GameObject(1,"ball.png",temp1);
+		testObj1.addAttribute("moves", test1);
+		GameObject testObj2 = new GameObject(2,"box.png",temp2);
+		//GameObject testObj3 = new GameObject(3,"pall.png",temp3);
+		//testObj3.addAttribute("movesOnSetPath", test3);
+		//testObj3.addAttribute("color", test2);
+		GameObject testObj4 = new GameObject(4,"ball.png",temp3);
 		testObj4.addAttribute("disappearsOnPress", new Array<String>());
-		GameObject testObj5 = new GameObject(5,"testObj5FILENAME",temp3);
+		GameObject testObj5 = new GameObject(5,"grid.png",temp3);
 		testObj5.addAttribute("fallsAtSetRate",test4);
 		
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
 		testObjectArray.add(testObj1);
 		testObjectArray.add(testObj2);
-		testObjectArray.add(testObj3);
+		//testObjectArray.add(testObj3);
 		testObjectArray.add(testObj4);
 		testObjectArray.add(testObj5);
 		
@@ -136,9 +137,8 @@ public class XML_Writer {
 			
 			writer.close();
 			//write to file
-			FileWriter fileWriter = new FileWriter(currentLevel.getLevelName() + ".xml");
-			fileWriter.write(stringWriter.toString());
-			fileWriter.close();
+			FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
+			fileWriter.writeString(stringWriter.toString(),false);
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
 	
