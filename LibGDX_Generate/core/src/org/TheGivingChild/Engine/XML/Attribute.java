@@ -68,7 +68,8 @@ public enum Attribute {
 	MOVESONSETPATH{//requires moves?
 		private double tolerance;
 		private Array<float[]> path;
-		private int currentPoint;
+		private int currentPoint;//index of current waypoint in path
+
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
 
