@@ -20,7 +20,6 @@ public enum Attribute {
 		}
 		
 		public void setValues(Array<String> newValues){
-			System.out.println("VALUES: " + newValues);
 			initialVelocity[0] = Float.parseFloat(newValues.get(0));
 			initialVelocity[1] = Float.parseFloat(newValues.get(1));
 		}
