@@ -8,6 +8,7 @@ import org.TheGivingChild.Engine.XML.LoseEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -51,6 +52,9 @@ class ScreenEditor extends ScreenAdapter{
 			return file;
 		}
 	}
+	
+	private String levelName;
+	private String packageName;
 	
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
@@ -105,6 +109,9 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();
+		
+		EditorTextInputListener listener = new EditorTextInputListener();
+		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
 	}
 	//When hidden removes it's table
 	@Override
@@ -235,7 +242,7 @@ class ScreenEditor extends ScreenAdapter{
 				testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 				
-				Level level = new Level("tester", "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
+				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
 				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}
@@ -354,5 +361,20 @@ class ScreenEditor extends ScreenAdapter{
 		public Texture getTexture() {
 			return getEnum().getTexture();
 		}
+	}
+	
+	private class EditorTextInputListener implements TextInputListener {
+
+		@Override
+		public void input(String text) {
+			levelName = text;
+			
+		}
+
+		@Override
+		public void canceled() {
+			
+		}
+		
 	}
 }
