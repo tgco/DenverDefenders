@@ -43,6 +43,7 @@ public enum Attribute {
 	},
 	MOVESONSETPATH{
 		private Array<float[]> path;
+		private int currentPoint;//index of current waypoint in path
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
 			
@@ -50,6 +51,7 @@ public enum Attribute {
 		
 		public void setValues(Array<String> newValues){
 			path = stringToPath(newValues.get(0));
+			currentPoint = 0;
 		}
 		
 		public Array<String> getValues(){
