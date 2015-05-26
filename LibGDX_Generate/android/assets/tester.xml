@@ -1,6 +1,13 @@
 <level packageName="packageTest" levelName="tester" levelImage="LEVELIMAGESTRING">
+
 	<GameObject ID="0" attributes="" imageFilename="ball.png" initialLocation="400.0,176.0"/>
 	<GameObject ID="1" attributes="" imageFilename="Box.png" initialLocation="400.0,276.0"/>
+
+	<GameObject ID="0" attributes="" imageFilename="ball.png" initialLocation="500.0,176.0"/>
+	<GameObject ID="1" attributes="" imageFilename="Box.png" initialLocation="600.0,176.0"/>
+	<GameObject ID="2" attributes="" imageFilename="BoxHalf.png" initialLocation="400.0,176.0"/>
+	<GameObject ID="3" attributes="" imageFilename="ball.png" initialLocation="700.0,176.0"/>
+
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>
 		<timeout lose1="42.0"/>

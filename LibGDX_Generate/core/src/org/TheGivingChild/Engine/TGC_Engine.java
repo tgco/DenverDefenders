@@ -94,7 +94,7 @@ public class TGC_Engine extends Game {
 		manager.load("Grid.png", Texture.class);
 		//manager.load("HowToPlay.png", Texture.class);
 		//manager.load("HowToPlayMessage.png", Texture.class);
-		manager.load("optionsTitle.png", Texture.class);
+		//manager.load("optionsTitle.png", Texture.class);
 		manager.load("editorAssets/ball.png", Texture.class);
 		manager.load("editorAssets/ballSelected.png", Texture.class);
 		manager.load("editorAssets/Box.png", Texture.class);

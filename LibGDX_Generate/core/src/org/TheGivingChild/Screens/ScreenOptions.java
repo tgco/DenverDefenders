@@ -31,21 +31,46 @@ class ScreenOptions extends ScreenAdapter {
 	private TextButtonStyle style;
 	private TGC_Engine game;
 	private AssetManager manager;
+	private SpriteBatch batch;
+	private Texture title;
+	private float screenTransitionTimeLeft = 1.0f;
+	private boolean isRendered = false;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
+		batch = new SpriteBatch();
 		manager = game.getAssetManager();
+		manager.load("optionsTitle.png", Texture.class);
 		createOptionsTable();
 	}
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1,1,0,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		else {
+			if(screenTransitionTimeLeft <= 0) {
+				if(manager.isLoaded("optionsTitle.png"))
+					title = manager.get("optionsTitle.png");
+				Gdx.gl.glClearColor(1,1,0,1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				batch.begin();
+				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+				batch.end();
+				isRendered = true;
+				show();
+			}
+		}
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override
 	public void show() {
-		game.getStage().addActor(optionsTable);
+		if(isRendered)
+			game.getStage().addActor(optionsTable);
 	};
 	
 	@Override
