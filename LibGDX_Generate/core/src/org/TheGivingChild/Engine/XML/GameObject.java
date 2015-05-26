@@ -2,6 +2,7 @@ package org.TheGivingChild.Engine.XML;
 
 import java.lang.reflect.Method;
 
+import org.TheGivingChild.Engine.UserInputListener;
 import org.TheGivingChild.Engine.UserInputProcessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -24,22 +25,25 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	2: Each object's attributes are then elements within the object
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
-
-	private ClickListener listen = new ClickListener();
+	//touchable = true;
 	
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
-		this.addListener(listen);
 		
+		//setWidth(getWidth());
+		//setHeight(getHeight());
+		setBounds(newPosition[0],newPosition[1], getWidth(), getHeight());
+			
 	}
-	
+				
 	public void update(){
 		for(Attribute currentAttribute:attributes)
 			currentAttribute.update(this);
 	}
+
 	
 	public void input(){
 		
@@ -77,8 +81,9 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	
 	public void act()
 	{
-		System.out.println("I am acting " + this.getName());
+		//System.out.println("I am acting " + this.getName());
 	}
+	
 	
 	
 }

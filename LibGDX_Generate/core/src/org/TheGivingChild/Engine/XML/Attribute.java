@@ -44,9 +44,8 @@ public enum Attribute {
 	MOVESONSETPATH{
 		private Array<float[]> path;
 		public void update(GameObject myObject){
-			//System.out.println("\nMovesOnSetPath Update");
-			for(float[] currentPoint:path)
-				System.out.println(currentPoint[0] + ", " + currentPoint[1]);
+			
+			
 		}
 		
 		public void setValues(Array<String> newValues){
