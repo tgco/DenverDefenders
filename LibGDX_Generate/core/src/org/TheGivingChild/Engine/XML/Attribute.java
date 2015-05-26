@@ -6,8 +6,33 @@ import com.badlogic.gdx.utils.Array;
 
 public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
-	 * each type will have a field of variable type that is private
+	 * each type can have private fields
 	 */
+	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
+		private float[] initialVelocity = new float[2];;
+		private boolean hasRun = false;
+		public void update(GameObject myObject){
+			if(!hasRun){
+				hasRun = true;
+				myObject.setVelocity(initialVelocity);
+			}
+			myObject.setPosition(Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0], Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]);
+		}
+		
+		public void setValues(Array<String> newValues){
+			System.out.println("VALUES: " + newValues);
+			initialVelocity[0] = Float.parseFloat(newValues.get(0));
+			initialVelocity[1] = Float.parseFloat(newValues.get(1));
+		}
+		
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(initialVelocity[0] + "," + initialVelocity[1]);
+			return temp;
+		}
+		
+		public String getXMLName(){return "moves";}
+	},
 	HEALTH{
 		private int health;
 		public void update(GameObject myObject){
@@ -41,15 +66,43 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "color";}
 	},
-	MOVESONSETPATH{
+	MOVESONSETPATH{//requires moves?
 		private Array<float[]> path;
+		private int currentPoint;//index of current waypoint in path
+		private float tolerance;
 		public void update(GameObject myObject){
+<<<<<<< HEAD
 			
 			
+=======
+			System.out.println("\nMovesOnSetPath Update");
+			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
+				//setup currentPoint
+				currentPoint++;
+				if(currentPoint >= path.size)
+					currentPoint = 0;
+				//setup new velocity vector for myObject
+				float speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
+				float[] direction = calcDirection(myObject.getX(),myObject.getY());
+				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
+			}
+			//dont need to simulate movement, that is for MOVES to do
+		}
+		
+		private float[] calcDirection(float x, float y){//returns the direction vector(magnitude of 1!) from current position to currentPoint
+			return new float[] {(float) Math.asin(x-path.get(currentPoint)[0]),(float) Math.asin(y-path.get(currentPoint)[1])};
+		}
+		
+		private double calcDistance(float x, float y){//double check this is working
+			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1], 2),0.5);
+>>>>>>> fe48ce973694aac0dce165a5340c993c295bc6f6
 		}
 		
 		public void setValues(Array<String> newValues){
 			path = stringToPath(newValues.get(0));
+			tolerance = Float.parseFloat(newValues.get(1));
+			currentPoint = 0;
+			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
 		}
 		
 		public Array<String> getValues(){
@@ -58,6 +111,7 @@ public enum Attribute {
 			for(float[] point:path)
 				tempS+=";" + point[0] + "," + point[1];
 			temp.add(tempS.replaceFirst(";",""));
+			temp.add(tolerance+"");
 			return temp;
 		}
 		
@@ -85,8 +139,13 @@ public enum Attribute {
 	},
 	FALLSATSETRATE{
 		private int rate;
+<<<<<<< HEAD
 		public void update(GameObject myObject){
 		//	System.out.println("\nfallsAtSetRate Update");
+=======
+		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
+			System.out.println("\nfallsAtSetRate Update");
+>>>>>>> fe48ce973694aac0dce165a5340c993c295bc6f6
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){

@@ -27,7 +27,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
-	private float screenTransitionTimeLeft;
+	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
 	private TGC_Engine game;
 	
@@ -40,7 +40,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 		manager = game.getAssetManager();
 		manager.load("HowToPlay.png", Texture.class);
 		manager.load("HowToPlayMessage.png", Texture.class);
-		screenTransitionTimeLeft = 1.0f;
 	}
 	
 	//Function for making buttons in the HTP screen

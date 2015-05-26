@@ -7,6 +7,7 @@ import sun.java2d.pipe.SpanClipRenderer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,20 +30,47 @@ class ScreenOptions extends ScreenAdapter {
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private TGC_Engine game;
+	private AssetManager manager;
+	private SpriteBatch batch;
+	private Texture title;
+	private float screenTransitionTimeLeft = 1.0f;
+	private boolean isRendered = false;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
+		batch = new SpriteBatch();
+		manager = game.getAssetManager();
+		manager.load("optionsTitle.png", Texture.class);
 		createOptionsTable();
 	}
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1,1,0,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		else {
+			if(screenTransitionTimeLeft <= 0) {
+				if(manager.isLoaded("optionsTitle.png"))
+					title = manager.get("optionsTitle.png");
+				Gdx.gl.glClearColor(1,1,0,1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				batch.begin();
+				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+				batch.end();
+				isRendered = true;
+				show();
+			}
+		}
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override
 	public void show() {
-		game.getStage().addActor(optionsTable);
+		if(isRendered)
+			game.getStage().addActor(optionsTable);
 	};
 	
 	@Override
@@ -54,7 +82,7 @@ class ScreenOptions extends ScreenAdapter {
 		//Sets up the needed variables and parameters
 		optionsTable = new Table();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 
 		//Creates the buttons and sets table to origin
 		createButton();
@@ -65,7 +93,7 @@ class ScreenOptions extends ScreenAdapter {
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
 		style.up = skin.getDrawable("Button_Editor_Back");

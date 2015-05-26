@@ -19,7 +19,8 @@ import com.badlogic.gdx.utils.reflect.Method.*;
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private int ID;
 	private String imageFilename;
-	Array<Attribute> attributes;
+	private Array<Attribute> attributes;
+	private float[] velocity;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -32,11 +33,10 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
-		
-		//setWidth(getWidth());
-		//setHeight(getHeight());
-		setBounds(newPosition[0],newPosition[1], getWidth(), getHeight());
-			
+
+
+		velocity = new float[] {0,0};
+
 	}
 				
 	public void update(){
@@ -78,6 +78,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
+
 	
 	public void act()
 	{
@@ -86,4 +87,13 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	
 	
 	
+
+
+	public float[] getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(float[] velocity) {
+		this.velocity = velocity;
+	}
 }

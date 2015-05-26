@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Engine.XML.XML_Reader;
+import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -55,6 +56,7 @@ public class TGC_Engine extends Game {
     private AssetManager manager = new AssetManager();
     
     private XML_Reader reader;
+    private XML_Writer writer;
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -95,7 +97,7 @@ public class TGC_Engine extends Game {
 		manager.load("Grid.png", Texture.class);
 		//manager.load("HowToPlay.png", Texture.class);
 		//manager.load("HowToPlayMessage.png", Texture.class);
-		manager.load("optionsTitle.png", Texture.class);
+		//manager.load("optionsTitle.png", Texture.class);
 		manager.load("editorAssets/ball.png", Texture.class);
 		manager.load("editorAssets/ballSelected.png", Texture.class);
 		manager.load("editorAssets/Box.png", Texture.class);
@@ -114,6 +116,8 @@ public class TGC_Engine extends Game {
 		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		
 		reader = new XML_Reader();
+		writer = new XML_Writer();
+		
 		boolean exists = Gdx.files.internal("testOut.xml").exists();
 		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
@@ -238,6 +242,10 @@ public class TGC_Engine extends Game {
 	public AssetManager getAssetManager() {
 		return manager;
 	}
+	public XML_Writer getXML_Writer() {
+		return writer;
+	}
+	
 	
 	public void removeTable(Table t){
 		rootTable.removeActor(t);

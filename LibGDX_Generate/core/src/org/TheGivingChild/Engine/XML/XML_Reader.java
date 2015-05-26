@@ -42,9 +42,6 @@ public class XML_Reader {
 		XML_Filename = file.name();
 		String xml_file ="";
 		try{
-//			BufferedReader fileReader = new BufferedReader(new FileReader(XML_Filename));
-//			while(fileReader.ready()) xml_file+=fileReader.readLine();//might need to clean up the xml here
-//			fileReader.close();
 			xml_file = file.readString();
 		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
 		root = reader.parse(xml_file);
