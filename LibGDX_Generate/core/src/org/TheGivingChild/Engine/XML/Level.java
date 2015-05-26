@@ -29,7 +29,11 @@ public class Level {
 	
 	public void update(){
 		for(GameObject currentObject:actors)
+		{
+			currentObject.act();
 			currentObject.update();
+		}
+			//currentObject.update();
 	}
 	
 	public boolean checkWin(){
