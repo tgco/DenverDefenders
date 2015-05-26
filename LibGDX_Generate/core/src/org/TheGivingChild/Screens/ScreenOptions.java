@@ -7,6 +7,7 @@ import sun.java2d.pipe.SpanClipRenderer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,9 +30,11 @@ class ScreenOptions extends ScreenAdapter {
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private TGC_Engine game;
+	private AssetManager manager;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
+		manager = game.getAssetManager();
 		createOptionsTable();
 	}
 	@Override
@@ -54,7 +57,7 @@ class ScreenOptions extends ScreenAdapter {
 		//Sets up the needed variables and parameters
 		optionsTable = new Table();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 
 		//Creates the buttons and sets table to origin
 		createButton();
@@ -65,7 +68,7 @@ class ScreenOptions extends ScreenAdapter {
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
 		style.up = skin.getDrawable("Button_Editor_Back");
