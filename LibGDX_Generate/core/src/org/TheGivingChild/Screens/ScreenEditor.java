@@ -1,7 +1,10 @@
 package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LoseEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -83,7 +86,7 @@ class ScreenEditor extends ScreenAdapter{
 	private ObjectTexture objectImage;
 	
 	//Stores all created EditorGameObjects that were spawned by the user
-	private Array<EditorGameObject> gameObjects;
+	private Array<GameObject> gameObjects;
 	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
@@ -94,7 +97,7 @@ class ScreenEditor extends ScreenAdapter{
 		batch = new SpriteBatch();
 		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
 		//Instantiate Array for the gameObjects
-		gameObjects = new Array<ScreenEditor.EditorGameObject>();
+		gameObjects = new Array<GameObject>();
 		
 		//This is so that there is no nullPointerEx, so objectImage has a texture 
 		selectImage();
@@ -129,8 +132,8 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		}
 		
-		for (EditorGameObject obj : gameObjects) {
-			batch.draw(obj.getTexture(), obj.getX(), obj.getY());
+		for (GameObject obj : gameObjects) {
+			batch.draw(((EditorGameObject) obj).getTexture(), obj.getX(), obj.getY());
 		}
 		batch.end();
 
@@ -179,7 +182,6 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		});
 		//Setting the size and adding the Back button to the table
-		backButton.setSize(150,300);
 		editorTable.add(backButton).align(Align.bottom);
 		
 		//Uses some of the same variables, so gets images ready for the Ball button
@@ -200,6 +202,47 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		//Adds the Ball button
 		editorTable.add(ballButton).align(Align.bottom);
+		
+		TextButtonStyle styleExport = new TextButtonStyle();
+		styleExport.font = font;
+		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
+		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
+		
+		TextButton exportButton = new TextButton("", styleExport);
+		
+		exportButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+				Array<String> testWin1Values = new Array<String>();
+				testWin1Values.add("420");
+				testWin1Values.add("9001");
+				testWin1.setValues(testWin1Values);
+				Array<WinEnum> testWinArray = new Array<WinEnum>();
+				testWinArray.add(testWin1);
+				
+				LoseEnum testLose1 = LoseEnum.TIMEOUT;
+				Array<String>testLose1Values =  new Array<String>();
+				testLose1Values.add("42");
+				testLose1.setValues(testLose1Values);
+				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
+				testLoseArray.add(testLose1);
+				
+				LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+				Array<String>testLose2Values =  new Array<String>();
+				testLose2Values.add("42");
+				testLose2Values.add("72");
+				testLose2.setValues(testLose2Values);
+				testLoseArray.add(testLose2);
+				
+				Level level = new Level("tester", "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
+				mainGame.getXML_Writer().createLevel(level);
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
+			}
+			
+		});
+		
+		editorTable.add(exportButton).align(Align.bottom);
 	}
 	
 	//Fills the grid according to the gridImage size relative to the screen size
@@ -246,7 +289,7 @@ class ScreenEditor extends ScreenAdapter{
 					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), drawPos, gridPos);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
-						if(gameObjects.get(k).getCol() == gridPos[0] && gameObjects.get(k).getRow() == gridPos[1]) {
+						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -308,13 +351,7 @@ class ScreenEditor extends ScreenAdapter{
 			return rectangle;
 		}
 		public Texture getTexture() {
-			return texture.getTexture();
-		}
-		public int  getRow() {
-			return grid[1];
-		}
-		public int getCol() {
-			return grid[0];
+			return getEnum().getTexture();
 		}
 	}
 }

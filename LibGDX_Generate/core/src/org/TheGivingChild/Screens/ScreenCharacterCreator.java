@@ -5,13 +5,21 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ScreenCharacterCreator extends ScreenAdapter {
 	//reference to Engine
@@ -30,6 +38,18 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	AssetManager assetManager;
 	//has the loading screen been drawn?
 	boolean loadingScreenDrawn;
+	//delay for loading screen
+	private float screenTransitionTimeLeft = 1.0f;
+	//skin for the back button
+	private Skin skin;
+	//bitmap font for back button
+	private BitmapFont font;
+	//text button style for back button
+	private TextButtonStyle style;
+	//table for back button
+	private Table buttonTable;
+	//ok to draw button?
+	private boolean drawButton = false;
 	
 	//constructor for the new character creator screen
 	public ScreenCharacterCreator(){
@@ -50,13 +70,14 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		headImages = new Array<Image>();
 		bodyImages = new Array<Image>();
 		feetImages = new Array<Image>();
+		buttonTable = createButton();
 		
 	}
 	
 	public void fillImageArrays(){
 		TextureAtlas headAtlas = assetManager.get("Packs/Heads.pack");
-		TextureAtlas bodyAtlas = assetManager.get("Packs/Heads.pack");
-		TextureAtlas feetAtlas = assetManager.get("Packs/Heads.pack");
+		TextureAtlas bodyAtlas = assetManager.get("Packs/Body.pack");
+		TextureAtlas feetAtlas = assetManager.get("Packs/Feet.pack");
 		
 		//add the images to each array based on the textures
 		for(TextureRegion t: headAtlas.getRegions()){
@@ -73,6 +94,30 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		}
 
 		
+	}
+	
+	public Table createButton() {
+		Table t = new Table();
+		font = game.getBitmapFontButton();
+		skin = new Skin();
+		skin.addRegions((TextureAtlas) assetManager.get("Packs/ButtonsEditor.pack"));
+		style = new TextButtonStyle();
+		style.font = font;
+		style.up = skin.getDrawable("Button_Editor_Back");
+		style.down = skin.getDrawable("ButtonPressed_Editor_Back");
+		TextButton backButton = new TextButton("", style);
+		backButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+				hide();
+			}
+		});
+		backButton.setSize(150,300);
+		t.add(backButton);
+		t.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		t.align(Align.bottom);
+		return t;
 	}
 	
 	@Override
@@ -98,12 +143,33 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 			}
 		}
 		else {
-			loadingScreen.remove();
-			fillImageArrays();
-			characterTable = characterAppearanceTable();
-			game.getStage().addActor(characterTable);
+			if(screenTransitionTimeLeft <= 0) {
+				Gdx.gl.glClearColor(1, 1, 1, 1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				loadingScreen.remove();
+				fillImageArrays();
+				characterTable = characterAppearanceTable();
+				game.getStage().addActor(characterTable);
+				drawButton = true;
+				show();
+			}
 		}
-	};
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+	}
+	
+	@Override
+	public void hide() {
+		loadingScreen.remove();
+		characterTable.remove();
+		buttonTable.remove();
+	}
+	
+	@Override
+	public void show() {
+		if(drawButton)
+			game.getStage().addActor(buttonTable);
+	}
 
 
 	public Table characterAppearanceTable(){

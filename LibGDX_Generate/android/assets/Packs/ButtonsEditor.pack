@@ -31,3 +31,17 @@ Button_Editor_Ball
   orig: 300, 150
   offset: 0, 0
   index: -1
+Button_Editor_Export
+  rotate: false
+  xy: 303, 153
+  size: 300, 150
+  orig: 300, 150
+  offset: 0, 0
+  index: -1
+Button_Editor_ExportPressed
+  rotate: false
+  xy: 605, 305
+  size: 300, 150
+  orig: 300, 150
+  offset: 0, 0
+  index: -1

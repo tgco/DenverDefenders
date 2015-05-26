@@ -30,6 +30,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
+		velocity = new float[] {0,0};
 	}
 	
 	public void update(){

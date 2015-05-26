@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
-	 * each type will have a field of variable type that is private
+	 * each type can have private fields
 	 */
 	MOVES{
 		private float[] initialVelocity;
@@ -23,7 +23,7 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "moves";}
-	},	
+	},
 	HEALTH{
 		private int health;
 		public void update(GameObject myObject){
@@ -57,7 +57,7 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "color";}
 	},
-	MOVESONSETPATH{
+	MOVESONSETPATH{//requires moves?
 		private Array<float[]> path;
 		private int currentPoint;//index of current waypoint in path
 		private float tolerance;
@@ -88,6 +88,7 @@ public enum Attribute {
 			path = stringToPath(newValues.get(0));
 			tolerance = Float.parseFloat(newValues.get(1));
 			currentPoint = 0;
+			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
 		}
 		
 		public Array<String> getValues(){
@@ -96,6 +97,7 @@ public enum Attribute {
 			for(float[] point:path)
 				tempS+=";" + point[0] + "," + point[1];
 			temp.add(tempS.replaceFirst(";",""));
+			temp.add(tolerance+"");
 			return temp;
 		}
 		
@@ -123,7 +125,7 @@ public enum Attribute {
 	},
 	FALLSATSETRATE{
 		private int rate;
-		public void update(GameObject myObject){
+		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
 			System.out.println("\nfallsAtSetRate Update");
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}

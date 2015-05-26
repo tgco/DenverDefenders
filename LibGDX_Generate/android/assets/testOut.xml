@@ -1,17 +1,13 @@
-<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="MainScreen_Splash.png">
-	<GameObject ID="1" attributes="health" imageFilename="ball.png" initialLocation="1.0,1.0">
-		<health value1="100"/>
+<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
+	<GameObject ID="1" attributes="moves" imageFilename="ball.png" initialLocation="1.0,1.0">
+		<moves value1="100.0" value2="100.0"/>
 	</GameObject>
-	<GameObject ID="2" attributes="" imageFilename="Grid.png" initialLocation="2.0,2.0"/>
-	<GameObject ID="3" attributes="movesOnSetPath,color" imageFilename="Box.png" initialLocation="100.0,100.0">
-		<movesOnSetPath value1="3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0"/>
-		<color value1="redred"/>
-	</GameObject>
-	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="Box.png" initialLocation="300.0,100.0">
+	
+	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="ball.png" initialLocation="100.0,576.0">
 		<disappearsOnPress/>
 	</GameObject>
-	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="BoxHalf.png" initialLocation="100.0,576">
-		<fallsAtSetRate value1="-100"/>
+	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="ball.png" initialLocation="100.0,576.0">
+		<fallsAtSetRate value1="100"/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>
