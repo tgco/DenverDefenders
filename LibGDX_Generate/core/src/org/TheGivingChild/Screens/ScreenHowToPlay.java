@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -25,16 +26,22 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private Table table;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
 	private Skin skin = new Skin();
+	private AssetManager manager = new AssetManager();
+	private float screenTransitionTimeLeft;
+	private boolean isRendered = false;
 	private TGC_Engine game;
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
-		title = game.getAssetManager().get("HowToPlay.png");
-		message = game.getAssetManager().get("HowToPlayMessage.png");
+		//title = game.getAssetManager().get("HowToPlay.png");
+		//message = game.getAssetManager().get("HowToPlayMessage.png");
 		batch = new SpriteBatch();
 		table = createButtons();
+		manager = game.getAssetManager();
+		manager.load("HowToPlay.png", Texture.class);
+		manager.load("HowToPlayMessage.png", Texture.class);
+		screenTransitionTimeLeft = 1.0f;
 	}
-	
 	
 	//Function for making buttons in the HTP screen
 	public Table createButtons() {
@@ -83,20 +90,38 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		//creates background color
-		Gdx.gl.glClearColor(0, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//shows HTP title and text
-		batch.begin();
-		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
-		batch.draw(message, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
-		batch.end();
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		else {
+			if(screenTransitionTimeLeft <= 0) {
+				if(manager.isLoaded("HowToPlay.png"))
+					title = manager.get("HowToPlay.png");
+				if(manager.isLoaded("HowToPlayMessage.png"))
+					message = manager.get("HowToPlayMessage.png");
+				//creates background color
+				Gdx.gl.glClearColor(0, 1, 1, 1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				//shows HTP title and text
+				batch.begin();
+				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+				batch.draw(message, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
+				batch.end();
+				isRendered = true;
+				show();
+			}
+		}
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		
 	}
 	
 	@Override
 	public void show() {
-		game.getStage().addActor(table);
+		if(isRendered)
+			game.getStage().addActor(table);
 	}
 	
 }

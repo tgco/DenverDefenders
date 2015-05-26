@@ -10,7 +10,7 @@
 	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="Box.png" initialLocation="300.0,100.0">
 		<disappearsOnPress/>
 	</GameObject>
-	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="BoxHalf.png" initialLocation="100.0,100.0">
+	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="BoxHalf.png" initialLocation="100.0,576">
 		<fallsAtSetRate value1="-100"/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">

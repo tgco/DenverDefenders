@@ -1,0 +1,118 @@
+
+Buttons.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ButtonPressed_MainScreen_CharacterCreator
+  rotate: false
+  xy: 1, 605
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Editor
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_HowToPlay
+  rotate: true
+  xy: 536, 372
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Options
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonChecked_LevelPackIcon
+  rotate: false
+  xy: 536, 70
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+SliderKnob
+  rotate: false
+  xy: 838, 860
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+
+Buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ButtonPressed_MainScreen_Play
+  rotate: false
+  xy: 1, 605
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_CharacterCreator
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Editor
+  rotate: true
+  xy: 536, 372
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_HowToPlay
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_LevelPackIcon
+  rotate: false
+  xy: 536, 70
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+
+Buttons3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Button_MainScreen_Options
+  rotate: false
+  xy: 1, 303
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Play
+  rotate: false
+  xy: 1, 1
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+
+Buttons4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SliderBackground
+  rotate: false
+  xy: 1, 1
+  size: 1600, 45
+  orig: 1600, 45
+  offset: 0, 0
+  index: -1
