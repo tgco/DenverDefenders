@@ -9,6 +9,7 @@ import org.TheGivingChild.Engine.XML.LoseEnum;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.TextInputListener;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -92,9 +93,12 @@ class ScreenEditor extends ScreenAdapter{
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
 	
+	private AssetManager manager;
+	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		mainGame = ScreenAdapterManager.getInstance().game;
+		manager = mainGame.getAssetManager();
 		createEditorTable();
 		
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
@@ -142,7 +146,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
-				batch.draw((Texture) mainGame.getAssetManager().get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
+				batch.draw((Texture) manager.get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
 			}
 		}
 		
@@ -169,7 +173,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Sets up the needed variables and parameters
 		editorTable = new Table();
 		skinTable = new Skin();
-		skinTable.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skinTable.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 		
 		//Creates the buttons and sets table to origin
 		createButtons();
@@ -181,7 +185,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
 		skinBack = new Skin();
-		skinBack.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
+		skinBack.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 		textButtonStyleBack = new TextButtonStyle();
 		textButtonStyleBack.font = font; 
 		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");

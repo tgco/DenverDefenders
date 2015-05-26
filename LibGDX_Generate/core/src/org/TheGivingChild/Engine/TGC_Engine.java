@@ -19,6 +19,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -49,6 +51,7 @@ public class TGC_Engine extends Game {
     private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
     private SpriteBatch batch;
+    private Group objectGroup;
     //Asset Manager to store assets
     private AssetManager manager = new AssetManager();
     
@@ -88,13 +91,10 @@ public class TGC_Engine extends Game {
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
-		manager.load("ball.png", Texture.class);
-		manager.load("Box.png", Texture.class);
-		manager.load("BoxHalf.png", Texture.class);
-		manager.load("Grid.png", Texture.class);
-		//manager.load("HowToPlay.png", Texture.class);
-		//manager.load("HowToPlayMessage.png", Texture.class);
-		//manager.load("optionsTitle.png", Texture.class);
+		//manager.load("ball.png", Texture.class);
+		//manager.load("Box.png", Texture.class);
+		//manager.load("BoxHalf.png", Texture.class);
+		//manager.load("Grid.png", Texture.class);
 		manager.load("editorAssets/ball.png", Texture.class);
 		manager.load("editorAssets/ballSelected.png", Texture.class);
 		manager.load("editorAssets/Box.png", Texture.class);
@@ -132,14 +132,51 @@ public class TGC_Engine extends Game {
 		
 		//Game input processor
 		//Gdx.input.setInputProcessor(input);
-	
+		objectGroup = new Group();
+		//Iterate through current level and add objects to stage?
+		for(final GameObject o : levels.first().getGameObjects())
+		{
+			objectGroup.addActor(o);
+		}
+			
 		InputMultiplexer mp = new InputMultiplexer();
 		mp.addProcessor(stage);
 		mp.addProcessor(input);
+	//	mp.addProcessor(new UserInputListener());
 		
-		Gdx.input.setInputProcessor(mp);
+		objectGroup.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode){
+				System.out.println("klicked");
+				return true;
+				
+			}
+			
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+				System.out.println(stage.hit(x, y, true));
+				System.out.println("touch down ");
+				return true;
+			}
+			
+			@Override
+			public boolean scrolled(InputEvent event, float x, float y, int amount)
+			{
+				System.out.println("scrolled the moyes");
+				return true;
+			}
+			
+		});
 		
-	
+		stage.addActor(objectGroup);
+		
+		stage.setKeyboardFocus(objectGroup);
+		//stage.addTouchFocus(listener, listenerActor, target, pointer, button);
+		
+		Gdx.input.setInputProcessor(stage);
+						
+		//System.out.println("stage has this many actors:" + stage.getActors().size);
+		//System.out.println("other processor has this many actors" + input.getActors().size);
 		
 	}
 	

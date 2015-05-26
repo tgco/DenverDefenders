@@ -17,11 +17,8 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		//screen 576x1024
 		float temp1[] = {1,1};
-
 		float temp2[] = {1000,2};
-
 		float temp3[] = {2,2};
-
 		
 		Array<String> test1 = new Array<String>();
 		test1.add("100.0");
@@ -42,8 +39,6 @@ public class XML_Writer {
 		//testObj3.addAttribute("color", test2);
 		GameObject testObj4 = new GameObject(4,"ball.png",temp3);
 		testObj4.addAttribute("disappearsOnPress", new Array<String>());
-		GameObject testObj5 = new GameObject(5,"grid.png",temp3);
-		testObj5.addAttribute("fallsAtSetRate",test4);
 		
 		
 		Array<GameObject> testObjectArray = new Array<GameObject>();
@@ -51,7 +46,6 @@ public class XML_Writer {
 		testObjectArray.add(testObj2);
 		//testObjectArray.add(testObj3);
 		testObjectArray.add(testObj4);
-		testObjectArray.add(testObj5);
 		
 		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
 		Array<String> testWin1Values = new Array<String>();
@@ -142,7 +136,9 @@ public class XML_Writer {
 			writer.close();
 			//write to file
 			//FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
+			System.out.println(currentLevel.getLevelName());
 			FileHandle fileWriter = Gdx.files.local("../android/assets/" +currentLevel.getLevelName() + ".xml");
+			//FileHandle fileWriter = new FileHandle("testOutTEST.xml");
 			fileWriter.writeString(stringWriter.toString(),false);
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}

@@ -1,12 +1,18 @@
 package org.TheGivingChild.Engine;
 
+import org.TheGivingChild.Engine.XML.GameObject;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class UserInputProcessor implements InputProcessor, GestureListener{
-		
+
+
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
@@ -32,28 +38,31 @@ public class UserInputProcessor implements InputProcessor, GestureListener{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user has either pressed a button or moved the mouse");
+		System.out.println("user clicked the mouse or tapped screen");
+		//this.on
+	//object = this.
 		 	return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user released from screen at" + screenX + ", " + screenY);
+	//	System.out.println("user released from screen at" + screenX + ", " + screenY);
+		
 		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
-		System.out.println("user dragged across screen from " + screenX  + " to " + screenY);
+		//System.out.println("user dragged across screen from " + screenX  + " to " + screenY);
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
-		System.out.println("user moved mouse from " + screenX + " to " + screenY);
+	//	System.out.println("user moved mouse from " + screenX + " to " + screenY);
 		return true;
 	}
 
@@ -118,6 +127,7 @@ public class UserInputProcessor implements InputProcessor, GestureListener{
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
+		System.out.println("touchdown");
 		return true;
 	}
 
