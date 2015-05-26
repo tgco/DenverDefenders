@@ -2,12 +2,14 @@ package org.TheGivingChild.Engine.XML;
 
 import java.lang.reflect.Method;
 
+import org.TheGivingChild.Engine.UserInputListener;
 import org.TheGivingChild.Engine.UserInputProcessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.*;
@@ -24,19 +26,24 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	2: Each object's attributes are then elements within the object
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
-
+	//touchable = true;
+	
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
+
+
 		velocity = new float[] {0,0};
+
 	}
-	
+				
 	public void update(){
 		for(Attribute currentAttribute:attributes)
 			currentAttribute.update(this);
 	}
+
 	
 	public void input(){
 		
@@ -71,6 +78,16 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
+
+	
+	public void act()
+	{
+		//System.out.println("I am acting " + this.getName());
+	}
+	
+	
+	
+
 
 	public float[] getVelocity() {
 		return velocity;
