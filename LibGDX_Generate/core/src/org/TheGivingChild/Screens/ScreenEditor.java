@@ -53,7 +53,7 @@ class ScreenEditor extends ScreenAdapter{
 		}
 	}
 	
-	private String levelName;
+	private String levelName = "Base";
 	private String packageName;
 	
 	//Style for the button
@@ -124,7 +124,14 @@ class ScreenEditor extends ScreenAdapter{
 
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			
+		
+		
+		if(canSetObj) {
+			batch.begin();
+			batch.draw(objectImage.texture, Gdx.input.getX(), Gdx.input.getY());
+			batch.end();
+		}
+		
 		//If touched, call spawnObjects
 		if(Gdx.input.isTouched()) {
 			spawnObject();
@@ -154,6 +161,7 @@ class ScreenEditor extends ScreenAdapter{
 	//Dispose, will be implemented later
 //	@Override
 //	public void dispose() {
+//		
 //	}
 
 	//Function to instantiate the button table
