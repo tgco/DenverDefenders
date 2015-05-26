@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.XML.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,10 +35,13 @@ class ScreenLevelPackets extends ScreenAdapter{
 	//reference to the game for adding to stage, etc.
 	private TGC_Engine game;
 	
+	private AssetManager manager;
+	
 	//constructor. Initialize the variables.
 	public ScreenLevelPackets() {
 		//get the game from the manager instance
 		game = ScreenAdapterManager.getInstance().game;
+		manager = game.getAssetManager();
 		//initialize the packets
 		packets = new Array<LevelPacket>();
 		//initialize and fill levels array from the games level
@@ -57,7 +61,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		float padWidth = game.getWidth()/24;
 		
 		//add regions from the asset manager to skin
-		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
