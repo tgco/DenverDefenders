@@ -290,6 +290,7 @@ class ScreenEditor extends ScreenAdapter{
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
+							obj = new EditorGameObject(gameObjects.get(k).getID(), objectImage.getFile(), drawPos, gridPos);
 							gameObjects.set(k, obj);
 							added = true;
 						}
