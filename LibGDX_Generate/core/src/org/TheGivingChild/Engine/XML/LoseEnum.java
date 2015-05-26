@@ -2,11 +2,12 @@ package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {//Cannot have any labels in common with WinEnum
 	TIMEOUT{
-		private int time;
+		private float time;
 		public String getXMLDescription(){
 			return "timeout";
 		}
@@ -16,9 +17,12 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			return temp;
 		}
 		public void setValues(Array<String> newValues){
-			time = Integer.parseInt(newValues.first());
+			time = Float.parseFloat(newValues.first());
 		}
 		public boolean checkLose(){
+			time = time - Gdx.graphics.getDeltaTime();
+			if(time <= 0.0)
+				return true;
 			return false;
 		}
 	},

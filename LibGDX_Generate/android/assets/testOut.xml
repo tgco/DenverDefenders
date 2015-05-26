@@ -6,13 +6,8 @@
 	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="ball.png" initialLocation="100.0,576.0">
 		<disappearsOnPress/>
 	</GameObject>
-<<<<<<< HEAD
 	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="ball.png" initialLocation="100.0,576.0">
 		<fallsAtSetRate value1="100"/>
-=======
-	<GameObject ID="5" attributes="fallsAtSetRate" imageFilename="BoxHalf.png" initialLocation="100.0,576">
-		<fallsAtSetRate value1="-100"/>
->>>>>>> 02abf87923d6489eedcd13006891a5ec50740897
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>

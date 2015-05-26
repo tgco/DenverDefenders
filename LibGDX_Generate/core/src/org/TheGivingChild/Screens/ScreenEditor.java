@@ -179,7 +179,6 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		});
 		//Setting the size and adding the Back button to the table
-		backButton.setSize(150,300);
 		editorTable.add(backButton).align(Align.bottom);
 		
 		//Uses some of the same variables, so gets images ready for the Ball button
@@ -200,6 +199,23 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		//Adds the Ball button
 		editorTable.add(ballButton).align(Align.bottom);
+		
+		TextButtonStyle styleExport = new TextButtonStyle();
+		styleExport.font = font;
+		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
+		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
+		
+		TextButton exportButton = new TextButton("", styleExport);
+		
+		exportButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
+			}
+			
+		});
+		
+		editorTable.add(exportButton).align(Align.bottom);
 	}
 	
 	//Fills the grid according to the gridImage size relative to the screen size
@@ -315,6 +331,9 @@ class ScreenEditor extends ScreenAdapter{
 		}
 		public int getCol() {
 			return grid[0];
+		}
+		public void setID(int newID) {
+			
 		}
 	}
 }

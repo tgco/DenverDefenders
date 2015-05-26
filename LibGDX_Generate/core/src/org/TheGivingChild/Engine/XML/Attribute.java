@@ -71,6 +71,7 @@ public enum Attribute {
 		private int currentPoint;
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
+
 			if(distanceToPoint(myObject.getX(),myObject.getY()) < tolerance){//if 'close enough' to target point, goto next ((x2-x1)^2 + (y2-y1)^2)^.5
 				currentPoint++;
 				//FINISH ME BRAH I NEED TO GO THE RIGHT DIRECTION, sin(theta) = slope
@@ -80,6 +81,7 @@ public enum Attribute {
 		
 		private double distanceToPoint(float x, float y){
 			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1],2),.5);
+
 		}
 		
 		public void setValues(Array<String> newValues){
