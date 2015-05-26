@@ -70,4 +70,12 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
+
+	public float[] getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(float[] velocity) {
+		this.velocity = velocity;
+	}
 }

@@ -8,6 +8,22 @@ public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
 	 * each type will have a field of variable type that is private
 	 */
+	MOVES{
+		private float[] initialVelocity;
+		public void update(GameObject myObject){
+			myObject.setPosition(Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0], Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]);
+		}
+		public void setValues(Array<String> newValues){
+			initialVelocity[0] = Float.parseFloat(newValues.get(0));
+			initialVelocity[1] = Float.parseFloat(newValues.get(1));
+		}
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(initialVelocity[0] + "," + initialVelocity[1]);
+			return temp;
+		}
+		public String getXMLName(){return "moves";}
+	},	
 	HEALTH{
 		private int health;
 		public void update(GameObject myObject){
@@ -44,13 +60,33 @@ public enum Attribute {
 	MOVESONSETPATH{
 		private Array<float[]> path;
 		private int currentPoint;//index of current waypoint in path
+		private float tolerance;
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
-			
+			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
+				//setup currentPoint
+				currentPoint++;
+				if(currentPoint >= path.size)
+					currentPoint = 0;
+				//setup new velocity vector for myObject
+				float speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
+				float[] direction = calcDirection(myObject.getX(),myObject.getY());
+				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
+			}
+			//dont need to simulate movement, that is for MOVES to do
+		}
+		
+		private float[] calcDirection(float x, float y){//returns the direction vector(magnitude of 1!) from current position to currentPoint
+			return new float[] {(float) Math.asin(x-path.get(currentPoint)[0]),(float) Math.asin(y-path.get(currentPoint)[1])};
+		}
+		
+		private double calcDistance(float x, float y){//double check this is working
+			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1], 2),0.5);
 		}
 		
 		public void setValues(Array<String> newValues){
 			path = stringToPath(newValues.get(0));
+			tolerance = Float.parseFloat(newValues.get(1));
 			currentPoint = 0;
 		}
 		
