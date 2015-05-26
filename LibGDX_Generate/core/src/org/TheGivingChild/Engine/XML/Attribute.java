@@ -8,20 +8,29 @@ public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
 	 * each type can have private fields
 	 */
-	MOVES{
-		private float[] initialVelocity;
+	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
+		private float[] initialVelocity = new float[2];;
+		private boolean hasRun = false;
 		public void update(GameObject myObject){
+			if(!hasRun){
+				hasRun = true;
+				myObject.setVelocity(initialVelocity);
+			}
 			myObject.setPosition(Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0], Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]);
 		}
+		
 		public void setValues(Array<String> newValues){
+			System.out.println("VALUES: " + newValues);
 			initialVelocity[0] = Float.parseFloat(newValues.get(0));
 			initialVelocity[1] = Float.parseFloat(newValues.get(1));
 		}
+		
 		public Array<String> getValues(){
 			Array<String> temp = new Array<String>();
 			temp.add(initialVelocity[0] + "," + initialVelocity[1]);
 			return temp;
 		}
+		
 		public String getXMLName(){return "moves";}
 	},
 	HEALTH{
