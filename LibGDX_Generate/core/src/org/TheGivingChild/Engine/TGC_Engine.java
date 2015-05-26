@@ -1,94 +1,289 @@
 package org.TheGivingChild.Engine;
 
-import java.util.ArrayList;
+import org.TheGivingChild.Engine.Attributes.WinEnum;
+import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelGoal;
+import org.TheGivingChild.Engine.XML.LoseEnum;
+import org.TheGivingChild.Engine.XML.XML_Reader;
+import org.TheGivingChild.Engine.XML.XML_Writer;
+import org.TheGivingChild.Screens.ScreenAdapterEnums;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
 
-
-import java.util.Iterator;
-
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 
-public class TGC_Engine extends ApplicationAdapter {
+public class TGC_Engine extends Game {
+	final static int DESKTOP_WIDTH = 1024;
+	final static int DESKTOP_HEIGHT = 576;
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
-	Stage stage;
-	String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	//fonts
-    BitmapFont font;
+	private Stage stage;
+	//button atlas reference names
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_CharacterCreator", "Button_MainScreen_CharacterCreator"};
+	//skin from atlas
+	private Skin skin = new Skin();
+	//bitmap font for buttons
+	private BitmapFont bitmapFontButton;
+	//create tables for the UI
+    private Table rootTable;
+    private Array<Level> levels = new Array<Level>();
+    private UserInputProcessor input = new UserInputProcessor();
     
-    //button styling	
-    TextButtonStyle buttonStyleMainMenyPlay;
-    TextButtonStyle buttonStyleMainMenyEditor;
-    TextButtonStyle buttonStyleMainMenyOptions;
-    Skin skin;
-    TextureAtlas buttonAtlas;
-    //button groups
-    ButtonGroup buttonGroupMainMenu;
-    //buttons
-    TextButton buttonMainMenuPlay;
-    TextButton buttonMainMenuOptions;
-    TextButton buttonMainMenuEditor;
-    //create tables for the UI
-    Table rootTable;
+    private boolean screenManagerLoaded = false;
     
-	//create needed textures
-	Texture mainScreen_Splash;
+    private float width;
+    private float height;
+    private final static float SCREEN_TRANSITION_TIMER = 1.0f;
+    private float screenTransitionTimeLeft;
+    private SpriteBatch batch;
+    private Group objectGroup;
+    //Asset Manager to store assets
+    private AssetManager manager = new AssetManager();
+    
+    private XML_Reader reader;
+    private XML_Writer writer;
+    
+	public void addLevels(Array<Level> levels){
+			this.levels.addAll(levels);
+	}
+
+	public void addTable(Table t){
+		rootTable.add(t).align(Align.bottomLeft);
+	}
 	
-	//testing git pulls comment
 	@Override
 	public void create () {
+		switch(Gdx.app.getType()){
+			case Android:
+				break;
+			//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
+				
+				break;
+			case iOS:
+				break;
+			default:
+				break;
+		}
+		
+		
+		//Timer for loading screen delay before transition to main screen
+		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
+		//Assets to be added to the manager
+		manager.load("MainScreen_Splash.png", Texture.class);
+		//initial update so that the loading screen is loaded before everything
+		manager.update();
+		manager.load("Packs/Buttons.pack", TextureAtlas.class);
+		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
+		//manager.load("ball.png", Texture.class);
+		//manager.load("Box.png", Texture.class);
+		//manager.load("BoxHalf.png", Texture.class);
+		//manager.load("Grid.png", Texture.class);
+		manager.load("editorAssets/ball.png", Texture.class);
+		manager.load("editorAssets/ballSelected.png", Texture.class);
+		manager.load("editorAssets/Box.png", Texture.class);
+		manager.load("editorAssets/BoxHalf.png", Texture.class);
+		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
+		manager.load("editorAssets/Grid.png", Texture.class);
+		batch = new SpriteBatch();
+		//levels for testing packet manager.
+		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level3", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level4", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level5", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level6", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level7", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
+		
+		reader = new XML_Reader();
+		writer = new XML_Writer();
+		
+		boolean exists = Gdx.files.internal("testOut.xml").exists();
+		System.out.println(exists);
+		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
+		levels.set(0, reader.compileLevel());
+		//button stuff
+        bitmapFontButton = new BitmapFont();
+        
+		//create the stage
+		createStage();
+		
+		//set the height and width to the Gdx graphics dimensions
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+	
+		
+		//Game input processor
+		//Gdx.input.setInputProcessor(input);
+		objectGroup = new Group();
+		//Iterate through current level and add objects to stage?
+		for(final GameObject o : levels.first().getGameObjects())
+		{
+			objectGroup.addActor(o);
+		}
+			
+		InputMultiplexer mp = new InputMultiplexer();
+		mp.addProcessor(stage);
+		mp.addProcessor(input);
+	//	mp.addProcessor(new UserInputListener());
+		
+		objectGroup.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode){
+				System.out.println("klicked");
+				return true;
+				
+			}
+			
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+				System.out.println(stage.hit(x, y, true));
+				System.out.println("touch down ");
+				return true;
+			}
+			
+			@Override
+			public boolean scrolled(InputEvent event, float x, float y, int amount)
+			{
+				System.out.println("scrolled the moyes");
+				return true;
+			}
+			
+		});
+		
+		stage.addActor(objectGroup);
+		
+		stage.setKeyboardFocus(objectGroup);
+		//stage.addTouchFocus(listener, listenerActor, target, pointer, button);
+		
+		Gdx.input.setInputProcessor(stage);
+						
+		//System.out.println("stage has this many actors:" + stage.getActors().size);
+		//System.out.println("other processor has this many actors" + input.getActors().size);
+		
+	}
+	
+	public void createStage(){
 		stage = new Stage();
 		//create main menu images
 		Gdx.input.setInputProcessor(stage);
-		buttonGroupMainMenu = new ButtonGroup<Button>();
 		//initialize root Table
 		rootTable = new Table();
-		//button stuff
-        font = new BitmapFont();
-        skin = new Skin();
-        //make an atlas using the button texture pack
-        buttonAtlas = new TextureAtlas("Packs/Buttons.pack");
-        //define the regions
-        skin.addRegions(buttonAtlas);
-        //create a table for the buttons
-        Table table = new Table();
-        //variable to keep track of button height for table positioning
-        float buttonHeight = 0;
-        //iterate over button pack names in order to check 
-        for(int i = 0; i < buttonAtlasNamesArray.length-1; i+=BUTTON_STATES){
-        	TextButtonStyle bs = new TextButtonStyle();
-        	bs.font = font;
-        	bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
-        	bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
-        	TextButton b = new TextButton("", bs);
-        	b.setSize(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
-        	table.add(b).size(Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
-        	buttonHeight = b.getHeight();
-        }
-        
-        rootTable.add(table);
-        rootTable.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
-        stage.addActor(rootTable);
-	}
 
-	@Override
-	public void render () {
-		super.render();
-		stage.draw();
 	}
 	
+	
+	
+	//dispose of resources, done when the game is destroyed
+	@Override
+	public void dispose(){
+		super.dispose();
+		//dispose the screen manager, and in doing so all screens
+		ScreenAdapterManager.getInstance().dispose();
+	};
+	
+	//getters for accessing variables in other areas of the engine
+	public BitmapFont getBitmapFontButton(){
+		return bitmapFontButton;
+	}
+	
+	public String[] getButtonAtlasNamesArray() {
+		return buttonAtlasNamesArray;
+	}
+	
+	public Skin getButtonAtlasSkin(){
+		return skin;
+	}
+	
+	public int getButtonStates(){
+		return BUTTON_STATES;
+	}
+	
+	public float getHeight(){
+		return height;
+	}
+	
+	public Array<Level> getLevels(){
+		return levels;
+	}
+	
+	public Table getRootTable() {
+		return rootTable;
+	}
+	
+	public Stage getStage() {
+		return stage;
+	}	
+	
+	public float getWidth(){
+		return width;
+	}
+	
+	public AssetManager getAssetManager() {
+		return manager;
+	}
+	public XML_Writer getXML_Writer() {
+		return writer;
+	}
+	
+	
+	public void removeTable(Table t){
+		rootTable.removeActor(t);
+	}
+	
+	@Override
+	public void render () {
+		//if the manager is not done updating, it will display a loading image
+		if(!manager.update()) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		//once the manager is done updating, it prepares to switch to the main screen
+		else {
+			//timer to determine whether to continue displaying loading screen
+			//or to switch to displaying the main screen
+			if(screenTransitionTimeLeft <= 0){
+				super.render();
+				stage.draw();
+				//if the texture atlas is loaded, then add it to the skin
+				if(manager.isLoaded("Packs/Buttons.pack")) {
+		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
+		        }
+				if(manager.isLoaded("Packs/ButtonsEditor.pack")) {
+					skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+				}
+				//makes sure the main screen is only loaded once
+				if(!screenManagerLoaded){
+					//initialize the Screen manager, passing the engine to it for reference
+					ScreenAdapterManager.getInstance().initialize(this);
+					//show the main screen to be displayed first
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					screenManagerLoaded = true;
+				}
+			}
+		}
+		//increments the timer to check if we are still delaying the main screen
+		if(screenTransitionTimeLeft >= 0){
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		}
+		
+	}
 }
