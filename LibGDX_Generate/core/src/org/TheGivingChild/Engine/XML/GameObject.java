@@ -72,11 +72,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 
-	public void setVelocity(float[] velocity) {
-		this.velocity = velocity;		
-	}
-	
-	public float[] getVelocity(){
+	public float[] getVelocity() {
 		return velocity;
+	}
+
+	public void setVelocity(float[] velocity) {
+		this.velocity = velocity;
 	}
 }

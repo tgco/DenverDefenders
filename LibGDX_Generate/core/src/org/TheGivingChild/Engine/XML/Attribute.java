@@ -8,26 +8,18 @@ public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
 	 * each type can have private fields
 	 */
-	MOVES{//hooray now things can move and other attributes can affect movement!, it's input arguments only affect initial speed. 
-		private boolean hasMoved = false;
-		private float[] velocity;
-		public void update(GameObject myObject){//gotta do some jank code because other objects need to see it's speed, but dont wanna pass around an Array<String> and convert back and forth with floats
-			System.out.println("\nmoves Update");
-			if(!hasMoved){
-				hasMoved = true;
-				myObject.setVelocity(velocity);
-			}
-			myObject.setPosition(myObject.getX() + (velocity[0]*Gdx.graphics.getDeltaTime()), myObject.getY() + (velocity[1]*Gdx.graphics.getDeltaTime()));
+	MOVES{
+		private float[] initialVelocity;
+		public void update(GameObject myObject){
+			myObject.setPosition(Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0], Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]);
 		}
 		public void setValues(Array<String> newValues){
-			velocity = new float[2];
-			velocity[0] = Float.parseFloat(newValues.get(0));//x
-			velocity[1] = Float.parseFloat(newValues.get(1));//y
+			initialVelocity[0] = Float.parseFloat(newValues.get(0));
+			initialVelocity[1] = Float.parseFloat(newValues.get(1));
 		}
 		public Array<String> getValues(){
 			Array<String> temp = new Array<String>();
-			temp.add(velocity[0]+"");
-			temp.add(velocity[1]+"");
+			temp.add(initialVelocity[0] + "," + initialVelocity[1]);
 			return temp;
 		}
 		public String getXMLName(){return "moves";}
@@ -66,29 +58,36 @@ public enum Attribute {
 		public String getXMLName(){return "color";}
 	},
 	MOVESONSETPATH{//requires moves?
-		private double tolerance;
 		private Array<float[]> path;
 		private int currentPoint;//index of current waypoint in path
-
+		private float tolerance;
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
-
-			if(distanceToPoint(myObject.getX(),myObject.getY()) < tolerance){//if 'close enough' to target point, goto next ((x2-x1)^2 + (y2-y1)^2)^.5
+			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
+				//setup currentPoint
 				currentPoint++;
-				//FINISH ME BRAH I NEED TO GO THE RIGHT DIRECTION, sin(theta) = slope
-				
+				if(currentPoint >= path.size)
+					currentPoint = 0;
+				//setup new velocity vector for myObject
+				float speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
+				float[] direction = calcDirection(myObject.getX(),myObject.getY());
+				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
 			}
+			//dont need to simulate movement, that is for MOVES to do
 		}
 		
-		private double distanceToPoint(float x, float y){
-			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1],2),.5);
-
+		private float[] calcDirection(float x, float y){//returns the direction vector(magnitude of 1!) from current position to currentPoint
+			return new float[] {(float) Math.asin(x-path.get(currentPoint)[0]),(float) Math.asin(y-path.get(currentPoint)[1])};
+		}
+		
+		private double calcDistance(float x, float y){//double check this is working
+			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1], 2),0.5);
 		}
 		
 		public void setValues(Array<String> newValues){
 			path = stringToPath(newValues.get(0));
-			tolerance = Double.parseDouble(newValues.get(1));
-			currentPoint = 0;//initializes for the object to immediately start heading for first point
+			tolerance = Float.parseFloat(newValues.get(1));
+			currentPoint = 0;
 			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
 		}
 		
