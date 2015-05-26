@@ -4,6 +4,7 @@ import java.io.StringWriter;
 
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
@@ -140,7 +141,8 @@ public class XML_Writer {
 			
 			writer.close();
 			//write to file
-			FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
+			//FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
+			FileHandle fileWriter = Gdx.files.local("../android/assets/" +currentLevel.getLevelName() + ".xml");
 			fileWriter.writeString(stringWriter.toString(),false);
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
