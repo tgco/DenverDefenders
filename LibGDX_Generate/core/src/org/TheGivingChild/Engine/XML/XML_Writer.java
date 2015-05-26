@@ -16,8 +16,11 @@ public class XML_Writer {
 	public static void main(String cheese[]){
 		//screen 576x1024
 		float temp1[] = {1,1};
+
 		float temp2[] = {1000,2};
-		float temp3[] = {100,576};
+
+		float temp3[] = {2,2};
+
 		
 		Array<String> test1 = new Array<String>();
 		test1.add("100.0");
