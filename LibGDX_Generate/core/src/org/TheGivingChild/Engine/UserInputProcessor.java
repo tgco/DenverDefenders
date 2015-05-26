@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Event;
 
 public class UserInputProcessor implements InputProcessor, GestureListener{
 		
@@ -32,28 +33,28 @@ public class UserInputProcessor implements InputProcessor, GestureListener{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user has either pressed a button or moved the mouse");
+		//System.out.println("user has either pressed a button or moved the mouse");
 		 	return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		System.out.println("user released from screen at" + screenX + ", " + screenY);
+		//System.out.println("user released from screen at" + screenX + ", " + screenY);
 		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
-		System.out.println("user dragged across screen from " + screenX  + " to " + screenY);
+		//System.out.println("user dragged across screen from " + screenX  + " to " + screenY);
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
-		System.out.println("user moved mouse from " + screenX + " to " + screenY);
+	//	System.out.println("user moved mouse from " + screenX + " to " + screenY);
 		return true;
 	}
 

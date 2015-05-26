@@ -11,7 +11,7 @@ public enum Attribute {
 	HEALTH{
 		private int health;
 		public void update(GameObject myObject){
-			System.out.println("\nHealth Update\n" + health);
+			//System.out.println("\nHealth Update\n" + health);
 		}
 		public void setValues(Array<String> newValues){//each implementation of setValues translates the array of strings into whatever datatype it wants
 			health = Integer.parseInt(newValues.first().toString());
@@ -27,7 +27,7 @@ public enum Attribute {
 	COLOR{
 		private String color;
 		public void update(GameObject myObject){
-			System.out.println("\nColor Update\n" + color);
+			//System.out.println("\nColor Update\n" + color);
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -44,7 +44,7 @@ public enum Attribute {
 	MOVESONSETPATH{
 		private Array<float[]> path;
 		public void update(GameObject myObject){
-			System.out.println("\nMovesOnSetPath Update");
+			//System.out.println("\nMovesOnSetPath Update");
 			for(float[] currentPoint:path)
 				System.out.println(currentPoint[0] + ", " + currentPoint[1]);
 		}
@@ -78,7 +78,7 @@ public enum Attribute {
 	},
 	DISAPPEARSONPRESS{
 		public void update(GameObject myObject){
-			System.out.println("\nDisappearsOnPress Update");
+			//System.out.println("\nDisappearsOnPress Update");
 		}
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
@@ -87,7 +87,7 @@ public enum Attribute {
 	FALLSATSETRATE{
 		private int rate;
 		public void update(GameObject myObject){
-			System.out.println("\nfallsAtSetRate Update");
+		//	System.out.println("\nfallsAtSetRate Update");
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){
@@ -103,7 +103,7 @@ public enum Attribute {
 	SPINS{
 		private float rate;
 		public void update(GameObject myObject){
-			System.out.println("\nSpins Update");
+			//System.out.println("\nSpins Update");
 			
 		}
 		public void setValues(Array<String> newValues){

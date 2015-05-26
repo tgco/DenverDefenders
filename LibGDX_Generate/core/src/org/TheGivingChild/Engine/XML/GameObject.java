@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.reflect.*;
@@ -24,11 +25,15 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
 
+	private ClickListener listen = new ClickListener();
+	
 	public GameObject(int newID, String img,float[] newPosition){
 		ID = newID;
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
+		this.addListener(listen);
+		
 	}
 	
 	public void update(){
@@ -69,4 +74,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
+	
+	public void act()
+	{
+		System.out.println("I am acting " + this.getName());
+	}
+	
+	
 }

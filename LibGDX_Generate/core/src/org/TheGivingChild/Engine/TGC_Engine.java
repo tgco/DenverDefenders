@@ -134,7 +134,7 @@ public class TGC_Engine extends Game {
 		mp.addProcessor(input);
 		
 		Gdx.input.setInputProcessor(mp);
-		
+				
 	
 		
 	}
