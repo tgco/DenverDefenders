@@ -17,7 +17,8 @@ import com.badlogic.gdx.utils.reflect.Method.*;
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private int ID;
 	private String imageFilename;
-	Array<Attribute> attributes;
+	private Array<Attribute> attributes;
+	private float[] velocity;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
