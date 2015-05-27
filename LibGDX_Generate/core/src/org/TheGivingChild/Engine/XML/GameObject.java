@@ -32,7 +32,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		//should be set using the bounds of the texture rather than a static number
 		setBounds(getX(), getY(), 100, 100);
 		//add the destroy on click event
-		//addListener(InputListenersEnums.DESTROY_ON_CLICK.getInputListener(this));
+	//	addListener(InputListenersEnums.DESTROY_ON_CLICK.getInputListener(this));
 
 	}
 				
