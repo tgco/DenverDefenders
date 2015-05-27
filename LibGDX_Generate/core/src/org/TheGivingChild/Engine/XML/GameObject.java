@@ -1,6 +1,8 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.Attributes.InputListenersEnums;
+import java.lang.reflect.Method;
+
+import org.TheGivingChild.Engine.UserInputProcessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -30,7 +32,7 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		//should be set using the bounds of the texture rather than a static number
 		setBounds(getX(), getY(), 100, 100);
 		//add the destroy on click event
-		addListener(InputListenersEnums.DESTROY_ON_CLICK.getInputListener(this));
+		//addListener(InputListenersEnums.DESTROY_ON_CLICK.getInputListener(this));
 
 	}
 				
