@@ -215,6 +215,7 @@ public class TGC_Engine extends Game {
 	public AssetManager getAssetManager() {
 		return manager;
 	}
+	
 	public XML_Writer getXML_Writer() {
 		return writer;
 	}

@@ -3,8 +3,12 @@ package org.TheGivingChild.Engine.XML;
 import java.lang.reflect.Method;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
+import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.UserInputProcessor;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +21,8 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 	private String imageFilename;
 	private Array<Attribute> attributes;
 	private float[] velocity;
+	private TGC_Engine game;
+	private AssetManager manager = new AssetManager();
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -34,7 +40,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		setBounds(getX(), getY(), 100, 100);
 		//add the destroy on click event
 		addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
-
+		game = ScreenAdapterManager.getInstance().game;
+		/*if(!game.getAssetManager().isLoaded(imageFilename)) {
+			game.getAssetManager().load(imageFilename, Texture.class);
+			game.getAssetManager().update();
+		}*/
 	}
 				
 	public void update(){
