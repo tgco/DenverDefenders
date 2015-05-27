@@ -29,49 +29,49 @@ public class XML_Writer {
 		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
 		Array<String> test4 = new Array<String>();
 		test4.add("100");
-		
-		
-		GameObject testObj1 = new GameObject(1,"ball.png",temp1);
-		testObj1.addAttribute("moves", test1);
-		GameObject testObj2 = new GameObject(2,"box.png",temp2);
-		//GameObject testObj3 = new GameObject(3,"pall.png",temp3);
-		//testObj3.addAttribute("movesOnSetPath", test3);
-		//testObj3.addAttribute("color", test2);
-		GameObject testObj4 = new GameObject(4,"ball.png",temp3);
-		testObj4.addAttribute("disappearsOnPress", new Array<String>());
-		
-		
-		Array<GameObject> testObjectArray = new Array<GameObject>();
-		testObjectArray.add(testObj1);
-		testObjectArray.add(testObj2);
-		//testObjectArray.add(testObj3);
-		testObjectArray.add(testObj4);
-		
-		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
-		Array<String> testWin1Values = new Array<String>();
-		testWin1Values.add("420");
-		testWin1Values.add("9001");
-		testWin1.setValues(testWin1Values);
-		Array<WinEnum> testWinArray = new Array<WinEnum>();
-		testWinArray.add(testWin1);
-		
-		LoseEnum testLose1 = LoseEnum.TIMEOUT;
-		Array<String>testLose1Values =  new Array<String>();
-		testLose1Values.add("42");
-		testLose1.setValues(testLose1Values);
-		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
-		testLoseArray.add(testLose1);
-		
-		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
-		Array<String>testLose2Values =  new Array<String>();
-		testLose2Values.add("42");
-		testLose2Values.add("72");
-		testLose2.setValues(testLose2Values);
-		testLoseArray.add(testLose2);
-		
-		XML_Writer sally = new XML_Writer();
-		//sally.setupNewFile("testOut.xml", "", "testLevel");
-		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
+//		
+//		
+//		GameObject testObj1 = new GameObject(1,"ball.png",temp1);
+//		testObj1.addAttribute("moves", test1);
+//		GameObject testObj2 = new GameObject(2,"box.png",temp2);
+//		//GameObject testObj3 = new GameObject(3,"pall.png",temp3);
+//		//testObj3.addAttribute("movesOnSetPath", test3);
+//		//testObj3.addAttribute("color", test2);
+//		GameObject testObj4 = new GameObject(4,"ball.png",temp3);
+//		testObj4.addAttribute("disappearsOnPress", new Array<String>());
+//		
+//		
+//		Array<GameObject> testObjectArray = new Array<GameObject>();
+//		testObjectArray.add(testObj1);
+//		testObjectArray.add(testObj2);
+//		//testObjectArray.add(testObj3);
+//		testObjectArray.add(testObj4);
+//		
+//		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+//		Array<String> testWin1Values = new Array<String>();
+//		testWin1Values.add("420");
+//		testWin1Values.add("9001");
+//		testWin1.setValues(testWin1Values);
+//		Array<WinEnum> testWinArray = new Array<WinEnum>();
+//		testWinArray.add(testWin1);
+//		
+//		LoseEnum testLose1 = LoseEnum.TIMEOUT;
+//		Array<String>testLose1Values =  new Array<String>();
+//		testLose1Values.add("42");
+//		testLose1.setValues(testLose1Values);
+//		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
+//		testLoseArray.add(testLose1);
+//		
+//		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+//		Array<String>testLose2Values =  new Array<String>();
+//		testLose2Values.add("42");
+//		testLose2Values.add("72");
+//		testLose2.setValues(testLose2Values);
+//		testLoseArray.add(testLose2);
+//		
+//		XML_Writer sally = new XML_Writer();
+//		//sally.setupNewFile("testOut.xml", "", "testLevel");
+//		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
 	}
 	
 	public void createLevel(Level newLevel){//this is who you gonna call

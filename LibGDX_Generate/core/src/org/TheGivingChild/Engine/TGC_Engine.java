@@ -144,30 +144,6 @@ public class TGC_Engine extends Game {
 		mp.addProcessor(input);
 	//	mp.addProcessor(new UserInputListener());
 		
-		objectGroup.addListener(new InputListener() {
-			@Override
-			public boolean keyDown(InputEvent event, int keycode){
-				System.out.println("klicked");
-				return true;
-				
-			}
-			
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-				System.out.println(stage.hit(x, y, true));
-				System.out.println("touch down ");
-				return true;
-			}
-			
-			@Override
-			public boolean scrolled(InputEvent event, float x, float y, int amount)
-			{
-				System.out.println("scrolled the moyes");
-				return true;
-			}
-			
-		});
-		
 		stage.addActor(objectGroup);
 		
 		stage.setKeyboardFocus(objectGroup);
