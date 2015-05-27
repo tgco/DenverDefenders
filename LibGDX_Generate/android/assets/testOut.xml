@@ -1,9 +1,10 @@
 <level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
-	<GameObject ID="1" attributes="moves" imageFilename="ball.png" initialLocation="1.0,1.0">
-		<moves value1="100.0" value2="100.0"/>
+	<GameObject ID="1" attributes="moves,destroy_on_click" imageFilename="Box.png" initialLocation="1.0,1.0">
+	    <destroy_on_click/>
+		<moves value1 = "100.0" value2 = "50.0"/>
 	</GameObject>
-	<GameObject ID="4" attributes="disappearsOnPress" imageFilename="ball.png" initialLocation="100.0,576.0">
-		<disappearsOnPress/>
+	<GameObject ID="4" attributes="destroy_on_click" imageFilename="ball.png" initialLocation="100.0,476.0">
+		<destroy_on_click/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>

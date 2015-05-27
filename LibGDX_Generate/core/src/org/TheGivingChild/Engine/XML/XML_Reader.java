@@ -59,7 +59,7 @@ public class XML_Reader {
 	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
-			GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")));//hardcoded values which must always be written down in the .xml file
+			Array<Attribute> attributesToAdd = new Array<Attribute>();
 			//System.out.println(temp.getID());
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					//System.out.println("\t|" + currentAttribute);
@@ -71,9 +71,12 @@ public class XML_Reader {
 								//System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 							}
 						}
-						temp.addAttribute(currentAttribute, valuesToAdd);
+						Attribute attribute = Attribute.newType(currentAttribute);
+						attribute.setValues(valuesToAdd);
+						attributesToAdd.add(attribute);
 					}
 				}
+				GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")), attributesToAdd);//hardcoded values which must always be written down in the .xml file
 			listOfObjects.add(temp);
 		}
 		return listOfObjects;
