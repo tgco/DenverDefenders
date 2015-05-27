@@ -71,11 +71,6 @@ public enum Attribute {
 		private int currentPoint;//index of current waypoint in path
 		private float tolerance;
 		public void update(GameObject myObject){
-<<<<<<< HEAD
-			
-			
-=======
-			System.out.println("\nMovesOnSetPath Update");
 			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
 				//setup currentPoint
 				currentPoint++;
@@ -95,7 +90,7 @@ public enum Attribute {
 		
 		private double calcDistance(float x, float y){//double check this is working
 			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1], 2),0.5);
->>>>>>> fe48ce973694aac0dce165a5340c993c295bc6f6
+
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -139,13 +134,6 @@ public enum Attribute {
 	},
 	FALLSATSETRATE{
 		private int rate;
-<<<<<<< HEAD
-		public void update(GameObject myObject){
-		//	System.out.println("\nfallsAtSetRate Update");
-=======
-		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
-			System.out.println("\nfallsAtSetRate Update");
->>>>>>> fe48ce973694aac0dce165a5340c993c295bc6f6
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){
