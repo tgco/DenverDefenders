@@ -41,7 +41,7 @@ public class Level {
 			System.out.println("level win");
 			win = false;
 			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			ScreenAdapterManager.getInstance().dispose(ScreenAdapterEnums.valueOf(ScreenAdapterManager.getInstance().game.getScreen().toString()));
+			ScreenAdapterManager.getInstance().dispose(ScreenAdapterManager.getInstance().getCurrentEnum());
 			resetWin();
 		}
 	}
