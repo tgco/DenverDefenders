@@ -7,6 +7,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.UserInputProcessor;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -41,6 +42,9 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		//add the destroy on click event
 		addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
 		game = ScreenAdapterManager.getInstance().game;
+		System.out.println(ScreenAdapterManager.getInstance());
+		System.out.println(ScreenAdapterManager.getInstance().game);
+		//System.out.println(ScreenAdapterManager.getInstance());
 		/*if(!game.getAssetManager().isLoaded(imageFilename)) {
 			game.getAssetManager().load(imageFilename, Texture.class);
 			game.getAssetManager().update();
