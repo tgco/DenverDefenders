@@ -1,5 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import javax.management.Attribute;
+
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
@@ -349,7 +351,7 @@ class ScreenEditor extends ScreenAdapter{
 		private int grid[];
 		//
 		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition);
+			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>());
 			grid = gridPos;
 			//Goes through all the enums and when it finds the correct one, it stores it to the variable
 			for (ObjectTexture itr : ObjectTexture.values()) {

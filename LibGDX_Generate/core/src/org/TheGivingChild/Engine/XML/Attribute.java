@@ -1,6 +1,9 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.InputListenerEnums;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -16,7 +19,8 @@ public enum Attribute {
 				hasRun = true;
 				myObject.setVelocity(initialVelocity);
 			}
-			myObject.setPosition(Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0], Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]);
+			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
+			System.out.println("X positon: " + myObject.getX() + ", y position: " + myObject.getY());
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -128,13 +132,16 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "movesOnSetPath";}
 	},
-	DISAPPEARSONPRESS{
+	DESTROY_ON_CLICK{
 		public void update(GameObject myObject){
 			//System.out.println("\nDisappearsOnPress Update");
 		}
+		public InputListener getInputListener(GameObject object){
+			return InputListenerEnums.valueOf("DESTROY_ON_CLICK").getInputListener(object);
+		}
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
-		public String getXMLName(){return "disappearsOnPress";}
+		public String getXMLName(){return "destroy_on_click";}
 	},
 	FALLSATSETRATE{
 		private int rate;
