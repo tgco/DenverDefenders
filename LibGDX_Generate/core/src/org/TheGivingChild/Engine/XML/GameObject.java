@@ -2,7 +2,6 @@ package org.TheGivingChild.Engine.XML;
 
 import java.lang.reflect.Method;
 
-import org.TheGivingChild.Engine.UserInputListener;
 import org.TheGivingChild.Engine.UserInputProcessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
