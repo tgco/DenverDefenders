@@ -82,10 +82,6 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		//System.out.println("I am acting " + this.getName());
 	}
 	
-	
-	
-
-
 	public float[] getVelocity() {
 		return velocity;
 	}
