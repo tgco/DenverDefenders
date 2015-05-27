@@ -69,6 +69,7 @@ public enum Attribute {
 		private Array<float[]> path;
 		private int currentPoint;//index of current waypoint in path
 		private float tolerance;
+		private float speed;
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
 			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
@@ -77,7 +78,7 @@ public enum Attribute {
 				if(currentPoint >= path.size)
 					currentPoint = 0;
 				//setup new velocity vector for myObject
-				float speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
+				//speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
 				float[] direction = calcDirection(myObject.getX(),myObject.getY());
 				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
 			}
@@ -97,6 +98,7 @@ public enum Attribute {
 			tolerance = Float.parseFloat(newValues.get(1));
 			currentPoint = 0;
 			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
+			//TAKE IN AND SET SPEED TOO BRUH
 		}
 		
 		public Array<String> getValues(){
@@ -106,6 +108,7 @@ public enum Attribute {
 				tempS+=";" + point[0] + "," + point[1];
 			temp.add(tempS.replaceFirst(";",""));
 			temp.add(tolerance+"");
+			//ADD SPEED OUTPUT HERE BRUH
 			return temp;
 		}
 		
