@@ -97,6 +97,8 @@ public enum Attribute {
 			path = stringToPath(newValues.get(0));
 			tolerance = Float.parseFloat(newValues.get(1));
 			currentPoint = 0;
+			float[] direction = calcDirection(myObject.getX(),myObject.getY());
+			myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
 			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
 			//TAKE IN AND SET SPEED TOO BRUH
 		}
@@ -108,7 +110,7 @@ public enum Attribute {
 				tempS+=";" + point[0] + "," + point[1];
 			temp.add(tempS.replaceFirst(";",""));
 			temp.add(tolerance+"");
-			//ADD SPEED OUTPUT HERE BRUH
+			temp.add(speed+"");
 			return temp;
 		}
 		
