@@ -91,13 +91,10 @@ public class TGC_Engine extends Game {
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
-		manager.load("ball.png", Texture.class);
-		manager.load("Box.png", Texture.class);
-		manager.load("BoxHalf.png", Texture.class);
-		manager.load("Grid.png", Texture.class);
-		//manager.load("HowToPlay.png", Texture.class);
-		//manager.load("HowToPlayMessage.png", Texture.class);
-		//manager.load("optionsTitle.png", Texture.class);
+		//manager.load("ball.png", Texture.class);
+		//manager.load("Box.png", Texture.class);
+		//manager.load("BoxHalf.png", Texture.class);
+		//manager.load("Grid.png", Texture.class);
 		manager.load("editorAssets/ball.png", Texture.class);
 		manager.load("editorAssets/ballSelected.png", Texture.class);
 		manager.load("editorAssets/Box.png", Texture.class);
@@ -146,30 +143,6 @@ public class TGC_Engine extends Game {
 		mp.addProcessor(stage);
 		mp.addProcessor(input);
 	//	mp.addProcessor(new UserInputListener());
-		
-		objectGroup.addListener(new InputListener() {
-			@Override
-			public boolean keyDown(InputEvent event, int keycode){
-				System.out.println("klicked");
-				return true;
-				
-			}
-			
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-				System.out.println(stage.hit(x, y, true));
-				System.out.println("touch down ");
-				return true;
-			}
-			
-			@Override
-			public boolean scrolled(InputEvent event, float x, float y, int amount)
-			{
-				System.out.println("scrolled the moyes");
-				return true;
-			}
-			
-		});
 		
 		stage.addActor(objectGroup);
 		

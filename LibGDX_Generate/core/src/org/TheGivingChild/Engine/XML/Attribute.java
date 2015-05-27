@@ -20,7 +20,6 @@ public enum Attribute {
 		}
 		
 		public void setValues(Array<String> newValues){
-			System.out.println("VALUES: " + newValues);
 			initialVelocity[0] = Float.parseFloat(newValues.get(0));
 			initialVelocity[1] = Float.parseFloat(newValues.get(1));
 		}
@@ -71,6 +70,8 @@ public enum Attribute {
 		private int currentPoint;//index of current waypoint in path
 		private float tolerance;
 		public void update(GameObject myObject){
+			System.out.println("\nMovesOnSetPath Update");
+
 			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
 				//setup currentPoint
 				currentPoint++;
@@ -134,6 +135,10 @@ public enum Attribute {
 	},
 	FALLSATSETRATE{
 		private int rate;
+
+		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
+			System.out.println("\nfallsAtSetRate Update");
+
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){
