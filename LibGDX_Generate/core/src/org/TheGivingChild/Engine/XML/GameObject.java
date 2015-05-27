@@ -104,7 +104,6 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	{
 		//System.out.println("I am acting " + this.getName());
 	}
-
 	@Override
 	public void dispose(){
 		imageFilename = null;
