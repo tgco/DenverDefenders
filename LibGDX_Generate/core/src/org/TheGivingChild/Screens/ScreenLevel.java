@@ -14,15 +14,12 @@ import com.badlogic.gdx.utils.Array;
 public class ScreenLevel extends ScreenAdapter{
 	
 	private Level level;
-	private Array<String> textureFile; 
-	private Array<Texture> texture;
+	private Array<String> textureFile;
 	private SpriteBatch batch;
 	private AssetManager manager;
 	private float screenTransitionTimeLeft = 1.0f;
-	private boolean isRendered = false;
 	public ScreenLevel() {
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
-		//texture = ScreenAdapterManager.getInstance().game.getAssetManager().get("ball.png");
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		manager.load("ball.png", Texture.class);
 		manager.load("Box.png", Texture.class);

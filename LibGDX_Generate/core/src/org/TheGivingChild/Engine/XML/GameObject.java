@@ -8,13 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.reflect.*;
-import com.badlogic.gdx.utils.reflect.Method.*;
 
-//GameObject is essentially a sotrage container for all the information associated with each object on the screen
+//GameObject is essentially a storage container for all the information associated with each object on the screen
 public class GameObject extends Actor{//libGDX actors have all the listeners we will need
 	private int ID;
 	private String imageFilename;
@@ -32,9 +28,11 @@ public class GameObject extends Actor{//libGDX actors have all the listeners we 
 		imageFilename = img;
 		setPosition(newPosition[0],newPosition[1]);
 		attributes = new Array<Attribute>();
-
-
 		velocity = new float[] {0,0};
+		//should be set using the bounds of the texture rather than a static number
+		setBounds(getX(), getY(), 100, 100);
+		//add the destroy on click event
+		//addListener(InputListenersEnums.DESTROY_ON_CLICK.getInputListener(this));
 
 	}
 				
