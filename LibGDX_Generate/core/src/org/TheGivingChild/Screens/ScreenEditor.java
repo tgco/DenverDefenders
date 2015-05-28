@@ -1,9 +1,8 @@
 package org.TheGivingChild.Screens;
 
-import javax.management.Attribute;
-
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
+import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LoseEnum;
@@ -19,21 +18,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenEditor extends ScreenAdapter{	
 	private String levelName = "Base";
 	private String packageName;
-	
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
-
 	//Skins and the font
 	private BitmapFont font;
 	private Skin skinBack;
@@ -62,7 +62,7 @@ class ScreenEditor extends ScreenAdapter{
 	
 	//Stores the texture that is going to be used by the a EditorGameObject
 	private Texture objectImage;
-	
+	private Array<Texture> text;
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
 	
@@ -71,12 +71,15 @@ class ScreenEditor extends ScreenAdapter{
 	private boolean isRendered = false;
 	private boolean isLoaded = false;
 	
+	private Dialog window;
+	private Boolean objectSelectOpen = false;
+	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
+		text = new Array<Texture>();
 		mainGame = ScreenAdapterManager.getInstance().game;
 		manager = mainGame.getAssetManager();
 		createEditorTable();
-		
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
 		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
@@ -89,10 +92,8 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();
-		
 //		EditorTextInputListener listener = new EditorTextInputListener();
 //		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
-
 	}
 	//When hidden removes it's table
 	@Override
@@ -136,7 +137,7 @@ class ScreenEditor extends ScreenAdapter{
 				}
 				
 				for (GameObject obj : gameObjects) {
-					batch.draw(((EditorGameObject) obj).getTexture(), obj.getX(), obj.getY());
+					batch.draw((obj).getTexture(), obj.getX(), obj.getY());
 				}
 				batch.end();
 				isRendered = true;
@@ -180,6 +181,107 @@ class ScreenEditor extends ScreenAdapter{
 		editorTable.setVisible(false);
 	}
 	
+	
+	
+	//Fills the grid according to the gridImage size relative to the screen size
+	private void fillGrid() {
+		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
+			gridCol++;
+		}
+		for (int j=(int) Gdx.graphics.getHeight(); j>0; j-=gridSize) {
+			gridRows++;
+		}
+		
+		grid = new Rectangle[gridCol][gridRows];
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				grid[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
+			}
+		}
+	}
+	
+	//Called when there is a touch on the screen
+	private void spawnObject() {
+		//If canSetObj is false, no object is spawned
+		if (!canSetObj)
+			return;
+		
+		//Variables used, EditorGameObject to store the new instance and a bool to keep track
+		GameObject obj;
+		boolean added = false;
+		
+		//Store the coordinates of where the user clicked
+		float x = Gdx.input.getX();
+		float y = Gdx.graphics.getHeight()-Gdx.input.getY();
+		
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				if (grid[i][j].contains(x,y)) {
+					x = grid[i][j].x;
+					y = grid[i][j].y;
+					float[] drawPos =  {x, y};					
+					//Create the new editor game object
+					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
+							new Array<Attribute>(), new Array<String>());
+					for (int k=0; k<gameObjects.size; k++) {
+						//If there is an object in the grid piece already, it gets replaced
+						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
+							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
+									drawPos, new Array<Attribute>(), new Array<String>());
+							gameObjects.set(k, obj);
+							added = true;
+						}
+					}
+					
+					if (!added)
+						gameObjects.add(obj);
+					break; //Break out of the loop since the position is found.
+				}
+			}
+		}
+		
+		canSetObj = false;
+		
+	}
+	
+	//Switches between two images
+	private void selectImage() {
+		ballOrBox++;
+		ballOrBox = ballOrBox % 3;
+		if (ballOrBox == 0) {
+			objectImage =  manager.get("editorAssets/ball.png");
+		}
+		else if (ballOrBox == 1) {
+			objectImage =  manager.get("editorAssets/Box.png");
+		}
+		else if (ballOrBox == 2) {
+			objectImage = manager.get("editorAssets/BoxHalf.png");
+		}
+	}
+	private void enableButtons() {
+		editorTable.setVisible(true);
+		
+	}
+	
+	private void disableButtons() {
+		editorTable.setVisible(false);
+	}
+	
+	private class EditorTextInputListener implements TextInputListener {
+
+		@Override
+		public void input(String text) {
+			levelName = text;
+			
+		}
+
+		@Override
+		public void canceled() {
+			
+		}
+		
+	}
+	
 	private void createButtons() {
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
@@ -215,7 +317,7 @@ class ScreenEditor extends ScreenAdapter{
 			public void changed(ChangeEvent event, Actor actor) {
 				//Changes the image to be drawn and lets the user place one object
 				selectImage();
-				canSetObj = true;
+				window.setVisible(true);
 			}
 		});
 		//Adds the Ball button
@@ -261,130 +363,39 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		
 		editorTable.add(exportButton).align(Align.bottom);
-	}
-	
-	//Fills the grid according to the gridImage size relative to the screen size
-	private void fillGrid() {
-		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
-			gridCol++;
-		}
-		for (int j=(int) Gdx.graphics.getHeight(); j>0; j-=gridSize) {
-			gridRows++;
-		}
+		Window.WindowStyle winStyle = new Window.WindowStyle();
+		winStyle.titleFont = font;
+		window = new Dialog("Onject Select" , winStyle);
 		
-		grid = new Rectangle[gridCol][gridRows];
-		for (int i=0; i<gridCol; i++) {
-			for (int j=0; j<gridRows; j++) {
-				grid[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
+		TextButtonStyle okStyle = new TextButtonStyle();
+		okStyle.font = font;
+		okStyle.up = skinBack.getDrawable("Button_Editor_Ok");
+		okStyle.down = skinBack.getDrawable("Button_Editor_OkPressed");
+		TextButton okButton = new TextButton("", okStyle);
+		
+		TextButtonStyle cancelStyle = new TextButtonStyle();
+		cancelStyle.font = font;
+		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
+		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
+		TextButton cancelButton = new TextButton("", cancelStyle);
+		window.add(okButton).align(Align.bottom);
+		window.add(cancelButton).align(Align.bottom);
+		
+		okButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				canSetObj = true;
+				window.setVisible(false);
 			}
-		}
-
-	}
-	
-	//Called when there is a touch on the screen
-	private void spawnObject() {
-		//If canSetObj is false, no object is spawned
-		if (!canSetObj)
-			return;
-		
-		//Variables used, EditorGameObject to store the new instance and a bool to keep track
-		EditorGameObject obj;
-		boolean added = false;
-		
-		//Store the coordinates of where the user clicked
-		float x = Gdx.input.getX();
-		float y = Gdx.graphics.getHeight()-Gdx.input.getY();
-		
-		for (int i=0; i<gridCol; i++) {
-			for (int j=0; j<gridRows; j++) {
-				if (grid[i][j].contains(x,y)) {
-					x = grid[i][j].x;
-					y = grid[i][j].y;
-					float[] drawPos =  {x, y};
-					int[] gridPos = {i, j};
-					
-					//Create the new editor game object
-					obj = new EditorGameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, gridPos);
-					for (int k=0; k<gameObjects.size; k++) {
-						//If there is an object in the grid piece already, it gets replaced
-						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new EditorGameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
-									drawPos, gridPos);
-							gameObjects.set(k, obj);
-							added = true;
-						}
-					}
-					
-					if (!added)
-						gameObjects.add(obj);
-					break; //Break out of the loop since the position is found.
-				}
+			
+		});
+		cancelButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				window.setVisible(false);
 			}
-		}
-		
-		canSetObj = false;
-		
-	}
-	
-	//Switches between two images
-	private void selectImage() {
-		ballOrBox++;
-		ballOrBox = ballOrBox % 3;
-		if (ballOrBox == 0) {
-			objectImage =  manager.get("editorAssets/ball.png");
-		}
-		else if (ballOrBox == 1) {
-			objectImage =  manager.get("editorAssets/Box.png");
-		}
-		else if (ballOrBox == 2) {
-			objectImage = manager.get("editorAssets/BoxHalf.png");
-		}
-	}
-	private void enableButtons() {
-		editorTable.setVisible(true);
-		
-	}
-	
-	private void disableButtons() {
-		editorTable.setVisible(false);
-	}
-	
-	//Extends the GameObject Class so that it can store the texture and a rectangle
-	private class EditorGameObject extends GameObject{
-		//Stores the Texture Enum and a rectangle
-		private Texture texture;
-		private Rectangle rectangle;
-		private int grid[];
-		//
-		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
-			grid = gridPos;
-			texture = objectImage;
-			//Sets the rectangle to the correct position and correct dimensions
-			rectangle = new Rectangle(newPosition[0], newPosition[1], 
-					texture.getWidth(), texture.getHeight());
-		}
-		
-		public Rectangle getRectangle() {
-			return rectangle;
-		}
-		public Texture getTexture() {
-			return texture;
-		}
-	}
-	
-	private class EditorTextInputListener implements TextInputListener {
-
-		@Override
-		public void input(String text) {
-			levelName = text;
-			
-		}
-
-		@Override
-		public void canceled() {
-			
-		}
-		
+		});
+		window.show(mainGame.getStage());
+		window.setVisible(false);
 	}
 }

@@ -5,43 +5,71 @@ filter: Nearest,Nearest
 repeat: none
 ButtonPressed_Editor_Back
   rotate: false
-  xy: 1, 305
+  xy: 1, 347
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 ButtonPressed_Editor_Ball
   rotate: false
-  xy: 1, 153
+  xy: 1, 195
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 Button_Editor_Back
   rotate: false
-  xy: 303, 305
+  xy: 303, 347
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 Button_Editor_Ball
   rotate: false
-  xy: 1, 1
+  xy: 1, 43
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 Button_Editor_Export
   rotate: false
-  xy: 303, 153
+  xy: 303, 195
   size: 300, 150
   orig: 300, 150
   offset: 0, 0
   index: -1
 Button_Editor_ExportPressed
   rotate: false
-  xy: 605, 305
+  xy: 605, 347
   size: 300, 150
   orig: 300, 150
+  offset: 0, 0
+  index: -1
+Button_Editor_Cancel
+  rotate: false
+  xy: 1, 1
+  size: 80, 40
+  orig: 80, 40
+  offset: 0, 0
+  index: -1
+Button_Editor_CancelPressed
+  rotate: false
+  xy: 303, 153
+  size: 80, 40
+  orig: 80, 40
+  offset: 0, 0
+  index: -1
+Button_Editor_Ok
+  rotate: false
+  xy: 605, 305
+  size: 80, 40
+  orig: 80, 40
+  offset: 0, 0
+  index: -1
+Button_Editor_OkPressed
+  rotate: false
+  xy: 907, 457
+  size: 80, 40
+  orig: 80, 40
   offset: 0, 0
   index: -1
