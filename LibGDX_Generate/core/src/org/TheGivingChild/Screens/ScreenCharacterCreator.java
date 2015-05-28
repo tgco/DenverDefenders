@@ -122,31 +122,11 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		if(!assetManager.update()) {
-			if(!loadingScreenDrawn
-					&& !assetManager.isLoaded("Packs/Heads.pack", TextureAtlas.class)
-					&& !assetManager.isLoaded("Packs/Body.pack", TextureAtlas.class)
-					&& !assetManager.isLoaded("Packs/Feet.pack", TextureAtlas.class)){
-				//initialize the table
-				loadingScreen = new Table();
-				//get the loading screen texture
-				Texture splash = assetManager.get("MainScreen_Splash.png");
-				//make an image from the texture
-				Image splashImage = new Image(splash);
-				//add the image to the table
-				loadingScreen.add(splashImage).align(Align.center);
-				//set the size of the table to the screen
-				loadingScreen.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				//add the table to the stage to be drawn
-				game.getStage().addActor(loadingScreen);
-				loadingScreenDrawn = true;
-			}
-		}
-		else {
+		if(assetManager.update()) {
 			if(screenTransitionTimeLeft <= 0) {
 				Gdx.gl.glClearColor(1, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				loadingScreen.remove();
+				//loadingScreen.remove();
 				fillImageArrays();
 				characterTable = characterAppearanceTable();
 				game.getStage().addActor(characterTable);
