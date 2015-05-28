@@ -52,9 +52,6 @@ public final class ScreenAdapterManager {
         }
         currentEnum = screenEnum;
         //Hide the current screen, show the new screen
-        //batch.begin();
-        //batch.draw((Texture) manager.get("MainScreen_Splash"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //batch.end();
         game.setScreen(screens.get(screenEnum.ordinal()));
     }
     
@@ -64,7 +61,7 @@ public final class ScreenAdapterManager {
  
     //dispose of the screen passed in.
     public void dispose(ScreenAdapterEnums screenEnum) {
-    	//if the map doesn't contain the screen we're asked to dipose, then we have nothing to do.
+    	//if the map doesn't contain the screen we're asked to dispose, then we have nothing to do.
         if (!screens.containsKey(screenEnum.ordinal())) return;
         //otherwise, the map contains the screen. Call dispose on the screen, and remove it from the map.
         screens.remove(screenEnum.ordinal()).dispose();
