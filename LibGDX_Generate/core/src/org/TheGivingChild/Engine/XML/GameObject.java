@@ -134,4 +134,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	public Array<String> getListenerNames(){
 		return listenerNames;
 	}
+	public Texture getTexture(){
+		return texture;
+	}
 }
