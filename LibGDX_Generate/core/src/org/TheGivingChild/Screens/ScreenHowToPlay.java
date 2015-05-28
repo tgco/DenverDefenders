@@ -24,7 +24,14 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private Texture message;
 	private Batch batch;
 	private Table table;
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
+											  "Button_MainScreen_Play", 
+											  "ButtonPressed_MainScreen_Editor", 
+											  "Button_MainScreen_Editor", 
+											  "ButtonPressed_MainScreen_Options", 
+											  "Button_MainScreen_Options",
+											  "ButtonPressed_MainScreen_CharacterCreator",
+											  "Button_MainScreen_CharacterCreator"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
 	private float screenTransitionTimeLeft = 1.0f;
@@ -59,8 +66,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 			tbs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
 			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
-			tb.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
+			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
 			final int j = i/2;
 			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
@@ -70,8 +77,12 @@ class ScreenHowToPlay extends ScreenAdapter{
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL_PACKETS);
 					else if(j == 1)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
-					else
+					else if(j == 2)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
+					else if(j == 3)
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);
+					else
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					hide();
 				}
 			});

@@ -10,14 +10,21 @@ import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import tiledMap.TestTiledMap;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -57,6 +64,16 @@ public class TGC_Engine extends Game {
     
     private XML_Reader reader;
     private XML_Writer writer;
+    
+    //Map stuff
+    private Texture mapTexture;
+    private TiledMap tiledMap;
+    private OrthographicCamera mapCamera;
+    private TiledMapRenderer mapRenderer;
+    private TestTiledMap testTiledMap;
+    
+    
+    
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -118,6 +135,8 @@ public class TGC_Engine extends Game {
 		boolean exists = Gdx.files.internal("testOut.xml").exists();
 		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
+		ScreenAdapterManager.getInstance().initialize(this);
+
 		levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
@@ -153,6 +172,21 @@ public class TGC_Engine extends Game {
 						
 		//System.out.println("stage has this many actors:" + stage.getActors().size);
 		//System.out.println("other processor has this many actors" + input.getActors().size);
+		
+		//Map stuff
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		mapCamera = new OrthographicCamera();
+		mapCamera.setToOrtho(false, w, h);
+		tiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+		//testTiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+	
+		//Set input processor to mpa
+		//	Gdx.input.setInputProcessor(this);
+		
+	
+		
 		
 	}
 	
@@ -215,6 +249,7 @@ public class TGC_Engine extends Game {
 	public AssetManager getAssetManager() {
 		return manager;
 	}
+	
 	public XML_Writer getXML_Writer() {
 		return writer;
 	}
@@ -249,7 +284,7 @@ public class TGC_Engine extends Game {
 				//makes sure the main screen is only loaded once
 				if(!screenManagerLoaded){
 					//initialize the Screen manager, passing the engine to it for reference
-					ScreenAdapterManager.getInstance().initialize(this);
+					//ScreenAdapterManager.getInstance().initialize(this);
 					//show the main screen to be displayed first
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					screenManagerLoaded = true;
@@ -260,6 +295,13 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
+		
+		//Map?
+//		mapCamera.update();
+//		mapRenderer.setView(mapCamera);
+//		mapRenderer.render();		
+		
+	//	Gdx.input.setInputProcessor();
 		
 	}
 }
