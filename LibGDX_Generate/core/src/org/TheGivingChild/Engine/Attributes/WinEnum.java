@@ -42,9 +42,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			return false;
 		}
 		public void setValues(Array<String> newValues){
-			System.out.println(newValues);
 			objectID1 = Integer.parseInt(newValues.get(0));
-			System.out.println(newValues);
 			objectID2 = Integer.parseInt(newValues.get(1));
 		}
 		public Array<String> getValues(){
