@@ -297,9 +297,9 @@ public class TGC_Engine extends Game {
 		}
 		
 		//Map?
-		mapCamera.update();
-		mapRenderer.setView(mapCamera);
-		mapRenderer.render();		
+//		mapCamera.update();
+//		mapRenderer.setView(mapCamera);
+//		mapRenderer.render();		
 		
 	//	Gdx.input.setInputProcessor();
 		
