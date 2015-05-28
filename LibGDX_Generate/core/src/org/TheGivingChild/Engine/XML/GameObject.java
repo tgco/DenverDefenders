@@ -29,51 +29,59 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private TGC_Engine game;
 	private AssetManager manager = new AssetManager();
 	private boolean disposed = false;
+	private Texture texture;
+	private Array<String> listenerNames;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
-	//touchable = true;
 	
-	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd){
+
+	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
 		attributes.addAll(attributesToAdd);
+		//set the id from the xml
 		ID = newID;
+		//set the imagefilename from the xml
 		imageFilename = img;
+		//the the initial position from xml
 		setPosition(newPosition[0],newPosition[1]);
-		
+		//initialize a velocity of 0
 		velocity = new float[] {0,0};
-		//should be set using the bounds of the texture rather than a static number
-		setBounds(getX(), getY(), 100, 100);
-		//add the destroy on click event
-		//addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
+		//get the reference to the game
 		game = ScreenAdapterManager.getInstance().game;
+		//get the manager in game
 		manager = game.getAssetManager();
-		//System.out.println(ScreenAdapterManager.getInstance());
-		//System.out.println(ScreenAdapterManager.getInstance().game);
+		//check if the Texture has been loaded for this object
 		if(!manager.isLoaded(imageFilename)) {
+			//the texture has not been loaded, so load it
 			manager.load(imageFilename, Texture.class);
+			//update the manager
 			manager.update();
 		}
-		//manager.finishLoading();
-		System.out.println();
+		//set the Texture from the manager
+		if(manager.isLoaded(imageFilename)){
+			texture = manager.get(imageFilename);
+		}
+		else{
+			manager.finishLoadingAsset(imageFilename);
+			texture = manager.get(imageFilename);
+		}
+		//set the bounds to be as large as the textures size
+		setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+		//iterate over attributes
 		for(Attribute a: attributes){
+			//get the name, uppercase it
 			String name = a.name().toUpperCase(Locale.ENGLISH);
+			//iterate over the listeners
 			for(InputListenerEnums ILE: InputListenerEnums.values()){
+				//if the names of the attribute and listener are equal, add the listener
 				if(ILE.name().equals(name)){
+					//add the listener
 					addListener(InputListenerEnums.valueOf(name).getInputListener(this));
-					System.out.println(name + " was added to the gameObject: " + this.getID());
 				}
 			}
-//			if(InputListenerEnums.valueOf(name) != null){
-//				addListener(InputListenerEnums.valueOf(name).getInputListener(this));
-//				System.out.println(name + " was added to the gameObject: " + this.getID());
-//			}
-			System.out.println(name);
 		}
-
-		
-		
 	}
 				
 	public void update(){
@@ -89,12 +97,6 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	public Array<Attribute> getAttributes(){
 		return attributes;
 	}
-	
-	public void addAttribute(String newAttribute,Array<String> newValues){//add an attribute with it's associated values
-		Attribute temp = Attribute.newType(newAttribute);
-		temp.setValues(newValues);
-		attributes.add(temp);
-	}	
 
 	public int getID() {
 		return ID;
@@ -104,30 +106,16 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		return imageFilename;
 	}
 	
-	public String getListenersAsString(){//this is not used, will be used at a later time once we get listeners working, leaving as is for now
-		String temp="";
-		for(EventListener listener:getListeners()){
-			temp+=","+listener.toString();
-		}
-		return temp.replaceFirst(",", "");
-	}
-	
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 
-	
-	public void act()
-	{
-		//System.out.println("I am acting " + this.getName());
-	}
 	@Override
 	public void dispose(){
 		imageFilename = null;
 		attributes.clear();
 		disposed = true;
 	};
-
 
 	public boolean isDisposed(){
 		return disposed;
@@ -139,5 +127,9 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 
 	public void setVelocity(float[] velocity) {
 		this.velocity = velocity;
+	}
+	
+	public Array<String> getListenerNames(){
+		return listenerNames;
 	}
 }

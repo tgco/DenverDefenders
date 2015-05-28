@@ -337,7 +337,7 @@ class ScreenEditor extends ScreenAdapter{
 		private int grid[];
 		//
 		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>());
+			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
 			grid = gridPos;
 			texture = objectImage;
 			//Sets the rectangle to the correct position and correct dimensions

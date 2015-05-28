@@ -60,6 +60,7 @@ public class XML_Reader {
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<Attribute> attributesToAdd = new Array<Attribute>();
+			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
 			//System.out.println(temp.getID());
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					//System.out.println("\t|" + currentAttribute);
@@ -76,7 +77,7 @@ public class XML_Reader {
 						attributesToAdd.add(attribute);
 					}
 				}
-				GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")), attributesToAdd);//hardcoded values which must always be written down in the .xml file
+				GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")), attributesToAdd,listenersToAdd);//hardcoded values which must always be written down in the .xml file
 			listOfObjects.add(temp);
 		}
 		return listOfObjects;
@@ -125,5 +126,15 @@ public class XML_Reader {
 		LevelGoal levelGoal = new LevelGoal();
 		//that code tho
 		return levelGoal;
+	}
+	
+	private Array<String> compileListenerNames(String input){
+		Array<String> listeners = new Array<String>();
+		if(input.isEmpty())
+			return listeners;
+		String[] temp = input.split(",");
+		for(String currentListenerName:temp)
+			listeners.add(currentListenerName);
+		return listeners;
 	}
 }
