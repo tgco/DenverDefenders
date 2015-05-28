@@ -61,6 +61,7 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<Attribute> attributesToAdd = new Array<Attribute>();
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
+			System.out.println(listenersToAdd);
 			//System.out.println(temp.getID());
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					//System.out.println("\t|" + currentAttribute);

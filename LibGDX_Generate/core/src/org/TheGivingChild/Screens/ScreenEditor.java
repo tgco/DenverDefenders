@@ -28,34 +28,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenEditor extends ScreenAdapter{	
-	//Enumerator for the textures that we use for the objects
-	public enum ObjectTexture {
-		BALL_TEXTURE("ball.png"),
-		HALF_BOX_TEXTURE("BoxHalf.png"),
-		BOX_TEXTURE("Box.png");
-		
-		//The texture used, the whole file path and the file used like "ball.png"
-		private Texture texture;
-		private String filename = "editorAssets/"; //Folder they are stored in
-		private String file;
-		
-		private ObjectTexture(String file) {
-			this.file = file;
-			//Adds the file to the folder path the create the correct path
-			filename = filename.concat(file);
-			//Sets the texture
-			texture = new Texture(Gdx.files.internal(filename));
-		}
-		
-		//Getters
-		public Texture getTexture() {
-			return texture;
-		}
-		public String getFile() {
-			return file;
-		}
-	}
-	
 	private String levelName = "Base";
 	private String packageName;
 	
@@ -68,7 +40,6 @@ class ScreenEditor extends ScreenAdapter{
 	private Skin skinTable;
 	
 	//TextureAtlas and the Table for the buttons
-	private TextureAtlas buttonAtlas;
 	private Table editorTable;
 	
 	//SpriteBatch that draws the objects
@@ -90,7 +61,7 @@ class ScreenEditor extends ScreenAdapter{
 	private TGC_Engine mainGame;
 	
 	//Stores the texture that is going to be used by the a EditorGameObject
-	private ObjectTexture objectImage;
+	private Texture objectImage;
 	
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
@@ -118,6 +89,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		EditorTextInputListener listener = new EditorTextInputListener();
 		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+
 	}
 	//When hidden removes it's table
 	@Override
@@ -130,12 +102,15 @@ class ScreenEditor extends ScreenAdapter{
 
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		
+		if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
+				(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
+			enableButtons();
+		else
+			disableButtons();
 		if(canSetObj) {
 			batch.begin();
-			batch.draw(objectImage.texture, Gdx.input.getX() - objectImage.texture.getWidth()/2
-					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.texture.getHeight()/2);
+			batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
+					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
 			batch.end();
 		}
 		
@@ -182,6 +157,7 @@ class ScreenEditor extends ScreenAdapter{
 		createButtons();
 		editorTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		editorTable.align(Align.bottom);
+		editorTable.setVisible(false);
 	}
 	
 	private void createButtons() {
@@ -272,7 +248,7 @@ class ScreenEditor extends ScreenAdapter{
 		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
 			gridCol++;
 		}
-		for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
+		for (int j=(int) Gdx.graphics.getHeight(); j>0; j-=gridSize) {
 			gridRows++;
 		}
 		
@@ -308,11 +284,12 @@ class ScreenEditor extends ScreenAdapter{
 					int[] gridPos = {i, j};
 					
 					//Create the new editor game object
-					obj = new EditorGameObject(gameObjects.size, objectImage.getFile(), drawPos, gridPos);
+					obj = new EditorGameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, gridPos);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new EditorGameObject(gameObjects.get(k).getID(), objectImage.getFile(), drawPos, gridPos);
+							obj = new EditorGameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
+									drawPos, gridPos);
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -334,47 +311,45 @@ class ScreenEditor extends ScreenAdapter{
 		ballOrBox++;
 		ballOrBox = ballOrBox % 3;
 		if (ballOrBox == 0) {
-			objectImage = ObjectTexture.BALL_TEXTURE;
+			objectImage =  manager.get("editorAssets/ball.png");
 		}
 		else if (ballOrBox == 1) {
-			objectImage = ObjectTexture.BOX_TEXTURE;
+			objectImage =  manager.get("editorAssets/Box.png");
 		}
 		else if (ballOrBox == 2) {
-			objectImage = ObjectTexture.HALF_BOX_TEXTURE;
+			objectImage = manager.get("editorAssets/BoxHalf.png");
 		}
+	}
+	private void enableButtons() {
+		editorTable.setVisible(true);
+		
+	}
+	
+	private void disableButtons() {
+		editorTable.setVisible(false);
 	}
 	
 	//Extends the GameObject Class so that it can store the texture and a rectangle
 	private class EditorGameObject extends GameObject{
 		//Stores the Texture Enum and a rectangle
-		private ObjectTexture texture;
+		private Texture texture;
 		private Rectangle rectangle;
 		private int grid[];
 		//
 		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
 			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
 			grid = gridPos;
-			//Goes through all the enums and when it finds the correct one, it stores it to the variable
-			for (ObjectTexture itr : ObjectTexture.values()) {
-				if (img.equals(itr.getFile())) {
-					texture = itr;
-					break;
-				}
-			}
+			texture = objectImage;
 			//Sets the rectangle to the correct position and correct dimensions
 			rectangle = new Rectangle(newPosition[0], newPosition[1], 
-					texture.getTexture().getWidth(), texture.getTexture().getHeight());
+					texture.getWidth(), texture.getHeight());
 		}
 		
-		//Getters for the object
-		public ObjectTexture getEnum() {
-			return texture;
-		}
 		public Rectangle getRectangle() {
 			return rectangle;
 		}
 		public Texture getTexture() {
-			return getEnum().getTexture();
+			return texture;
 		}
 	}
 	

@@ -30,7 +30,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private AssetManager manager = new AssetManager();
 	private boolean disposed = false;
 	private Texture texture;
-	private Array<String> listenerNames;
+	private Array<String> listenerNames = new Array<String>();
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -40,6 +40,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 
 	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
 		attributes.addAll(attributesToAdd);
+		listenerNames.addAll(newListenerNames);
 		//set the id from the xml
 		ID = newID;
 		//set the imagefilename from the xml
@@ -70,9 +71,10 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		//set the bounds to be as large as the textures size
 		setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
 		//iterate over attributes
-		for(Attribute a: attributes){
+		for(String listener: listenerNames){
 			//get the name, uppercase it
-			String name = a.name().toUpperCase(Locale.ENGLISH);
+			String name = listener.toUpperCase(Locale.ENGLISH);
+			System.out.println("Listener name is: " + name);
 			//iterate over the listeners
 			for(InputListenerEnums ILE: InputListenerEnums.values()){
 				//if the names of the attribute and listener are equal, add the listener
@@ -83,7 +85,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 			}
 		}
 	}
-				
+	
 	public void update(){
 		for(Attribute currentAttribute:attributes)
 			currentAttribute.update(this);
