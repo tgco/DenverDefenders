@@ -8,7 +8,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -36,6 +39,9 @@ class ScreenLevelPackets extends ScreenAdapter{
 	private TGC_Engine game;
 	
 	private AssetManager manager;
+	private float screenTransitionTimeLeft = 1.0f;
+	private boolean isRendered = false;
+	private Batch batch = new SpriteBatch();
 	
 	//constructor. Initialize the variables.
 	public ScreenLevelPackets() {
@@ -148,18 +154,32 @@ class ScreenLevelPackets extends ScreenAdapter{
 	public void hide() {
 		//game.removeTable(packetTable);
 		packetTable.remove();
-	};
+	}
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(.5f,0,.5f,.5f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		game.getStage().act();
-	};
+		batch.begin();
+		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
+		if(manager.update()) {
+			if(screenTransitionTimeLeft <= 0) {
+				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				isRendered = true;
+				show();
+				game.getStage().act();
+			}
+		}
+		
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		
+	}
 	
 	@Override
 	public void show() {
 		//game.addTable(packetTable);
-		game.getStage().addActor(packetTable);
+		if(isRendered)
+			game.getStage().addActor(packetTable);
 	}
 }
