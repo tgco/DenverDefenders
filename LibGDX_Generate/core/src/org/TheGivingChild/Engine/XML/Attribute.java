@@ -135,7 +135,7 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "movesOnSetPath";}
-	},
+	},/*
 	DESTROY_ON_CLICK{
 		public void update(GameObject myObject){
 			//System.out.println("\nDisappearsOnPress Update");
@@ -146,7 +146,7 @@ public enum Attribute {
 		public void setValues(Array<String> newValues){}
 		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
 		public String getXMLName(){return "destroy_on_click";}
-	},
+	},*/
 	FALLSATSETRATE{
 		private int rate;
 		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute

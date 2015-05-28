@@ -97,12 +97,6 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	public Array<Attribute> getAttributes(){
 		return attributes;
 	}
-	
-	public void addAttribute(String newAttribute,Array<String> newValues){//add an attribute with it's associated values
-		Attribute temp = Attribute.newType(newAttribute);
-		temp.setValues(newValues);
-		attributes.add(temp);
-	}	
 
 	public int getID() {
 		return ID;
