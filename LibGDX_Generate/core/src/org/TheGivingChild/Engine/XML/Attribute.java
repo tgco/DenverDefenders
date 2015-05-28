@@ -12,8 +12,6 @@ public enum Attribute {
 	 * each type can have private fields
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
-		private float[] initialVelocity = new float[2];
-		private boolean hasRun = false;
 		public void update(GameObject myObject){
 			if(!hasRun){
 				hasRun = true;
@@ -37,8 +35,6 @@ public enum Attribute {
 	},
 	BOUNCEOFFEDGEOFSCREEN{
 		public void update(GameObject myObject){
-			//lazy way
-			//Gdx.graqphics.getWidth()
 			if(myObject.getX() <= 0 || myObject.getX() + myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){
 				float[] temp = myObject.getVelocity();
 				temp[0] = -temp[0];
@@ -50,12 +46,8 @@ public enum Attribute {
 			}
 		}
 		public void setValues(Array<String> loldidntread){}
-		public Array<String> getValues(){
-			Array<String> blank = new Array<String>();
-			return blank;
-		}
-		public String getXMLName(){return "bounceOffEdgeOfScreen";}
-		
+		public Array<String> getValues(){return new Array<String>();}
+		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
 		private int health;
@@ -90,85 +82,6 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "color";}
 	},
-	MOVESONSETPATH{//requires moves?
-		private Array<float[]> path;
-		private int currentPoint;//index of current waypoint in path
-		private float tolerance;
-		private float speed;
-		private boolean hasRun = false;
-		public void update(GameObject myObject){
-			if(!hasRun){
-				float[] direction = calcDirection(myObject.getX(),myObject.getY());
-				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
-			}
-			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
-				//setup currentPoint
-				currentPoint++;
-				if(currentPoint >= path.size)
-					currentPoint = 0;
-				//setup new velocity vector for myObject
-				//speed = (float) Math.pow(myObject.getVelocity()[0]*myObject.getVelocity()[0] + myObject.getVelocity()[1]*myObject.getVelocity()[1], .5);
-				float[] direction = calcDirection(myObject.getX(),myObject.getY());
-				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
-			}
-			//dont need to simulate movement, that is for MOVES to do
-		}
-		
-		private float[] calcDirection(float x, float y){//returns the direction vector(magnitude of 1!) from current position to currentPoint
-			return new float[] {(float) Math.asin(x-path.get(currentPoint)[0]),(float) Math.asin(y-path.get(currentPoint)[1])};
-		}
-		
-		private double calcDistance(float x, float y){//double check this is working
-			return Math.pow(Math.pow(x-path.get(currentPoint)[0], 2) + Math.pow(y-path.get(currentPoint)[1], 2),0.5);
-
-		}
-		
-		public void setValues(Array<String> newValues){
-			path = stringToPath(newValues.get(0));
-			tolerance = Float.parseFloat(newValues.get(1));
-			currentPoint = 0;
-			//float[] direction = calcDirection(myObject.getX(),myObject.getY());
-			//myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
-			//NEEDS TO CALCULATE THE INITIAL DIRECTION TOO, OH BOYYYY
-			//TAKE IN AND SET SPEED TOO BRUH
-		}
-		
-		public Array<String> getValues(){
-			Array<String> temp = new Array<String>();
-			String tempS = "";
-			for(float[] point:path)
-				tempS+=";" + point[0] + "," + point[1];
-			temp.add(tempS.replaceFirst(";",""));
-			temp.add(tolerance+"");
-			temp.add(speed+"");
-			return temp;
-		}
-		
-		private Array<float[]> stringToPath(String sPath){//takes in string of format "1.0,1.0;2.0,2.0;3.0,3.0" and returns an Array of 2 element float arrays representing a path
-			Array<float[]> newPath = new Array<float[]>();
-			String points[] = sPath.split(";");
-			for(int i = 0; i < points.length; i++)
-				newPath.add(stringToPoint(points[i]));
-			return newPath;
-		}
-		
-		private float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
-			float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
-			return temp;
-		}
-		public String getXMLName(){return "movesOnSetPath";}
-	},/*
-	DESTROY_ON_CLICK{
-		public void update(GameObject myObject){
-			//System.out.println("\nDisappearsOnPress Update");
-		}
-		public InputListener getInputListener(GameObject object){
-			return InputListenerEnums.valueOf("DESTROY_ON_CLICK").getInputListener(object);
-		}
-		public void setValues(Array<String> newValues){}
-		public Array<String> getValues(){return new Array<String>();}//empty might have to deal with it laters
-		public String getXMLName(){return "destroy_on_click";}
-	},*/
 	FALLSATSETRATE{
 		private int rate;
 
