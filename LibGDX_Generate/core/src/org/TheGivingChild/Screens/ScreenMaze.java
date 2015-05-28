@@ -8,10 +8,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
@@ -19,7 +22,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private TiledMap map;
 	private OrthographicCamera camera;
 	private TiledMapRenderer mapRenderer;
-
+	private SpriteBatch spriteBatch;
+	private Texture spriteTexture;
+	private Sprite sprite;
+	
+	
 	public ScreenMaze()
 	{
 		float w = Gdx.graphics.getWidth();
@@ -31,6 +38,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		map = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		Gdx.input.setInputProcessor(this);
+		
+		spriteBatch = new SpriteBatch();
+		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
+		sprite = new Sprite(spriteTexture);
 	}
 	
 	@Override 
@@ -42,6 +53,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		mapRenderer.setView(camera);
 		mapRenderer.render();
+		
+		spriteBatch.setProjectionMatrix(camera.combined); //Make the sprite not move when the map is scrolled
+		spriteBatch.begin();
+		sprite.draw(spriteBatch);
+		spriteBatch.end();
+		
 	}
 	
 	@Override
@@ -79,7 +96,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		return false;
+		Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
+		Vector3 position = camera.unproject(clickCoordinates);
+		sprite.setPosition(position.x, position.y);
+		
+		return true;
 	}
 
 	@Override
