@@ -1,6 +1,9 @@
 package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.Attributes.WinEnum;
+import org.TheGivingChild.Screens.ScreenAdapterEnums;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
@@ -12,6 +15,7 @@ public class Level {
 	private Array<GameObject> actors = new Array<GameObject>();
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
+	private boolean win = true;
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
 		levelName = name;
@@ -33,9 +37,22 @@ public class Level {
 			currentObject.act();
 			currentObject.update();
 		}
-			//currentObject.update();
+		if(WinEnum.ALL_OBJECTS_DESTROYED.checkWin(this)){
+			System.out.println("level win");
+			win = false;
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			ScreenAdapterManager.getInstance().dispose(ScreenAdapterManager.getInstance().getCurrentEnum());
+			resetWin();
+		}
+	}
+	public boolean getWin(){
+		return win;
+	}
+	public void resetWin(){
+		win = true;
 	}
 	
+	//will need to iterate over win conditions here
 	public boolean checkWin(){
 		return false;
 	}

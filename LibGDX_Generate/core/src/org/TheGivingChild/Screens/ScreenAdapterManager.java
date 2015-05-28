@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.IntMap;
 public final class ScreenAdapterManager {
 	//variable for the instance of the manager.
     private static ScreenAdapterManager instance;
+    private ScreenAdapterEnums currentEnum;
     //variable to refer to the game.
     public TGC_Engine game;
     //map of screenAdapters built from enums
@@ -49,11 +50,16 @@ public final class ScreenAdapterManager {
         	//it didn't, so add the ScreenAdapter to the map.
             screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
         }
+        currentEnum = screenEnum;
         //Hide the current screen, show the new screen
         //batch.begin();
         //batch.draw((Texture) manager.get("MainScreen_Splash"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //batch.end();
         game.setScreen(screens.get(screenEnum.ordinal()));
+    }
+    
+    public ScreenAdapterEnums getCurrentEnum(){
+    	return currentEnum;
     }
  
     //dispose of the screen passed in.
