@@ -134,7 +134,8 @@ class ScreenEditor extends ScreenAdapter{
 		
 		if(canSetObj) {
 			batch.begin();
-			batch.draw(objectImage.texture, Gdx.input.getX(), Gdx.input.getY());
+			batch.draw(objectImage.texture, Gdx.input.getX() - objectImage.texture.getWidth()/2
+					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.texture.getHeight()/2);
 			batch.end();
 		}
 		
