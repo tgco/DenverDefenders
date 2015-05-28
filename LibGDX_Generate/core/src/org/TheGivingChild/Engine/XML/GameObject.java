@@ -6,8 +6,13 @@ import java.util.Locale;
 import javax.smartcardio.ATR;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
+import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.UserInputProcessor;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,6 +26,8 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private String imageFilename;
 	private Array<Attribute> attributes = new Array<Attribute>();
 	private float[] velocity;
+	private TGC_Engine game;
+	private AssetManager manager = new AssetManager();
 	private boolean disposed = false;
 	private Array<String> listenerNames;
 	
@@ -40,6 +47,16 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		//should be set using the bounds of the texture rather than a static number
 		setBounds(getX(), getY(), 100, 100);
 		//add the destroy on click event
+		//addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
+		game = ScreenAdapterManager.getInstance().game;
+		manager = game.getAssetManager();
+		//System.out.println(ScreenAdapterManager.getInstance());
+		//System.out.println(ScreenAdapterManager.getInstance().game);
+		if(!manager.isLoaded(imageFilename)) {
+			manager.load(imageFilename, Texture.class);
+			manager.update();
+		}
+		//manager.finishLoading();
 		System.out.println();
 		for(Attribute a: attributes){
 			String name = a.name().toUpperCase(Locale.ENGLISH);

@@ -20,7 +20,7 @@ public enum Attribute {
 				myObject.setVelocity(initialVelocity);
 			}
 			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
-			System.out.println("X positon: " + myObject.getX() + ", y position: " + myObject.getY());
+			//System.out.println("X positon: " + myObject.getX() + ", y position: " + myObject.getY());
 		}
 		
 		public void setValues(Array<String> newValues){
