@@ -1,11 +1,14 @@
 <level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
-	<GameObject ID="1" attributes="moves" imageFilename="Box.png" initialLocation="1.0,1.0" listeners="destroy_on_click">
+	<GameObject ID="1" attributes="moves,bounceOffEdgeOfScreen" imageFilename="Box.png" initialLocation="1.0,1.0" listeners="destroy_on_click">
 		<moves value1 = "100.0" value2 = "50.0"/>
+		<bounceOffEdgeOfScreen/>
 	</GameObject>
-	<GameObject ID="4" attributes="" imageFilename="ball.png" initialLocation="100.0,476.0" listeners="destroy_on_click"/>
-	<GameObject ID="2" attributes="movesOnSetPath,moves" imageFilename="Box.png" initialLocation="500,500" listeners="destroy_on_click">
-		<movesOnSetPath value1="100,200;300,400;500,600;700,800;900,1000" value2="10"/>
-		<moves value1="123" value2="456"/>
+	<GameObject ID="2" attributes="moves" imageFilename="Box.png" initialLocation="200.0,476.0" listeners="destroy_on_click">
+		<moves value1 = "100.0" value2 = "100.0"/>
+	</GameObject>
+	<GameObject ID="3" attributes="moves,bounceOffEdgeOfScreen" imageFilename="Box.png" initialLocation="200.0,476.0" listeners="destroy_on_click">
+		<moves value1 = "100.0" value2 = "100.0"/>
+		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
 		<collisionWithObjectWin win1="420" win2="9001"/>

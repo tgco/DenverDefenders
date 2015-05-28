@@ -12,7 +12,7 @@ public enum Attribute {
 	 * each type can have private fields
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
-		private float[] initialVelocity = new float[2];;
+		private float[] initialVelocity = new float[2];
 		private boolean hasRun = false;
 		public void update(GameObject myObject){
 			if(!hasRun){
@@ -20,7 +20,6 @@ public enum Attribute {
 				myObject.setVelocity(initialVelocity);
 			}
 			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
-			//System.out.println("X positon: " + myObject.getX() + ", y position: " + myObject.getY());
 		}
 		
 		public void setValues(Array<String> newValues){
@@ -35,6 +34,28 @@ public enum Attribute {
 		}
 		
 		public String getXMLName(){return "moves";}
+	},
+	BOUNCEOFFEDGEOFSCREEN{
+		public void update(GameObject myObject){
+			//lazy way
+			//Gdx.graqphics.getWidth()
+			if(myObject.getX() <= 0 || myObject.getX() + myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){
+				float[] temp = myObject.getVelocity();
+				temp[0] = -temp[0];
+				myObject.setVelocity(temp);
+			}else if(myObject.getY() <= 0 || myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){
+				float[] temp = myObject.getVelocity();
+				temp[1] = -temp[1];
+				myObject.setVelocity(temp);
+			}
+		}
+		public void setValues(Array<String> loldidntread){}
+		public Array<String> getValues(){
+			Array<String> blank = new Array<String>();
+			return blank;
+		}
+		public String getXMLName(){return "bounceOffEdgeOfScreen";}
+		
 	},
 	HEALTH{
 		private int health;
@@ -76,10 +97,9 @@ public enum Attribute {
 		private float speed;
 		private boolean hasRun = false;
 		public void update(GameObject myObject){
-			System.out.println("\nMovesOnSetPath Update");
-
 			if(!hasRun){
-				
+				float[] direction = calcDirection(myObject.getX(),myObject.getY());
+				myObject.setVelocity(new float[] {direction[0]*speed,direction[1]*speed});
 			}
 			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
 				//setup currentPoint
@@ -169,7 +189,6 @@ public enum Attribute {
 	SPINS{
 		private float rate;
 		public void update(GameObject myObject){
-			//System.out.println("\nSpins Update");
 			
 		}
 		public void setValues(Array<String> newValues){

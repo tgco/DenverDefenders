@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class XML_Reader {
 	
-	//the main method is for testing only
-//	public static void main(String cheese[]){
+//		the main method is for testing only
+//		public static void main(String cheese[]){
 //		XML_Reader test = new XML_Reader();
 //		FileHandle filename = new FileHandle("ball.png");
 //		test.setupNewFile(filename);
@@ -47,7 +47,7 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	public Level compileLevel(){		
+	public Level compileLevel(){
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
 				root.getAttribute("levelImage"),
@@ -62,15 +62,14 @@ public class XML_Reader {
 			Array<Attribute> attributesToAdd = new Array<Attribute>();
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
 			System.out.println(listenersToAdd);
-			//System.out.println(temp.getID());
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-					//System.out.println("\t|" + currentAttribute);
+					System.out.println("\t|" + currentAttribute);
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
 						Array<String> valuesToAdd = new Array<String>();
 						if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//check if the attribute even has values
 							for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){
 								valuesToAdd.add(currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
-								//System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+								System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 							}
 						}
 						Attribute attribute = Attribute.newType(currentAttribute);
