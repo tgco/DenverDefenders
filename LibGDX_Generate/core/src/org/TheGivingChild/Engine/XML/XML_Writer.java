@@ -16,30 +16,23 @@ public class XML_Writer {
 	
 	public static void main(String cheese[]){
 		//screen 576x1024
-		float temp1[] = {1,1};
-		float temp2[] = {1000,2};
-		float temp3[] = {2,2};
-		
-		Array<String> test1 = new Array<String>();
-		test1.add("100.0");
-		test1.add("100.0");
-		Array<String> test2 = new Array<String>();
-		test2.add("redred");
-		Array<String> test3 = new Array<String>();
-		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
-		Array<String> test4 = new Array<String>();
-		test4.add("100");
+//		float temp1[] = {1,1};
+//		float temp2[] = {1000,2};
+//		float temp3[] = {2,2};
 //		
+//		Array<String> test1 = new Array<String>();
+//		test1.add("100.0");
+//		test1.add("100.0");
+//		Array<String> test2 = new Array<String>();
+//		test2.add("redred");
+//		Array<String> test3 = new Array<String>();
+//		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
+//		Array<String> test4 = new Array<String>();
+//		test4.add("100");
 //		
-//		GameObject testObj1 = new GameObject(1,"ball.png",temp1);
-//		testObj1.addAttribute("moves", test1);
-//		GameObject testObj2 = new GameObject(2,"box.png",temp2);
-//		//GameObject testObj3 = new GameObject(3,"pall.png",temp3);
-//		//testObj3.addAttribute("movesOnSetPath", test3);
-//		//testObj3.addAttribute("color", test2);
-//		GameObject testObj4 = new GameObject(4,"ball.png",temp3);
-//		testObj4.addAttribute("disappearsOnPress", new Array<String>());
-//		
+//		Array<String> testListenerList = new Array<String>();
+//		testListenerList.add("TESTLISTENER");
+//		testListenerList.add("TESTLISTENER2");
 //		
 //		Array<GameObject> testObjectArray = new Array<GameObject>();
 //		testObjectArray.add(testObj1);
@@ -94,6 +87,7 @@ public class XML_Writer {
 				writer.attribute("attributes",compileAttributeList(currentGameObject));//writing list of attributes
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
 				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());//position
+				writer.attribute("listeners", currentGameObject);
 				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
@@ -163,7 +157,6 @@ public class XML_Writer {
 			}
 			winList2 = winList1.substring(1,winList1.length());
 		}
-		System.out.println(winList2);
 		return winList2;
 	}
 	
@@ -178,4 +171,13 @@ public class XML_Writer {
 		}
 		return loseList2;
 	}//GITHUB PUSH MY CHANGES YOU 
+	
+	private String compileListenerList(GameObject myObject){
+		if(myObject.getListenerNames().size == 0)
+			return "";
+		String temp = "";
+		for(String currentListenerName:myObject.getListenerNames())
+			temp+=","+currentListenerName;
+		return temp.substring(1,temp.length());
+	}
 }

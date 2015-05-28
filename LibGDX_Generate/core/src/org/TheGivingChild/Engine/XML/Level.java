@@ -34,7 +34,7 @@ public class Level {
 	public void update(){
 		for(GameObject currentObject:actors)
 		{
-			currentObject.act();
+			//currentObject.act();
 			currentObject.update();
 		}
 		if(WinEnum.ALL_OBJECTS_DESTROYED.checkWin(this)){

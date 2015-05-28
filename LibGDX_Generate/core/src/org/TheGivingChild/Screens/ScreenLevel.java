@@ -52,7 +52,7 @@ public class ScreenLevel extends ScreenAdapter{
 		}
 		else {
 			if(screenTransitionTimeLeft <= 0) {
-				Gdx.gl.glClearColor(1, 0.2F, 0.5f, 1);
+				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
 				for (GameObject g : level.getGameObjects()) {

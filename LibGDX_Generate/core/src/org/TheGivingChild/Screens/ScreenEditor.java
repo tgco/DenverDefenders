@@ -134,7 +134,8 @@ class ScreenEditor extends ScreenAdapter{
 		
 		if(canSetObj) {
 			batch.begin();
-			batch.draw(objectImage.texture, Gdx.input.getX(), Gdx.input.getY());
+			batch.draw(objectImage.texture, Gdx.input.getX() - objectImage.texture.getWidth()/2
+					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.texture.getHeight()/2);
 			batch.end();
 		}
 		
@@ -351,7 +352,7 @@ class ScreenEditor extends ScreenAdapter{
 		private int grid[];
 		//
 		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>());
+			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
 			grid = gridPos;
 			//Goes through all the enums and when it finds the correct one, it stores it to the variable
 			for (ObjectTexture itr : ObjectTexture.values()) {
