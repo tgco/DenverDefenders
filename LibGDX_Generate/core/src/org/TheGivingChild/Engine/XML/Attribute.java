@@ -77,13 +77,10 @@ public enum Attribute {
 		private boolean hasRun = false;
 		public void update(GameObject myObject){
 			System.out.println("\nMovesOnSetPath Update");
-<<<<<<< HEAD
 
-=======
 			if(!hasRun){
 				
 			}
->>>>>>> d2b2404db0b7ab427ca2c735dfc0e0fe5b1d1cb1
 			if(calcDistance(myObject.getX(),myObject.getY()) <= tolerance){//close enough to current point, setup next point
 				//setup currentPoint
 				currentPoint++;
@@ -154,15 +151,9 @@ public enum Attribute {
 	},*/
 	FALLSATSETRATE{
 		private int rate;
-<<<<<<< HEAD
 
-		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
-			System.out.println("\nfallsAtSetRate Update");
-
-=======
 		public void update(GameObject myObject){
 		//	System.out.println("\nfallsAtSetRate Update");
->>>>>>> d2b2404db0b7ab427ca2c735dfc0e0fe5b1d1cb1
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){
