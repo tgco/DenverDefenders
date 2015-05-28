@@ -18,21 +18,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 class ScreenEditor extends ScreenAdapter{	
 	private String levelName = "Base";
 	private String packageName;
-	
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
-
 	//Skins and the font
 	private BitmapFont font;
 	private Skin skinBack;
@@ -61,18 +62,21 @@ class ScreenEditor extends ScreenAdapter{
 	
 	//Stores the texture that is going to be used by the a EditorGameObject
 	private Texture objectImage;
-	
+	private Array<Texture> text;
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
 	
 	private AssetManager manager;
 	
+	private Dialog window;
+	private Boolean objectSelectOpen = false;
+	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
+		text = new Array<Texture>();
 		mainGame = ScreenAdapterManager.getInstance().game;
 		manager = mainGame.getAssetManager();
 		createEditorTable();
-		
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
 		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
@@ -88,7 +92,6 @@ class ScreenEditor extends ScreenAdapter{
 		
 		EditorTextInputListener listener = new EditorTextInputListener();
 		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
-
 	}
 	//When hidden removes it's table
 	@Override
@@ -123,7 +126,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
-				batch.draw((Texture) manager.get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
+				batch.draw(gridImage, grid[i][j].x, grid[i][j].y);
 			}
 		}
 		
@@ -159,88 +162,7 @@ class ScreenEditor extends ScreenAdapter{
 		editorTable.setVisible(false);
 	}
 	
-	private void createButtons() {
-		//Initializes all that is needed for the Back button and gets the textured needed
-		font = new BitmapFont();
-		skinBack = new Skin();
-		skinBack.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-		textButtonStyleBack = new TextButtonStyle();
-		textButtonStyleBack.font = font; 
-		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
-		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
-		TextButton backButton = new TextButton("", textButtonStyleBack);
-		
-		//Creates the listener for the Back button
-		backButton.addListener(new ChangeListener() { 			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				//Calls the screen manager and has main be the shown screen if Back is hit
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			}
-		});
-		//Setting the size and adding the Back button to the table
-		editorTable.add(backButton).align(Align.bottom);
-		
-		//Uses some of the same variables, so gets images ready for the Ball button
-		TextButtonStyle styleBall = new TextButtonStyle();
-		styleBall.font = font;
-		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
-		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
-		TextButton ballButton = new TextButton("", styleBall);
-		
-		//Ball button listener
-		ballButton.addListener(new ChangeListener() { 			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				//Changes the image to be drawn and lets the user place one object
-				selectImage();
-				canSetObj = true;
-			}
-		});
-		//Adds the Ball button
-		editorTable.add(ballButton).align(Align.bottom);
-		
-		TextButtonStyle styleExport = new TextButtonStyle();
-		styleExport.font = font;
-		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
-		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
-		
-		TextButton exportButton = new TextButton("", styleExport);
-		
-		exportButton.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
-				Array<String> testWin1Values = new Array<String>();
-				testWin1Values.add("420");
-				testWin1Values.add("9001");
-				testWin1.setValues(testWin1Values);
-				Array<WinEnum> testWinArray = new Array<WinEnum>();
-				testWinArray.add(testWin1);
-				
-				LoseEnum testLose1 = LoseEnum.TIMEOUT;
-				Array<String>testLose1Values =  new Array<String>();
-				testLose1Values.add("42");
-				testLose1.setValues(testLose1Values);
-				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
-				testLoseArray.add(testLose1);
-				
-				LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
-				Array<String>testLose2Values =  new Array<String>();
-				testLose2Values.add("42");
-				testLose2Values.add("72");
-				testLose2.setValues(testLose2Values);
-				testLoseArray.add(testLose2);
-				
-				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
-				mainGame.getXML_Writer().createLevel(level);
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
-			}
-			
-		});
-		
-		editorTable.add(exportButton).align(Align.bottom);
-	}
+	
 	
 	//Fills the grid according to the gridImage size relative to the screen size
 	private void fillGrid() {
@@ -257,7 +179,6 @@ class ScreenEditor extends ScreenAdapter{
 				grid[i][j] = new Rectangle(i*gridSize, Gdx.graphics.getHeight() - j*gridSize, gridSize, gridSize);
 			}
 		}
-
 	}
 	
 	//Called when there is a touch on the screen
@@ -340,5 +261,122 @@ class ScreenEditor extends ScreenAdapter{
 			
 		}
 		
+	}
+	
+	private void createButtons() {
+		//Initializes all that is needed for the Back button and gets the textured needed
+		font = new BitmapFont();
+		skinBack = new Skin();
+		skinBack.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		textButtonStyleBack = new TextButtonStyle();
+		textButtonStyleBack.font = font; 
+		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
+		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
+		TextButton backButton = new TextButton("", textButtonStyleBack);
+		
+		//Creates the listener for the Back button
+		backButton.addListener(new ChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				//Calls the screen manager and has main be the shown screen if Back is hit
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			}
+		});
+		//Setting the size and adding the Back button to the table
+		editorTable.add(backButton).align(Align.bottom);
+		
+		//Uses some of the same variables, so gets images ready for the Ball button
+		TextButtonStyle styleBall = new TextButtonStyle();
+		styleBall.font = font;
+		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
+		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
+		TextButton ballButton = new TextButton("", styleBall);
+		
+		//Ball button listener
+		ballButton.addListener(new ChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				//Changes the image to be drawn and lets the user place one object
+				selectImage();
+				window.setVisible(true);
+			}
+		});
+		//Adds the Ball button
+		editorTable.add(ballButton).align(Align.bottom);
+		
+		TextButtonStyle styleExport = new TextButtonStyle();
+		styleExport.font = font;
+		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
+		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
+		
+		TextButton exportButton = new TextButton("", styleExport);
+		
+		exportButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+				Array<String> testWin1Values = new Array<String>();
+				testWin1Values.add("420");
+				testWin1Values.add("9001");
+				testWin1.setValues(testWin1Values);
+				Array<WinEnum> testWinArray = new Array<WinEnum>();
+				testWinArray.add(testWin1);
+				
+				LoseEnum testLose1 = LoseEnum.TIMEOUT;
+				Array<String>testLose1Values =  new Array<String>();
+				testLose1Values.add("42");
+				testLose1.setValues(testLose1Values);
+				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
+				testLoseArray.add(testLose1);
+				
+				LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+				Array<String>testLose2Values =  new Array<String>();
+				testLose2Values.add("42");
+				testLose2Values.add("72");
+				testLose2.setValues(testLose2Values);
+				testLoseArray.add(testLose2);
+				
+				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
+				mainGame.getXML_Writer().createLevel(level);
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
+			}
+			
+		});
+		
+		editorTable.add(exportButton).align(Align.bottom);
+		Window.WindowStyle winStyle = new Window.WindowStyle();
+		winStyle.titleFont = font;
+		window = new Dialog("Onject Select" , winStyle);
+		
+		TextButtonStyle okStyle = new TextButtonStyle();
+		okStyle.font = font;
+		okStyle.up = skinBack.getDrawable("Button_Editor_Ok");
+		okStyle.down = skinBack.getDrawable("Button_Editor_OkPressed");
+		TextButton okButton = new TextButton("", okStyle);
+		
+		TextButtonStyle cancelStyle = new TextButtonStyle();
+		cancelStyle.font = font;
+		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
+		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
+		TextButton cancelButton = new TextButton("", cancelStyle);
+		window.add(okButton).align(Align.bottom);
+		window.add(cancelButton).align(Align.bottom);
+		
+		okButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				canSetObj = true;
+				window.setVisible(false);
+			}
+			
+		});
+		cancelButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				window.setVisible(false);
+			}
+		});
+		window.show(mainGame.getStage());
+		window.setVisible(false);
 	}
 }
