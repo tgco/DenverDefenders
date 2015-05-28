@@ -1,9 +1,8 @@
 package org.TheGivingChild.Screens;
 
-import javax.management.Attribute;
-
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
+import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LoseEnum;
@@ -129,7 +128,7 @@ class ScreenEditor extends ScreenAdapter{
 		}
 		
 		for (GameObject obj : gameObjects) {
-			batch.draw(((EditorGameObject) obj).getTexture(), obj.getX(), obj.getY());
+			batch.draw((Texture) manager.get(obj.getImageFilename()), obj.getX(), obj.getY());
 		}
 		batch.end();
 
@@ -268,7 +267,7 @@ class ScreenEditor extends ScreenAdapter{
 			return;
 		
 		//Variables used, EditorGameObject to store the new instance and a bool to keep track
-		EditorGameObject obj;
+		GameObject obj;
 		boolean added = false;
 		
 		//Store the coordinates of where the user clicked
@@ -280,16 +279,15 @@ class ScreenEditor extends ScreenAdapter{
 				if (grid[i][j].contains(x,y)) {
 					x = grid[i][j].x;
 					y = grid[i][j].y;
-					float[] drawPos =  {x, y};
-					int[] gridPos = {i, j};
-					
+					float[] drawPos =  {x, y};					
 					//Create the new editor game object
-					obj = new EditorGameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, gridPos);
+					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
+							new Array<Attribute>(), new Array<String>());
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new EditorGameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
-									drawPos, gridPos);
+							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
+									drawPos, new Array<Attribute>(), new Array<String>());
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -327,30 +325,6 @@ class ScreenEditor extends ScreenAdapter{
 	
 	private void disableButtons() {
 		editorTable.setVisible(false);
-	}
-	
-	//Extends the GameObject Class so that it can store the texture and a rectangle
-	private class EditorGameObject extends GameObject{
-		//Stores the Texture Enum and a rectangle
-		private Texture texture;
-		private Rectangle rectangle;
-		private int grid[];
-		//
-		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
-			grid = gridPos;
-			texture = objectImage;
-			//Sets the rectangle to the correct position and correct dimensions
-			rectangle = new Rectangle(newPosition[0], newPosition[1], 
-					texture.getWidth(), texture.getHeight());
-		}
-		
-		public Rectangle getRectangle() {
-			return rectangle;
-		}
-		public Texture getTexture() {
-			return texture;
-		}
 	}
 	
 	private class EditorTextInputListener implements TextInputListener {
