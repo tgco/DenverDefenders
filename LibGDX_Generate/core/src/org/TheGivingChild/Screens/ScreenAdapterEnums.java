@@ -35,7 +35,7 @@ public enum ScreenAdapterEnums {
 	CHARACTER_CREATOR{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenCharacterCreator();
+            return new ScreenMaze();
         }
 	},
 	//The main screen, returns a new ScreenMain
@@ -50,6 +50,12 @@ public enum ScreenAdapterEnums {
 		@Override
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevel();
+		}
+	},
+	MAZE{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenMaze();
 		}
 	};
 	//abstract protected class that the manager uses to return a ScreenAdapter
