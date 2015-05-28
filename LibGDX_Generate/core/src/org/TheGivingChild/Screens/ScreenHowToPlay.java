@@ -40,8 +40,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
-		System.out.println(ScreenAdapterManager.getInstance());
-		System.out.println(ScreenAdapterManager.getInstance().game);
 		//title = game.getAssetManager().get("HowToPlay.png");
 		//message = game.getAssetManager().get("HowToPlayMessage.png");
 		batch = new SpriteBatch();

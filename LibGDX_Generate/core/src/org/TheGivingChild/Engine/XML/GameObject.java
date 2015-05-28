@@ -46,7 +46,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		//should be set using the bounds of the texture rather than a static number
 		setBounds(getX(), getY(), 100, 100);
 		//add the destroy on click event
-		addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
+		//addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		//System.out.println(ScreenAdapterManager.getInstance());
@@ -55,6 +55,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 			manager.load(imageFilename, Texture.class);
 			manager.update();
 		}
+		//manager.finishLoading();
 		System.out.println();
 		for(Attribute a: attributes){
 			String name = a.name().toUpperCase(Locale.ENGLISH);

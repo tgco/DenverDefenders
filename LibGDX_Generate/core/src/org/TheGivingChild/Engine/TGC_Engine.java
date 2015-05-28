@@ -118,7 +118,9 @@ public class TGC_Engine extends Game {
 		boolean exists = Gdx.files.internal("testOut.xml").exists();
 		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-		//levels.set(0, reader.compileLevel());
+		ScreenAdapterManager.getInstance().initialize(this);
+
+		levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
         
@@ -250,8 +252,7 @@ public class TGC_Engine extends Game {
 				//makes sure the main screen is only loaded once
 				if(!screenManagerLoaded){
 					//initialize the Screen manager, passing the engine to it for reference
-					ScreenAdapterManager.getInstance().initialize(this);
-					levels.set(0, reader.compileLevel());
+					//ScreenAdapterManager.getInstance().initialize(this);
 					//show the main screen to be displayed first
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					screenManagerLoaded = true;
