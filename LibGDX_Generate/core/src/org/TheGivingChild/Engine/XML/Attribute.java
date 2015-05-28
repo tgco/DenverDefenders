@@ -149,8 +149,8 @@ public enum Attribute {
 	},*/
 	FALLSATSETRATE{
 		private int rate;
-		public void update(GameObject myObject){//will probably need to change this to something like the moves attribute
-			System.out.println("\nfallsAtSetRate Update");
+		public void update(GameObject myObject){
+		//	System.out.println("\nfallsAtSetRate Update");
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
 		}
 		public void setValues(Array<String> newValues){
