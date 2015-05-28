@@ -22,6 +22,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private Array<Attribute> attributes = new Array<Attribute>();
 	private float[] velocity;
 	private boolean disposed = false;
+	private Array<String> listeners;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -87,23 +88,10 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		return imageFilename;
 	}
 	
-	public String getListenersAsString(){//this is not used, will be used at a later time once we get listeners working, leaving as is for now
-		String temp="";
-		for(EventListener listener:getListeners()){
-			temp+=","+listener.toString();
-		}
-		return temp.replaceFirst(",", "");
-	}
-	
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 
-	
-	public void act()
-	{
-		//System.out.println("I am acting " + this.getName());
-	}
 	@Override
 	public void dispose(){
 		imageFilename = null;
