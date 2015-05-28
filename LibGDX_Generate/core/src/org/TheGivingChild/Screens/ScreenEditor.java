@@ -352,7 +352,7 @@ class ScreenEditor extends ScreenAdapter{
 		private int grid[];
 		//
 		public EditorGameObject(int newID, String img, float[] newPosition, int[] gridPos) {
-			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>());
+			super(newID, img, newPosition, new Array<org.TheGivingChild.Engine.XML.Attribute>(), new Array<String>());
 			grid = gridPos;
 			//Goes through all the enums and when it finds the correct one, it stores it to the variable
 			for (ObjectTexture itr : ObjectTexture.values()) {
