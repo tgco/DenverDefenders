@@ -78,7 +78,6 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable = new Table();
 		skin = new Skin();
 		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
 
 		//Creates the buttons and sets table to origin
 		createButton();
@@ -106,10 +105,5 @@ class ScreenOptions extends ScreenAdapter {
 		});
 		backButton.setSize(150,300);
 		optionsTable.add(backButton);
-	}
-	
-	private void createOptions() {
-		font = game.getBitmapFontButton();
-		
 	}
 }
