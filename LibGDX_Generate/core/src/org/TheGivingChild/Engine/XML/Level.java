@@ -25,7 +25,7 @@ public class Level {
 		actors = new Array<GameObject>();
 		actorsStatic = new Array<GameObject>();
 		actorsStatic.addAll(objects);
-		for(GameObject object: objects){
+		for(GameObject object: actorsStatic){
 			GameObject deepCopy = object.GameObject();
 			actors.add(deepCopy);
 		}

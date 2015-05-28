@@ -268,13 +268,11 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		//if the manager is not done updating, it will display a loading image
-		if(!manager.update()) {
-			batch.begin();
-			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();
-		}
+		batch.begin();
+		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 		//once the manager is done updating, it prepares to switch to the main screen
-		else {
+		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
 			//or to switch to displaying the main screen
 			if(screenTransitionTimeLeft <= 0){

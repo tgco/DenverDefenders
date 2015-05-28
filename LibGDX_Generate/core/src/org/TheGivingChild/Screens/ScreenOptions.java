@@ -45,12 +45,7 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	@Override
 	public void render(float delta) {
-		if(!manager.update()) {
-			batch.begin();
-			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();
-		}
-		else {
+		if(manager.update()) {
 			if(screenTransitionTimeLeft <= 0) {
 				if(manager.isLoaded("optionsTitle.png"))
 					title = manager.get("optionsTitle.png");

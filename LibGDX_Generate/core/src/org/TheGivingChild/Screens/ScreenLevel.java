@@ -51,20 +51,13 @@ public class ScreenLevel extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		if(!manager.update()) {
-			batch.begin();
-			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();
-		}
-		else {
+		if(manager.update()) {
 			if(screenTransitionTimeLeft <= 0) {
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
 				for (GameObject g : level.getGameObjects()) {
-					if(!g.isDisposed()){
-						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
-					}
+					g.draw(batch, 1.0f);
 				}
 				level.update();
 				batch.end();

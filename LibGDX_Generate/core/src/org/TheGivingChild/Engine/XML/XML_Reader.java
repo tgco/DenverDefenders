@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class XML_Reader {
 	
-	//the main method is for testing only
-//	public static void main(String cheese[]){
+//		the main method is for testing only
+//		public static void main(String cheese[]){
 //		XML_Reader test = new XML_Reader();
 //		FileHandle filename = new FileHandle("ball.png");
 //		test.setupNewFile(filename);
@@ -47,7 +47,7 @@ public class XML_Reader {
 		root = reader.parse(xml_file);
 	}
 	
-	public Level compileLevel(){		
+	public Level compileLevel(){
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
 				root.getAttribute("levelImage"),
@@ -61,8 +61,7 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<Attribute> attributesToAdd = new Array<Attribute>();
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
-			System.out.println(listenersToAdd);
-			//System.out.println(temp.getID());
+			//System.out.println(listenersToAdd);
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					//System.out.println("\t|" + currentAttribute);
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes

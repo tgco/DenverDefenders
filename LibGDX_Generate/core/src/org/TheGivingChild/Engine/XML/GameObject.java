@@ -100,6 +100,7 @@ public class GameObject extends Actor implements Disposable{
 				position, 
 				getAttributes(), 
 				getListenerNames());
+		deepCopy.setPosition(getOriginX(), getOriginY());
 		return deepCopy;
 	}
 
@@ -108,6 +109,12 @@ public class GameObject extends Actor implements Disposable{
 			currentAttribute.update(this);
 	}
 
+	@Override
+	public void draw(com.badlogic.gdx.graphics.g2d.Batch batch, float parentAlpha) {
+		if(!isDisposed()){
+			batch.draw((Texture) manager.get(imageFilename), getX(), getY());
+		}
+	};
 	
 	public void input(){
 		
@@ -135,13 +142,13 @@ public class GameObject extends Actor implements Disposable{
 
 	@Override
 	public void dispose(){
-		//imageFilename = null;
-		//attributes.clear();
-		//listenerNames.clear();
-		//manager = null;
-		//texture = null;
-		//game = null;
-		//velocity = null;
+		imageFilename = null;
+		attributes.clear();
+		listenerNames.clear();
+		manager = null;
+		texture = null;
+		game = null;
+		velocity = null;
 		disposed = true;
 	};
 
@@ -159,5 +166,8 @@ public class GameObject extends Actor implements Disposable{
 	
 	public Array<String> getListenerNames(){
 		return listenerNames;
+	}
+	public Texture getTexture(){
+		return texture;
 	}
 }
