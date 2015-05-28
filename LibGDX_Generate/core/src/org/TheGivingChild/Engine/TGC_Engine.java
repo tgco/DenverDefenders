@@ -10,14 +10,21 @@ import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import tiledMap.TestTiledMap;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -57,6 +64,16 @@ public class TGC_Engine extends Game {
     
     private XML_Reader reader;
     private XML_Writer writer;
+    
+    //Map stuff
+    private Texture mapTexture;
+    private TiledMap tiledMap;
+    private OrthographicCamera mapCamera;
+    private TiledMapRenderer mapRenderer;
+    private TestTiledMap testTiledMap;
+    
+    
+    
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -153,6 +170,21 @@ public class TGC_Engine extends Game {
 						
 		//System.out.println("stage has this many actors:" + stage.getActors().size);
 		//System.out.println("other processor has this many actors" + input.getActors().size);
+		
+		//Map stuff
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		mapCamera = new OrthographicCamera();
+		mapCamera.setToOrtho(false, w, h);
+		tiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+		//testTiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+	
+		//Set input processor to mpa
+		//	Gdx.input.setInputProcessor(this);
+		
+	
+		
 		
 	}
 	
@@ -260,6 +292,13 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
+		
+		//Map?
+		mapCamera.update();
+		mapRenderer.setView(mapCamera);
+		mapRenderer.render();		
+		
+	//	Gdx.input.setInputProcessor();
 		
 	}
 }
