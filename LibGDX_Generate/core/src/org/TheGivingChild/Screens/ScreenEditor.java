@@ -89,6 +89,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		EditorTextInputListener listener = new EditorTextInputListener();
 		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+
 	}
 	//When hidden removes it's table
 	@Override
@@ -101,8 +102,11 @@ class ScreenEditor extends ScreenAdapter{
 
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		
+		if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
+				(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
+			enableButtons();
+		else
+			disableButtons();
 		if(canSetObj) {
 			batch.begin();
 			batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
@@ -153,6 +157,7 @@ class ScreenEditor extends ScreenAdapter{
 		createButtons();
 		editorTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		editorTable.align(Align.bottom);
+		editorTable.setVisible(false);
 	}
 	
 	private void createButtons() {
@@ -243,7 +248,7 @@ class ScreenEditor extends ScreenAdapter{
 		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
 			gridCol++;
 		}
-		for (int j=(int) Gdx.graphics.getHeight(); j>150; j-=gridSize) {
+		for (int j=(int) Gdx.graphics.getHeight(); j>0; j-=gridSize) {
 			gridRows++;
 		}
 		
@@ -314,6 +319,14 @@ class ScreenEditor extends ScreenAdapter{
 		else if (ballOrBox == 2) {
 			objectImage = manager.get("editorAssets/BoxHalf.png");
 		}
+	}
+	private void enableButtons() {
+		editorTable.setVisible(true);
+		
+	}
+	
+	private void disableButtons() {
+		editorTable.setVisible(false);
 	}
 	
 	//Extends the GameObject Class so that it can store the texture and a rectangle
