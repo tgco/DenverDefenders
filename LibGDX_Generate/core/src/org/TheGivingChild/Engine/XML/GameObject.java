@@ -83,7 +83,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 			}
 		}
 	}
-				
+	
 	public void update(){
 		for(Attribute currentAttribute:attributes)
 			currentAttribute.update(this);
