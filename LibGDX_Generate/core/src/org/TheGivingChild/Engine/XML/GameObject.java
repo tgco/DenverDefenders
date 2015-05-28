@@ -48,13 +48,13 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		//add the destroy on click event
 		addListener(InputListenerEnums.DESTROY_ON_CLICK.getInputListener(this));
 		game = ScreenAdapterManager.getInstance().game;
-		System.out.println(ScreenAdapterManager.getInstance());
-		System.out.println(ScreenAdapterManager.getInstance().game);
+		manager = game.getAssetManager();
 		//System.out.println(ScreenAdapterManager.getInstance());
-		/*if(!game.getAssetManager().isLoaded(imageFilename)) {
-			game.getAssetManager().load(imageFilename, Texture.class);
-			game.getAssetManager().update();
-		}*/
+		//System.out.println(ScreenAdapterManager.getInstance().game);
+		if(!manager.isLoaded(imageFilename)) {
+			manager.load(imageFilename, Texture.class);
+			manager.update();
+		}
 		System.out.println();
 		for(Attribute a: attributes){
 			String name = a.name().toUpperCase(Locale.ENGLISH);
