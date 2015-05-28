@@ -279,6 +279,7 @@ class ScreenEditor extends ScreenAdapter{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//Calls the screen manager and has main be the shown screen if Back is hit
+				window.setVisible(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		});
