@@ -22,7 +22,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private Array<Attribute> attributes = new Array<Attribute>();
 	private float[] velocity;
 	private boolean disposed = false;
-	private Array<String> listeners;
+	private Array<String> listenerNames;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -30,7 +30,7 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	 */
 	//touchable = true;
 	
-	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd){
+	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
 		attributes.addAll(attributesToAdd);
 		ID = newID;
 		imageFilename = img;
@@ -99,7 +99,6 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		disposed = true;
 	};
 
-
 	public boolean isDisposed(){
 		return disposed;
 	}
@@ -110,5 +109,9 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 
 	public void setVelocity(float[] velocity) {
 		this.velocity = velocity;
+	}
+	
+	public Array<String> getListenerNames(){
+		return listenerNames;
 	}
 }
