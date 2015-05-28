@@ -30,14 +30,15 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	private AssetManager manager = new AssetManager();
 	private boolean disposed = false;
 	private Texture texture;
+	private Array<String> listenerNames;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
 	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
 	 */
 	
-	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd){
-		//fill the attributes loaded by the xml reader
+
+	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
 		attributes.addAll(attributesToAdd);
 		//set the id from the xml
 		ID = newID;
@@ -111,30 +112,16 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		return imageFilename;
 	}
 	
-	public String getListenersAsString(){//this is not used, will be used at a later time once we get listeners working, leaving as is for now
-		String temp="";
-		for(EventListener listener:getListeners()){
-			temp+=","+listener.toString();
-		}
-		return temp.replaceFirst(",", "");
-	}
-	
 	public String toString(){
 		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 
-	
-	public void act()
-	{
-		//System.out.println("I am acting " + this.getName());
-	}
 	@Override
 	public void dispose(){
 		imageFilename = null;
 		attributes.clear();
 		disposed = true;
 	};
-
 
 	public boolean isDisposed(){
 		return disposed;
@@ -146,5 +133,9 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 
 	public void setVelocity(float[] velocity) {
 		this.velocity = velocity;
+	}
+	
+	public Array<String> getListenerNames(){
+		return listenerNames;
 	}
 }
