@@ -76,6 +76,42 @@ public enum Attribute {
 			return null;
 		}
 	},
+	FALLSATSETRATE{
+		private int rate;
+		public void update(GameObject myObject){
+		//	System.out.println("\nfallsAtSetRate Update");
+			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
+		}
+		public void setValues(Array<String> newValues){
+			rate = Integer.parseInt(newValues.get(0));
+		}
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(rate+"");
+			return temp;
+		}
+		public String getXMLName(){return "fallsAtSetRate";}
+		@Override
+		public Array<String> getVariableNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void setup(GameObject myObject) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			// TODO Auto-generated method stub
+			
+		}
+	},
 	SPINS{
 		private float rate;
 		public void update(GameObject myObject){
