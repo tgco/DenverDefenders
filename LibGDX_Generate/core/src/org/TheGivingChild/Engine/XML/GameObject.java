@@ -92,20 +92,6 @@ public class GameObject extends Actor implements Disposable{
 		}
 	}
 	
-	public GameObject GameObject() {
-		float position[] = new float[2];
-		position[0] = (getOriginX());
-		position[1] = (getOriginY());
-		GameObject deepCopy = new GameObject(
-				getID(), 
-				getImageFilename(), 
-				position, 
-				getAttributes(), 
-				getListenerNames());
-		deepCopy.setPosition(getOriginX(), getOriginY());
-		return deepCopy;
-	}
-
 	public void update(){
 		for(Attribute currentAttribute:attributes)
 			currentAttribute.update(this);
@@ -139,18 +125,11 @@ public class GameObject extends Actor implements Disposable{
 		for(Attribute a: attributes){
 			att+=a.name()+"\n";
 		}
-		return "Object origin: " + getOriginX() + getOriginY() + "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY() + "Is diposed: " + disposed + "\nVelocity";
+		return "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
 	}
 
 	@Override
 	public void dispose(){
-//		imageFilename = null;
-//		attributes.clear();
-//		listenerNames.clear();
-//		manager = null;
-//		texture = null;
-//		game = null;
-//		velocity = null;
 		disposed = true;
 	};
 
