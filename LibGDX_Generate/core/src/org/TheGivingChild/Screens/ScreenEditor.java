@@ -73,6 +73,9 @@ class ScreenEditor extends ScreenAdapter{
 	private Array<GameObject> gameObjects;
 	
 	private AssetManager manager;
+	private float screenTransitionTimeLeft = 1.0f;
+	private boolean isRendered = false;
+	private boolean isLoaded = false;
 	
 	private Dialog window;
 	
@@ -94,8 +97,7 @@ class ScreenEditor extends ScreenAdapter{
 		
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
-		fillGrid();
-		
+		fillGrid();		
 		EditorTextInputListener listener = new EditorTextInputListener();
 		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
 		
@@ -109,45 +111,60 @@ class ScreenEditor extends ScreenAdapter{
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
 	public void render(float delta) {
-
-		Gdx.gl.glClearColor(0, 1, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
-				(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
-			enableButtons();
-		else
-			disableButtons();
-		if(canSetObj) {
-			batch.begin();
-			batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
-					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
-			batch.end();
-		}
-		
-		//If touched, call spawnObjects
-		if(Gdx.input.isTouched()) {
-			spawnObject();
-		}
-		
-		//Draws all EditorGameObjects stored and all grid pieces
 		batch.begin();
-		
-		for (int i=0; i<gridCol; i++) {
-			for (int j=0; j<gridRows; j++) {
-				batch.draw(gridImage, grid[i][j].x, grid[i][j].y);
+		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
+		if(manager.update()) {
+			if(screenTransitionTimeLeft <= 0) {
+				Gdx.gl.glClearColor(0, 1, 0, 1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
+						(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
+					enableButtons();
+				else
+					disableButtons();
+				if(canSetObj) {
+					batch.begin();
+					batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
+							, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
+					batch.end();
+				}
+				
+				//If touched, call spawnObjects
+				if(Gdx.input.isTouched()) {
+					spawnObject();
+				}
+				
+				//Draws all EditorGameObjects stored and all grid pieces
+				batch.begin();
+				
+				for (int i=0; i<gridCol; i++) {
+					for (int j=0; j<gridRows; j++) {
+						batch.draw((Texture) manager.get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
+					}
+				}
+				
+				for (GameObject obj : gameObjects) {
+					batch.draw((obj).getTexture(), obj.getX(), obj.getY());
+				}
+				batch.end();
+				isRendered = true;
+				if(!isLoaded) {
+					show();
+					isLoaded = true;
+				}
 			}
 		}
-		
-		for (GameObject obj : gameObjects) {
-			batch.draw((Texture) manager.get(obj.getImageFilename()), obj.getX(), obj.getY());
-		}
-		batch.end();
+		if(screenTransitionTimeLeft >= 0)
+			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 
 	}
 	//Shows the table when called upon
 	@Override
 	public void show() {
-		mainGame.getStage().addActor(editorTable);
+		if(isRendered) {
+			mainGame.getStage().addActor(editorTable);
+		}
 	};
 	
 	//Dispose, will be implemented later

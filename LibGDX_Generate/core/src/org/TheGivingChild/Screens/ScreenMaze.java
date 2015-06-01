@@ -26,7 +26,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
 	private Sprite sprite;
-	private int initialX, initialY;
+	private float xMove, yMove, speed;
 	
 	private Vector2 lastTouch = new Vector2();
 	
@@ -35,6 +35,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	{
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+		
+		speed = Gdx.graphics.getHeight()/150;
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
@@ -47,6 +49,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 		sprite = new Sprite(spriteTexture);
+		
+		
 	}
 	
 	@Override 
@@ -60,6 +64,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		mapRenderer.render();
 		
 		spriteBatch.setProjectionMatrix(camera.combined); //Make the sprite not move when the map is scrolled
+		sprite.setPosition(sprite.getX() + xMove, sprite.getY() + yMove);
+		
 		spriteBatch.begin();
 		sprite.draw(spriteBatch);
 		camera.position.set(sprite.getX(), sprite.getY(), 0);	//Set camera to focus on character
@@ -113,7 +119,25 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
 		
-
+		Vector2 newTouch = new Vector2(screenX, screenY);
+		Vector2 delta = newTouch.cpy().sub(lastTouch);
+		
+		if (Math.abs(delta.x) > Math.abs(delta.y))
+		{
+			if(delta.x > 0) xMove =  speed;
+			if(delta.x <= 0) xMove = -speed;
+			yMove = 0;
+		}
+		else
+		{
+			if(delta.y > 0)	yMove = -speed;
+			if(delta.y <= 0) yMove = +speed;
+			xMove = 0;
+		}
+		
+			
+		
+		lastTouch = newTouch;
 		
 		return true;
 	}
@@ -123,17 +147,21 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		// TODO Auto-generated method stub
 		
 		//Compare the dragged touch to last touch to see what direction
-		Vector2 newTouch = new Vector2(screenX, screenY);
-		Vector2 delta = newTouch.cpy().sub(lastTouch);
+		
 		
 		//sprite.setX(sprite.getX() - delta.x);
 		//sprite.setY(sprite.getY() + delta.y);
 		
-		sprite.setX(sprite.getX() + delta.x);
-		sprite.setY(sprite.getY() - delta.y);
+		
+	
 		
 		
-		lastTouch = newTouch;
+		//sprite.setX(sprite.getX() + delta.x);
+	//	sprite.setY(sprite.getY() - delta.y);
+		
+		
+		
+	//	lastTouch = newTouch;
 		
 		
 		//sprite.setPosition(screenX, screenY);

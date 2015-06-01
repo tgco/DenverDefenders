@@ -3,6 +3,7 @@ package org.TheGivingChild.Engine.XML;
 import org.TheGivingChild.Engine.InputListenerEnums;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 
@@ -142,9 +143,15 @@ public enum Attribute {
 	},
 	COLLIDESWITHOBJECTSID{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			int ID = Integer.parseInt(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
-			float[] otherObject = {};
-			//if(myObject.getTexture().)
+			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
+			for(int i =0; i < allObjects.size;i++){
+				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", true)){//if myObject collides with current object AND they are actually colliding
+					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
+					if(juan.overlaps(two)){
+						System.out.println("COLLISION DETECETED");
+					}
+				}
+			}
 		}
 		
 		public void setup(GameObject myObject){

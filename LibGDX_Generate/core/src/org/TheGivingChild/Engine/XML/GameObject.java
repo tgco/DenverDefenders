@@ -99,10 +99,6 @@ public class GameObject extends Actor implements Disposable{
 		}
 	}
 	
-	public void input(){
-		
-	}
-	
 	public Array<Attribute> getAttributes(){
 		return attributeData.keys().toArray();
 	}
@@ -125,25 +121,20 @@ public class GameObject extends Actor implements Disposable{
 	@Override
 	public void dispose(){
 		disposed = true;
-	};
-
+	}
 	public void resetObject(){
 		setPosition(position[0], position[1]);
 		disposed = false;
 	}
-	
 	public boolean isDisposed(){
 		return disposed;
 	}
-	
 	public float[] getVelocity() {
 		return velocity;
 	}
-
 	public void setVelocity(float[] velocity) {
 		this.velocity = velocity;
 	}
-	
 	public Array<String> getListenerNames(){
 		return listenerNames;
 	}
