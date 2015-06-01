@@ -53,7 +53,6 @@ public final class ScreenAdapterManager {
         }
         currentEnum = screenEnum;
         //Hide the current screen, show the new screen
-
         batch.begin();
         batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();

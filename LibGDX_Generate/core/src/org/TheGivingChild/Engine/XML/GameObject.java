@@ -23,6 +23,7 @@ public class GameObject extends Actor implements Disposable{
 	private String imageFilename;
 	//private Array<Attribute> attributes;
 	private float[] velocity;
+	private float[] position;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean disposed;
@@ -45,8 +46,9 @@ public class GameObject extends Actor implements Disposable{
 		ID = newID;
 		//set the imagefilename from the xml
 		imageFilename = img;
+		position = newPosition;
 		//the the initial position from xml
-		setPosition(newPosition[0],newPosition[1]);
+		setPosition(position[0],position[1]);
 		//initialize a velocity of 0
 		velocity = new float[] {0,0};
 		//get the reference to the game
@@ -85,13 +87,17 @@ public class GameObject extends Actor implements Disposable{
 			}
 		}
 		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
-		for(Attribute currentAttribute:attributeData.keys().toArray())
+		for(Attribute currentAttribute:attributeData.keys().toArray()){
+			System.out.println(currentAttribute.getXMLName());
 			currentAttribute.setup(this);
+		}
 	}
 
 	public void update(){
-		for(Attribute currentAttribute:attributeData.keys().toArray())
+		for(Attribute currentAttribute:attributeData.keys().toArray()){
+			//System.out.println(currentAttribute.getXMLName());//for debugging
 			currentAttribute.update(this);
+		}
 	}
 
 	@Override
@@ -119,24 +125,21 @@ public class GameObject extends Actor implements Disposable{
 	
 	/*public String toString(){
 		String att = "";
-		for(Attribute a: attributes){
+		for(Attribute a: attributes)
 			att+=a.name()+"\n";
-		}
 		return "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY() + "Is diposed: " + disposed + "\n";
 	}*/
 
 	@Override
 	public void dispose(){
-		imageFilename = null;
-		attributeData.clear();
-		listenerNames.clear();
-		manager = null;
-		texture = null;
-		game = null;
-		velocity = null;
 		disposed = true;
 	};
 
+	public void resetObject(){
+		setPosition(position[0], position[1]);
+		disposed = false;
+	}
+		
 	public boolean isDisposed(){
 		return disposed;
 	}

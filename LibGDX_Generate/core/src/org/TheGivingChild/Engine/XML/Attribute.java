@@ -25,6 +25,13 @@ public enum Attribute {
 			return temp;
 		}
 		
+		public Array<String> getVariableNames(){
+			Array<String> variableNames = new Array<String>();
+			variableNames.add("Initial X Velocity");
+			variableNames.add("Initial Y Velocity");
+			return variableNames;
+		}
+		
 		public String getXMLName(){return "moves";}
 	},
 	BOUNCEOFFEDGEOFSCREEN{
@@ -39,32 +46,33 @@ public enum Attribute {
 				myObject.setVelocity(temp);
 			}
 		}
-		
-		public void setup(GameObject myObject){
-			
+		public Array<String> getVariableNames(){
+			return new Array<String>();
 		}
-		
+		public void setup(GameObject myObject){}//doesnt need to setup anything		
 		public Array<String> getValues(GameObject myObject){return new Array<String>();}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
-		private int health;
 		public void update(GameObject myObject){
 			//System.out.println("\nHealth Update\n" + health);
 		}
-		
 		public void setup(GameObject myObject){
 			
 		}
+		
+		public Array<String> getVariableNames(){
+			Array<String> temp = new Array<String>();
+			temp.add("Initial Health");
+			return temp;
+		}
 
 		public Array<String> getValues(GameObject myObject){//each implementation of get Values translates the values back into the string for writing to .xml purposes
-			Array<String> temp = new Array<String>();
-			temp.add(Integer.toString(health));
-			return temp;
+			return myObject.getAttributeData().get(HEALTH);
 		}
 		public String getXMLName(){return "health";}
 	};
-	
+	public abstract Array<String> getVariableNames();
 	public abstract void setup(GameObject myObject);
 	public abstract Array<String> getValues(GameObject myObject);
 	public abstract void update(GameObject myObject);
