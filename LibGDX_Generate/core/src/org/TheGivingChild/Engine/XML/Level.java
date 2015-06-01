@@ -30,8 +30,7 @@ public class Level {
 	}
 	
 	public void update(){
-		for(GameObject currentObject:actors)
-		{
+		for(GameObject currentObject:actors){
 			currentObject.update();
 		}
 		for(WinEnum winEnum: WinEnum.values()){
