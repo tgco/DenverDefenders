@@ -43,10 +43,10 @@ class ScreenOptions extends ScreenAdapter {
 	private Texture title;
 	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
-	private String[] optionsArray = {"   Sounds   ", 
-			  						 "   Music   ", 
-			  						 "   Seizure   ", 
-			  						 "   Free Roam   "};
+	private String[] optionsArray = {"   Option 1   ", 
+			  						 "   Option 2   ", 
+			  						 "   Option 3   ", 
+			  						 "   Option 4   "};
 	private boolean option1, option2, option3, option4 = false;
 	private boolean allChanged = false;
 

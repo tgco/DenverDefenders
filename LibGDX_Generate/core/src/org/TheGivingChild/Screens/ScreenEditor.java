@@ -164,8 +164,6 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
-			EditorTextInputListener listener = new EditorTextInputListener();
-			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
 		}
 	};
 	
