@@ -71,7 +71,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		sprite.draw(spriteBatch);
 		camera.position.set(sprite.getX(), sprite.getY(), 0);	//Set camera to focus on character
 		spriteBatch.end();
-		
+		System.out.println(Gdx.graphics.getFramesPerSecond());
 	}
 	
 	@Override
