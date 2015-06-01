@@ -2,6 +2,8 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.XML_Reader;
+import org.TheGivingChild.Engine.XML.XML_Writer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,6 +21,20 @@ public class ScreenLevel extends ScreenAdapter{
 	private AssetManager manager;
 	private float screenTransitionTimeLeft = 1.0f;
 	public ScreenLevel() {
+		
+	}
+
+	@Override
+	public void hide() {
+		level = null;
+		
+		manager = null;
+		textureFile.clear();
+	}
+	
+	@Override
+	public void show() {		
+		System.out.println("Show was called in level");
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		manager.load("ball.png", Texture.class);
@@ -32,16 +48,6 @@ public class ScreenLevel extends ScreenAdapter{
 		
 		batch = new SpriteBatch();
 	}
-
-	@Override
-	public void hide() {
-		
-	}
-	
-	@Override
-	public void show() {
-		
-	}
 	
 	@Override
 	public void render(float delta) {
@@ -51,9 +57,7 @@ public class ScreenLevel extends ScreenAdapter{
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
 				for (GameObject g : level.getGameObjects()) {
-					if(!g.isDisposed()){
-						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
-					}
+					g.draw(batch, 1.0f);
 				}
 				level.update();
 				batch.end();

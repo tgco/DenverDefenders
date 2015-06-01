@@ -1,13 +1,9 @@
 package org.TheGivingChild.Engine.XML;
 
-import java.lang.reflect.Method;
 import java.util.Locale;
-
-import javax.smartcardio.ATR;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.UserInputProcessor;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.ScreenAdapter;
@@ -19,18 +15,20 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ObjectMap;
 
 //GameObject is essentially a storage container for all the information associated with each object on the screen
-public class GameObject extends Actor implements Disposable{//libGDX actors have all the listeners we will need
+public class GameObject extends Actor implements Disposable{
 	private int ID;
 	private String imageFilename;
-	private Array<Attribute> attributes = new Array<Attribute>();
+	//private Array<Attribute> attributes;
 	private float[] velocity;
 	private TGC_Engine game;
-	private AssetManager manager = new AssetManager();
-	private boolean disposed = false;
+	private AssetManager manager;
+	private boolean disposed;
 	private Texture texture;
-	private Array<String> listenerNames = new Array<String>();
+	private Array<String> listenerNames;
+	private ObjectMap<Attribute,Array<String>> attributeData;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -38,8 +36,10 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	 */
 	
 
-	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
-		attributes.addAll(attributesToAdd);
+	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
+		listenerNames = new Array<String>();
+		manager = new AssetManager();
+		disposed = false;
 		listenerNames.addAll(newListenerNames);
 		//set the id from the xml
 		ID = newID;
@@ -74,30 +74,39 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		for(String listener: listenerNames){
 			//get the name, uppercase it
 			String name = listener.toUpperCase(Locale.ENGLISH);
-			System.out.println("Listener name is: " + name);
 			//iterate over the listeners
 			for(InputListenerEnums ILE: InputListenerEnums.values()){
 				//if the names of the attribute and listener are equal, add the listener
 				if(ILE.name().equals(name)){
+					InputListener listen = InputListenerEnums.valueOf(name).getInputListener(this);
 					//add the listener
-					addListener(InputListenerEnums.valueOf(name).getInputListener(this));
+					addListener(listen);
 				}
 			}
 		}
+		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
+		for(Attribute currentAttribute:attributeData.keys().toArray())
+			currentAttribute.setup(this);
 	}
-	
+
 	public void update(){
-		for(Attribute currentAttribute:attributes)
+		for(Attribute currentAttribute:attributeData.keys().toArray())
 			currentAttribute.update(this);
 	}
 
+	@Override
+	public void draw(com.badlogic.gdx.graphics.g2d.Batch batch, float parentAlpha) {
+		if(!isDisposed()){
+			batch.draw((Texture) manager.get(imageFilename), getX(), getY());
+		}
+	};
 	
 	public void input(){
 		
 	}
 	
 	public Array<Attribute> getAttributes(){
-		return attributes;
+		return attributeData.keys().toArray();
 	}
 
 	public int getID() {
@@ -108,14 +117,23 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 		return imageFilename;
 	}
 	
-	public String toString(){
-		return "ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY();
-	}
+	/*public String toString(){
+		String att = "";
+		for(Attribute a: attributes){
+			att+=a.name()+"\n";
+		}
+		return "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY() + "Is diposed: " + disposed + "\n";
+	}*/
 
 	@Override
 	public void dispose(){
 		imageFilename = null;
-		attributes.clear();
+		attributeData.clear();
+		listenerNames.clear();
+		manager = null;
+		texture = null;
+		game = null;
+		velocity = null;
 		disposed = true;
 	};
 
@@ -136,5 +154,8 @@ public class GameObject extends Actor implements Disposable{//libGDX actors have
 	}
 	public Texture getTexture(){
 		return texture;
+	}
+	public ObjectMap<Attribute,Array<String>> getAttributeData(){
+		return attributeData;
 	}
 }

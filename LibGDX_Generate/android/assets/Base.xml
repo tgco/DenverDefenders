@@ -1,7 +1,0 @@
-<level packageName="packageTest" levelName="Base" levelImage="LEVELIMAGESTRING">
-	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
-		<collisionWithObjectWin win1="420" win2="9001"/>
-		<timeout lose1="42.0"/>
-		<collisionWithObjectLose lose2="42" lose3="72"/>
-	</levelGoals>
-</level>
