@@ -69,6 +69,11 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "color";}
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	},
 	FALLSATSETRATE{
 		private int rate;
@@ -85,6 +90,26 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "fallsAtSetRate";}
+		@Override
+		public Array<String> getVariableNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void setup(GameObject myObject) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			// TODO Auto-generated method stub
+			
+		}
 	},
 	SPINS{
 		private float rate;
@@ -99,6 +124,21 @@ public enum Attribute {
 			return myObject.getAttributeData().get(HEALTH);
 		}
 		public String getXMLName(){return "health";}
+		@Override
+		public Array<String> getVariableNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void setup(GameObject myObject) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			// TODO Auto-generated method stub
+			
+		}
 	},
 	COLLIDESWITHOBJECTSID{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
