@@ -21,14 +21,8 @@ public class Level {
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
 		levelName = name;
 		packageName=packagename;
-		//levelThumbnail = new Texture("levelImage.png");
 		actors = new Array<GameObject>();
-		actorsStatic = new Array<GameObject>();
-		actorsStatic.addAll(objects);
-		for(GameObject object: actorsStatic){
-			GameObject deepCopy = object.GameObject();
-			actors.add(deepCopy);
-		}
+		actors.addAll(objects);
 		winConditions = new Array<WinEnum>();
 		loseConditions = new Array<LoseEnum>();
 		winConditions.addAll(newWinConditions);
@@ -45,17 +39,6 @@ public class Level {
 		}
 	}
 	public void resetLevel(){
-		System.out.println("After level completes:");
-		System.out.println(actors.toString());
-		System.out.println("Static actors: " +actorsStatic.toString());
-		actors.clear();
-		for(GameObject object: actorsStatic){
-			GameObject deepCopy = object.GameObject();
-			actors.add(deepCopy);
-		}
-		System.out.println("After objects are re deep copied");
-		System.out.println(actors.toString());
-		System.out.println("Static actors: " +actorsStatic.toString());
 		resetWin();
 		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 		ScreenAdapterManager.getInstance().dispose(ScreenAdapterManager.getInstance().getCurrentEnum());
@@ -65,7 +48,7 @@ public class Level {
 		return win;
 	}
 	private void resetWin(){
-		win = true;
+		win = false;
 	}
 	
 	

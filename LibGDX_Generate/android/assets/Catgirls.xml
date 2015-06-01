@@ -1,0 +1,13 @@
+<level packageName="packageTest" levelName="Catgirls" levelImage="LEVELIMAGESTRING">
+	<GameObject ID="0" attributes="" imageFilename="editorAssets/BoxHalf.png" initialLocation="0.0,0.0" listeners="Attributes: ID: 0, Image filename: editorAssets/BoxHalf.png X: 0.0 Y: 0.0Is diposed: false
+"/>
+	<GameObject ID="1" attributes="" imageFilename="editorAssets/ball.png" initialLocation="0.0,0.0" listeners="Attributes: ID: 1, Image filename: editorAssets/ball.png X: 0.0 Y: 0.0Is diposed: false
+"/>
+	<GameObject ID="2" attributes="" imageFilename="editorAssets/Box.png" initialLocation="0.0,0.0" listeners="Attributes: ID: 2, Image filename: editorAssets/Box.png X: 0.0 Y: 0.0Is diposed: false
+"/>
+	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+		<collisionWithObjectWin win1="420" win2="9001"/>
+		<timeout lose1="42.0"/>
+		<collisionWithObjectLose lose2="42" lose3="72"/>
+	</levelGoals>
+</level>
