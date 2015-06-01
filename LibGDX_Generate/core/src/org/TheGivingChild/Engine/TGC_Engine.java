@@ -202,7 +202,6 @@ public class TGC_Engine extends Game {
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
 		rootTable = new Table();
-
 	}
 	
 	
