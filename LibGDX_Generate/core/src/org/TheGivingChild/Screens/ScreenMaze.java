@@ -25,6 +25,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
 	private Sprite sprite;
+	private int initialX, initialY;
+	
 	
 	
 	public ScreenMaze()
@@ -97,22 +99,47 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
+		//camera.translate(camera.position.x - screenX, camera.position.y - screenY);
+			
+		
 		Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
 		Vector3 position = camera.unproject(clickCoordinates);
-		sprite.setPosition(position.x, position.y);
+	//	sprite.setPosition(position.x, position.y);
+	
+		initialX = screenX;
+		initialY = screenY;
 		
+		//camera.translate(clickCoordinates);
+	//	camera.lookAt(clickCoordinates.x, clickCoordinates.y, 0);
+		
+	//	camera.unproject(clickCoordinates);		
+	//	camera.translate(position);
+	//	camera.lookAt(position);
+	//	camera.lookAt(clickCoordinates);
+	//	camera.lookAt(screenX,screenY,0);
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		return false;
+		
+		int deltaX = initialX - screenX;
+		int deltaY = initialY - screenY;
+		
+		camera.translate(deltaX, -deltaY);
+		
+		
+		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
+		
+		Vector3 drag = new Vector3(screenX, screenY, pointer);
+		//camera.translate(drag);
+		//camera.translate(screenX/100, screenY/100);
 		return false;
 	}
 
