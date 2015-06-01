@@ -8,6 +8,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -23,25 +26,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 
 class ScreenOptions extends ScreenAdapter {
 	private Skin skin;
 	private Skin buttonSkin;
 	private Table optionsTable;
-	private Table topRow;
-	private Table bottomRow;
+	private Array<CheckBox> options;
+	private Table choicesTable;
 	private BitmapFont font;
 	private TextButtonStyle style;
+	private CheckBoxStyle cbStyle;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private SpriteBatch batch;
 	private Texture title;
 	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
-	private String[] optionsArray = {"Sounds", 
-			  						 "Music", 
-			  						 "Animation", 
-			  						 "Color"};
+	private String[] optionsArray = {"   Sounds   ", 
+			  						 "   Music   ", 
+			  						 "   Seizure   ", 
+			  						 "   Free Roam   "};
+	private boolean option1, option2, option3, option4 = false;
+	private boolean allChanged = false;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -64,6 +71,27 @@ class ScreenOptions extends ScreenAdapter {
 				batch.end();
 				isRendered = true;
 				show();
+				for(CheckBox c : options) {
+					if(c.isChecked()) {
+						if(c.equals(options.get(0)))
+							option1 = true;
+						else if(c.equals(options.get(1)))
+							option2 = true;
+						else if(c.equals(options.get(2)))
+							option3 = true;
+						else if(c.equals(options.get(3)))
+							option4 = true;
+					}
+					else if(c.equals(options.get(0)))
+						option1 = false;
+					else if(c.equals(options.get(1)))
+						option2 = false;
+					else if(c.equals(options.get(2)))
+						option3 = false;
+					else if(c.equals(options.get(3)))
+						option4 = false;
+				}
+				
 			}
 		}
 		if(screenTransitionTimeLeft >= 0)
@@ -74,16 +102,14 @@ class ScreenOptions extends ScreenAdapter {
 	public void show() {
 		if(isRendered) {
 			game.getStage().addActor(optionsTable);
-			game.getStage().addActor(topRow);
-			game.getStage().addActor(bottomRow);
+			game.getStage().addActor(choicesTable);
 		}
 	};
 	
 	@Override
 	public void hide() {
 		optionsTable.remove();
-		topRow.remove();
-		bottomRow.remove();
+		choicesTable.remove();
 	}
 	
 	private void createOptionsTable() {
@@ -98,15 +124,12 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	
 	private void createRows() {
-		topRow = new Table();
-		bottomRow = new Table();
+		choicesTable = new Table();
 		buttonSkin = new Skin();
-		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
 		createChoices();
-		topRow.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		bottomRow.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		topRow.align(Align.left);
-		bottomRow.align(Align.right);
+		choicesTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		choicesTable.align(Align.center);
 	}
 
 	private void createButton() {
@@ -132,18 +155,17 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	
 	private void createChoices() {
+		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
-		style = new TextButtonStyle();
-		style.font = font;
-		style.up = buttonSkin.getDrawable("Button_LevelPackIcon");
-		style.down = buttonSkin.getDrawable("ButtonChecked_LevelPackIcon");
+		cbStyle = new CheckBoxStyle();
+		cbStyle.font = font;
+		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
+		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
-			TextButton button = new TextButton(optionsArray[i], style);
-			button.setSize(200, 200);
-			if(i % 2 == 1)
-				topRow.add(button);
-			else
-				bottomRow.add(button);
+			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
+			checkbox.setSize(100, 50);
+			choicesTable.add(checkbox);
+			options.add(checkbox);
 		}
 	}
 }

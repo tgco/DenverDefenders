@@ -16,6 +16,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -108,6 +109,7 @@ public class TGC_Engine extends Game {
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
+		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
 		//manager.load("ball.png", Texture.class);
 		//manager.load("Box.png", Texture.class);
 		//manager.load("BoxHalf.png", Texture.class);
@@ -148,7 +150,6 @@ public class TGC_Engine extends Game {
 		levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
-        
 		//create the stage
 		createStage();
 		
