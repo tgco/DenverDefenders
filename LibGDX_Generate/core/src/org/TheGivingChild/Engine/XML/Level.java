@@ -12,7 +12,8 @@ public class Level {
 	private String levelName;
 	private String packageName;
 	//private Texture levelThumbnail;
-	private Array<GameObject> actors = new Array<GameObject>();
+	private Array<GameObject> actors; 
+	private Array<GameObject> actorsStatic;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
 	private boolean win = true;
@@ -21,41 +22,52 @@ public class Level {
 		levelName = name;
 		packageName=packagename;
 		//levelThumbnail = new Texture("levelImage.png");
-		actors.addAll(objects);
+		actors = new Array<GameObject>();
+		actorsStatic = new Array<GameObject>();
+		actorsStatic.addAll(objects);
+		for(GameObject object: actorsStatic){
+			GameObject deepCopy = object.GameObject();
+			actors.add(deepCopy);
+		}
 		winConditions = new Array<WinEnum>();
 		loseConditions = new Array<LoseEnum>();
-		
-		System.out.println(newWinConditions);
 		winConditions.addAll(newWinConditions);
-		System.out.println(newLoseConditions);
 		loseConditions.addAll(newLoseConditions);
 	}
 	
 	public void update(){
 		for(GameObject currentObject:actors)
 		{
-			//currentObject.act();
 			currentObject.update();
 		}
-		if(WinEnum.ALL_OBJECTS_DESTROYED.checkWin(this)){
-			System.out.println("level win");
-			win = false;
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			ScreenAdapterManager.getInstance().dispose(ScreenAdapterManager.getInstance().getCurrentEnum());
-			resetWin();
+		for(WinEnum winEnum: WinEnum.values()){
+			winEnum.checkWin(this);
 		}
 	}
+	public void resetLevel(){
+		System.out.println("After level completes:");
+		System.out.println(actors.toString());
+		System.out.println("Static actors: " +actorsStatic.toString());
+		actors.clear();
+		for(GameObject object: actorsStatic){
+			GameObject deepCopy = object.GameObject();
+			actors.add(deepCopy);
+		}
+		System.out.println("After objects are re deep copied");
+		System.out.println(actors.toString());
+		System.out.println("Static actors: " +actorsStatic.toString());
+		resetWin();
+		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		ScreenAdapterManager.getInstance().dispose(ScreenAdapterManager.getInstance().getCurrentEnum());
+	}
+	
 	public boolean getWin(){
 		return win;
 	}
-	public void resetWin(){
+	private void resetWin(){
 		win = true;
 	}
 	
-	//will need to iterate over win conditions here
-	public boolean checkWin(){
-		return false;
-	}
 	
 	public boolean checkLose(){
 		return false;

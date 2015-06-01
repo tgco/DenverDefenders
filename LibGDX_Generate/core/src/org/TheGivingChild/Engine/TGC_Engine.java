@@ -49,7 +49,6 @@ public class TGC_Engine extends Game {
 	//create tables for the UI
     private Table rootTable;
     private Array<Level> levels = new Array<Level>();
-    private UserInputProcessor input = new UserInputProcessor();
     
     private boolean screenManagerLoaded = false;
     
@@ -135,7 +134,15 @@ public class TGC_Engine extends Game {
 		boolean exists = Gdx.files.internal("testOut.xml").exists();
 		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
+		XML_Reader reader = new XML_Reader();
+		XML_Writer writer = new XML_Writer();
+		
+		exists = Gdx.files.internal("testOut.xml").exists();
+		System.out.println(exists);
+		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
+
 		ScreenAdapterManager.getInstance().initialize(this);
+		ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 
 		levels.set(0, reader.compileLevel());
 		//button stuff
@@ -160,7 +167,6 @@ public class TGC_Engine extends Game {
 			
 		InputMultiplexer mp = new InputMultiplexer();
 		mp.addProcessor(stage);
-		mp.addProcessor(input);
 	//	mp.addProcessor(new UserInputListener());
 		
 		stage.addActor(objectGroup);
