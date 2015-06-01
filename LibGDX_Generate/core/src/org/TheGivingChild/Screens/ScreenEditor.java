@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -366,15 +367,17 @@ class ScreenEditor extends ScreenAdapter{
 		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
 		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
-		window.add(okButton).align(Align.bottom);
-		window.add(cancelButton).align(Align.bottom);
+		window.add(okButton).fill().expand();
+		window.add(cancelButton).fill().expand();
 		
 		CheckBoxStyle attStyle = new CheckBoxStyle();
 		attStyle.font = font;
+		attStyle.font.setColor(Color.RED);
+		attStyle.checkedOverFontColor = Color.CYAN;
 		attStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
 		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
-		CheckBox destroyBox = new CheckBox("", attStyle);
-		window.add(destroyBox).align(Align.right);
+		CheckBox destroyBox = new CheckBox("Destroyyyyyyykkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", attStyle);
+		window.add(destroyBox).fill().expand();
 		
 		okButton.addListener(new ChangeListener() {
 			@Override
@@ -404,7 +407,10 @@ class ScreenEditor extends ScreenAdapter{
 			}
 			
 		});
+		window.align(Align.topLeft);
+		window.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		window.show(mainGame.getStage());
 		window.setVisible(false);
+		
 	}
 }
