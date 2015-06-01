@@ -91,7 +91,7 @@ public class XML_Writer {
 				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
-					for(String currentValue:currentAttribute.getValues()){//writing the values associated with each attribute
+					for(String currentValue:currentAttribute.getValues(currentGameObject)){//writing the values associated with each attribute
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}
@@ -142,6 +142,8 @@ public class XML_Writer {
 		for(Attribute currentAttribute: obj.getAttributes())
 			temp+=currentAttribute.getXMLName() + ",";
 		//remove last character
+		for(String currentListener: obj.getListenerNames())
+			temp+=currentListener + ",";
 		String temp2="";
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);

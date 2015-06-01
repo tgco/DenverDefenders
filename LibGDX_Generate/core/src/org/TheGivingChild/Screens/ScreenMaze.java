@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
@@ -25,6 +26,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
 	private Sprite sprite;
+	private int initialX, initialY;
+	
+	private Vector2 lastTouch = new Vector2();
 	
 	
 	public ScreenMaze()
@@ -35,7 +39,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
-		map = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+	//	map = new TmxMapLoader().load("mapAssets/TEST_Crappymap.tmx");
+		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		Gdx.input.setInputProcessor(this);
 		
@@ -57,6 +62,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteBatch.setProjectionMatrix(camera.combined); //Make the sprite not move when the map is scrolled
 		spriteBatch.begin();
 		sprite.draw(spriteBatch);
+		camera.position.set(sprite.getX(), sprite.getY(), 0);	//Set camera to focus on character
 		spriteBatch.end();
 		
 	}
@@ -90,29 +96,49 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-		Vector3 position = camera.unproject(clickCoordinates);
-		sprite.setPosition(position.x, position.y);
 		
+		//Get vector of touch down		
+		lastTouch = new Vector2(screenX, screenY);
+	
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		return false;
+		
+
+		
+		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
-		return false;
+		
+		//Compare the dragged touch to last touch to see what direction
+		Vector2 newTouch = new Vector2(screenX, screenY);
+		Vector2 delta = newTouch.cpy().sub(lastTouch);
+		
+		//sprite.setX(sprite.getX() - delta.x);
+		//sprite.setY(sprite.getY() + delta.y);
+		
+		sprite.setX(sprite.getX() + delta.x);
+		sprite.setY(sprite.getY() - delta.y);
+		
+		
+		lastTouch = newTouch;
+		
+		
+		//sprite.setPosition(screenX, screenY);
+		
+		return true;
 	}
 
 	@Override
