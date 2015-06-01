@@ -1,8 +1,12 @@
 <level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
-	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves,health" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
-		<moves value1 = "50" value2 = "50.0"/>
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
+		<moves value1 = "-100" value2 = "100"/>
 		<bounceOffEdgeOfScreen/>
-		<health value1="10"/>
+	</GameObject>
+	
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
+		<moves value1 = "100" value2 = "100"/>
+		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
