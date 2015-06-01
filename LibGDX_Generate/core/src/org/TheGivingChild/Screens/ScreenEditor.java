@@ -210,11 +210,11 @@ class ScreenEditor extends ScreenAdapter{
 					y = grid[i][j].y;
 					float[] drawPos =  {x, y};	
 					//Create the new editor game object
-					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, new Array<String>(),new ObjectMap<Attribute,Array<String>>());
+					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, inputListeners,new ObjectMap<Attribute,Array<String>>());
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	drawPos,new Array<String>(), new ObjectMap<Attribute,Array<String>>());
+							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	drawPos, inputListeners, new ObjectMap<Attribute,Array<String>>());
 							gameObjects.set(k, obj);
 							added = true;
 						}
