@@ -142,6 +142,8 @@ public class XML_Writer {
 		for(Attribute currentAttribute: obj.getAttributes())
 			temp+=currentAttribute.getXMLName() + ",";
 		//remove last character
+		for(String currentListener: obj.getListenerNames())
+			temp+=currentListener + ",";
 		String temp2="";
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);

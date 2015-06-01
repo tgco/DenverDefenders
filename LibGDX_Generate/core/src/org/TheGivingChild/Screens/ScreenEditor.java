@@ -1,5 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import java.awt.Checkbox;
+
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
@@ -18,6 +20,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -28,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.sun.javafx.scene.control.skin.CheckBoxSkin;
 
 class ScreenEditor extends ScreenAdapter{	
 	private String levelName = "Base";
@@ -69,8 +74,8 @@ class ScreenEditor extends ScreenAdapter{
 	private AssetManager manager;
 	
 	private Dialog window;
-	private Boolean objectSelectOpen = false;
 	
+	private Array<String> inputListeners;
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		text = new Array<Texture>();
@@ -92,6 +97,8 @@ class ScreenEditor extends ScreenAdapter{
 		
 		EditorTextInputListener listener = new EditorTextInputListener();
 		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+		
+		inputListeners = new Array<String>();
 	}
 	//When hidden removes it's table
 	@Override
@@ -200,20 +207,20 @@ class ScreenEditor extends ScreenAdapter{
 				if (grid[i][j].contains(x,y)) {
 					x = grid[i][j].x;
 					y = grid[i][j].y;
-					float[] drawPos =  {x, y};					
+					float[] drawPos =  {x, y};	
 					//Create the new editor game object
 					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
-							new Array<Attribute>(), new Array<String>());
+							new Array<Attribute>(), inputListeners);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
 							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),
-									drawPos, new Array<Attribute>(), new Array<String>());
+									drawPos, new Array<Attribute>(), inputListeners);
 							gameObjects.set(k, obj);
 							added = true;
 						}
 					}
-					
+					System.out.println(obj.getAttributes());
 					if (!added)
 						gameObjects.add(obj);
 					break; //Break out of the loop since the position is found.
@@ -341,7 +348,6 @@ class ScreenEditor extends ScreenAdapter{
 				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}
-			
 		});
 		
 		editorTable.add(exportButton).align(Align.bottom);
@@ -363,6 +369,13 @@ class ScreenEditor extends ScreenAdapter{
 		window.add(okButton).align(Align.bottom);
 		window.add(cancelButton).align(Align.bottom);
 		
+		CheckBoxStyle attStyle = new CheckBoxStyle();
+		attStyle.font = font;
+		attStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
+		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
+		CheckBox destroyBox = new CheckBox("", attStyle);
+		window.add(destroyBox).align(Align.right);
+		
 		okButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -376,6 +389,20 @@ class ScreenEditor extends ScreenAdapter{
 			public void changed(ChangeEvent event, Actor actor) {
 				window.setVisible(false);
 			}
+		});
+		
+		destroyBox.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				String destroy = "DESTROY_ON_CLICK";
+				if (inputListeners.contains(destroy, false))
+					inputListeners.removeValue(destroy, false);
+				else 
+					inputListeners.add(destroy);	
+					
+			}
+			
 		});
 		window.show(mainGame.getStage());
 		window.setVisible(false);
