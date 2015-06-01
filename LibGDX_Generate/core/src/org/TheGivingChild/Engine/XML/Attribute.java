@@ -11,7 +11,7 @@ public enum Attribute {
 	 * each type can have private fields
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
-		public void update(GameObject myObject){
+		public void update(GameObject myObject,Array<GameObject> allObjects){
 			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
 		}
 		
@@ -35,7 +35,7 @@ public enum Attribute {
 		public String getXMLName(){return "moves";}
 	},
 	BOUNCEOFFEDGEOFSCREEN{
-		public void update(GameObject myObject){
+		public void update(GameObject myObject,Array<GameObject> allObjects){
 			if(myObject.getX() <= 0 || myObject.getX() + myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){
 				float[] temp = myObject.getVelocity();
 				temp[0] = -temp[0];
@@ -47,14 +47,16 @@ public enum Attribute {
 			}
 		}
 		public Array<String> getVariableNames(){
-			return new Array<String>();
+			Array<String> variableNames = new Array<String>();
+			variableNames.add("Object ID to collide with");
+			return variableNames;
 		}
 		public void setup(GameObject myObject){}//doesnt need to setup anything		
 		public Array<String> getValues(GameObject myObject){return new Array<String>();}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
-		public void update(GameObject myObject){
+		public void update(GameObject myObject,Array<GameObject> allObjects){
 			//System.out.println("\nHealth Update\n" + health);
 		}
 		public void setup(GameObject myObject){
@@ -97,11 +99,33 @@ public enum Attribute {
 			return myObject.getAttributeData().get(HEALTH);
 		}
 		public String getXMLName(){return "health";}
+	},
+	COLLIDESWITHOBJECTSID{
+		public void update(GameObject myObject,Array<GameObject> allObjects){
+			int ID = Integer.parseInt(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
+			float[] otherObject = {};
+			//if(myObject.getTexture().)
+		}
+		
+		public void setup(GameObject myObject){
+			
+		}
+		
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(COLLIDESWITHOBJECTSID);
+		}
+		
+		public Array<String> getVariableNames(){
+			Array<String> variableNames = new Array<String>();
+			variableNames.add("Object ID");
+			return variableNames;
+		}
+		public String getXMLName(){return "collidesWithObjectsID";}
 	};
 	public abstract Array<String> getVariableNames();
 	public abstract void setup(GameObject myObject);
 	public abstract Array<String> getValues(GameObject myObject);
-	public abstract void update(GameObject myObject);
+	public abstract void update(GameObject myObject,Array<GameObject> allObjects);
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
 	
 	public static Attribute newType(String type){

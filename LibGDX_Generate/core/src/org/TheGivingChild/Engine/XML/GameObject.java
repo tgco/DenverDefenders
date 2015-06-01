@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class GameObject extends Actor implements Disposable{
 	private int ID;
 	private String imageFilename;
-	//private Array<Attribute> attributes;
 	private float[] velocity;
 	private float[] position;
 	private TGC_Engine game;
@@ -92,13 +91,11 @@ public class GameObject extends Actor implements Disposable{
 			currentAttribute.setup(this);
 		}
 	}
-	
-	
-	
-	public void update(){
+
+	public void update(Array<GameObject> allObjects){
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
 			//System.out.println(currentAttribute.getXMLName());//for debugging
-			currentAttribute.update(this);
+			currentAttribute.update(this, allObjects);
 		}
 	}
 	
