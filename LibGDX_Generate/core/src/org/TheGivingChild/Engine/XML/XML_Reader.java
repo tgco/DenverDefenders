@@ -61,7 +61,7 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
 			ObjectMap<Attribute,Array<String>> attributeData = new ObjectMap<Attribute,Array<String>>();
-			System.out.println(listenersToAdd);
+			//System.out.println(listenersToAdd);
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					System.out.println("\t|" + currentAttribute);
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
@@ -72,8 +72,8 @@ public class XML_Reader {
 								attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
 								System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 							}
-							attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
 						}
+						attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
 					}
 				}
 				GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")), listenersToAdd, attributeData);//hardcoded values which must always be written down in the .xml file
