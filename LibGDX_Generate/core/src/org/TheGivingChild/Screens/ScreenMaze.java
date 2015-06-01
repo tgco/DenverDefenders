@@ -35,7 +35,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
-		map = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
+	//	map = new TmxMapLoader().load("mapAssets/TEST_Crappymap.tmx");
+		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		Gdx.input.setInputProcessor(this);
 		

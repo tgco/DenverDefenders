@@ -1,6 +1,10 @@
 <level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
-	<GameObject ID="1" attributes="moves,bounceOffEdgeOfScreen" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
-		<moves value1 = "10" value2 = "100.0"/>
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
+		<moves value1 = "-100" value2 = "100"/>
+		<bounceOffEdgeOfScreen/>
+	</GameObject>
+	
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen" imageFilename="Box.png" initialLocation="5.0,5.0" listeners="drag_object">
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
