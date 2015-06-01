@@ -367,21 +367,17 @@ class ScreenEditor extends ScreenAdapter{
 		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
 		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
-		window.add(okButton).fill().expand();
-		window.add(cancelButton);
-		
+
 		CheckBoxStyle attStyle = new CheckBoxStyle();
 		attStyle.font = font;
 		attStyle.font.setColor(Color.RED);
 		attStyle.checkedOverFontColor = Color.CYAN;
 		attStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
 		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
-		CheckBox destroyBox = new CheckBox("Destroyyyyyyy", attStyle);
-		destroyBox.setPosition(500, 500);
+		CheckBox destroyBox = new CheckBox("Destroy", attStyle);
 		window.add(destroyBox);
-		window.getCell(okButton).center();
-		window.getCell(destroyBox).right();
-		for (Attribute enums: Attribute.values()) {
+		
+		for (final Attribute enums: Attribute.values()) {
 			CheckBoxStyle attributeStyle = new CheckBoxStyle();
 			attributeStyle.font = font;
 			attributeStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
@@ -390,7 +386,19 @@ class ScreenEditor extends ScreenAdapter{
 			window.row();
 			window.add(attributeBox);
 			window.setKeepWithinStage(true);
+			
+			attributeBox.addListener(new ChangeListener()  {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					if (inputListeners.contains(enums.getXMLName(), false))
+						inputListeners.removeValue(enums.getXMLName(), false);
+					else 
+						inputListeners.add(enums.getXMLName());				}
+			});
 		}
+		window.row();
+		window.add(okButton);
+		window.add(cancelButton);
 		
 		okButton.addListener(new ChangeListener() {
 			@Override
@@ -411,7 +419,7 @@ class ScreenEditor extends ScreenAdapter{
 
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				String destroy = "DESTROY_ON_CLICK";
+				String destroy = "destroy_on_click";
 				if (inputListeners.contains(destroy, false))
 					inputListeners.removeValue(destroy, false);
 				else 
@@ -423,10 +431,5 @@ class ScreenEditor extends ScreenAdapter{
 		window.align(Align.topLeft);
 		window.show(mainGame.getStage());
 		window.setVisible(false);
-		window.setFillParent(false);
-		window.setSize(800, 200);
-		
-		System.out.println(window.getHeight());
-		System.out.println(window.getWidth());
 	}
 }
