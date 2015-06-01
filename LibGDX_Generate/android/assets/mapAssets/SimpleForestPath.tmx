@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="dirt2" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/dirt2.png" trans="ff00ff" width="96" height="192"/>
+  <terraintypes>
+   <terrain name="Dirt" tile="-1"/>
+  </terraintypes>
+  <tile id="1" terrain="0,0,0,"/>
+  <tile id="2" terrain="0,0,,0"/>
+  <tile id="4" terrain="0,,0,0"/>
+  <tile id="5" terrain=",0,0,0"/>
+  <tile id="6" terrain=",,,0"/>
+  <tile id="7" terrain=",,0,0"/>
+  <tile id="8" terrain=",,0,"/>
+  <tile id="9" terrain=",0,,0"/>
+  <tile id="10" terrain="0,0,0,0"/>
+  <tile id="11" terrain="0,,0,"/>
+  <tile id="12" terrain=",0,,"/>
+  <tile id="13" terrain="0,0,,"/>
+  <tile id="14" terrain="0,,,"/>
+ </tileset>
+ <tileset firstgid="19" name="dungeon" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/dungeon.png" trans="ff00ff" width="416" height="256"/>
+ </tileset>
+ <tileset firstgid="123" name="grass" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/grass.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="141" name="grassalt" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/grassalt.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="159" name="hole" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/hole.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="177" name="holek" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/holek.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="195" name="holemid" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/holemid.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="213" name="house" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/house.png" trans="ff00ff" width="288" height="224"/>
+ </tileset>
+ <tileset firstgid="276" name="inside" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/inside.png" trans="ff00ff" width="320" height="320"/>
+ </tileset>
+ <tileset firstgid="376" name="kitchen" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/kitchen.png" trans="ff00ff" width="64" height="128"/>
+ </tileset>
+ <tileset firstgid="384" name="lava" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/lava.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="402" name="lavarock" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/lavarock.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="420" name="mountains" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/mountains.png" trans="ff00ff" width="384" height="288"/>
+ </tileset>
+ <tileset firstgid="528" name="rock" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/rock.png" trans="ff00ff" width="64" height="32"/>
+ </tileset>
+ <tileset firstgid="530" name="stairs" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/stairs.png" trans="ff00ff" width="256" height="448"/>
+ </tileset>
+ <tileset firstgid="642" name="treetop" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/treetop.png" trans="ff00ff" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="684" name="trunk" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/trunk.png" trans="ff00ff" width="192" height="96"/>
+ </tileset>
+ <tileset firstgid="702" name="victoria" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/victoria.png" trans="ff00ff" width="352" height="160"/>
+ </tileset>
+ <tileset firstgid="757" name="water" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/water.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="775" name="waterfall" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/waterfall.png" trans="ff00ff" width="96" height="160"/>
+ </tileset>
+ <tileset firstgid="790" name="watergrass" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/watergrass.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="808" name="barrel" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/barrel.png" trans="ff00ff" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="816" name="brackish" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/brackish.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="834" name="bridges" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/bridges.png" trans="ff00ff" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="876" name="buckets" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/buckets.png" trans="ff00ff" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="882" name="cabinets" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/cabinets.png" trans="ff00ff" width="192" height="416"/>
+ </tileset>
+ <tileset firstgid="960" name="castle_lightsources" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/castle_lightsources.png" trans="ff00ff" width="160" height="128"/>
+ </tileset>
+ <tileset firstgid="980" name="castle_outside" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/castle_outside.png" trans="ff00ff" width="544" height="352"/>
+ </tileset>
+ <tileset firstgid="1167" name="castlefloors" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/castlefloors.png" trans="ff00ff" width="320" height="320"/>
+ </tileset>
+ <tileset firstgid="1267" name="castlefloors_outside" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/castlefloors_outside.png" trans="ff00ff" width="128" height="160"/>
+ </tileset>
+ <tileset firstgid="1287" name="castlewalls" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/castlewalls.png" trans="ff00ff" width="384" height="480"/>
+ </tileset>
+ <tileset firstgid="1467" name="cement" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/cement.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="1485" name="cementstair" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/cementstair.png" trans="ff00ff" width="160" height="128"/>
+ </tileset>
+ <tileset firstgid="1505" name="chests" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/chests.png" trans="ff00ff" width="64" height="96"/>
+ </tileset>
+ <tileset firstgid="1511" name="country" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/country.png" trans="ff00ff" width="160" height="128"/>
+ </tileset>
+ <tileset firstgid="1531" name="dirt" tilewidth="32" tileheight="32">
+  <image source="Maze Assets/dirt.png" trans="ff00ff" width="96" height="192"/>
+ </tileset>
+ <layer name="Grass" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxrZWBgaKUAd5Ghp5sAn1S7eij0wygmLz6GMyYnXePDgzGN4vIjtf0Ow0M9XdEqXEgxn5AaaqUzYs0BAElM0C0=
+  </data>
+ </layer>
+ <layer name="Path" width="20" height="20" opacity="0.9">
+  <data encoding="base64" compression="zlib">
+   eJzl0t0KgDAIBeCxqNb6e/+3bYGCiDObXbUD5/ZDxRD+n7k0Qb9ILl2hSelinG0CKxJX6vjgcussPYQOgiuZmVm17IJLTbw/zrYplubi/uhYZqu5/AatFob+RIS5Wyx+K89M9B+81h2+o8eSftUT66++9ay/2qt3AfWGBIM=
+  </data>
+ </layer>
+ <layer name="Rocks" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFICDANNAuoC4QpLF/hlt4URMMhrAZDG4YaEBKHqA0v9A6vw1WAACkWwCV
+  </data>
+ </layer>
+ <layer name="Tree Trunk" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztkkkKwEAIBGX+/5Ts+2T5W3puIhPCqJBLCgo8NdJK9PNGFYhq2ASfjAGOcDLk8YwNRrgb8jwytHj0y+HdtLCDvZhL4N3McIGrmEvgexzwhJeYS9Dukch1r90j4fHbHI+/1N79CUvfOSx9f80NhbYzVQ==
+  </data>
+ </layer>
+ <layer name="Tree Top" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztkrsKgDAMRUP+XR3UwedgHdRB/UzvmIIPmkZcvHAghXIy5BJ9n4SJUpCxjSMHBSgjfNJRgRo0ET4LhzYtdnagN9o9wOPAyL5bu2fC/xks7LvlHBLZBemWc0iu+rTivYH9xnfW7ZguWHRbxqKXb/bLItq7/3nOAR+wLAg=
+  </data>
+ </layer>
+</map>

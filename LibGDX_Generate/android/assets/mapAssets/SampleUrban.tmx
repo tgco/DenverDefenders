@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="transparent" tilewidth="32" tileheight="32">
+  <image source="Urban Maze Tilesets/transparent.png" trans="ff00ff" width="512" height="11328"/>
+ </tileset>
+ <tileset firstgid="5665" name="TransparentMisc" tilewidth="32" tileheight="32">
+  <image source="Urban Maze Tilesets/TransparentMisc.png" trans="ff00ff" width="600" height="3339"/>
+ </tileset>
+ <tileset firstgid="7537" name="Transparentbuildings" tilewidth="32" tileheight="32">
+  <image source="Urban Maze Tilesets/Transparentbuildings.png" trans="ff00ff" width="619" height="2380"/>
+ </tileset>
+ <tileset firstgid="8943" name="Character Princess Girl" tilewidth="32" tileheight="32">
+  <image source="somefreesprites/Character Princess Girl.png" trans="ff00ff" width="101" height="171"/>
+ </tileset>
+ <layer name="Ground" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztwzEJAAAMA7A+k1D/VqtjkEB6SVVVVVVVVVVVVfX5ATAK/ek=
+  </data>
+ </layer>
+ <layer name="Road" width="50" height="50" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMA6D1eP9yS7EcBwV7SVVVVVVVVVVVVfX5ATxY9Vw=
+  </data>
+ </layer>
+ <layer name="Buildings" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt12ds1AUcx+G/AqXQFoys9ugIU7tRhgMoRcDJbAETt9JWfavI8p0DnIkyBNyJC8pUEwdQwJkwWnDLKKDGwRRlT32a3gvEBGptaZvcL3leXMNxn29TrlwQRC5ykYtc5CIXuchFLnKRi1zk/u/dHx8EY3mAtOQgSCeDzOS6LjvzHUoIgsMcSah8/Kj+yUyhr/Yc+pFbz3c0CwVBc2JClY9n6p/FbIZrH0Ee+fV8R3v9iSSFd8zVX8w8xmgvoJCic7Bjn5+J/RzgYELtv15tXRPfyyiaEh2q65rqXzvt8SQQasA7UrWnkU5GA97RW3sf+pLTgHdE7p9334V+nzOWWOJoQUsyovxOJ4vsqHPbtS/G+zEHOBhz9j//kN6HeYREkkgmhT7a+5JDv4pNiTaRnVhzvataBsFq1rCWUspoFBsEjWlCVOzZ/56peqcxveL7TyZZZDNY+xCGMqxii/5c+tfgjg2aN7KJzZSzhVbaW9OGtlXY8V9uhP488mtwx3bNO9jJLnazh07aO9OFrjW8ozbuiOajHOM4JzhJd+096EkvFsQFwUIWsTiurqv/fc0u8H9WYogljhYM0D6QQVxNifblrGBlPdyRoDlEexJJIpl87SMZxWhKtZexjvU80zEInmUq05jODJ5jJrMo7+DfGlvZ1qF2d6RqTiOdDDLJYoz2Agopolz7Frayjdd0vs4bvMlbzGEuxcxjr/Y/+JN97OcABzlUy7uqeu/pfJ8P+JAlLGUZJSynEY1pQhRNiaYZzTvW9YLKW6VjNWtYSyllrGM9X9CWdsSTQIj2JJJUT3ZU5VK1ppFOBplkkU23Otox3mfTCUxkUj39vN04xc8wUTRNqfzaZK1TeIzHeYIneYqn6+mOdtrjSSAU3jFb6/O8wIu8xMu8wqun7djo8SY2U04H70Ud6URnutTwe1OWz0nZdOMSLqV7xedB7elkkBneMV/PAhayiMW8zTu8e9qO3R7v4Xf20kN3T3pxGZefsqM42nsy81kQXb0duZr7cxUDGMigis+C2nPoR254xwo9K/mIj/mET/mMz0//ufKc8zifRlyj+1qu43puOGXHEu1LWUZJNXfkac5nJKMYzY0M99ojyCM/vONLrV/xNd/wLd/xPRuYo20uxbTynNa0oS03+drN3MKt3HbKjtXa17CW0mruKNBcSBF3cw/3MsZrF1BIUXjHz1p/4Vd+Yzs72MkulmpbRgldPeciLiY15cwNG7VvYjPl1dwxTvN4JjCRSTzIOK89nglMDHcc1nqEoxzjOCc4yV+U6V/Heq7wnCvpTZ+z7Ki4nfp3VXNDTd8P+n/kJwZrH8JQhlVhR32927XfwZ3c1YB3NOT7Gw4NBWE=
+  </data>
+ </layer>
+ <layer name="Children" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztkNlRAkEURTsR+OBTJQTREERCAMkDkQwEUQNgUwJgEQgAkCUBhQiUTZEqTwjTBVbPlPdUnb9+c+8dY4QQQgghhBBCCCGEECIYXIeNyeIN5sJ2t5kQ95jFI26P8QSjlt85BHkyC3iHRcv8W/rnsYCn3MbwDM8d7CiTWcEq1izzS/QvYwUvuI3jJSYc7GiS2cI2vljmN+jfxBYmuU3hFaYd7BiQOcRXHFnm9+k/wGHob7rZ8Eb3d5zh3MF/PBQLui9xhesA7xBCiP/GR8SYT1xEXDfZjyX9V7j2uOOedw/46LPdG/p84bfHXk+8e8a6z3Zs6fODO4+9OrzrYs9nO2wZ03+C04DvEEIEj1/1A0Eq
+  </data>
+ </layer>
+</map>
