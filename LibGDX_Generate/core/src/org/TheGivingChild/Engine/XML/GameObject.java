@@ -92,20 +92,12 @@ public class GameObject extends Actor implements Disposable{
 			currentAttribute.setup(this);
 		}
 	}
-
 	public void update(){
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
 			//System.out.println(currentAttribute.getXMLName());//for debugging
 			currentAttribute.update(this);
 		}
 	}
-
-	@Override
-	public void draw(com.badlogic.gdx.graphics.g2d.Batch batch, float parentAlpha) {
-		if(!isDisposed()){
-			batch.draw((Texture) manager.get(imageFilename), getX(), getY());
-		}
-	};
 	
 	public void input(){
 		
