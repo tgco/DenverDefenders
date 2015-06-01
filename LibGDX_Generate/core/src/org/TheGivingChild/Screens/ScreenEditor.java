@@ -210,11 +210,13 @@ class ScreenEditor extends ScreenAdapter{
 					y = grid[i][j].y;
 					float[] drawPos =  {x, y};	
 					//Create the new editor game object
-					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, inputListeners,new ObjectMap<Attribute,Array<String>>());
+					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
+							inputListeners,new ObjectMap<Attribute,Array<String>>());
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	drawPos, inputListeners, new ObjectMap<Attribute,Array<String>>());
+							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	
+									drawPos, inputListeners, new ObjectMap<Attribute,Array<String>>());
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -366,7 +368,7 @@ class ScreenEditor extends ScreenAdapter{
 		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
 		window.add(okButton).fill().expand();
-		window.add(cancelButton).fill().expand();
+		window.add(cancelButton);
 		
 		CheckBoxStyle attStyle = new CheckBoxStyle();
 		attStyle.font = font;
@@ -375,7 +377,20 @@ class ScreenEditor extends ScreenAdapter{
 		attStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
 		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
 		CheckBox destroyBox = new CheckBox("Destroyyyyyyy", attStyle);
-		window.add(destroyBox).fill().expand();
+		destroyBox.setPosition(500, 500);
+		window.add(destroyBox);
+		window.getCell(okButton).center();
+		window.getCell(destroyBox).right();
+		for (Attribute enums: Attribute.values()) {
+			CheckBoxStyle attributeStyle = new CheckBoxStyle();
+			attributeStyle.font = font;
+			attributeStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
+			attributeStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
+			CheckBox attributeBox = new CheckBox(enums.getXMLName(), attributeStyle);
+			window.row();
+			window.add(attributeBox);
+			window.setKeepWithinStage(true);
+		}
 		
 		okButton.addListener(new ChangeListener() {
 			@Override
@@ -406,9 +421,12 @@ class ScreenEditor extends ScreenAdapter{
 			
 		});
 		window.align(Align.topLeft);
-		window.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		window.show(mainGame.getStage());
 		window.setVisible(false);
+		window.setFillParent(false);
+		window.setSize(800, 200);
 		
+		System.out.println(window.getHeight());
+		System.out.println(window.getWidth());
 	}
 }
