@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.Attributes.WinEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.badlogic.gdx.utils.Array;
 
@@ -16,55 +17,44 @@ public class XML_Writer {
 	
 	public static void main(String cheese[]){
 		//screen 576x1024
-//		float temp1[] = {1,1};
-//		float temp2[] = {1000,2};
-//		float temp3[] = {2,2};
-//		
-//		Array<String> test1 = new Array<String>();
-//		test1.add("100.0");
-//		test1.add("100.0");
-//		Array<String> test2 = new Array<String>();
-//		test2.add("redred");
-//		Array<String> test3 = new Array<String>();
-//		test3.add("3.0,3.0;4.0,4.0;5.0,5.0;6.0,6.0");
-//		Array<String> test4 = new Array<String>();
-//		test4.add("100");
-//		
-//		Array<String> testListenerList = new Array<String>();
-//		testListenerList.add("TESTLISTENER");
-//		testListenerList.add("TESTLISTENER2");
-//		
-//		Array<GameObject> testObjectArray = new Array<GameObject>();
-//		testObjectArray.add(testObj1);
-//		testObjectArray.add(testObj2);
-//		//testObjectArray.add(testObj3);
-//		testObjectArray.add(testObj4);
-//		
-//		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
-//		Array<String> testWin1Values = new Array<String>();
-//		testWin1Values.add("420");
-//		testWin1Values.add("9001");
-//		testWin1.setValues(testWin1Values);
-//		Array<WinEnum> testWinArray = new Array<WinEnum>();
-//		testWinArray.add(testWin1);
-//		
-//		LoseEnum testLose1 = LoseEnum.TIMEOUT;
-//		Array<String>testLose1Values =  new Array<String>();
-//		testLose1Values.add("42");
-//		testLose1.setValues(testLose1Values);
-//		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
-//		testLoseArray.add(testLose1);
-//		
-//		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
-//		Array<String>testLose2Values =  new Array<String>();
-//		testLose2Values.add("42");
-//		testLose2Values.add("72");
-//		testLose2.setValues(testLose2Values);
-//		testLoseArray.add(testLose2);
-//		
-//		XML_Writer sally = new XML_Writer();
-//		//sally.setupNewFile("testOut.xml", "", "testLevel");
-//		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
+		float[] position = {100,100};
+		float[] velocity = {100,100};
+		
+		Array<String> testListenerNames = new Array<String>();
+		testListenerNames.add("insertNameHere");
+		
+		ObjectMap<Attribute,Array<String>> testData = new ObjectMap<Attribute,Array<String>>();
+		testData.put(Attribute.BOUNCEOFFEDGEOFSCREEN,new Array<String>());
+		
+		GameObject testObject = new GameObject(1,"asd",position,testListenerNames,new ObjectMap<Attribute,Array<String>>());
+		
+		Array<GameObject> testObjectArray = new Array<GameObject>();
+		
+		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+		Array<String> testWin1Values = new Array<String>();
+		testWin1Values.add("420");
+		testWin1Values.add("9001");
+		testWin1.setValues(testWin1Values);
+		Array<WinEnum> testWinArray = new Array<WinEnum>();
+		testWinArray.add(testWin1);
+		
+		LoseEnum testLose1 = LoseEnum.TIMEOUT;
+		Array<String>testLose1Values =  new Array<String>();
+		testLose1Values.add("42");
+		testLose1.setValues(testLose1Values);
+		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
+		testLoseArray.add(testLose1);
+		
+		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+		Array<String>testLose2Values =  new Array<String>();
+		testLose2Values.add("42");
+		testLose2Values.add("72");
+		testLose2.setValues(testLose2Values);
+		testLoseArray.add(testLose2);
+		
+		XML_Writer sally = new XML_Writer();
+		//sally.setupNewFile("testOut.xml", "", "testLevel");
+		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
 	}
 	
 	public void createLevel(Level newLevel){//this is who you gonna call
@@ -97,6 +87,7 @@ public class XML_Writer {
 					}
 					writer.pop();
 				}
+				
 				writer.pop();
 			}
 			

@@ -70,22 +70,11 @@ public enum Attribute {
 			return temp;
 		}
 		public String getXMLName(){return "color";}
-	},
-	FALLSATSETRATE{
-		private int rate;
-		public void update(GameObject myObject){
-		//	System.out.println("\nfallsAtSetRate Update");
-			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			// TODO Auto-generated method stub
+			return null;
 		}
-		public void setValues(Array<String> newValues){
-			rate = Integer.parseInt(newValues.get(0));
-		}
-		public Array<String> getValues(){
-			Array<String> temp = new Array<String>();
-			temp.add(rate+"");
-			return temp;
-		}
-		public String getXMLName(){return "fallsAtSetRate";}
 	},
 	SPINS{
 		private float rate;
@@ -100,12 +89,26 @@ public enum Attribute {
 			return myObject.getAttributeData().get(HEALTH);
 		}
 		public String getXMLName(){return "health";}
+		@Override
+		public Array<String> getVariableNames() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		@Override
+		public void setup(GameObject myObject) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			// TODO Auto-generated method stub
+			
+		}
 	},
 	COLLIDESWITHOBJECTSID{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
-			//for(GameObject currentObject:allObjects){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", true)){//if myObject collides with current object AND they are actually colliding
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
