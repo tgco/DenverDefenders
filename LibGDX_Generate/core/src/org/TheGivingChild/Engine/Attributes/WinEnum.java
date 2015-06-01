@@ -64,7 +64,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		}
 		@Override
 		public void checkWin(Level level) {
-			boolean win = level.getWin();
+			boolean win = true;
 			for(GameObject gameObject: level.getGameObjects()){
 				if(!gameObject.isDisposed()){
 					win = false;
@@ -72,7 +72,6 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			}
 			if(win){
 				System.out.println("Level "+level.getLevelName()+" won!");
-				win = false;
 				level.resetLevel();
 			}
 		}

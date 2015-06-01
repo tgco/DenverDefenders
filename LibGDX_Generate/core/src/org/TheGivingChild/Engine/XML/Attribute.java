@@ -6,27 +6,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 
-
 public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
 	 * each type can have private fields
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
-		private float initialVelocity[] = new float[2];
 		public void update(GameObject myObject){
-			myObject.setVelocity(initialVelocity);
 			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
 		}
 		
-		public void setValues(Array<String> newValues){
-			initialVelocity[0] = Float.parseFloat(newValues.get(0));
-			initialVelocity[1] = Float.parseFloat(newValues.get(1));
+		public void setup(GameObject myObject){
+			myObject.setVelocity(new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVES).get(0)),Float.parseFloat(myObject.getAttributeData().get(MOVES).get(1))});
 		}
 		
-		public Array<String> getValues(){
+		public Array<String> getValues(GameObject myObject){
 			Array<String> temp = new Array<String>();
-			temp.add(initialVelocity[0] + "," + initialVelocity[1]);
+			temp.add(myObject.getAttributeData().get(MOVES).get(0) + "," + myObject.getAttributeData().get(MOVES).get(1));
 			return temp;
+		}
+		
+		public Array<String> getVariableNames(){
+			Array<String> variableNames = new Array<String>();
+			variableNames.add("Initial X Velocity");
+			variableNames.add("Initial Y Velocity");
+			return variableNames;
 		}
 		
 		public String getXMLName(){return "moves";}
@@ -43,79 +46,35 @@ public enum Attribute {
 				myObject.setVelocity(temp);
 			}
 		}
-		public void setValues(Array<String> loldidntread){}
-		public Array<String> getValues(){return new Array<String>();}
+		public Array<String> getVariableNames(){
+			return new Array<String>();
+		}
+		public void setup(GameObject myObject){}//doesnt need to setup anything		
+		public Array<String> getValues(GameObject myObject){return new Array<String>();}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
-		private int health;
 		public void update(GameObject myObject){
 			//System.out.println("\nHealth Update\n" + health);
 		}
-		public void setValues(Array<String> newValues){//each implementation of setValues translates the array of strings into whatever datatype it wants
-			health = Integer.parseInt(newValues.first().toString());
-		}
-		
-		public Array<String> getValues(){//each implementation of get Values translates the values back into the string for writing to .xml purposes
-			Array<String> temp = new Array<String>();
-			temp.add(Integer.toString(health));
-			return temp;
-		}
-		public String getXMLName(){return "health";}
-	},
-	COLOR{
-		private String color;
-		public void update(GameObject myObject){
-			//System.out.println("\nColor Update\n" + color);
-		}
-		
-		public void setValues(Array<String> newValues){
-			color = newValues.first();
-		}
-		
-		public Array<String> getValues(){
-			Array<String> temp = new Array<String>();
-			temp.add(color);
-			return temp;
-		}
-		public String getXMLName(){return "color";}
-	},
-	FALLSATSETRATE{
-		private int rate;
-
-		public void update(GameObject myObject){
-		//	System.out.println("\nfallsAtSetRate Update");
-			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
-		}
-		public void setValues(Array<String> newValues){
-			rate = Integer.parseInt(newValues.get(0));
-		}
-		public Array<String> getValues(){
-			Array<String> temp = new Array<String>();
-			temp.add(rate+"");
-			return temp;
-		}
-		public String getXMLName(){return "fallsAtSetRate";}
-	},
-	SPINS{
-		private float rate;
-		public void update(GameObject myObject){
+		public void setup(GameObject myObject){
 			
 		}
-		public void setValues(Array<String> newValues){
-			rate = Float.parseFloat(newValues.get(0));
-		}
-		public Array<String> getValues(){
+		
+		public Array<String> getVariableNames(){
 			Array<String> temp = new Array<String>();
-			temp.add(rate+"");
+			temp.add("Initial Health");
 			return temp;
 		}
-		public String getXMLName(){return "spins";}
-		
+
+		public Array<String> getValues(GameObject myObject){//each implementation of get Values translates the values back into the string for writing to .xml purposes
+			return myObject.getAttributeData().get(HEALTH);
+		}
+		public String getXMLName(){return "health";}
 	};
-	
-	public abstract void setValues(Array<String> newValues);
-	public abstract Array<String> getValues();
+	public abstract Array<String> getVariableNames();
+	public abstract void setup(GameObject myObject);
+	public abstract Array<String> getValues(GameObject myObject);
 	public abstract void update(GameObject myObject);
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
 	

@@ -33,19 +33,20 @@ public class ScreenLevel extends ScreenAdapter{
 	}
 	
 	@Override
-	public void show() {		
-		System.out.println("Show was called in level");
+	public void show() {
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		manager.load("ball.png", Texture.class);
 		manager.load("Box.png", Texture.class);
 		manager.load("BoxHalf.png", Texture.class);
 		manager.load("Grid.png", Texture.class);
+		for(GameObject gameObject: level.getGameObjects()){
+			gameObject.resetObject();
+		}
 		textureFile = new Array<String>();
 		for (GameObject g : level.getGameObjects()) {
 			textureFile.add(g.getImageFilename());
 		}
-		
 		batch = new SpriteBatch();
 	}
 	
@@ -57,7 +58,9 @@ public class ScreenLevel extends ScreenAdapter{
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
 				for (GameObject g : level.getGameObjects()) {
-					g.draw(batch, 1.0f);
+					if(!g.isDisposed()){
+						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
+					}
 				}
 				level.update();
 				batch.end();

@@ -39,7 +39,7 @@ public class TGC_Engine extends Game {
 	final static int DESKTOP_HEIGHT = 576;
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
-	private Stage stage;
+	private TGC_Stage stage;
 	//button atlas reference names
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_CharacterCreator", "Button_MainScreen_CharacterCreator"};
 	//skin from atlas
@@ -86,6 +86,7 @@ public class TGC_Engine extends Game {
 	public void create () {
 		switch(Gdx.app.getType()){
 			case Android:
+				Gdx.input.setCatchBackKey(true);
 				break;
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
@@ -195,9 +196,8 @@ public class TGC_Engine extends Game {
 		
 		
 	}
-	
 	public void createStage(){
-		stage = new Stage();
+		stage = new TGC_Stage();
 		//create main menu images
 		Gdx.input.setInputProcessor(stage);
 		//initialize root Table
@@ -293,6 +293,7 @@ public class TGC_Engine extends Game {
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					screenManagerLoaded = true;
 				}
+				
 			}
 		}
 		//increments the timer to check if we are still delaying the main screen

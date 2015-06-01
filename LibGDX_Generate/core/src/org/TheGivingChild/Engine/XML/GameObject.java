@@ -1,9 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
-import java.lang.reflect.Method;
 import java.util.Locale;
-
-import javax.smartcardio.ATR;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
@@ -18,19 +15,21 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.sun.javafx.property.adapter.PropertyDescriptor.Listener;
+import com.badlogic.gdx.utils.ObjectMap;
 
 //GameObject is essentially a storage container for all the information associated with each object on the screen
 public class GameObject extends Actor implements Disposable{
 	private int ID;
 	private String imageFilename;
-	private Array<Attribute> attributes;
+	//private Array<Attribute> attributes;
 	private float[] velocity;
+	private float[] position;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean disposed;
 	private Texture texture;
 	private Array<String> listenerNames;
+	private ObjectMap<Attribute,Array<String>> attributeData;
 	
 	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
 	 * 	2: Each object's attributes are then elements within the object
@@ -38,19 +37,18 @@ public class GameObject extends Actor implements Disposable{
 	 */
 	
 
-	public GameObject(int newID, String img,float[] newPosition, Array<Attribute> attributesToAdd,Array<String> newListenerNames){
-		attributes = new Array<Attribute>();
+	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
 		listenerNames = new Array<String>();
 		manager = new AssetManager();
 		disposed = false;
-		attributes.addAll(attributesToAdd);
 		listenerNames.addAll(newListenerNames);
 		//set the id from the xml
 		ID = newID;
 		//set the imagefilename from the xml
 		imageFilename = img;
+		position = newPosition;
 		//the the initial position from xml
-		setPosition(newPosition[0],newPosition[1]);
+		setPosition(position[0],position[1]);
 		//initialize a velocity of 0
 		velocity = new float[] {0,0};
 		//get the reference to the game
@@ -88,40 +86,25 @@ public class GameObject extends Actor implements Disposable{
 				}
 			}
 		}
-	}
-	
-	public GameObject GameObject() {
-		float position[] = new float[2];
-		position[0] = (getOriginX());
-		position[1] = (getOriginY());
-		GameObject deepCopy = new GameObject(
-				getID(), 
-				getImageFilename(), 
-				position, 
-				getAttributes(), 
-				getListenerNames());
-		deepCopy.setPosition(getOriginX(), getOriginY());
-		return deepCopy;
-	}
-
-	public void update(){
-		for(Attribute currentAttribute:attributes)
-			currentAttribute.update(this);
-	}
-
-	@Override
-	public void draw(com.badlogic.gdx.graphics.g2d.Batch batch, float parentAlpha) {
-		if(!isDisposed()){
-			batch.draw((Texture) manager.get(imageFilename), getX(), getY());
+		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
+		for(Attribute currentAttribute:attributeData.keys().toArray()){
+			System.out.println(currentAttribute.getXMLName());
+			currentAttribute.setup(this);
 		}
-	};
+	}
+	public void update(){
+		for(Attribute currentAttribute:attributeData.keys().toArray()){
+			//System.out.println(currentAttribute.getXMLName());//for debugging
+			currentAttribute.update(this);
+		}
+	}
 	
 	public void input(){
 		
 	}
 	
 	public Array<Attribute> getAttributes(){
-		return attributes;
+		return attributeData.keys().toArray();
 	}
 
 	public int getID() {
@@ -132,26 +115,23 @@ public class GameObject extends Actor implements Disposable{
 		return imageFilename;
 	}
 	
-	public String toString(){
+	/*public String toString(){
 		String att = "";
-		for(Attribute a: attributes){
+		for(Attribute a: attributes)
 			att+=a.name()+"\n";
-		}
 		return "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY() + "Is diposed: " + disposed + "\n";
-	}
+	}*/
 
 	@Override
 	public void dispose(){
-		imageFilename = null;
-		attributes.clear();
-		listenerNames.clear();
-		manager = null;
-		texture = null;
-		game = null;
-		velocity = null;
 		disposed = true;
 	};
 
+	public void resetObject(){
+		setPosition(position[0], position[1]);
+		disposed = false;
+	}
+		
 	public boolean isDisposed(){
 		return disposed;
 	}
@@ -169,5 +149,8 @@ public class GameObject extends Actor implements Disposable{
 	}
 	public Texture getTexture(){
 		return texture;
+	}
+	public ObjectMap<Attribute,Array<String>> getAttributeData(){
+		return attributeData;
 	}
 }
