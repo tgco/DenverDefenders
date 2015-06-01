@@ -26,7 +26,10 @@ import com.badlogic.gdx.utils.Align;
 
 class ScreenOptions extends ScreenAdapter {
 	private Skin skin;
+	private Skin buttonSkin;
 	private Table optionsTable;
+	private Table topRow;
+	private Table bottomRow;
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private TGC_Engine game;
@@ -35,6 +38,10 @@ class ScreenOptions extends ScreenAdapter {
 	private Texture title;
 	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
+	private String[] optionsArray = {"Sounds", 
+			  						 "Music", 
+			  						 "Animation", 
+			  						 "Color"};
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -42,6 +49,7 @@ class ScreenOptions extends ScreenAdapter {
 		manager = game.getAssetManager();
 		manager.load("optionsTitle.png", Texture.class);
 		createOptionsTable();
+		createRows();
 	}
 	@Override
 	public void render(float delta) {
@@ -64,13 +72,18 @@ class ScreenOptions extends ScreenAdapter {
 	
 	@Override
 	public void show() {
-		if(isRendered)
+		if(isRendered) {
 			game.getStage().addActor(optionsTable);
+			game.getStage().addActor(topRow);
+			game.getStage().addActor(bottomRow);
+		}
 	};
 	
 	@Override
 	public void hide() {
 		optionsTable.remove();
+		topRow.remove();
+		bottomRow.remove();
 	}
 	
 	private void createOptionsTable() {
@@ -78,11 +91,22 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable = new Table();
 		skin = new Skin();
 		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-
 		//Creates the buttons and sets table to origin
 		createButton();
 		optionsTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		optionsTable.align(Align.bottom);
+	}
+	
+	private void createRows() {
+		topRow = new Table();
+		bottomRow = new Table();
+		buttonSkin = new Skin();
+		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		createChoices();
+		topRow.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		bottomRow.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		topRow.align(Align.left);
+		bottomRow.align(Align.right);
 	}
 
 	private void createButton() {
@@ -105,5 +129,21 @@ class ScreenOptions extends ScreenAdapter {
 		});
 		backButton.setSize(150,300);
 		optionsTable.add(backButton);
+	}
+	
+	private void createChoices() {
+		font = game.getBitmapFontButton();
+		style = new TextButtonStyle();
+		style.font = font;
+		style.up = buttonSkin.getDrawable("Button_LevelPackIcon");
+		style.down = buttonSkin.getDrawable("ButtonChecked_LevelPackIcon");
+		for(int i = 0; i < optionsArray.length; i++) {
+			TextButton button = new TextButton(optionsArray[i], style);
+			button.setSize(200, 200);
+			if(i % 2 == 1)
+				topRow.add(button);
+			else
+				bottomRow.add(button);
+		}
 	}
 }
