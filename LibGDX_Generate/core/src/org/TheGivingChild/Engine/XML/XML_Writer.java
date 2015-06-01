@@ -87,7 +87,7 @@ public class XML_Writer {
 				writer.attribute("attributes",compileAttributeList(currentGameObject));//writing list of attributes
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
 				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());//position
-				writer.attribute("listeners", currentGameObject);
+				writer.attribute("listeners", compileListenerList(currentGameObject));
 				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
@@ -142,8 +142,6 @@ public class XML_Writer {
 		for(Attribute currentAttribute: obj.getAttributes())
 			temp+=currentAttribute.getXMLName() + ",";
 		//remove last character
-		for(String currentListener: obj.getListenerNames())
-			temp+=currentListener + ",";
 		String temp2="";
 		if(temp.length()>1)
 			temp2 = temp.substring(0,temp.length()-1);
