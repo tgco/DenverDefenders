@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
@@ -27,6 +28,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Sprite sprite;
 	private int initialX, initialY;
 	
+	private Vector2 lastTouch = new Vector2();
 	
 	
 	public ScreenMaze()
@@ -60,6 +62,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteBatch.setProjectionMatrix(camera.combined); //Make the sprite not move when the map is scrolled
 		spriteBatch.begin();
 		sprite.draw(spriteBatch);
+		camera.position.set(sprite.getX(), sprite.getY(), 0);	//Set camera to focus on character
 		spriteBatch.end();
 		
 	}
@@ -93,30 +96,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		//camera.translate(camera.position.x - screenX, camera.position.y - screenY);
-			
 		
-		Vector3 clickCoordinates = new Vector3(screenX, screenY, 0);
-		Vector3 position = camera.unproject(clickCoordinates);
-	//	sprite.setPosition(position.x, position.y);
+		//Get vector of touch down		
+		lastTouch = new Vector2(screenX, screenY);
 	
-		initialX = screenX;
-		initialY = screenY;
-		
-		//camera.translate(clickCoordinates);
-	//	camera.lookAt(clickCoordinates.x, clickCoordinates.y, 0);
-		
-	//	camera.unproject(clickCoordinates);		
-	//	camera.translate(position);
-	//	camera.lookAt(position);
-	//	camera.lookAt(clickCoordinates);
-	//	camera.lookAt(screenX,screenY,0);
 		return true;
 	}
 
@@ -124,11 +113,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
 		
-		int deltaX = initialX - screenX;
-		int deltaY = initialY - screenY;
-		
-		camera.translate(deltaX, -deltaY);
-		
+
 		
 		return true;
 	}
@@ -137,10 +122,23 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// TODO Auto-generated method stub
 		
-		Vector3 drag = new Vector3(screenX, screenY, pointer);
-		//camera.translate(drag);
-		//camera.translate(screenX/100, screenY/100);
-		return false;
+		//Compare the dragged touch to last touch to see what direction
+		Vector2 newTouch = new Vector2(screenX, screenY);
+		Vector2 delta = newTouch.cpy().sub(lastTouch);
+		
+		//sprite.setX(sprite.getX() - delta.x);
+		//sprite.setY(sprite.getY() + delta.y);
+		
+		sprite.setX(sprite.getX() + delta.x);
+		sprite.setY(sprite.getY() - delta.y);
+		
+		
+		lastTouch = newTouch;
+		
+		
+		//sprite.setPosition(screenX, screenY);
+		
+		return true;
 	}
 
 	@Override
