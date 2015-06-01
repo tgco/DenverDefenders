@@ -91,6 +91,7 @@ public class GameObject extends Actor implements Disposable{
 			currentAttribute.setup(this);
 		}
 	}
+
 	public void update(Array<GameObject> allObjects){
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
 			//System.out.println(currentAttribute.getXMLName());//for debugging
@@ -130,7 +131,7 @@ public class GameObject extends Actor implements Disposable{
 		setPosition(position[0], position[1]);
 		disposed = false;
 	}
-		
+	
 	public boolean isDisposed(){
 		return disposed;
 	}

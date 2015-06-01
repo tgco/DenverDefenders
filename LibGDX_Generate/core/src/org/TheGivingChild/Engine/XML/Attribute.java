@@ -69,6 +69,32 @@ public enum Attribute {
 			temp.add("Initial Health");
 			return temp;
 		}
+		public String getXMLName(){return "color";}
+	},
+	FALLSATSETRATE{
+		private int rate;
+		public void update(GameObject myObject){
+		//	System.out.println("\nfallsAtSetRate Update");
+			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
+		}
+		public void setValues(Array<String> newValues){
+			rate = Integer.parseInt(newValues.get(0));
+		}
+		public Array<String> getValues(){
+			Array<String> temp = new Array<String>();
+			temp.add(rate+"");
+			return temp;
+		}
+		public String getXMLName(){return "fallsAtSetRate";}
+	},
+	SPINS{
+		private float rate;
+		public void update(GameObject myObject){
+			
+		}
+		public void setValues(Array<String> newValues){
+			rate = Float.parseFloat(newValues.get(0));
+		}
 
 		public Array<String> getValues(GameObject myObject){//each implementation of get Values translates the values back into the string for writing to .xml purposes
 			return myObject.getAttributeData().get(HEALTH);
