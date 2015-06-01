@@ -86,6 +86,7 @@ public class TGC_Engine extends Game {
 	public void create () {
 		switch(Gdx.app.getType()){
 			case Android:
+				Gdx.input.setCatchBackKey(true);
 				break;
 			//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
@@ -195,7 +196,6 @@ public class TGC_Engine extends Game {
 		
 		
 	}
-	
 	public void createStage(){
 		stage = new Stage();
 		//create main menu images
@@ -293,6 +293,7 @@ public class TGC_Engine extends Game {
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					screenManagerLoaded = true;
 				}
+				
 			}
 		}
 		//increments the timer to check if we are still delaying the main screen

@@ -13,8 +13,10 @@ public enum Attribute {
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
 		private float initialVelocity[] = new float[2];
+		private boolean hasRun = false;
 		public void update(GameObject myObject){
-			myObject.setVelocity(initialVelocity);
+			if(!hasRun)
+				myObject.setVelocity(initialVelocity);
 			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
 		}
 		
