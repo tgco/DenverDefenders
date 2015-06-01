@@ -84,7 +84,6 @@ public enum Attribute {
 	},
 	FALLSATSETRATE{
 		private int rate;
-
 		public void update(GameObject myObject){
 		//	System.out.println("\nfallsAtSetRate Update");
 			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
