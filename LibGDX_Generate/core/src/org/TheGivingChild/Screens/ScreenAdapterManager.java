@@ -71,8 +71,8 @@ public final class ScreenAdapterManager {
         //Hide the current screen, show the new screen
         batch.begin();
         batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(screenTransitions.get(0), 0, 0);
-        batch.draw(screenTransitions.get(1), 0, 0);
+        batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+        batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
         batch.end();
         game.setScreen(screens.get(screenEnum.ordinal()));
     }
