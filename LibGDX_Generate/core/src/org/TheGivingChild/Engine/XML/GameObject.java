@@ -91,7 +91,7 @@ public class GameObject extends Actor implements Disposable{
 			currentAttribute.setup(this);
 		}
 	}
-
+	
 	public void update(Array<GameObject> allObjects){
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
 			//System.out.println(currentAttribute.getXMLName());//for debugging

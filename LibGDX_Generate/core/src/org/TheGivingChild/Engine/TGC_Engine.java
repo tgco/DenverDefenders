@@ -3,36 +3,24 @@ package org.TheGivingChild.Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
-import org.TheGivingChild.Engine.XML.LevelGoal;
 import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
-import tiledMap.TestTiledMap;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 public class TGC_Engine extends Game {
@@ -47,8 +35,6 @@ public class TGC_Engine extends Game {
 	private Skin skin = new Skin();
 	//bitmap font for buttons
 	private BitmapFont bitmapFontButton;
-	//create tables for the UI
-    private Table rootTable;
     private Array<Level> levels = new Array<Level>();
     
     private boolean screenManagerLoaded = false;
@@ -64,25 +50,12 @@ public class TGC_Engine extends Game {
     
     private XML_Reader reader;
     private XML_Writer writer;
-    
     //Map stuff
-    private Texture mapTexture;
-    private TiledMap tiledMap;
     private OrthographicCamera mapCamera;
-    private TiledMapRenderer mapRenderer;
-    private TestTiledMap testTiledMap;
-    
-    
-    
-    
+   
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
 	}
-
-	public void addTable(Table t){
-		rootTable.add(t).align(Align.bottomLeft);
-	}
-	
 	@Override
 	public void create () {
 		switch(Gdx.app.getType()){
@@ -99,8 +72,6 @@ public class TGC_Engine extends Game {
 			default:
 				break;
 		}
-		
-		
 		//Timer for loading screen delay before transition to main screen
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Assets to be added to the manager
@@ -110,27 +81,18 @@ public class TGC_Engine extends Game {
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
-		//manager.load("ball.png", Texture.class);
-		//manager.load("Box.png", Texture.class);
-		//manager.load("BoxHalf.png", Texture.class);
-		//manager.load("Grid.png", Texture.class);
 		manager.load("editorAssets/ball.png", Texture.class);
 		manager.load("editorAssets/ballSelected.png", Texture.class);
 		manager.load("editorAssets/Box.png", Texture.class);
 		manager.load("editorAssets/BoxHalf.png", Texture.class);
 		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
 		manager.load("editorAssets/Grid.png", Texture.class);
+		manager.finishLoading();
 		batch = new SpriteBatch();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level3", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level4", "packet2", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level5", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level6", "packet3", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level7", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level8", "packet4", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		
+
 		reader = new XML_Reader();
 		writer = new XML_Writer();
 		
@@ -138,7 +100,6 @@ public class TGC_Engine extends Game {
 		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
 		XML_Reader reader = new XML_Reader();
-		XML_Writer writer = new XML_Writer();
 		
 		exists = Gdx.files.internal("testOut.xml").exists();
 		System.out.println(exists);
@@ -162,10 +123,10 @@ public class TGC_Engine extends Game {
 		//Gdx.input.setInputProcessor(input);
 		objectGroup = new Group();
 		//Iterate through current level and add objects to stage?
-		for(final GameObject o : levels.first().getGameObjects())
-		{
-			objectGroup.addActor(o);
-		}
+//		for(final GameObject o : levels.first().getGameObjects())
+//		{
+//			objectGroup.addActor(o);
+//		}
 			
 		InputMultiplexer mp = new InputMultiplexer();
 		mp.addProcessor(stage);
@@ -186,27 +147,12 @@ public class TGC_Engine extends Game {
 		float h = Gdx.graphics.getHeight();
 		mapCamera = new OrthographicCamera();
 		mapCamera.setToOrtho(false, w, h);
-		tiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
-		//testTiledMap = new TmxMapLoader().load("mapAssets/TEST_crappymap.tmx");
-		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-	
-		//Set input processor to mpa
-		//	Gdx.input.setInputProcessor(this);
-		
-	
-		
-		
 	}
 	public void createStage(){
 		stage = new TGC_Stage();
 		//create main menu images
 		Gdx.input.setInputProcessor(stage);
-		//initialize root Table
-		rootTable = new Table();
 	}
-	
-	
-	
 	//dispose of resources, done when the game is destroyed
 	@Override
 	public void dispose(){
@@ -214,57 +160,37 @@ public class TGC_Engine extends Game {
 		//dispose the screen manager, and in doing so all screens
 		ScreenAdapterManager.getInstance().dispose();
 	};
-	
 	//getters for accessing variables in other areas of the engine
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
-	
 	public String[] getButtonAtlasNamesArray() {
 		return buttonAtlasNamesArray;
 	}
-	
 	public Skin getButtonAtlasSkin(){
 		return skin;
 	}
-	
 	public int getButtonStates(){
 		return BUTTON_STATES;
 	}
-	
 	public float getHeight(){
 		return height;
 	}
-	
 	public Array<Level> getLevels(){
 		return levels;
 	}
-	
-	public Table getRootTable() {
-		return rootTable;
-	}
-	
 	public Stage getStage() {
 		return stage;
 	}	
-	
 	public float getWidth(){
 		return width;
 	}
-	
 	public AssetManager getAssetManager() {
 		return manager;
 	}
-	
 	public XML_Writer getXML_Writer() {
 		return writer;
 	}
-	
-	
-	public void removeTable(Table t){
-		rootTable.removeActor(t);
-	}
-	
 	@Override
 	public void render () {
 		//if the manager is not done updating, it will display a loading image
@@ -278,35 +204,29 @@ public class TGC_Engine extends Game {
 			if(screenTransitionTimeLeft <= 0){
 				super.render();
 				stage.draw();
-				//if the texture atlas is loaded, then add it to the skin
+				//if the texture atlas packs are loaded, then add it to the skin
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
-		        }
+				}
 				if(manager.isLoaded("Packs/ButtonsEditor.pack")) {
 					skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 				}
 				//makes sure the main screen is only loaded once
 				if(!screenManagerLoaded){
-					//initialize the Screen manager, passing the engine to it for reference
-					//ScreenAdapterManager.getInstance().initialize(this);
 					//show the main screen to be displayed first
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+					//boolean = true so the loop is not entered again
 					screenManagerLoaded = true;
 				}
 				
 			}
 		}
-		//increments the timer to check if we are still delaying the main screen
+		//decrements the timer to check if we are still delaying the main screen
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
-		
-		//Map?
-//		mapCamera.update();
-//		mapRenderer.setView(mapCamera);
-//		mapRenderer.render();		
-		
-	//	Gdx.input.setInputProcessor();
-		
+		//print the FPS to system out
+		System.out.println(Gdx.graphics.getFramesPerSecond());
+		stage.draw();
 	}
 }
