@@ -187,7 +187,7 @@ public enum Attribute {
 		
 		public void setup(GameObject myObject){
 			Array<String> newValues = new Array<String>();
-			for(String current:myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(1).split(","))
+			for(String current:myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0).split(","))
 				newValues.add(current);//FINISH ME SENPAI
 		}
 		
@@ -231,8 +231,8 @@ public enum Attribute {
 
 		@Override
 		public Array<String> getVariableNames() {
-			// TODO Auto-generated method stub
-			return null;
+			Array<String> varName = new Array<String>();
+			return varName;
 		}
 
 		@Override
@@ -243,8 +243,7 @@ public enum Attribute {
 
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			// TODO Auto-generated method stub
-			return null;
+			return myObject.getAttributeData().get(MOVESONSETPATH);
 		}
 
 		@Override
@@ -256,7 +255,7 @@ public enum Attribute {
 		@Override
 		public String getXMLName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "movesOnSetPath";
 		}
 		
 		private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
