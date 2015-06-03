@@ -1,5 +1,17 @@
 TheGivingChild git repository
 
+<IMPORTANT>
+
+Do not use indexed .png for assets, they will not load properly on Android, and probebly iOS
+
+.png should be packed using the gdx-texture-packer. If you have trouble packing, enable rotation. If there are still issues, increase the maximum image dimensions.
+
+</IMPORTANT>
+
+
+
+<INSTALLATION_AND_USE>
+
 Download and install Java 7 or higher.
 Download the Android SDK.
 Use the SDK Manager to download the tools and extras, as well as SDK 4.4.w.2 (API 20)
@@ -28,7 +40,5 @@ Changes to Assets should be done so through the Android projects Assets folder, 
 Do not push to the Master Branch if your code does not work. If you want to push code that you are working on, do so in a custom branch.
 If you are working on a seperate branch and want to merge with Master, pull from Master, fix any conflicts, then push to Master.
 
+</INSTALLATION_AND_USE>
 
-
-Relevant links for project:
-https://github.com/libgdx/libgdx/wiki/Managing-your-assets
