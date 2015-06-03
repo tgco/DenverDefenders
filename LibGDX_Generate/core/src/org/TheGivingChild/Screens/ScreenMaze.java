@@ -51,7 +51,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		Gdx.input.setInputProcessor(this);
+		
 		
 		
 		spriteBatch = new SpriteBatch();
@@ -59,9 +59,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		sprite = new Sprite(spriteTexture);
 		//make sure all the layers are set to visible by default.
 		//this is the source of error for the 'missing' background tiles
-		for(MapLayer layer: map.getLayers()){
-			layer.setVisible(true);
-		}
+		
 
 		//Setup map properties
 		properties = map.getProperties();
@@ -82,7 +80,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
-					
+		
+		
 		
 	}
 
@@ -166,6 +165,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if(keycode == Input.Keys.NUM_2){
 			map.getLayers().get(1).setVisible(!map.getLayers().get(1).isVisible());
 		}
+		
+		if(keycode == Input.Keys.M){
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+		}
+		
 		return true;
 	}
 
@@ -214,6 +218,33 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 	}
 
+	@Override
+	public void show(){
+		for(MapLayer layer: map.getLayers()){
+			layer.setVisible(true);
+		}
+		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
+		
+		for(int i = 0; i <collisionObjects.getCount(); i++)
+		{
+			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
+			Rectangle rect = obj.getRectangle();
+			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+		}
+		
+		Gdx.input.setInputProcessor(this);
+		
+	}
+	
+	@Override
+	public void hide(){
+		for(MapLayer layer: map.getLayers()){
+			layer.setVisible(false);
+		}
+		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
+		collisionRects.clear();
+	}
+	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
