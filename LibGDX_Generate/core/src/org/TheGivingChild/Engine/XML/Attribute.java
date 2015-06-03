@@ -129,12 +129,13 @@ public enum Attribute {
 		}
 
 		public Array<String> getValues(GameObject myObject){//each implementation of get Values translates the values back into the string for writing to .xml purposes
-			return myObject.getAttributeData().get(HEALTH);
+			return myObject.getAttributeData().get(SPINS);
 		}
-		public String getXMLName(){return "health";}
+		public String getXMLName(){return "spins";}
 		@Override
 		public Array<String> getVariableNames() {
 			Array<String> variableNames = new Array<String>();
+			variableNames.add("Spin Rate");
 			return variableNames;
 		}
 		@Override
