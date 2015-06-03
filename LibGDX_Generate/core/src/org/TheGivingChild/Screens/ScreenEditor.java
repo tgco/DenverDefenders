@@ -113,9 +113,9 @@ class ScreenEditor extends ScreenAdapter{
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransition();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				Gdx.gl.glClearColor(0, 1, 0, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
@@ -164,11 +164,15 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
+<<<<<<< HEAD
 			window.setX(Gdx.graphics.getWidth()/2);
 			window.setY(Gdx.graphics.getHeight()/2);
 
 			EditorTextInputListener listener = new EditorTextInputListener();
 			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+=======
+			isRendered = false;
+>>>>>>> 10aa94000eef459ccae1170dfc22e3975745f5cf
 		}
 	};
 	

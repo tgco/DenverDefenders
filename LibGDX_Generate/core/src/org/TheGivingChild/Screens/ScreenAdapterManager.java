@@ -31,7 +31,16 @@ public final class ScreenAdapterManager {
     private Batch batch = new SpriteBatch();
     //textures for curtainCall.
     private Array<TextureRegion> screenTransitions;
+    protected float outLeftScreenStart;
+	protected final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
+	protected float outRightScreenStart;
+	protected final float outRightScreenEnd = Gdx.graphics.getWidth();
+	protected float inLeftScreenStart;
+	protected final float inLeftScreenEnd = 0;
+	protected float inRightScreenStart;
+	protected final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
     protected float SCREEN_TRANSITION_TIME_LEFT;
+	public boolean screenTransitionOutComplete = false;
     //Constructor: initializes an instance of the adapter. initializes the empty map.
     private ScreenAdapterManager() {
         screens = new IntMap<ScreenAdapter>();
@@ -59,6 +68,9 @@ public final class ScreenAdapterManager {
         for(AtlasRegion texture :screenTransitionAtlas.getRegions()){
         	screenTransitions.add(texture);
         }
+
+        screenTransitionOutComplete = false;
+        
     }
     //show the screen in the argument, hide the current.
     public void show(ScreenAdapterEnums screenEnum) {
@@ -68,44 +80,42 @@ public final class ScreenAdapterManager {
         if (!screens.containsKey(screenEnum.ordinal())) {
         	//it didn't, so add the ScreenAdapter to the map.
             screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
-        }
-        //screenTransitionIn();
+        } 
+        //inLeftScreenStart = ;
+        //inRightScreenStart = ;
+        outLeftScreenStart = 0f;
+        outRightScreenStart = Gdx.graphics.getWidth()/2;
         SCREEN_TRANSITION_TIME_LEFT = 1.0f;
-        screenTransition();
         currentEnum = screenEnum;
         //Hide the current screen, show the new screen
+        screenTransitionOutComplete = false;
         game.setScreen(screens.get(screenEnum.ordinal()));
-        //screenTransitionOut();
     }
-    public void screenTransitionIn(){
-    	float leftScreenStart = -Gdx.graphics.getWidth()/2;
-    	float leftScreenEnd = 0;
-    	float rightScreenStart = Gdx.graphics.getWidth();
-    	float rightScreenEnd = Gdx.graphics.getWidth()/2;
+    //starts in the middle and then 
+    public boolean screenTransitionOut(){
     	//move the screens in
-    	while(leftScreenStart != leftScreenEnd && rightScreenStart != rightScreenEnd){
+    	if(outRightScreenStart <= outRightScreenEnd && outLeftScreenStart >= outLeftScreenEnd){
     		 batch.begin();
-             batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-             batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.draw(screenTransitions.get(0), outLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.draw(screenTransitions.get(1), outRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
              batch.end();
-             leftScreenStart++;
-             rightScreenStart--;
+             outLeftScreenStart-= 5;
+             outRightScreenStart+= 5;
+             return false;
     	}
+    	return true;
     }
-    public void screenTransitionOut(){
-    	float leftScreenEnd = -Gdx.graphics.getWidth()/2;
-    	float leftScreenStart = 0;
-    	float rightScreenEnd = Gdx.graphics.getWidth();
-    	float rightScreenStart = Gdx.graphics.getWidth()/2;
-    	//move the screens in
-    	while(leftScreenStart != leftScreenEnd && rightScreenStart != rightScreenEnd){
-    		 batch.begin();
-             batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-             batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-             batch.end();
-             leftScreenStart--;
-             rightScreenStart++;
-    	}
+    public boolean screenTransitionIn(){
+    	if(inRightScreenStart >= inRightScreenEnd){
+   		 batch.begin();
+            batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+            batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+            batch.end();
+            inLeftScreenStart+= 5;
+            inRightScreenStart-= 5;
+            return false;
+   	}
+    	return true;
     }
     public void screenTransition(){
     	 batch.begin();
