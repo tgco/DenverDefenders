@@ -67,9 +67,9 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransition();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				isRendered = true;

@@ -120,9 +120,9 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransition();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(assetManager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				Gdx.gl.glClearColor(1, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				//loadingScreen.remove();
