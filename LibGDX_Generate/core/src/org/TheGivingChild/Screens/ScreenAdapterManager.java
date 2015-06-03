@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 
@@ -28,12 +30,12 @@ public final class ScreenAdapterManager {
     //batch for screen transitions
     private Batch batch = new SpriteBatch();
     //textures for curtainCall.
-    private Array<Texture> screenTransitions;
-    
+    private Array<TextureRegion> screenTransitions;
+    protected float SCREEN_TRANSITION_TIME_LEFT;
     //Constructor: initializes an instance of the adapter. initializes the empty map.
     private ScreenAdapterManager() {
         screens = new IntMap<ScreenAdapter>();
-        screenTransitions = new Array<Texture>();
+        screenTransitions = new Array<TextureRegion>();
     }
     //allows access to the instance of the adapter class from outside the class.
     public static ScreenAdapterManager getInstance() {
@@ -54,7 +56,7 @@ public final class ScreenAdapterManager {
         manager.finishLoadingAsset("Packs/ScreenTransitions.pack");
         //create an atlas from the pack
         TextureAtlas screenTransitionAtlas = manager.get("Packs/ScreenTransitions.pack");
-        for(Texture texture :screenTransitionAtlas.getTextures()){
+        for(AtlasRegion texture :screenTransitionAtlas.getRegions()){
         	screenTransitions.add(texture);
         }
     }
@@ -67,20 +69,56 @@ public final class ScreenAdapterManager {
         	//it didn't, so add the ScreenAdapter to the map.
             screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
         }
+        //screenTransitionIn();
+        SCREEN_TRANSITION_TIME_LEFT = 1.0f;
+        screenTransition();
         currentEnum = screenEnum;
         //Hide the current screen, show the new screen
-        batch.begin();
-        batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-        batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-        batch.end();
         game.setScreen(screens.get(screenEnum.ordinal()));
+        //screenTransitionOut();
+    }
+    public void screenTransitionIn(){
+    	float leftScreenStart = -Gdx.graphics.getWidth()/2;
+    	float leftScreenEnd = 0;
+    	float rightScreenStart = Gdx.graphics.getWidth();
+    	float rightScreenEnd = Gdx.graphics.getWidth()/2;
+    	//move the screens in
+    	while(leftScreenStart != leftScreenEnd && rightScreenStart != rightScreenEnd){
+    		 batch.begin();
+             batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.end();
+             leftScreenStart++;
+             rightScreenStart--;
+    	}
+    }
+    public void screenTransitionOut(){
+    	float leftScreenEnd = -Gdx.graphics.getWidth()/2;
+    	float leftScreenStart = 0;
+    	float rightScreenEnd = Gdx.graphics.getWidth();
+    	float rightScreenStart = Gdx.graphics.getWidth()/2;
+    	//move the screens in
+    	while(leftScreenStart != leftScreenEnd && rightScreenStart != rightScreenEnd){
+    		 batch.begin();
+             batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+             batch.end();
+             leftScreenStart--;
+             rightScreenStart++;
+    	}
+    }
+    public void screenTransition(){
+    	 batch.begin();
+    	 //draw the first curtain starting at the left edge of the screen
+         batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+         //draw the second curtain starting at the middle edge of the screen
+         batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
+         batch.end();
     }
     
     public ScreenAdapterEnums getCurrentEnum(){
     	return currentEnum;
     }
- 
     //dispose of the screen passed in.
     public void dispose(ScreenAdapterEnums screenEnum) {
     	//if the map doesn't contain the screen we're asked to dispose, then we have nothing to do.
@@ -99,5 +137,7 @@ public final class ScreenAdapterManager {
         screens.clear();
         //set the instance to null.
         instance = null;
+        //get rid of the batch
+        batch.dispose();
     }
 }

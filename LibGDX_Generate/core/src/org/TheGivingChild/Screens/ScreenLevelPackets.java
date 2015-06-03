@@ -39,7 +39,6 @@ class ScreenLevelPackets extends ScreenAdapter{
 	private TGC_Engine game;
 	
 	private AssetManager manager;
-	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
 	private Batch batch = new SpriteBatch();
 	
@@ -158,11 +157,9 @@ class ScreenLevelPackets extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		batch.begin();
-		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(manager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				isRendered = true;
@@ -171,9 +168,8 @@ class ScreenLevelPackets extends ScreenAdapter{
 			}
 		}
 		
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
-		
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override

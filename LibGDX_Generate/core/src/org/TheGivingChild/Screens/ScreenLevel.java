@@ -19,7 +19,6 @@ public class ScreenLevel extends ScreenAdapter{
 	private Array<String> textureFile;
 	private SpriteBatch batch;
 	private AssetManager manager;
-	private float screenTransitionTimeLeft = 1.0f;
 	public ScreenLevel() {
 		
 	}
@@ -53,8 +52,9 @@ public class ScreenLevel extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(manager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
@@ -67,7 +67,7 @@ public class ScreenLevel extends ScreenAdapter{
 				batch.end();
 			}
 		}
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 }

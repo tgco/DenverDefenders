@@ -215,9 +215,7 @@ public class TGC_Engine extends Game {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//if the manager is not done updating, it will display a loading image
-		batch.begin();
-		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
+		ScreenAdapterManager.getInstance().screenTransition();
 		//once the manager is done updating, it prepares to switch to the main screen
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
@@ -246,8 +244,6 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
-		//print the FPS to system out
-		//System.out.println(Gdx.graphics.getFramesPerSecond());
 		stage.draw();
 	}
 	

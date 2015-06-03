@@ -10,11 +10,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
@@ -25,6 +31,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Texture spriteTexture;
 	private Sprite sprite;
 	private float xMove, yMove, speed;
+	private MapProperties properties;
+	private int mapTilesX, mapTilesY;
+	private float mazeWidth, mazeHeight;
+	private Array<Rectangle> collisionRects = new Array<Rectangle>();
 
 	private Vector2 lastTouch = new Vector2();
 
@@ -42,7 +52,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 		Gdx.input.setInputProcessor(this);
-
+		
+		
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 		sprite = new Sprite(spriteTexture);
@@ -52,6 +63,27 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			layer.setVisible(true);
 		}
 
+		//Setup map properties
+		properties = map.getProperties();
+		mapTilesX = properties.get("width", Integer.class);
+		mapTilesY = properties.get("height", Integer.class);
+		//width and height of tiles in pixels
+		int pixWidth = properties.get("tilewidth", Integer.class);
+		int pixHeight = properties.get("tileheight", Integer.class);
+		
+		mazeWidth = mapTilesX * pixWidth;
+		mazeHeight = mapTilesY * pixHeight;
+		
+		//Setup array of collision rectangles
+		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
+		for(int i = 0; i <collisionObjects.getCount(); i++)
+		{
+			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
+			Rectangle rect = obj.getRectangle();
+			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+		}
+					
+		
 	}
 
 	@Override 
@@ -61,6 +93,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				
+				
 		//update the camera
 		camera.update();
 		//set the map to be rendered by this camera
@@ -70,7 +104,34 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Make the sprite not move when the map is scrolled
 		spriteBatch.setProjectionMatrix(camera.combined);
 		//move the sprite left, right, up, or down
-		sprite.setPosition(sprite.getX() + xMove*Gdx.graphics.getDeltaTime(), sprite.getY() + yMove*Gdx.graphics.getDeltaTime());
+		//Calculate where the sprite is going to move
+		float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
+		float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
+		//If the sprite is not going off the maze allow it to move
+		//Check for a collision as well
+		boolean collision = false;
+		
+		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
+		{
+			if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
+			{
+				
+				Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
+				
+				for(Rectangle r : collisionRects)
+				{
+					if(r.overlaps(spriteRec))
+					{
+						collision = true;
+					}
+				}
+				
+				
+				if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
+			}
+		
+		}
+		
 		//begin the batch that sprites will draw to
 		spriteBatch.begin();
 		//draw the main character sprite to the map
@@ -128,6 +189,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//calculate the difference between the begin and end point
 		Vector2 delta = newTouch.cpy().sub(lastTouch);
 		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
+		
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
@@ -135,6 +197,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if(delta.x <= 0) xMove = -speed;
 			//no vertical movement
 			yMove = 0;
+						
 		}
 		//otherwise y>=x so move vertically 
 		else
@@ -145,7 +208,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			//no horizontal movement
 			xMove = 0;
 		}
+		
 		return true;
+		
+		
 	}
 
 	@Override
