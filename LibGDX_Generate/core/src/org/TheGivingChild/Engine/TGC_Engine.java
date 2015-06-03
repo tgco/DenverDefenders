@@ -226,7 +226,7 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		//print the FPS to system out
-		System.out.println(Gdx.graphics.getFramesPerSecond());
+		//System.out.println(Gdx.graphics.getFramesPerSecond());
 		stage.draw();
 	}
 }
