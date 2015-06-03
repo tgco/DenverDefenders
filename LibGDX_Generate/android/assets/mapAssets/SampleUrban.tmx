@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="5">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="7">
  <tileset firstgid="1" name="transparent" tilewidth="32" tileheight="32">
   <image source="Urban Maze Tilesets/transparent.png" trans="ff00ff" width="512" height="11328"/>
  </tileset>
@@ -37,5 +37,9 @@
   <object id="2" x="1202" y="1251" width="108" height="213"/>
   <object id="3" x="391" y="1338" width="63" height="78"/>
   <object id="4" x="463" y="1363" width="82" height="106"/>
+ </objectgroup>
+ <objectgroup name="Minigame">
+  <object id="5" x="20" y="1309" width="57" height="70"/>
+  <object id="6" x="14" y="13" width="62" height="63"/>
  </objectgroup>
 </map>
