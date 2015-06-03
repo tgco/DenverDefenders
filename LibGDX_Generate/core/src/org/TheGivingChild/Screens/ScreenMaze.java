@@ -117,6 +117,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Check for a collision as well
 		boolean collision = false;
 		
+		
 		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
 		{
 			if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
@@ -132,6 +133,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					}
 				}
 				
+				for(Rectangle m : minigameRects)
+				{
+					if(m.overlaps(spriteRec))
+					{
+						minigameRects.removeValue(m, true);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+					}
+				}
+							
 				
 				if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
 			}
