@@ -1,0 +1,24 @@
+
+ScreenTransitions.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+CurtainLeft
+  rotate: false
+  xy: 1, 1
+  size: 800, 900
+  orig: 800, 900
+  offset: 0, 0
+  index: -1
+
+ScreenTransitions2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+CurtainRight
+  rotate: false
+  xy: 1, 1
+  size: 800, 900
+  orig: 800, 900
+  offset: 0, 0
+  index: -1
