@@ -19,7 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -31,9 +35,12 @@ import com.badlogic.gdx.utils.Array;
 class ScreenOptions extends ScreenAdapter {
 	private Skin skin;
 	private Skin buttonSkin;
+	private Skin sliderSkin;
 	private Table optionsTable;
 	private Array<CheckBox> options;
 	private Table choicesTable;
+	private Table sliderTable;
+	private Table overallTable;
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private CheckBoxStyle cbStyle;
@@ -48,6 +55,9 @@ class ScreenOptions extends ScreenAdapter {
 			  						 "   Option 4   "};
 	private boolean option1, option2, option3, option4 = false;
 	private boolean allChanged = false;
+	private Slider slider;
+	private Label sliderValue;
+	private Label sliderName;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -55,7 +65,7 @@ class ScreenOptions extends ScreenAdapter {
 		manager = game.getAssetManager();
 		manager.load("optionsTitle.png", Texture.class);
 		createOptionsTable();
-		createRows();
+		createOverallTable();
 	}
 	@Override
 	public void render(float delta) {
@@ -102,14 +112,15 @@ class ScreenOptions extends ScreenAdapter {
 	public void show() {
 		if(isRendered) {
 			game.getStage().addActor(optionsTable);
-			game.getStage().addActor(choicesTable);
+			game.getStage().addActor(overallTable);
+			isRendered = false;
 		}
 	};
 	
 	@Override
 	public void hide() {
 		optionsTable.remove();
-		choicesTable.remove();
+		overallTable.remove();
 	}
 	
 	private void createOptionsTable() {
@@ -123,13 +134,11 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.align(Align.bottom);
 	}
 	
-	private void createRows() {
+	private void createChoices() {
 		choicesTable = new Table();
 		buttonSkin = new Skin();
 		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
-		createChoices();
-		choicesTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		choicesTable.align(Align.center);
+		createCheckBoxes();
 	}
 
 	private void createButton() {
@@ -154,7 +163,7 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.add(backButton);
 	}
 	
-	private void createChoices() {
+	private void createCheckBoxes() {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
@@ -168,4 +177,42 @@ class ScreenOptions extends ScreenAdapter {
 			options.add(checkbox);
 		}
 	}
+	 private void createSlider() {
+		 sliderTable = new Table();
+		 sliderSkin = new Skin();
+		 font = game.getBitmapFontButton();
+		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("SliderBackground"), sliderSkin.getDrawable("SliderKnob"));
+		 LabelStyle ls = new LabelStyle();
+		 ls.font = font;
+		 slider = new Slider(0, 100, 1, false, ss);
+		 slider.setValue(0);
+		 slider.addListener(new ChangeListener() {
+			 @Override
+			 public void changed(ChangeEvent event, Actor actor) {
+				 float value = ((Slider) actor).getValue();
+				 updateSliderValue(value);
+			 }
+		 });
+		 sliderValue = new Label("  0.0", ls);
+		 sliderName = new Label("Volume  ", ls);
+		 sliderTable.add(sliderName);
+		 sliderTable.add(slider).width(500);
+		 sliderTable.add(sliderValue).width(40);
+	 }
+	 
+	 private void updateSliderValue(float v) {
+		 sliderValue.setText("  " + Float.toString(v));
+	 }
+	 
+	 private void createOverallTable() {
+		 overallTable = new Table();
+		 createChoices();
+		 createSlider();
+		 overallTable.add(choicesTable);
+		 overallTable.row();
+		 overallTable.add(sliderTable);
+		 overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		 overallTable.align(Align.center);
+	 }
 }

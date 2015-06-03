@@ -97,7 +97,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 	@Override
 	public void render(float delta) {
 		//boolean transitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				if(manager.isLoaded("HowToPlay.png"))
