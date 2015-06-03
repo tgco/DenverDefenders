@@ -37,13 +37,21 @@ public enum Attribute {
 	},
 	BOUNCEOFFEDGEOFSCREEN{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			if(myObject.getX() <= 0 || myObject.getX() + myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){
+			if(myObject.getX() <= 0){//left
 				float[] temp = myObject.getVelocity();
-				temp[0] = -temp[0];
+				temp[0] = Math.abs(temp[0]);
 				myObject.setVelocity(temp);
-			}else if(myObject.getY() <= 0 || myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){
+			}else if(myObject.getX() +myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){//right
 				float[] temp = myObject.getVelocity();
-				temp[1] = -temp[1];
+				temp[0] = -Math.abs(temp[0]);
+				myObject.setVelocity(temp);
+			}else if(myObject.getY() <= 0){//bottom
+				float[] temp = myObject.getVelocity();
+				temp[1] = Math.abs(temp[1]);
+				myObject.setVelocity(temp);
+			}else if(myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){//top
+				float[] temp = myObject.getVelocity();
+				temp[1] = -Math.abs(temp[1]);
 				myObject.setVelocity(temp);
 			}
 		}
@@ -145,10 +153,11 @@ public enum Attribute {
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
-				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", true)){//if myObject collides with current object AND they are actually colliding
+				
+				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
-						System.out.println("COLLISION DETECETED");
+						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
 					}
 				}
 			}

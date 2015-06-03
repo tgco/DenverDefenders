@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="5">
  <tileset firstgid="1" name="transparent" tilewidth="32" tileheight="32">
   <image source="Urban Maze Tilesets/transparent.png" trans="ff00ff" width="512" height="11328"/>
  </tileset>
@@ -17,7 +17,7 @@
    eJztwzEJAAAMA7A+k1D/VqtjkEB6SVVVVVVVVVVVVfX5ATAK/ek=
   </data>
  </layer>
- <layer name="Road" width="50" height="50" visible="0">
+ <layer name="Road" width="50" height="50">
   <data encoding="base64" compression="zlib">
    eJztwwEJAAAMA6D1eP9yS7EcBwV7SVVVVVVVVVVVVfX5ATxY9Vw=
   </data>
@@ -32,4 +32,10 @@
    eJztkNlRAkEURTsR+OBTJQTREERCAMkDkQwEUQNgUwJgEQgAkCUBhQiUTZEqTwjTBVbPlPdUnb9+c+8dY4QQQgghhBBCCCGEECIYXIeNyeIN5sJ2t5kQ95jFI26P8QSjlt85BHkyC3iHRcv8W/rnsYCn3MbwDM8d7CiTWcEq1izzS/QvYwUvuI3jJSYc7GiS2cI2vljmN+jfxBYmuU3hFaYd7BiQOcRXHFnm9+k/wGHob7rZ8Eb3d5zh3MF/PBQLui9xhesA7xBCiP/GR8SYT1xEXDfZjyX9V7j2uOOedw/46LPdG/p84bfHXk+8e8a6z3Zs6fODO4+9OrzrYs9nO2wZ03+C04DvEEIEj1/1A0Eq
   </data>
  </layer>
+ <objectgroup name="Collision">
+  <object id="1" x="28" y="1095" width="77" height="106"/>
+  <object id="2" x="1202" y="1251" width="108" height="213"/>
+  <object id="3" x="391" y="1338" width="63" height="78"/>
+  <object id="4" x="463" y="1363" width="82" height="106"/>
+ </objectgroup>
 </map>
