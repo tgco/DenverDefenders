@@ -153,8 +153,9 @@ public enum Attribute {
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){//myObject.getID() != allObjects.get(i).getID() &&
-				if( myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", true)){//if myObject collides with current object AND they are actually colliding
-					System.out.println(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID));
+				//System.out.println(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID));
+				if(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", true)){//if myObject collides with current object AND they are actually colliding
+					//System.out.println(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID));
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
 						System.out.println("COLLISION DETECETED");
