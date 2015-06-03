@@ -73,7 +73,6 @@ class ScreenEditor extends ScreenAdapter{
 	private Array<GameObject> gameObjects;
 	
 	private AssetManager manager;
-	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
 	private boolean isLoaded = false;
 	
@@ -111,11 +110,9 @@ class ScreenEditor extends ScreenAdapter{
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
 	public void render(float delta) {
-		batch.begin();
-		batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(manager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				Gdx.gl.glClearColor(0, 1, 0, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
@@ -155,8 +152,8 @@ class ScreenEditor extends ScreenAdapter{
 				}
 			}
 		}
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 
 	}
 	//Shows the table when called upon
