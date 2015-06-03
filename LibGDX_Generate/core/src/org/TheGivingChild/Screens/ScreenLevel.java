@@ -14,23 +14,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public class ScreenLevel extends ScreenAdapter{
-	
+
 	private Level level;
 	private Array<String> textureFile;
 	private SpriteBatch batch;
 	private AssetManager manager;
 	public ScreenLevel() {
-		
+
 	}
 
 	@Override
 	public void hide() {
 		level = null;
-		
+
 		manager = null;
 		textureFile.clear();
 	}
-	
+
 	@Override
 	public void show() {
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
@@ -49,12 +49,12 @@ public class ScreenLevel extends ScreenAdapter{
 		}
 		batch = new SpriteBatch();
 	}
-	
+
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransition();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
