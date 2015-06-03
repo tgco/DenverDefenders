@@ -14,6 +14,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,10 +24,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class TGC_Engine extends Game {
 	final static int DESKTOP_WIDTH = 1024;
-	final static int DESKTOP_HEIGHT = 576;
+	final static int DESKTOP_HEIGHT = 768;
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private TGC_Stage stage;
@@ -53,6 +60,10 @@ public class TGC_Engine extends Game {
     private XML_Writer writer;
     //Map stuff
     private OrthographicCamera mapCamera;
+    
+    //Viewport stuff
+    OrthographicCamera camera;
+    Viewport viewport;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -148,6 +159,13 @@ public class TGC_Engine extends Game {
 		float h = Gdx.graphics.getHeight();
 		mapCamera = new OrthographicCamera();
 		mapCamera.setToOrtho(false, w, h);
+		
+		//Viewport stuff
+		camera = new OrthographicCamera();
+		viewport = new StretchViewport(16, 9, camera);
+		viewport.apply();
+		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
+		
 	}
 	public void createStage(){
 		stage = new TGC_Stage();
@@ -194,6 +212,9 @@ public class TGC_Engine extends Game {
 	}
 	@Override
 	public void render () {
+		camera.update();
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//if the manager is not done updating, it will display a loading image
 		ScreenAdapterManager.getInstance().screenTransition();
 		//once the manager is done updating, it prepares to switch to the main screen
@@ -224,10 +245,13 @@ public class TGC_Engine extends Game {
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
-		//print the FPS to system out
-
-	//	System.out.println(Gdx.graphics.getFramesPerSecond());
-
 		stage.draw();
 	}
+	
+	@Override
+	public void resize(int width, int height) {
+		viewport.update(width, height);
+		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
+	}
+	
 }
