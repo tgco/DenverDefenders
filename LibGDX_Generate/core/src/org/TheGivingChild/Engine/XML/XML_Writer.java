@@ -82,6 +82,7 @@ public class XML_Writer {
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
 					for(String currentValue:currentAttribute.getValues(currentGameObject)){//writing the values associated with each attribute
+						System.out.println("here here " + currentValue);
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}

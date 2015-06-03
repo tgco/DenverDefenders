@@ -164,15 +164,12 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
-<<<<<<< HEAD
 			window.setX(Gdx.graphics.getWidth()/2);
 			window.setY(Gdx.graphics.getHeight()/2);
 
 			EditorTextInputListener listener = new EditorTextInputListener();
 			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
-=======
 			isRendered = false;
->>>>>>> 10aa94000eef459ccae1170dfc22e3975745f5cf
 		}
 	};
 	

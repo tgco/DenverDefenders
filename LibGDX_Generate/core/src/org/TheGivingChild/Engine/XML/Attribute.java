@@ -22,7 +22,8 @@ public enum Attribute {
 		
 		public Array<String> getValues(GameObject myObject){
 			Array<String> temp = new Array<String>();
-			temp.add(myObject.getAttributeData().get(MOVES).get(0) + "," + myObject.getAttributeData().get(MOVES).get(1));
+			temp.add(myObject.getAttributeData().get(MOVES).get(0));
+			temp.add(myObject.getAttributeData().get(MOVES).get(1));
 			return temp;
 		}
 		
