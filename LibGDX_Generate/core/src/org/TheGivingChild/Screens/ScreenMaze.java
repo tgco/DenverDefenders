@@ -237,6 +237,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void show(){
+		
+		xMove = 0;
+		yMove = 0;
+		
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
 		}
