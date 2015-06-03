@@ -35,6 +35,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private int mapTilesX, mapTilesY;
 	private float mazeWidth, mazeHeight;
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
+	private Array<Rectangle> minigameRects = new Array<Rectangle>();
 
 	private Vector2 lastTouch = new Vector2();
 
@@ -81,7 +82,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
 		
-		
+		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
+		for(int i = 0; i <miniGameObjects.getCount(); i++)
+		{
+			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
+			Rectangle rect = obj.getRectangle();
+			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+		}
 		
 	}
 
