@@ -38,8 +38,6 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	AssetManager assetManager;
 	//has the loading screen been drawn?
 	boolean loadingScreenDrawn;
-	//delay for loading screen
-	private float screenTransitionTimeLeft = 1.0f;
 	//skin for the back button
 	private Skin skin;
 	//bitmap font for back button
@@ -122,8 +120,9 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(assetManager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				Gdx.gl.glClearColor(1, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				//loadingScreen.remove();
@@ -134,8 +133,8 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 				show();
 			}
 		}
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override

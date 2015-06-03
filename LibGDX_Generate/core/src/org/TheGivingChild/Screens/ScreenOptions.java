@@ -41,7 +41,6 @@ class ScreenOptions extends ScreenAdapter {
 	private AssetManager manager;
 	private SpriteBatch batch;
 	private Texture title;
-	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
 	private String[] optionsArray = {"   Option 1   ", 
 			  						 "   Option 2   ", 
@@ -60,8 +59,9 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	@Override
 	public void render(float delta) {
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(manager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				if(manager.isLoaded("optionsTitle.png"))
 					title = manager.get("optionsTitle.png");
 				Gdx.gl.glClearColor(1,1,0,1);
@@ -94,8 +94,8 @@ class ScreenOptions extends ScreenAdapter {
 				
 			}
 		}
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override

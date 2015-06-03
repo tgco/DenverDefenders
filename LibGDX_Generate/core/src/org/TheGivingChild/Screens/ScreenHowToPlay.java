@@ -34,7 +34,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "Button_MainScreen_CharacterCreator"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
-	private float screenTransitionTimeLeft = 1.0f;
 	private boolean isRendered = false;
 	private TGC_Engine game;
 	
@@ -98,8 +97,9 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
+		ScreenAdapterManager.getInstance().screenTransition();
 		if(manager.update()) {
-			if(screenTransitionTimeLeft <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
 				if(manager.isLoaded("HowToPlay.png"))
 					title = manager.get("HowToPlay.png");
 				if(manager.isLoaded("HowToPlayMessage.png"))
@@ -116,9 +116,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 				show();
 			}
 		}
-		if(screenTransitionTimeLeft >= 0)
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
-		
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
 	@Override
