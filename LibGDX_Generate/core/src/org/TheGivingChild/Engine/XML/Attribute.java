@@ -61,7 +61,9 @@ public enum Attribute {
 			return variableNames;
 		}
 		public void setup(GameObject myObject){}//doesnt need to setup anything		
-		public Array<String> getValues(GameObject myObject){return new Array<String>();}
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(BOUNCEOFFEDGEOFSCREEN);
+		}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
@@ -77,11 +79,10 @@ public enum Attribute {
 			temp.add("Initial Health");
 			return temp;
 		}
-		public String getXMLName(){return "color";}
+		public String getXMLName(){return "health";}
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			// TODO Auto-generated method stub
-			return null;
+			return myObject.getAttributeData().get(HEALTH);
 		}
 	},
 	FALLSATSETRATE{
@@ -101,8 +102,8 @@ public enum Attribute {
 		public String getXMLName(){return "fallsAtSetRate";}
 		@Override
 		public Array<String> getVariableNames() {
-			// TODO Auto-generated method stub
-			return null;
+			Array<String> variableNames = new Array<String>();
+			return variableNames;
 		}
 		@Override
 		public void setup(GameObject myObject) {
@@ -111,8 +112,7 @@ public enum Attribute {
 		}
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			// TODO Auto-generated method stub
-			return null;
+			return myObject.getAttributeData().get(FALLSATSETRATE);
 		}
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
@@ -135,8 +135,8 @@ public enum Attribute {
 		public String getXMLName(){return "health";}
 		@Override
 		public Array<String> getVariableNames() {
-			// TODO Auto-generated method stub
-			return null;
+			Array<String> variableNames = new Array<String>();
+			return variableNames;
 		}
 		@Override
 		public void setup(GameObject myObject) {
