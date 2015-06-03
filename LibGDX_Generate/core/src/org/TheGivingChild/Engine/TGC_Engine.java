@@ -17,22 +17,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class TGC_Engine extends Game {
 	final static int DESKTOP_WIDTH = 1024;
-	final static int DESKTOP_HEIGHT = 768;
+	final static int DESKTOP_HEIGHT = 576;
 	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private TGC_Stage stage;
@@ -50,7 +45,6 @@ public class TGC_Engine extends Game {
     private float height;
     private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
-    private SpriteBatch batch;
     private Group objectGroup;
     //Asset Manager to store assets
     private AssetManager manager = new AssetManager();
@@ -99,7 +93,6 @@ public class TGC_Engine extends Game {
 		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
 		manager.load("editorAssets/Grid.png", Texture.class);
 		manager.finishLoading();
-		batch = new SpriteBatch();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
 		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
