@@ -80,7 +80,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		{
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
-			collisionRects.add(new Rectangle(rect.x / mapTilesX, rect.y / mapTilesY, rect.width / mapTilesX, rect.height / mapTilesY));
+			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
 					
 		
@@ -108,7 +108,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
 		float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
 		//If the sprite is not going off the maze allow it to move
-		
+		//Check for a collision as well
 		boolean collision = false;
 		
 		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
@@ -120,7 +120,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				
 				for(Rectangle r : collisionRects)
 				{
-					if(spriteRec.overlaps(r))
+					if(r.overlaps(spriteRec))
 					{
 						collision = true;
 					}
