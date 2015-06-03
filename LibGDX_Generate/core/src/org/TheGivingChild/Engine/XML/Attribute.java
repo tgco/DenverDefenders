@@ -57,7 +57,6 @@ public enum Attribute {
 		}
 		public Array<String> getVariableNames(){
 			Array<String> variableNames = new Array<String>();
-			variableNames.add("Object ID to collide with");
 			return variableNames;
 		}
 		public void setup(GameObject myObject){}//doesnt need to setup anything		
@@ -149,15 +148,15 @@ public enum Attribute {
 			
 		}
 	},
-	COLLIDESWITHOBJECTSID{
+	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
-				
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
-						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						//System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						
 					}
 				}
 			}
