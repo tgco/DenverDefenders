@@ -206,17 +206,18 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		//if the manager is not done updating, it will display a loading image
-		ScreenAdapterManager.getInstance().screenTransition();
+		//ScreenAdapterManager.getInstance().screenTransition();
 		//once the manager is done updating, it prepares to switch to the main screen
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
 			//or to switch to displaying the main screen
 			if(screenTransitionTimeLeft <= 0){
+				//stage.draw();
 				super.render();
-				stage.draw();
+				
 				//if the texture atlas packs are loaded, then add it to the skin
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
@@ -239,6 +240,9 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		stage.draw();
+		if(ScreenAdapterManager.getInstance().screenTransitionOutComplete)
+			ScreenAdapterManager.getInstance().screenTransitionOut();
+
 	}
 	
 	@Override

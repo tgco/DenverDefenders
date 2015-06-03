@@ -81,13 +81,14 @@ public final class ScreenAdapterManager {
         	//it didn't, so add the ScreenAdapter to the map.
             screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
         } 
-        //inLeftScreenStart = ;
-        //inRightScreenStart = ;
+        inLeftScreenStart = -Gdx.graphics.getWidth()/2;
+        inRightScreenStart = Gdx.graphics.getWidth();
         outLeftScreenStart = 0f;
         outRightScreenStart = Gdx.graphics.getWidth()/2;
         SCREEN_TRANSITION_TIME_LEFT = 1.0f;
         currentEnum = screenEnum;
         //Hide the current screen, show the new screen
+        
         screenTransitionOutComplete = false;
         game.setScreen(screens.get(screenEnum.ordinal()));
     }
@@ -106,7 +107,7 @@ public final class ScreenAdapterManager {
     	return true;
     }
     public boolean screenTransitionIn(){
-    	if(inRightScreenStart >= inRightScreenEnd){
+    	if(inRightScreenStart >= inRightScreenEnd && inLeftScreenStart <= inLeftScreenEnd){
    		 batch.begin();
             batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
             batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());

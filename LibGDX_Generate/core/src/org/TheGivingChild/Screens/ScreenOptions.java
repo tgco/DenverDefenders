@@ -39,6 +39,8 @@ class ScreenOptions extends ScreenAdapter {
 	private Table optionsTable;
 	private Array<CheckBox> options;
 	private Table choicesTable;
+	private Table sliderTable;
+	private Table overallTable;
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private CheckBoxStyle cbStyle;
@@ -63,8 +65,7 @@ class ScreenOptions extends ScreenAdapter {
 		manager = game.getAssetManager();
 		manager.load("optionsTitle.png", Texture.class);
 		createOptionsTable();
-		createRows();
-		createSlider();
+		createOverallTable();
 	}
 	@Override
 	public void render(float delta) {
@@ -111,7 +112,7 @@ class ScreenOptions extends ScreenAdapter {
 	public void show() {
 		if(isRendered) {
 			game.getStage().addActor(optionsTable);
-			game.getStage().addActor(choicesTable);
+			game.getStage().addActor(overallTable);
 			isRendered = false;
 		}
 	};
@@ -119,7 +120,7 @@ class ScreenOptions extends ScreenAdapter {
 	@Override
 	public void hide() {
 		optionsTable.remove();
-		choicesTable.remove();
+		overallTable.remove();
 	}
 	
 	private void createOptionsTable() {
@@ -133,13 +134,11 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.align(Align.bottom);
 	}
 	
-	private void createRows() {
+	private void createChoices() {
 		choicesTable = new Table();
 		buttonSkin = new Skin();
 		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
-		createChoices();
-		choicesTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		choicesTable.align(Align.center);
+		createCheckBoxes();
 	}
 
 	private void createButton() {
@@ -164,7 +163,7 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.add(backButton);
 	}
 	
-	private void createChoices() {
+	private void createCheckBoxes() {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
@@ -179,6 +178,7 @@ class ScreenOptions extends ScreenAdapter {
 		}
 	}
 	 private void createSlider() {
+		 sliderTable = new Table();
 		 sliderSkin = new Skin();
 		 font = game.getBitmapFontButton();
 		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
@@ -194,16 +194,25 @@ class ScreenOptions extends ScreenAdapter {
 				 updateSliderValue(value);
 			 }
 		 });
-		 sliderValue = new Label("0.0", ls);
-		 sliderName = new Label("Volume", ls);
-		 choicesTable.row();
-		 choicesTable.add(sliderName);
-		 choicesTable.add(slider);
-		 choicesTable.add(slider);
-		 choicesTable.add(sliderValue).width(40);
+		 sliderValue = new Label("  0.0", ls);
+		 sliderName = new Label("Volume  ", ls);
+		 sliderTable.add(sliderName);
+		 sliderTable.add(slider).width(500);
+		 sliderTable.add(sliderValue).width(40);
 	 }
 	 
 	 private void updateSliderValue(float v) {
-		 sliderValue.setText(Float.toString(v));
+		 sliderValue.setText("  " + Float.toString(v));
+	 }
+	 
+	 private void createOverallTable() {
+		 overallTable = new Table();
+		 createChoices();
+		 createSlider();
+		 overallTable.add(choicesTable);
+		 overallTable.row();
+		 overallTable.add(sliderTable);
+		 overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		 overallTable.align(Align.center);
 	 }
 }
