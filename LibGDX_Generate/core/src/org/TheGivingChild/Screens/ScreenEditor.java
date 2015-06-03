@@ -99,8 +99,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();		
-		EditorTextInputListener listener = new EditorTextInputListener();
-		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+		
 		
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
@@ -109,6 +108,7 @@ class ScreenEditor extends ScreenAdapter{
 	@Override
 	public void hide() {
 		editorTable.remove();
+		window.remove();
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
@@ -164,6 +164,11 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
+			window.setX(Gdx.graphics.getWidth()/2);
+			window.setY(Gdx.graphics.getHeight()/2);
+
+			EditorTextInputListener listener = new EditorTextInputListener();
+			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
 		}
 	};
 	
@@ -453,7 +458,7 @@ class ScreenEditor extends ScreenAdapter{
 			
 		});
 		window.align(Align.topLeft);
-		window.show(mainGame.getStage());
 		window.setVisible(false);
+		window.show(mainGame.getStage());
 	}
 }
