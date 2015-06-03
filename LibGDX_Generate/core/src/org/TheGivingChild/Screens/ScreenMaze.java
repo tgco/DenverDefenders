@@ -35,6 +35,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private int mapTilesX, mapTilesY;
 	private float mazeWidth, mazeHeight;
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
+	private Array<Rectangle> minigameRects = new Array<Rectangle>();
 
 	private Vector2 lastTouch = new Vector2();
 
@@ -51,7 +52,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		Gdx.input.setInputProcessor(this);
+		
 		
 		
 		spriteBatch = new SpriteBatch();
@@ -59,9 +60,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		sprite = new Sprite(spriteTexture);
 		//make sure all the layers are set to visible by default.
 		//this is the source of error for the 'missing' background tiles
-		for(MapLayer layer: map.getLayers()){
-			layer.setVisible(true);
-		}
+		
 
 		//Setup map properties
 		properties = map.getProperties();
@@ -82,7 +81,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
-					
+		
+		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
+		for(int i = 0; i <miniGameObjects.getCount(); i++)
+		{
+			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
+			Rectangle rect = obj.getRectangle();
+			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+		}
 		
 	}
 
@@ -111,6 +117,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Check for a collision as well
 		boolean collision = false;
 		
+		
 		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
 		{
 			if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
@@ -126,6 +133,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					}
 				}
 				
+				for(Rectangle m : minigameRects)
+				{
+					if(m.overlaps(spriteRec))
+					{
+						minigameRects.removeValue(m, true);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+					}
+				}
+							
 				
 				if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
 			}
@@ -166,6 +182,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if(keycode == Input.Keys.NUM_2){
 			map.getLayers().get(1).setVisible(!map.getLayers().get(1).isVisible());
 		}
+		
+		if(keycode == Input.Keys.M){
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+		}
+		
 		return true;
 	}
 
@@ -214,6 +235,37 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 	}
 
+	@Override
+	public void show(){
+		
+		xMove = 0;
+		yMove = 0;
+		
+		for(MapLayer layer: map.getLayers()){
+			layer.setVisible(true);
+		}
+		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
+		
+		for(int i = 0; i <collisionObjects.getCount(); i++)
+		{
+			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
+			Rectangle rect = obj.getRectangle();
+			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+		}
+		
+		Gdx.input.setInputProcessor(this);
+		
+	}
+	
+	@Override
+	public void hide(){
+		for(MapLayer layer: map.getLayers()){
+			layer.setVisible(false);
+		}
+		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
+		collisionRects.clear();
+	}
+	
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub

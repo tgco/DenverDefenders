@@ -36,7 +36,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private AssetManager manager = new AssetManager();
 	private boolean isRendered = false;
 	private TGC_Engine game;
-	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
@@ -97,9 +96,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransition();
+		//boolean transitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				if(manager.isLoaded("HowToPlay.png"))
 					title = manager.get("HowToPlay.png");
 				if(manager.isLoaded("HowToPlayMessage.png"))
@@ -122,8 +122,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void show() {
-		if(isRendered)
+		if(isRendered){
 			game.getStage().addActor(table);
+			isRendered = false;
+		}
 	}
 	
 }
