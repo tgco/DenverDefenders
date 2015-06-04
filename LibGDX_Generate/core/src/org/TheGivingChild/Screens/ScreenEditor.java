@@ -79,6 +79,8 @@ class ScreenEditor extends ScreenAdapter{
 	private Dialog window;
 	
 	private Array<String> inputListeners;
+	private ObjectMap<Attribute,Array<String>> attributes;
+	
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		text = new Array<Texture>();
@@ -97,15 +99,16 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();		
-		EditorTextInputListener listener = new EditorTextInputListener();
-		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+		
 		
 		inputListeners = new Array<String>();
+		attributes = new ObjectMap<Attribute,Array<String>>();
 	}
 	//When hidden removes it's table
 	@Override
 	public void hide() {
 		editorTable.remove();
+		window.remove();
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 	@Override
@@ -161,6 +164,11 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
+			window.setX(Gdx.graphics.getWidth()/2);
+			window.setY(Gdx.graphics.getHeight()/2);
+
+			EditorTextInputListener listener = new EditorTextInputListener();
+			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
 			isRendered = false;
 		}
 	};
@@ -226,12 +234,12 @@ class ScreenEditor extends ScreenAdapter{
 					float[] drawPos =  {x, y};	
 					//Create the new editor game object
 					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
-							inputListeners,new ObjectMap<Attribute,Array<String>>());
+							inputListeners, attributes);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
 							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	
-									drawPos, inputListeners, new ObjectMap<Attribute,Array<String>>());
+									drawPos, inputListeners, attributes);
 							gameObjects.set(k, obj);
 							added = true;
 						}
@@ -405,10 +413,17 @@ class ScreenEditor extends ScreenAdapter{
 			attributeBox.addListener(new ChangeListener()  {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
-					if (inputListeners.contains(enums.getXMLName(), false))
-						inputListeners.removeValue(enums.getXMLName(), false);
-					else 
-						inputListeners.add(enums.getXMLName());				}
+					if (attributes.containsKey(enums)) {
+						attributes.remove(enums);
+				}
+					else {
+						Array<String> attributeValues = new Array<String>();
+						for (int i=0; i < enums.getVariableNames().size; i++) {
+							attributeValues.add("0.0");
+						}
+						attributes.put(enums, attributeValues);
+						System.out.println(attributes.size);
+					}}
 			});
 		}
 		window.row();
@@ -444,7 +459,7 @@ class ScreenEditor extends ScreenAdapter{
 			
 		});
 		window.align(Align.topLeft);
-		window.show(mainGame.getStage());
 		window.setVisible(false);
+		window.show(mainGame.getStage());
 	}
 }

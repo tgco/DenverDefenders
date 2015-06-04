@@ -52,7 +52,8 @@ public class ScreenLevel extends ScreenAdapter{
 
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);

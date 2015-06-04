@@ -22,7 +22,8 @@ public enum Attribute {
 		
 		public Array<String> getValues(GameObject myObject){
 			Array<String> temp = new Array<String>();
-			temp.add(myObject.getAttributeData().get(MOVES).get(0) + "," + myObject.getAttributeData().get(MOVES).get(1));
+			temp.add(myObject.getAttributeData().get(MOVES).get(0));
+			temp.add(myObject.getAttributeData().get(MOVES).get(1));
 			return temp;
 		}
 		
@@ -56,11 +57,12 @@ public enum Attribute {
 			}
 		}
 		public Array<String> getVariableNames(){
-			Array<String> variableNames = new Array<String>();
-			return variableNames;
+			return new Array<String>();
 		}
 		public void setup(GameObject myObject){}//doesnt need to setup anything		
-		public Array<String> getValues(GameObject myObject){return new Array<String>();}
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(BOUNCEOFFEDGEOFSCREEN);
+		}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
 	HEALTH{
@@ -76,11 +78,10 @@ public enum Attribute {
 			temp.add("Initial Health");
 			return temp;
 		}
-		public String getXMLName(){return "color";}
+		public String getXMLName(){return "health";}
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			// TODO Auto-generated method stub
-			return null;
+			return myObject.getAttributeData().get(HEALTH);
 		}
 	},
 	FALLSATSETRATE{
@@ -100,8 +101,8 @@ public enum Attribute {
 		public String getXMLName(){return "fallsAtSetRate";}
 		@Override
 		public Array<String> getVariableNames() {
-			// TODO Auto-generated method stub
-			return null;
+			Array<String> variableNames = new Array<String>();
+			return variableNames;
 		}
 		@Override
 		public void setup(GameObject myObject) {
@@ -110,8 +111,7 @@ public enum Attribute {
 		}
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			// TODO Auto-generated method stub
-			return null;
+			return myObject.getAttributeData().get(FALLSATSETRATE);
 		}
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
@@ -134,8 +134,8 @@ public enum Attribute {
 		public String getXMLName(){return "health";}
 		@Override
 		public Array<String> getVariableNames() {
-			// TODO Auto-generated method stub
-			return null;
+			Array<String> variableNames = new Array<String>();
+			return variableNames;
 		}
 		@Override
 		public void setup(GameObject myObject) {
@@ -149,21 +149,46 @@ public enum Attribute {
 		}
 	},
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
+		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
-						//System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
+						//float c2 = allObjects.get(i).getAttributeData();
+						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
+						float m2 = Float.parseFloat(allObjects.get(i).getAttributeData().get(MASS).get(0));
+						float v1ix = myObject.getVelocity()[0];
+						float v2ix = allObjects.get(i).getVelocity()[0];
+						float v1iy = myObject.getVelocity()[1];
+						float v2iy = allObjects.get(i).getVelocity()[1];
 						
+						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
+						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
+						//System.out.println(direction[0] + ", " + direction[1]);
 					}
 				}
 			}
 		}
 		
+		private int[] direction(float x1, float y1, float x2, float y2){
+			int x = 1;
+			int y = 1;
+			if(x2-x1 < 0)
+				x=-1;
+			if(y2-y1 < 0)
+				y=-1;				
+			return new int[] {x,y};
+		}
+		
 		public void setup(GameObject myObject){
-			
+			Array<String> newValues = new Array<String>();
+			for(String current:myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0).split(","))
+				newValues.add(current);//FINISH ME SENPAI
 		}
 		
 		public Array<String> getValues(GameObject myObject){
@@ -172,10 +197,71 @@ public enum Attribute {
 		
 		public Array<String> getVariableNames(){
 			Array<String> variableNames = new Array<String>();
-			variableNames.add("Object ID");
+			variableNames.add("Elasticity constant");//uh oh. can only collide with 1 object. not variable.
+			variableNames.add("Object ID's in a list, delimited by commas");
 			return variableNames;
 		}
 		public String getXMLName(){return "collidesWithObjectsID";}
+	},
+	MASS{
+
+		@Override
+		public Array<String> getVariableNames() {
+			Array<String> varName = new Array<String>();
+			varName.add("mass");
+			return varName;
+		}
+
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			return myObject.getAttributeData().get(MASS);
+		}
+
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {}
+		@Override
+		public void setup(GameObject myObject) {}
+		@Override
+		public String getXMLName() {
+			return "mass";
+		}
+		
+	},
+	MOVESONSETPATH{
+
+		@Override
+		public Array<String> getVariableNames() {
+			Array<String> varName = new Array<String>();
+			return varName;
+		}
+
+		@Override
+		public void setup(GameObject myObject) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			return myObject.getAttributeData().get(MOVESONSETPATH);
+		}
+
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getXMLName() {
+			// TODO Auto-generated method stub
+			return "movesOnSetPath";
+		}
+		
+		private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
+			return new float[] {myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index-1)*4),myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index+1)*4)};
+		}
+		
 	};
 	public abstract Array<String> getVariableNames();
 	public abstract void setup(GameObject myObject);
