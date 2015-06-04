@@ -1,9 +1,12 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.TGC_Engine;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,10 +39,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private float mazeWidth, mazeHeight;
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
 	private Array<Rectangle> minigameRects = new Array<Rectangle>();
-
+	
 	private Vector2 lastTouch = new Vector2();
 
-
+	private AssetManager manager;
+	private TGC_Engine game;
+	
 	public ScreenMaze()
 	{
 		float w = Gdx.graphics.getWidth();
@@ -89,73 +94,81 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
-		
+		game = ScreenAdapterManager.getInstance().game;
+		manager = game.getAssetManager();
 	}
 
 	@Override 
 	public void render(float delta)
 	{
-		//set a red background
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		if(manager.update()) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
+				//set a red background
+				Gdx.gl.glClearColor(1, 0, 0, 1);
+				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+						
+						
+				//update the camera
+				camera.update();
+				//set the map to be rendered by this camera
+				mapRenderer.setView(camera);
+				//render the map
+				mapRenderer.render();
+				//Make the sprite not move when the map is scrolled
+				spriteBatch.setProjectionMatrix(camera.combined);
+				//move the sprite left, right, up, or down
+				//Calculate where the sprite is going to move
+				float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
+				float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
+				//If the sprite is not going off the maze allow it to move
+				//Check for a collision as well
+				boolean collision = false;
 				
 				
-		//update the camera
-		camera.update();
-		//set the map to be rendered by this camera
-		mapRenderer.setView(camera);
-		//render the map
-		mapRenderer.render();
-		//Make the sprite not move when the map is scrolled
-		spriteBatch.setProjectionMatrix(camera.combined);
-		//move the sprite left, right, up, or down
-		//Calculate where the sprite is going to move
-		float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
-		float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
-		//If the sprite is not going off the maze allow it to move
-		//Check for a collision as well
-		boolean collision = false;
-		
-		
-		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
-		{
-			if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
-			{
-				
-				Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
-				
-				for(Rectangle r : collisionRects)
+				if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
 				{
-					if(r.overlaps(spriteRec))
+					if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
 					{
-						collision = true;
+						
+						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
+						
+						for(Rectangle r : collisionRects)
+						{
+							if(r.overlaps(spriteRec))
+							{
+								collision = true;
+							}
+						}
+						
+						for(Rectangle m : minigameRects)
+						{
+							if(m.overlaps(spriteRec))
+							{
+								minigameRects.removeValue(m, true);
+								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+							}
+						}
+									
+						
+						if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
 					}
+				
 				}
 				
-				for(Rectangle m : minigameRects)
-				{
-					if(m.overlaps(spriteRec))
-					{
-						minigameRects.removeValue(m, true);
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-					}
-				}
-							
-				
-				if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
+				//begin the batch that sprites will draw to
+				spriteBatch.begin();
+				//draw the main character sprite to the map
+				sprite.draw(spriteBatch);
+				//update the camera to be above the character
+				camera.position.set(sprite.getX(), sprite.getY(), 0);
+				//end the batch that sprites have drawn to
+				spriteBatch.end();
 			}
-		
 		}
-		
-		//begin the batch that sprites will draw to
-		spriteBatch.begin();
-		//draw the main character sprite to the map
-		sprite.draw(spriteBatch);
-		//update the camera to be above the character
-		camera.position.set(sprite.getX(), sprite.getY(), 0);
-		//end the batch that sprites have drawn to
-		spriteBatch.end();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 
 	@Override

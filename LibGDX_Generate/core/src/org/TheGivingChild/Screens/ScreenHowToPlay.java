@@ -19,6 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 
+/**
+ * This class creates the how to play screen. It displays a message that explains how the
+ * game will be played. It also allows navigation to any other screen as well.
+ * @author ctokunag
+ */
 class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
 	private Texture message;
@@ -75,8 +80,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
 					else if(j == 2)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
-					else if(j == 3)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);
+					/*else if(j == 3)
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);*/
 					else
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					hide();
