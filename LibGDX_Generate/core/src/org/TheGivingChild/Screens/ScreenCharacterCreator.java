@@ -20,7 +20,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
+/**
+ * Screen for character creation. 
+ * Put off for more pressing features.
+ * @author janelson
+ *
+ */
 public class ScreenCharacterCreator extends ScreenAdapter {
 	//reference to Engine
 	TGC_Engine game;

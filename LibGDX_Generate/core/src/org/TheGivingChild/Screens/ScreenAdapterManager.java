@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.sun.jndi.ldap.ManageReferralControl;
 /**
  * 
  * The ScreenAdapterManager class is follows the Singleton pattern.
@@ -27,30 +28,42 @@ import com.badlogic.gdx.utils.IntMap;
  */
 
 public final class ScreenAdapterManager {
-	//variable for the instance of the manager.
+	/**Instance of the {@link #ScreenAdapterManager}.*/
 	private static ScreenAdapterManager instance;
+	/**Enumeration of the current {@link #ScreenAdapter} shown. */
 	private ScreenAdapterEnums currentEnum;
-	//variable to refer to the game.
+	/**Reference to {@link TGC_Engine}. */
 	public TGC_Engine game;
-	//map of screenAdapters built from enums
+	/**Map of {@link ScreenAdapter}'s built from {@link ScreenAdapterEnums}.*/
 	private IntMap<ScreenAdapter> screens;
-	//reference to asset manager
+	/**Reference to the {@link AssetManager} in {@link TGC_Engine}.*/
 	private AssetManager manager;
-	//batch for screen transitions
+	/**{@link SpriteBatch} used for rendering screen transitions. */
 	private Batch batch = new SpriteBatch();
-	//textures for curtainCall.
+	/**{@link TextureRegion}'s to be drawn for screen transitions. */
 	private Array<TextureRegion> screenTransitions;
+	/**Start position for drawing the left screen during {@link #screenTransitionOut()}.*/
 	protected float outLeftScreenStart;
+	/**End position for drawing the left screen during {@link #screenTransitionOut()}.*/
 	protected final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
+	/**Start position for drawing the right screen during {@link #screenTransitionOut()}.*/
 	protected float outRightScreenStart;
+	/**End position for drawing the right screen during {@link #screenTransitionOut()}.*/
 	protected final float outRightScreenEnd = Gdx.graphics.getWidth();
+	/**Start position for drawing the left screen during {@link #screenTransitionIn()}.*/
 	protected float inLeftScreenStart;
+	/**End position for drawing the left screen during {@link #screenTransitionIn()}.*/
 	protected final float inLeftScreenEnd = 0;
+	/**Start position for drawing the right screen during {@link #screenTransitionIn()}.*/
 	protected float inRightScreenStart;
+	/**End position for drawing the right screen during {@link #screenTransitionIn()}.*/
 	protected final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
+	/**The amount of minimum time for the screen to transition. */
 	protected float SCREEN_TRANSITION_TIME_LEFT;
+	/**screenTransition state to reference when other events should occur*/
 	public boolean screenTransitionInComplete;
-	public float screenTransitionTime;
+	/**The speed at which the curtains should transition in.*/
+	public float screenTransitionSpeed;
 
 	/**
 	 * Constructor: initializes an instance of the adapter. initializes the empty map.
@@ -60,9 +73,9 @@ public final class ScreenAdapterManager {
 		screenTransitions = new Array<TextureRegion>();
 	}
 	/**
-	 * Allows access to the instance of the adapter class from outside the class.
-	 * If the instance is null, construct it.
-	 * Return the instance to the caller.
+	 * Allows access to {@link #instance} from outside the class.
+	 * If the {@link #instance} is null, construct it.
+	 * Return the {@link #instance} to the caller.
 	 */
 	public static ScreenAdapterManager getInstance() {
 		if (null == instance) {
@@ -122,7 +135,7 @@ public final class ScreenAdapterManager {
 			screenTransitions.add(texture);
 		}
 		screenTransitionInComplete = false;
-		screenTransitionTime = Gdx.graphics.getWidth()/30*.2f;
+		screenTransitionSpeed = Gdx.graphics.getWidth()/30*.2f;
 		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
@@ -151,8 +164,8 @@ public final class ScreenAdapterManager {
 			batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.end();
-			inLeftScreenStart+= screenTransitionTime;
-			inRightScreenStart-= screenTransitionTime;
+			inLeftScreenStart+= screenTransitionSpeed;
+			inRightScreenStart-= screenTransitionSpeed;
 			return false;
 		}
 		return true;
@@ -168,8 +181,8 @@ public final class ScreenAdapterManager {
 			batch.draw(screenTransitions.get(0), outLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.draw(screenTransitions.get(1), outRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.end();
-			outLeftScreenStart-= screenTransitionTime;
-			outRightScreenStart+= screenTransitionTime;
+			outLeftScreenStart-= screenTransitionSpeed;
+			outRightScreenStart+= screenTransitionSpeed;
 			return false;
 		}
 		return true;
