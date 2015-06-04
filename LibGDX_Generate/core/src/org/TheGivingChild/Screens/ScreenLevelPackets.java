@@ -23,7 +23,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-
+/** 
+ * <p>
+ * This was used for the initial requirements of putting minigames in packages.
+ * </p>
+ * <p>
+ * As the engine progresses, this will not be used at all since the minigames will be called from maze when characters are run into.
+ * </p>
+ * @author janelson
+ *
+ */
 class ScreenLevelPackets extends ScreenAdapter{
 	//list of packets for each level set.
 	private Array<LevelPacket> packets;

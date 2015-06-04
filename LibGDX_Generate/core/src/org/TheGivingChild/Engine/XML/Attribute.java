@@ -124,8 +124,6 @@ public enum Attribute {
 					Rectangle tooSmall = new Rectangle(allObjects.get(i).getX()+buffer,allObjects.get(i).getY()+buffer,allObjects.get(i).getWidth()-buffer,allObjects.get(i).getHeight()-buffer);
 					Rectangle tooBig = new Rectangle(allObjects.get(i).getX()-buffer,allObjects.get(i).getY()-buffer,allObjects.get(i).getWidth()+buffer,allObjects.get(i).getHeight()+buffer);
 					if(juanBig.overlaps(tooBig) && juanSmall.overlaps(tooSmall)){
-						
-						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));

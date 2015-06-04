@@ -13,43 +13,53 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Takes a given {@link org.TheGivingChild.Engine.XML.Level Level} and allows the user to play it.
+ * It displays all {@link org.TheGivingChild.Engine.XML.GameObject GameObject} in the level continuously as they update.
+ * @author njacobi, mtzimour
+ *
+ */
 public class ScreenLevel extends ScreenAdapter{
 
 	private Level level;
-	private Array<String> textureFile;
 	private SpriteBatch batch;
 	private AssetManager manager;
-	public ScreenLevel() {
-
-	}
-
+	
+	/**
+	 * Called when the level is complete and is returning to the main screen.
+	 * Nulls everything since they are initialized whenever ScreenLevel is shown.
+	 */
 	@Override
 	public void hide() {
 		level = null;
-
 		manager = null;
-		textureFile.clear();
 	}
-
+	
+	/**
+	 * Called when the ScreenLevel is supposed to be shown. It initializes the level with the given level
+	 * and sets its {@link com.badlogic.gdx.assets.AssetManager AssetManager} to the game's. 
+	 * It resets all objects in the level and loads them.
+	 */
 	@Override
 	public void show() {
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-		manager.load("ball.png", Texture.class);
-		manager.load("Box.png", Texture.class);
-		manager.load("BoxHalf.png", Texture.class);
-		manager.load("Grid.png", Texture.class);
+
+		System.out.println("Game objects reset");
 		for(GameObject gameObject: level.getGameObjects()){
 			gameObject.resetObject();
 		}
 		level.loadObjectsToStage();
-		textureFile = new Array<String>();
-		for (GameObject g : level.getGameObjects()) {
-			textureFile.add(g.getImageFilename());
-		}
 		batch = new SpriteBatch();
 	}
-
+	
+	/**
+	 * Calls a screen transition effect first.
+	 * Once completed, it goes through all of the {@link org.TheGivingChild.Engine.XML.GameObject GameObjects} 
+	 * that the game contains and draws them. If the GameObjects are supposed to be destroyed they are ignored. 
+	 * After drawing the level is updated. 
+	 * @param delta Amount of time passed between each render call. In seconds
+	 */
 	@Override
 	public void render(float delta) {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
