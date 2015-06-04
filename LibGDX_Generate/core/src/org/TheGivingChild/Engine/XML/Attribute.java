@@ -137,7 +137,7 @@ public enum Attribute {
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(two)){
-						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						//System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));

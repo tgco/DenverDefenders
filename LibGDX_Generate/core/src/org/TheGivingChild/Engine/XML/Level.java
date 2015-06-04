@@ -42,7 +42,7 @@ public class Level {
 		if(!checkLose())
 		{
 		
-		System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
+		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
 			currentObject.update(actors);

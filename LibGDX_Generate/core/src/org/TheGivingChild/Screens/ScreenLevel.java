@@ -39,10 +39,12 @@ public class ScreenLevel extends ScreenAdapter{
 		manager.load("Box.png", Texture.class);
 		manager.load("BoxHalf.png", Texture.class);
 		manager.load("Grid.png", Texture.class);
+		level.loadObjectsToStage();
+
+		System.out.println("Gameobjects reset");
 		for(GameObject gameObject: level.getGameObjects()){
 			gameObject.resetObject();
 		}
-		level.loadObjectsToStage();
 		textureFile = new Array<String>();
 		for (GameObject g : level.getGameObjects()) {
 			textureFile.add(g.getImageFilename());
