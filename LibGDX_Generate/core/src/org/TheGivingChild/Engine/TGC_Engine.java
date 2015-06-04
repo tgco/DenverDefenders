@@ -12,9 +12,7 @@ import org.TheGivingChild.Screens.ScreenAdapterManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -44,7 +42,7 @@ public class TGC_Engine extends Game {
 	//create the stage for our actors
 	private TGC_Stage stage;
 	//button atlas reference names
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_CharacterCreator", "Button_MainScreen_CharacterCreator"};
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options", "ButtonPressed_MainScreen_Maze", "Button_MainScreen_Maze"};
 	//skin from atlas
 	private Skin skin = new Skin();
 	//bitmap font for buttons
@@ -127,6 +125,7 @@ public class TGC_Engine extends Game {
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Assets to be added to the manager
 		manager.load("MainScreen_Splash.png", Texture.class);
+		manager.load("DenverSkyline.jpg", Texture.class);
 		//initial update so that the loading screen is loaded before everything
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);

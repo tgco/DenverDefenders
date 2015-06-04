@@ -8,8 +8,11 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -29,10 +32,11 @@ class ScreenMain extends ScreenAdapter {
 	private float buttonHeight;
 	private Table mainScreenTable;
 	private Skin skin = new Skin();
-
+	private Batch batch = new SpriteBatch();
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean isRendered = false;
+	private TextureRegion region;
 	
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -77,8 +81,9 @@ class ScreenMain extends ScreenAdapter {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
+				Gdx.gl.glClearColor(1,1,1,1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				ScreenAdapterManager.getInstance().backgroundImage();
 				isRendered = true;
 				show();
 			}
