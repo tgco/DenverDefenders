@@ -7,9 +7,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Each GameObject holds a list of attributes, these attributes do various operations on the object based on their specific implementations of their methods
+ * Each Attribute must implement update, setup, getVariableNames, getValues, and getXMLName
+ * @author Kevin D
+ */
 public enum Attribute {
 	/* each type will have a update method and a setValues method which all take in an Array<String>
 	 * each type can have private fields
+	 */	
+	/**
+	 * If the object will EVER move, must have moves attribute, it has two values, initial x velocity, and initial y velocity, upon setup, it sets its GameObject's velocity to them
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
 		public void update(GameObject myObject,Array<GameObject> allObjects){
@@ -19,14 +27,12 @@ public enum Attribute {
 		public void setup(GameObject myObject){
 			myObject.setVelocity(new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVES).get(0)),Float.parseFloat(myObject.getAttributeData().get(MOVES).get(1))});
 		}
-		
 		public Array<String> getValues(GameObject myObject){
 			Array<String> temp = new Array<String>();
 			temp.add(myObject.getAttributeData().get(MOVES).get(0));
 			temp.add(myObject.getAttributeData().get(MOVES).get(1));
 			return temp;
 		}
-		
 		public Array<String> getVariableNames(){
 			Array<String> variableNames = new Array<String>();
 			variableNames.add("Initial X Velocity");
@@ -36,6 +42,9 @@ public enum Attribute {
 		
 		public String getXMLName(){return "moves";}
 	},
+	/**
+	 * Causes objects to collide with and bounce off of the edge of the screen, collisions are perfectly ellastic
+	 */
 	BOUNCEOFFEDGEOFSCREEN{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			if(myObject.getX() <= 0){//left
@@ -84,41 +93,6 @@ public enum Attribute {
 			return myObject.getAttributeData().get(HEALTH);
 		}
 	},
-	FALLSATSETRATE{
-		private int rate;
-		public void update(GameObject myObject){
-		//	System.out.println("\nfallsAtSetRate Update");
-			myObject.setPosition(myObject.getX(), myObject.getY() - rate * (Gdx.graphics.getDeltaTime()));
-		}
-		public void setValues(Array<String> newValues){
-			rate = Integer.parseInt(newValues.get(0));
-		}
-		public Array<String> getValues(){
-			Array<String> temp = new Array<String>();
-			temp.add(rate+"");
-			return temp;
-		}
-		public String getXMLName(){return "fallsAtSetRate";}
-		@Override
-		public Array<String> getVariableNames() {
-			Array<String> variableNames = new Array<String>();
-			return variableNames;
-		}
-		@Override
-		public void setup(GameObject myObject) {
-			// TODO Auto-generated method stub
-			
-		}
-		@Override
-		public Array<String> getValues(GameObject myObject) {
-			return myObject.getAttributeData().get(FALLSATSETRATE);
-		}
-		@Override
-		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			// TODO Auto-generated method stub
-			
-		}
-	},
 	SPINS{
 		private float rate;
 		public void update(GameObject myObject){
@@ -148,6 +122,12 @@ public enum Attribute {
 			
 		}
 	},
+	/**
+	 * An object with this attribute will collide with the objects which it was told to
+	 * All objects with this attribute AS WELL AS objects it will be colliding with, must have the MASS Attribute
+	 * Do not give this attribute to both objects which will be colliding, for instance, if you want object1 to collide with object2, only give this attribute to object1, and pass it object2's ID
+	 * currently buggy, not working as intended.
+	 */
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		public void update(GameObject myObject,Array<GameObject> allObjects){
@@ -204,6 +184,9 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "collidesWithObjectsID";}
 	},
+	/**
+	 * mass is used in collisions, if the object will ever have an object colliding with it, it MUST have this attribute
+	 */
 	MASS{
 
 		@Override
@@ -228,6 +211,9 @@ public enum Attribute {
 		}
 		
 	},
+	/**
+	 * Currently unimplemented, will cause object to follow a specific predefined path at a set speed
+	 */
 	MOVESONSETPATH{
 
 		@Override
@@ -264,12 +250,37 @@ public enum Attribute {
 		}
 		
 	};
-	public abstract Array<String> getVariableNames();
+	/**
+	 * Called once within the GameObject's constructor, used to setup initial values
+	 * @param	myObject	the GameObject that currently holds this attribute
+	 */
 	public abstract void setup(GameObject myObject);
-	public abstract Array<String> getValues(GameObject myObject);
+	/**
+	 * Used to simulate the specific behavior for each game object, called each frame
+	 * @param	myObject	the GameObject that currently holds the given attribute
+	 * @param	allObjects	all of the gameObjects within the given level
+	 */
 	public abstract void update(GameObject myObject,Array<GameObject> allObjects);
+	/**
+	 * Used by XML_Writer, returns the values associated with the given GameObject's attribute
+	 * @param	myObject	the GameObject that currently holds this attribute
+	 * @return	A libGDX Array object containing the values to write
+	 */
+	public abstract Array<String> getValues(GameObject myObject);
+	/**
+	 * Used by the Editor to tell the user what values they need to input
+	 * @return	A libGDX Array object containing descriptions of the values to setup
+	 */
+	public abstract Array<String> getVariableNames();
+	/**
+	 * Returns 	A string containing the name to write to the .xml file, this is used by the writer.
+	 * @return	The string containing the name to write to the .xml file
+	 */
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
-	
+	/**
+	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
+	 * @return	The Attribute associated with the given string
+	 */
 	public static Attribute newType(String type){
 		return valueOf(type.toUpperCase());
 	}
