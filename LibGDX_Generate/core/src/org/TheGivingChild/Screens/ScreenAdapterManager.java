@@ -53,27 +53,27 @@ public final class ScreenAdapterManager {
 	/**{@link TextureRegion}'s to be drawn for {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Array<TextureRegion> screenTransitions;
 	/**Start position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	protected float outLeftScreenStart;
+	private float outLeftScreenStart;
 	/**End position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	protected final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
+	private final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
 	/**Start position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	protected float outRightScreenStart;
+	private float outRightScreenStart;
 	/**End position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	protected final float outRightScreenEnd = Gdx.graphics.getWidth();
+	private final float outRightScreenEnd = Gdx.graphics.getWidth();
 	/**Start position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	protected float inLeftScreenStart;
+	private float inLeftScreenStart;
 	/**End position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	protected final float inLeftScreenEnd = 0;
+	private final float inLeftScreenEnd = 0;
 	/**Start position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	protected float inRightScreenStart;
+	private float inRightScreenStart;
 	/**End position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	protected final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
+	private final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
 	/**The amount of minimum time for the screen to transition. */
-	protected float SCREEN_TRANSITION_TIME_LEFT;
+	public float SCREEN_TRANSITION_TIME_LEFT;
 	/**screenTransition state to reference when other events should occur*/
 	public boolean screenTransitionInComplete;
 	/**The speed at which the curtains should {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.*/
-	public float screenTransitionSpeed;
+	private float screenTransitionSpeed;
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
