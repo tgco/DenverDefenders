@@ -89,7 +89,7 @@ class ScreenEditor extends ScreenAdapter{
 	/**
 	 * The constructor for the screen editor.
 	 * Gets the main game and the asset manager.
-	 * Created its button table, the dialog, and fills the grid. 
+	 * Creates its button table, the dialog, and fills the grid. 
 	 */
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
@@ -109,8 +109,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();		
-		
-		
+		this.
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
 	}
@@ -130,7 +129,7 @@ class ScreenEditor extends ScreenAdapter{
 	 * Draws the screen transition when the screen is shown.
 	 * When transition is complete, if draws the grid and all GameObjects added.
 	 * Also controls the drawing of the button table, so that it is hidden when not moused over or tapped.
-	 * If the screen ever has a isTouched input call, spawnObject() is called.
+	 * If the screen ever has a Gdx.input.isTouched() input call, {@link #spawnObject() spawnObject()} is called.
 	 * @param delta Amount of time passed between each render call. In seconds
 	 */
 	@Override
@@ -185,7 +184,7 @@ class ScreenEditor extends ScreenAdapter{
 	
 	/**
 	 * Called when the screen is selected and everything is rendered.
-	 * Adds the editorTable to the game's stage and has the levelName window pop.
+	 * Adds the {@link #editorTable editorTable} to the game's stage and has the levelName window pop.
 	 */
 	@Override
 	public void show() {
@@ -209,7 +208,7 @@ class ScreenEditor extends ScreenAdapter{
 	//Function to instantiate the button table
 	/**
 	 * Function that sets up the buttonTable at the bottom of the screen
-	 * Calls createButtons() to add to the table.
+	 * Calls {@link #createButtons() createButtons()}  to add to the table.
 	 */
 	private void createEditorTable() {
 		//Sets up the needed variables and parameters
@@ -251,10 +250,10 @@ class ScreenEditor extends ScreenAdapter{
 	//Called when there is a touch on the screen
 	/**
 	 * Called when Gdx.input.isTouched() is true, so there was a touch on the screen.
-	 * If the user is able to make a GameObject, the object is placed in a particular place.
+	 * If the user is able to make a {@link org.TheGivingChild.Engine.XML.GameObject GameObject}, the object is placed in a particular place.
 	 * It checks the grid rectangles to see which one was touched and this is where the GameObject will go.
-	 * If there is a GameObject there already, it replaces it and assumes its ID.
-	 * It is then added to and array of GameObjects and the canSetObj boolean is reset.
+	 * If there is a {@link org.TheGivingChild.Engine.XML.GameObject GameObject} there already, it replaces it and assumes its ID.
+	 * It is then added to and array of {@link org.TheGivingChild.Engine.XML.GameObject GameObject}, and the {@link #canSetObj canSetObj} boolean is reset.
 	 */
 	private void spawnObject() {
 		//If canSetObj is false, no object is spawned
@@ -340,7 +339,7 @@ class ScreenEditor extends ScreenAdapter{
 	private class EditorTextInputListener implements TextInputListener {
 		/**
 		 * Called when the OK button is selected.
-		 * Sets the textInput to be the levelName
+		 * Sets the textInput to be the {@link ScreenEditor#levelName levelName}
 		 * @param text The inputed text
 		 */
 		@Override
@@ -423,7 +422,7 @@ class ScreenEditor extends ScreenAdapter{
 		exportButton.addListener(new ChangeListener() {
 			/**
 			 * Called when the exportButton is selected.
-			 * Calls the game's XMLWriter and outputs the level file.
+			 * Calls the game's {@link org.TheGivingChild.Engine.XML.XML_Writer XMLWriter} and outputs the level file.
 			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -493,8 +492,8 @@ class ScreenEditor extends ScreenAdapter{
 			
 			attributeBox.addListener(new ChangeListener()  {
 				/**
-				 * Called when any of the attribute checkboxes are selected.
-				 * If the attribute is in the map, it is removed.
+				 * Called when any of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} checkboxes are selected.
+				 * If the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} is in the map, it is removed.
 				 * If it is not, it is added.
 				 */
 				@Override
