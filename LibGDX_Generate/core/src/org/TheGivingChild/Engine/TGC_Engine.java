@@ -17,7 +17,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -69,7 +71,7 @@ public class TGC_Engine extends Game {
     private OrthographicCamera mapCamera;
     
     //Viewport stuff
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
     /**
      * This viewport is used to scale the game to whatever screen is being used.
      * When it is constructed, you will need to enter the aspect ratio you wish to maintain
@@ -88,7 +90,10 @@ public class TGC_Engine extends Game {
      * close, so we shouldn't have to deal with too much distortion.
      * @author ctokunag
      */
-    Viewport viewport;
+    private Viewport viewport;
+    
+    private Batch batch;
+    private int gameStart = 0;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -195,6 +200,8 @@ public class TGC_Engine extends Game {
 		viewport.apply();
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 		
+		batch = new SpriteBatch();
+		
 	}
 	public void createStage(){
 		stage = new TGC_Stage();
@@ -242,6 +249,13 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
+		if(!ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
+			batch.begin();
+			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+		}
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
+			gameStart++;
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 
 		 * done loading, it will display a transition until it is done loading. Once 
