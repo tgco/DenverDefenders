@@ -138,6 +138,8 @@ public class TGC_Engine extends Game {
 		manager.load("editorAssets/BoxHalf.png", Texture.class);
 		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
 		manager.load("editorAssets/Grid.png", Texture.class);
+		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
+		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.finishLoading();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
