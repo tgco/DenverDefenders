@@ -8,7 +8,7 @@
 	
 	<GameObject ID="2" attributes="bounceOffEdgeOfScreen,moves,mass,collidesWithObjectsID" imageFilename="BoxHalf.png" initialLocation="100,100" listeners="destroy_on_click">
 		<moves value1 = "100" value2 = "100"/>
-		<mass value1="2"/>
+		<mass value1="100"/>
 		<collidesWithObjectsID value1="1" value2="3,4"/>
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
@@ -20,10 +20,11 @@
 		<collidesWithObjectsID value1="1" value2="4"/>
 	</GameObject>
 	
-	<GameObject ID="4" attributes="bounceOffEdgeOfScreen,moves,mass" imageFilename="Box.png" initialLocation="500,500" listeners="destroy_on_click">
+	<GameObject ID="4" attributes="bounceOffEdgeOfScreen,moves,mass,spawnObjectOnTimer" imageFilename="Box.png" initialLocation="500,500" listeners="destroy_on_click">
 		<moves value1 = "150" value2 = "150"/>
 		<mass value1="1"/>
 		<bounceOffEdgeOfScreen/>
+		<spawnObjectOnTimer value1="10" value2="ball.png" value3="destory_on_click" value4="0.0,-200.0"/>
 	</GameObject>
 	
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">

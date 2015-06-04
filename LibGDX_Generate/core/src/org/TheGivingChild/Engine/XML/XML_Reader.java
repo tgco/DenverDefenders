@@ -12,11 +12,12 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
 /**
- * Used to read in an .xml file and compile a Level object from it
- * Call setupNewFile to setup the given level, and compileLevel to get the actual Levelk object
+ * Used to read in an .xml file and compile a Level object from it<br>
+ * Call setupNewFile to setup the given level, and compileLevel to get the actual Level object
  * @author Kevin D
  */
-public class XML_Reader {	
+public class XML_Reader {
+	/** The libGDX XmlReader used to parse the .xml file*/
 	private XmlReader reader = new XmlReader();
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	

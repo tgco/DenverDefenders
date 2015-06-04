@@ -19,21 +19,25 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 //GameObject is essentially a storage container for all the information associated with each object on the screen
 /**
- * Used to store all information on each object within the game
- * 
+ * Used to store all information on each object within the game<br>
  * extends Actor
  * @author Mostly Kevin D
  */
 public class GameObject extends Actor implements Disposable{
+	/** Unique ID assigned to each GameObject*/
 	private int ID;
 	private String imageFilename;
+	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
+	/** Two element Position array<br> First element is X position, second is Y position */
 	private float[] position;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean disposed;
 	private Texture texture;
+	/** list of the names of the listeners associated with this object*/
 	private Array<String> listenerNames;
+	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
 	private ObjectMap<Attribute,Array<String>> attributeData;	
 
 	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
