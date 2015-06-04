@@ -277,7 +277,7 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		stage.draw();
-		if(ScreenAdapterManager.getInstance().screenTransitionOutComplete)
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
 			ScreenAdapterManager.getInstance().screenTransitionOut();
 
 	}

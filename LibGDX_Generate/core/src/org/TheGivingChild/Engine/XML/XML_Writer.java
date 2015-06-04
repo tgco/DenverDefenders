@@ -13,50 +13,6 @@ import com.badlogic.gdx.utils.Array;
 public class XML_Writer {
 	private Level currentLevel;
 	
-	//main method for testing
-	
-	public static void main(String cheese[]){
-		//screen 576x1024
-		float[] position = {100,100};
-		float[] velocity = {100,100};
-		
-		Array<String> testListenerNames = new Array<String>();
-		testListenerNames.add("insertNameHere");
-		
-		ObjectMap<Attribute,Array<String>> testData = new ObjectMap<Attribute,Array<String>>();
-		testData.put(Attribute.BOUNCEOFFEDGEOFSCREEN,new Array<String>());
-		
-		GameObject testObject = new GameObject(1,"asd",position,testListenerNames,new ObjectMap<Attribute,Array<String>>());
-		
-		Array<GameObject> testObjectArray = new Array<GameObject>();
-		
-		WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
-		Array<String> testWin1Values = new Array<String>();
-		testWin1Values.add("420");
-		testWin1Values.add("9001");
-		testWin1.setValues(testWin1Values);
-		Array<WinEnum> testWinArray = new Array<WinEnum>();
-		testWinArray.add(testWin1);
-		
-		LoseEnum testLose1 = LoseEnum.TIMEOUT;
-		Array<String>testLose1Values =  new Array<String>();
-		testLose1Values.add("42");
-		testLose1.setValues(testLose1Values);
-		Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
-		testLoseArray.add(testLose1);
-		
-		LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
-		Array<String>testLose2Values =  new Array<String>();
-		testLose2Values.add("42");
-		testLose2Values.add("72");
-		testLose2.setValues(testLose2Values);
-		testLoseArray.add(testLose2);
-		
-		XML_Writer sally = new XML_Writer();
-		//sally.setupNewFile("testOut.xml", "", "testLevel");
-		sally.createLevel(new Level("testOut","PLACEHOLDER1","PLACEHOLDER2", testWinArray, testLoseArray, testObjectArray));
-	}
-	
 	public void createLevel(Level newLevel){//this is who you gonna call
 		currentLevel = newLevel;//shallow copy, but das ok
 		writeToFile();

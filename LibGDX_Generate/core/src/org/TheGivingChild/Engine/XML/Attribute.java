@@ -186,9 +186,10 @@ public enum Attribute {
 		}
 		
 		public void setup(GameObject myObject){
-			Array<String> newValues = new Array<String>();
-			for(String current:myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0).split(","))
-				newValues.add(current);//FINISH ME SENPAI
+			String[] newValues = myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(1).split(",");
+			myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).set(1, newValues[0]);
+			for(int i = 1; i < newValues.length;i++)
+				myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).add(newValues[i]);
 		}
 		
 		public Array<String> getValues(GameObject myObject){
@@ -197,7 +198,7 @@ public enum Attribute {
 		
 		public Array<String> getVariableNames(){
 			Array<String> variableNames = new Array<String>();
-			variableNames.add("Elasticity constant");//uh oh. can only collide with 1 object. not variable.
+			variableNames.add("Elasticity constant");
 			variableNames.add("Object ID's in a list, delimited by commas");
 			return variableNames;
 		}

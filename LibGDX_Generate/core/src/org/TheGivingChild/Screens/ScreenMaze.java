@@ -24,7 +24,12 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-
+/**
+	*Maze screen that the user will navigate around.
+	*Player will be able to trigger a miniGame by finding a child in the maze.
+	*@author mtzimour
+	*/
+	
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	private TiledMap map;
@@ -44,6 +49,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	private AssetManager manager;
 	private TGC_Engine game;
+	
+	/**
+	 * Creates a new maze screen and draws the players sprite on it.
+	 * Sets up map properties such as dimensions and collision areas
+	 * @param mazeFile The name of the maze file in the assets folder
+	 * @param spriteFile The name of the sprite texture file in the assets folder
+	 */
 	
 	public ScreenMaze()
 	{
@@ -98,12 +110,19 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		manager = game.getAssetManager();
 	}
 
+	/**
+	 * Draws the maze on the screen with a red background
+	 * Determines if the sprite is making a valid move within the 
+	 * bounds of the maze and not on a collision, if so allow it to move.
+	 * If the player triggers a miniGame set that to the current screen.
+	 */
+	
 	@Override 
 	public void render(float delta)
 	{
-		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				//set a red background
 				Gdx.gl.glClearColor(1, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -153,8 +172,18 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 									
 						
 						if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
-					}
 				
+				for(Rectangle m : minigameRects)
+				{
+					if(m.overlaps(spriteRec))
+					{
+						minigameRects.removeValue(m, true);
+						sprite.setX(m.getX());
+						sprite.setY(m.getY());
+						//NEed to fix sprite positions
+						//sprite.setPosition(m.getX() + sprite.getWidth(), m.getY() + sprite.getHeight());						
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+					}
 				}
 				
 				//begin the batch that sprites will draw to
@@ -165,6 +194,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				camera.position.set(sprite.getX(), sprite.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
+				}
+				}
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
@@ -179,26 +210,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if(keycode == Input.Keys.LEFT)
-			camera.translate(-32,0);
-		if(keycode == Input.Keys.RIGHT)
-			camera.translate(32,0);
-		if(keycode == Input.Keys.UP)
-			camera.translate(0,32);
-		if(keycode == Input.Keys.DOWN)
-			camera.translate(0,-32);
-		//toggle background visibility
-		if(keycode == Input.Keys.NUM_1){
-			map.getLayers().get(0).setVisible(!map.getLayers().get(0).isVisible());
-		}
-		//toggle building layer visibility
-		if(keycode == Input.Keys.NUM_2){
-			map.getLayers().get(1).setVisible(!map.getLayers().get(1).isVisible());
-		}
-		
-		if(keycode == Input.Keys.M){
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-		}
 		
 		return true;
 	}
@@ -209,6 +220,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		return true;
 	}
 
+	/**
+	 * Gets where a user first touched down on their device and 
+	 * saves its position as a vector
+	 * @param screenX x coordinate of users down touch
+	 * @param screenY y coordinate of users down touch
+	 * @param pointer not used
+	 * @param button not used
+	 */
+	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		//Get vector of touch down to calculate change in movement during swipe
@@ -216,6 +236,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		return true;
 	}
 
+	/**
+	 * Gets where a user touches up from their device and saves
+	 * its position as a vector. Uses the touch up and the previous recorded
+	 * touch to determine what direction the swipe was in and sets the
+	 * players movement to the corresponding direction.
+	 * @param screenX x coordinate of users up touch
+	 * @param screenY y coordinate of users up touch
+	 * @param ponter not used
+	 * @param button not used
+	 */
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		//vectors contain the new position where the swipe ended
@@ -244,9 +275,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		
 		return true;
-		
-		
+				
 	}
+	
+	/**
+	 * Sets the maze to be shown, makes sure the player is not moving initially
+	 * Sets all layers of the maze to visible 
+	 * Sets input processor to the maze to begin getting user input for navigation
+	 */
 
 	@Override
 	public void show(){
@@ -269,6 +305,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 		
 	}
+	
+	/**
+	 * Hides the maze by setting all layers to not visible
+	 * Sets input processor back to the stage
+	 */
 	
 	@Override
 	public void hide(){

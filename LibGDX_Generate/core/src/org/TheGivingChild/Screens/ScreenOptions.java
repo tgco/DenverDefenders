@@ -69,9 +69,9 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				if(manager.isLoaded("optionsTitle.png"))
 					title = manager.get("optionsTitle.png");
 				Gdx.gl.glClearColor(1,1,0,1);
