@@ -17,6 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+/**
+ * This class creates the main screen that is first seen when the game is started. It allows
+ * for navigation between all screens that we have created. It has a table of buttons on
+ * the bottom of the screen that allow you to navigate to the play screen, how to play
+ * screen, editor screen, and options screen.
+ * @author ctokunag
+ */
 class ScreenMain extends ScreenAdapter {
 	private BitmapFont bitmapFontButton;
 	private float buttonHeight;
@@ -67,7 +74,7 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(.5f,0,.5f,.5f);

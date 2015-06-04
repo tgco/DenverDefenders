@@ -20,7 +20,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
+/**
+ * Screen for character creation. 
+ * Put off for more pressing features.
+ * @author janelson
+ *
+ */
 public class ScreenCharacterCreator extends ScreenAdapter {
 	//reference to Engine
 	TGC_Engine game;
@@ -120,8 +125,7 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
-		if(assetManager.update()) {
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(1, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -132,7 +136,6 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 				drawButton = true;
 				show();
 			}
-		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}

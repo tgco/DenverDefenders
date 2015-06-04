@@ -48,6 +48,19 @@ public class TGC_Engine extends Game {
     private float screenTransitionTimeLeft;
     private Group objectGroup;
     //Asset Manager to store assets
+    /**
+     * This is the asset manager that will store all of the textures, packs, and sounds.
+     * It is accessed throughout all of the game and can be loaded and accessed at any point.
+     * Use manager.load("name of asset", TypeOfAsset.class) to load an asset into the 
+     * queue to be loaded.
+     * Use manager.update() to load the enqueued assets. This must be called continuously
+     * until the manager is completely loaded, so it is best to be called in the built in
+     * render function.
+     * If you need an asset loaded right away, use manager.finishLoading(). Be aware that
+     * this will cease all other functions until everything in the queue at that point
+     * is loaded. 
+     * @author ctokunag
+     */
     private AssetManager manager = new AssetManager();
     
     private XML_Reader reader;
@@ -57,6 +70,24 @@ public class TGC_Engine extends Game {
     
     //Viewport stuff
     OrthographicCamera camera;
+    /**
+     * This viewport is used to scale the game to whatever screen is being used.
+     * When it is constructed, you will need to enter the aspect ratio you wish to maintain
+     * as well as a camera that will be used. You will also need to specify the type of
+     * viewport that you intend to use. ExtendViewport scales the screen to fit in the 
+     * viewport, then extends the shorter dimension to fill the viewport. FillViewport
+     * keeps the aspect ratio of the screen, but will fill the whole screen which can 
+     * result in parts of the viewport being cut off. FitViewport maintains the aspect
+     * ratio of the screen, and scales it to fit the screen. However, if the aspect ratios
+     * of the screen and game are different, then black bars can appear on the sides.
+     * ScreenViewport will always match the window size, but no scaling will happen. 
+     * Everything will be relative to actual pixels as opposed to camera units. Finally,
+     * there is StretchViewport, which stretches the viewport to fit the screen. There 
+     * will be no black bars, but the images may be distorted. We have decided to go with
+     * StretchViewport as most of the aspect ratios we will be dealing with will be fairly
+     * close, so we shouldn't have to deal with too much distortion.
+     * @author ctokunag
+     */
     Viewport viewport;
    
 	public void addLevels(Array<Level> levels){
@@ -153,7 +184,12 @@ public class TGC_Engine extends Game {
 		mapCamera = new OrthographicCamera();
 		mapCamera.setToOrtho(false, w, h);
 		
-		//Viewport stuff
+		/*Viewport stuff
+		 * Sets up the camera that will keep track of the screen
+		 * Creates the viewport to keep track of the aspect ratio
+		 * Applies the viewport to the camera
+		 * Repositions the camera accordingly
+		*/
 		camera = new OrthographicCamera();
 		viewport = new StretchViewport(16, 9, camera);
 		viewport.apply();
@@ -206,19 +242,19 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//if the manager is not done updating, it will display a loading image
-		//ScreenAdapterManager.getInstance().screenTransition();
-		//once the manager is done updating, it prepares to switch to the main screen
+		/**
+		 * This checks if the manager is done updating or not. If the manager is not 
+		 * done loading, it will display a transition until it is done loading. Once 
+		 * the manager is done updating, it will display another transition and move
+		 * to the next screen.
+		 * @author ctokunag
+		 */
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
 			//or to switch to displaying the main screen
 			if(screenTransitionTimeLeft <= 0){
 				//stage.draw();
 				super.render();
-				
-				//if the texture atlas packs are loaded, then add it to the skin
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 		        	skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
 				}
@@ -245,6 +281,12 @@ public class TGC_Engine extends Game {
 
 	}
 	
+	/**
+	 * This overridden resize function is what allows the viewport to scale the screen.
+	 * It is constantly called so if the screen is different in any way, it will update
+	 * the viewport and reposition the camera accordingly.
+	 * @author ctokunag
+	 */
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height);
