@@ -177,19 +177,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 									
 						
 						if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
-				
-				for(Rectangle m : minigameRects)
-				{
-					if(m.overlaps(spriteRec))
-					{
-						minigameRects.removeValue(m, true);
-						sprite.setX(m.getX());
-						sprite.setY(m.getY());
-						//sprite.setCenterY(m.getY());
-						//Need to fix sprite positions
-						//sprite.setPosition(m.getX() + sprite.getWidth(), m.getY() + sprite.getHeight());						
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-					}
+					}	
 				}
 				
 				//begin the batch that sprites will draw to
@@ -200,8 +188,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				camera.position.set(sprite.getX(), sprite.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
-				}
-				}
+				
+				
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
