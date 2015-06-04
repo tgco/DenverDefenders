@@ -23,7 +23,7 @@ import com.sun.jndi.ldap.ManageReferralControl;
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
  *-Keeps track of all {@link Instance}s of screens.
  *-Handles screenTransitions via {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.
- *-Handles disposal of {@link ScreenAdapter}s when the program ends. (Assuming the {@link ScreenAdapter}s disposal methods are correct)
+ *-Handles disposal of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} when the program ends. (Assuming the {@link ScreenAdapter}s disposal methods are correct)
  *-final to avoid inheritance, static so only one instance is referred to.
  * @author Jack Wesley Nelson
  *
