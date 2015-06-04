@@ -157,9 +157,9 @@ class ScreenLevelPackets extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
 		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionOutComplete) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				isRendered = true;
