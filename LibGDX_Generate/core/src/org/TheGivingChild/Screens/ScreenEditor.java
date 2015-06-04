@@ -190,6 +190,7 @@ class ScreenEditor extends ScreenAdapter{
 	public void show() {
 		if(isRendered) {
 			mainGame.getStage().addActor(editorTable);
+			editorTable.setVisible(false);
 			window.setX(Gdx.graphics.getWidth()/2);
 			window.setY(Gdx.graphics.getHeight()/2);
 

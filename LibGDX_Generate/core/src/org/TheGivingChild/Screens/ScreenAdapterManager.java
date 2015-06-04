@@ -66,6 +66,8 @@ public final class ScreenAdapterManager {
 	public boolean screenTransitionInComplete;
 	/**The speed at which the curtains should {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.*/
 	public float screenTransitionSpeed;
+	public TextureRegion backgroundRegion;
+	private Texture backgroundTexture;
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -143,6 +145,14 @@ public final class ScreenAdapterManager {
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
+		backgroundTexture = manager.get("DenverSkyline.jpg");
+		backgroundRegion = new TextureRegion(backgroundTexture);
+	}
+	
+	public void backgroundImage() {
+		batch.begin();
+		batch.draw(backgroundRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 	/**
 	 * ScreenTransition is the static representation of the curtains covering the entire screen
