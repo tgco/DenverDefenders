@@ -31,7 +31,7 @@ public class Level {
 		loseConditions.addAll(newLoseConditions);
 		
 		//Set default level length to 10 sec.
-		MinigameClock.getInstance().setLevelLength(10);
+		MinigameClock.getInstance().setLevelLength(60);
 		
 	}
 	
@@ -64,7 +64,7 @@ public class Level {
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
-		MinigameClock.getInstance().setLevelLength(10);
+		MinigameClock.getInstance().setLevelLength(60);
 		
 		//remove the game objects from the stage
 		for(GameObject gameObject: actors){

@@ -79,7 +79,9 @@ public final class  MinigameClock {
 		return outOfTime;
 	}
 	
-	
+	public long getLevelTimeInSeconds(){
+		return levelLength/1000000000;
+	}
 
 	
 	
