@@ -1,9 +1,12 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.TGC_Engine;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,34 +25,42 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 /**
-	*Represents the maze screen that the player will navigate around
-	*Player will be able to trigger a minigame by finding a child in the maze
+	*Maze screen that the user will navigate around.
+	*Player will be able to trigger a miniGame by finding a child in the maze.
 	*@author mtzimour
 	*/
 	
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
-
+	/** Map to be displayed */
 	private TiledMap map;
+	/** Orthographic Camera to look at map from top down */
 	private OrthographicCamera camera;
+	/** Tiled map renderer to display the map */
 	private TiledMapRenderer mapRenderer;
+	/** Sprite, SpriteBatch, and Textrue for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
 	private Sprite sprite;
+	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
+	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	private int mapTilesX, mapTilesY;
 	private float mazeWidth, mazeHeight;
+	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
+	/** Array of rectangle to store the location of miniGame triggers */
 	private Array<Rectangle> minigameRects = new Array<Rectangle>();
-
+	/** Vector to store the last touch of the user */
 	private Vector2 lastTouch = new Vector2();
-
+	
+	private TGC_Engine game;
+	private AssetManager manager;
+	
 	
 	/**
-	 * Creates a new maze screen with a given maze file
-	 * Draws a new player sprite on screen with a given texture file
-	 * Sets up map properties such as dimensions in tiles
-	 * Sets up collision rectangles from map layers
+	 * Creates a new maze screen and draws the players sprite on it.
+	 * Sets up map properties such as dimensions and collision areas
 	 * @param mazeFile The name of the maze file in the assets folder
 	 * @param spriteFile The name of the sprite texture file in the assets folder
 	 */
@@ -66,16 +77,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		
-		
-		
+				
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 		sprite = new Sprite(spriteTexture);
 		//make sure all the layers are set to visible by default.
 		//this is the source of error for the 'missing' background tiles
 		
-
 		//Setup map properties
 		properties = map.getProperties();
 		mapTilesX = properties.get("width", Integer.class);
@@ -103,84 +111,91 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
-		
+		game = ScreenAdapterManager.getInstance().game;
+		manager = game.getAssetManager();
 	}
 
 	/**
 	 * Draws the maze on the screen with a red background
 	 * Determines if the sprite is making a valid move within the 
-	 * bounds of the maze and not on a collision, if so allow it to move
-	 * If the player triggers a minigame set that to the current playscreen
+	 * bounds of the maze and not on a collision, if so allow it to move.
+	 * If the player triggers a miniGame set that to the current screen.
 	 */
 	
 	@Override 
 	public void render(float delta)
 	{
-		//set a red background
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		if(manager.update()) {
+			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
+				//set a red background
+				Gdx.gl.glClearColor(1, 0, 0, 1);
+				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+						
+						
+				//update the camera
+				camera.update();
+				//set the map to be rendered by this camera
+				mapRenderer.setView(camera);
+				//render the map
+				mapRenderer.render();
+				//Make the sprite not move when the map is scrolled
+				spriteBatch.setProjectionMatrix(camera.combined);
+				//move the sprite left, right, up, or down
+				//Calculate where the sprite is going to move
+				float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
+				float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
+				//If the sprite is not going off the maze allow it to move
+				//Check for a collision as well
+				boolean collision = false;
 				
 				
-		//update the camera
-		camera.update();
-		//set the map to be rendered by this camera
-		mapRenderer.setView(camera);
-		//render the map
-		mapRenderer.render();
-		//Make the sprite not move when the map is scrolled
-		spriteBatch.setProjectionMatrix(camera.combined);
-		//move the sprite left, right, up, or down
-		//Calculate where the sprite is going to move
-		float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
-		float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
-		//If the sprite is not going off the maze allow it to move
-		//Check for a collision as well
-		boolean collision = false;
-		
-		
-		if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
-		{
-			if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
-			{
-				
-				Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
-				
-				for(Rectangle r : collisionRects)
+				if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
 				{
-					if(r.overlaps(spriteRec))
+					if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
 					{
-						collision = true;
-					}
+						
+						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
+						
+						for(Rectangle r : collisionRects)
+						{
+							if(r.overlaps(spriteRec))
+							{
+								collision = true;
+							}
+						}
+						
+						for(Rectangle m : minigameRects)
+						{
+							if(m.overlaps(spriteRec))
+							{
+								minigameRects.removeValue(m, true);
+								sprite.setPosition(m.getX(), m.getY());
+								collision = true;
+								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+							}
+						}
+									
+						
+						if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
+					}	
 				}
 				
-				for(Rectangle m : minigameRects)
-				{
-					if(m.overlaps(spriteRec))
-					{
-						minigameRects.removeValue(m, true);
-						sprite.setX(m.getX());
-						sprite.setY(m.getY());
-						//NEed to fix sprite positions
-						//sprite.setPosition(m.getX() + sprite.getWidth(), m.getY() + sprite.getHeight());						
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-					}
-				}
-							
+				//begin the batch that sprites will draw to
+				spriteBatch.begin();
+				//draw the main character sprite to the map
+				sprite.draw(spriteBatch);
+				//update the camera to be above the character
+				camera.position.set(sprite.getX(), sprite.getY(), 0);
+				//end the batch that sprites have drawn to
+				spriteBatch.end();
 				
-				if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
+				
 			}
-		
 		}
-		
-		//begin the batch that sprites will draw to
-		spriteBatch.begin();
-		//draw the main character sprite to the map
-		sprite.draw(spriteBatch);
-		//update the camera to be above the character
-		camera.position.set(sprite.getX(), sprite.getY(), 0);
-		//end the batch that sprites have drawn to
-		spriteBatch.end();
+		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
+			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 
 	@Override
@@ -203,7 +218,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	/**
 	 * Gets where a user first touched down on their device and 
-	 * saves its position as a vector
+	 * saves its position as a vector.
+	 * @param screenX x coordinate of users down touch
+	 * @param screenY y coordinate of users down touch
+	 * @param pointer not used
+	 * @param button not used
 	 */
 	
 	@Override
@@ -218,6 +237,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * its position as a vector. Uses the touch up and the previous recorded
 	 * touch to determine what direction the swipe was in and sets the
 	 * players movement to the corresponding direction.
+	 * @param screenX x coordinate of users up touch
+	 * @param screenY y coordinate of users up touch
+	 * @param ponter not used
+	 * @param button not used
 	 */
 	
 	@Override
@@ -252,9 +275,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 	
 	/**
-	 * Sets the maze to be shown, makes sure the player is not moving initially
-	 * Sets all layers of the maze to visible 
-	 * Sets input processor to the maze to begin getting user input for navigation
+	 * Sets the maze to be shown, makes sure the player is not moving initially.
+	 * Sets all layers of the maze to visible. 
+	 * Sets input processor to the maze to begin getting user input for navigation.
 	 */
 
 	@Override
@@ -280,8 +303,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 	
 	/**
-	 * Hides the maze by setting all layers to not visible
-	 * Sets input processor back to the stage
+	 * Hides the maze by setting all layers to not visible.
+	 * Sets input processor back to the stage.
 	 */
 	
 	@Override

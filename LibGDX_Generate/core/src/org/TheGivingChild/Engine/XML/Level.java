@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
+
 import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
@@ -7,7 +8,6 @@ import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-
 
 public class Level {
 	private String levelName;

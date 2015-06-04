@@ -18,6 +18,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
 //GameObject is essentially a storage container for all the information associated with each object on the screen
+/**
+ * Used to store all information on each object within the game
+ * 
+ * extends Actor
+ * @author Mostly Kevin D
+ */
 public class GameObject extends Actor implements Disposable{
 	private int ID;
 	private String imageFilename;
@@ -28,13 +34,7 @@ public class GameObject extends Actor implements Disposable{
 	private boolean disposed;
 	private Texture texture;
 	private Array<String> listenerNames;
-	private ObjectMap<Attribute,Array<String>> attributeData;
-	
-	/*	1: All game objects must have 4 attributes, an int ID, a string which lists their attributes(delimited by ','), an image filename, and an initial location(also delimited by a comma)
-	 * 	2: Each object's attributes are then elements within the object
-	 * 	3: The values(can be zero or any positive amount) must be labelled as value1, value2, value3, etc.
-	 */
-	
+	private ObjectMap<Attribute,Array<String>> attributeData;	
 
 	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
 		listenerNames = new Array<String>();
@@ -87,16 +87,14 @@ public class GameObject extends Actor implements Disposable{
 		}
 		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
-			System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
+			//System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
 			currentAttribute.setup(this);
 		}
 	}
 	
 	public void update(Array<GameObject> allObjects){
-		for(Attribute currentAttribute:attributeData.keys().toArray()){
-			//System.out.println(currentAttribute.getXMLName());//for debugging
+		for(Attribute currentAttribute:attributeData.keys().toArray())
 			currentAttribute.update(this, allObjects);
-		}
 	}
 	
 	public Array<Attribute> getAttributes(){
@@ -110,13 +108,6 @@ public class GameObject extends Actor implements Disposable{
 	public String getImageFilename() {
 		return imageFilename;
 	}
-	
-	/*public String toString(){
-		String att = "";
-		for(Attribute a: attributes)
-			att+=a.name()+"\n";
-		return "Attributes: " +att +"ID: " + ID + ", Image filename: " + imageFilename + " X: " + getX() + " Y: " + getY() + "Is diposed: " + disposed + "\n";
-	}*/
 
 	@Override
 	public void dispose(){

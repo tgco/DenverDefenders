@@ -69,7 +69,7 @@ class ScreenOptions extends ScreenAdapter {
 	}
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
+		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				if(manager.isLoaded("optionsTitle.png"))
