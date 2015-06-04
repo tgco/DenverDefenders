@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
@@ -14,6 +15,8 @@ public class Level {
 	private Array<GameObject> actors;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
+	
+	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
 		//set the level and packageNames
 		levelName = name;
@@ -26,10 +29,21 @@ public class Level {
 		//add win and lose conditions to iterate over
 		winConditions.addAll(newWinConditions);
 		loseConditions.addAll(newLoseConditions);
+		
+		//Set default level length to 10 sec.
+		MinigameClock.getInstance().setLevelLength(10);
+		
 	}
 	
 	public void update(){
-		//update the state of the actors
+		//update the state of the actors and clock
+		MinigameClock.getInstance().render();
+		
+		if(!checkLose())
+		{
+		
+		System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
+		
 		for(GameObject currentObject:actors){
 			currentObject.update(actors);
 		}
@@ -37,8 +51,21 @@ public class Level {
 		for(WinEnum winEnum: WinEnum.values()){
 			winEnum.checkWin(this);
 		}
+		
+		}
+		
+		else{
+			System.out.println("you ran out of time for the level");
+			resetLevel();
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
+		
+		
 	}
 	public void resetLevel(){
+		//Reset level clock to 10
+		MinigameClock.getInstance().setLevelLength(10);
+		
 		//remove the game objects from the stage
 		for(GameObject gameObject: actors){
 			gameObject.remove();
@@ -54,7 +81,7 @@ public class Level {
 	}
 	
 	public boolean checkLose(){
-		return false;
+		return MinigameClock.getInstance().outOfTime();
 	}
 	
 	public String toString(){
