@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -58,6 +59,7 @@ class ScreenOptions extends ScreenAdapter {
 	private Slider slider;
 	private Label sliderValue;
 	private Label sliderName;
+	private TextureRegion region;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -76,6 +78,7 @@ class ScreenOptions extends ScreenAdapter {
 					title = manager.get("optionsTitle.png");
 				Gdx.gl.glClearColor(1,1,0,1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				ScreenAdapterManager.getInstance().backgroundImage();
 				batch.begin();
 				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
 				batch.end();
@@ -173,7 +176,7 @@ class ScreenOptions extends ScreenAdapter {
 		for(int i = 0; i < optionsArray.length; i++) {
 			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
 			checkbox.setSize(100, 50);
-			choicesTable.add(checkbox);
+			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/8).height(Gdx.graphics.getHeight()/8);
 			options.add(checkbox);
 		}
 	}
@@ -196,9 +199,9 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
-		 sliderTable.add(sliderName);
-		 sliderTable.add(slider).width(500);
-		 sliderTable.add(sliderValue).width(40);
+		 sliderTable.add(sliderName).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
+		 sliderTable.add(slider).width(500).height(Gdx.graphics.getHeight()/6);
+		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
 	 }
 	 
 	 private void updateSliderValue(float v) {

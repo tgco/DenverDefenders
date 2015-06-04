@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,6 +28,8 @@ import com.badlogic.gdx.utils.Align;
 class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
 	private Texture message;
+	private TextureRegion titleRegion;
+	private TextureRegion messageRegion;
 	private Batch batch;
 	private Table table;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
@@ -35,12 +38,13 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "Button_MainScreen_Editor", 
 											  "ButtonPressed_MainScreen_Options", 
 											  "Button_MainScreen_Options",
-											  "ButtonPressed_MainScreen_Main",
-											  "Button_MainScreen_Main"};
+											  "ButtonPressed_MainScreen_Maze",
+											  "Button_MainScreen_Maze"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
 	private boolean isRendered = false;
 	private TGC_Engine game;
+	private boolean regionsLoaded = false;
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
@@ -80,8 +84,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
 					else if(j == 2)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
-					/*else if(j == 3)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);*/
+					else if(j == 3)
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 					else
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					hide();
@@ -111,12 +115,17 @@ class ScreenHowToPlay extends ScreenAdapter{
 				if(manager.isLoaded("HowToPlayMessage.png"))
 					message = manager.get("HowToPlayMessage.png");
 				//creates background color
+				if(!regionsLoaded) {
+					titleRegion = new TextureRegion(title);
+					messageRegion = new TextureRegion(message);
+				}
 				Gdx.gl.glClearColor(0, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				ScreenAdapterManager.getInstance().backgroundImage();
 				//shows HTP title and text
 				batch.begin();
-				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
-				batch.draw(message, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
+				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+				batch.draw(messageRegion, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
 				batch.end();
 				isRendered = true;
 				show();

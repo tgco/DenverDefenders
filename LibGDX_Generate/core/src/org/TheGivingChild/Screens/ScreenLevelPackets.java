@@ -171,6 +171,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				ScreenAdapterManager.getInstance().backgroundImage();
 				isRendered = true;
 				show();
 				game.getStage().act();
