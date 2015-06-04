@@ -52,15 +52,15 @@ public enum Attribute {
 				float[] temp = myObject.getVelocity();
 				temp[0] = Math.abs(temp[0]);
 				myObject.setVelocity(temp);
-			}else if(myObject.getX() +myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){//right
+			}if(myObject.getX() +myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){//right
 				float[] temp = myObject.getVelocity();
 				temp[0] = -Math.abs(temp[0]);
 				myObject.setVelocity(temp);
-			}else if(myObject.getY() <= 0){//bottom
+			}if(myObject.getY() <= 0){//bottom
 				float[] temp = myObject.getVelocity();
 				temp[1] = Math.abs(temp[1]);
 				myObject.setVelocity(temp);
-			}else if(myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){//top
+			}if(myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){//top
 				float[] temp = myObject.getVelocity();
 				temp[1] = -Math.abs(temp[1]);
 				myObject.setVelocity(temp);
