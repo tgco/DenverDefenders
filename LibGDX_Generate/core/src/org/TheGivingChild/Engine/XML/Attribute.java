@@ -149,18 +149,26 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
-						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
-						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+						float vOne = (float) Math.pow((((v1ix)*(v1ix)) + ((v1iy) * (v1iy))),0.5);
+						float vTwo = (float) Math.pow((((v2ix)*(v2ix)) + ((v2iy) * (v2iy))),0.5); 
+						
+						float vOneOut = (((vOne * (m1-m2)) + 2*m2*vTwo)/(m1+m2));
+						float vTwoOut = (((vTwo * (m2-m1)) + 2*m1*vOne)/(m1+m2));
+						
+						//myObject.setVelocity(new float[]{)
+						
+					//	myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
+					//	allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
-						if(myObject.getVelocity()[0] > MAX_VELOCITY)
-							myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
-						if(myObject.getVelocity()[1] > MAX_VELOCITY)
-							myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
-						if(allObjects.get(i).getVelocity()[0] > MAX_VELOCITY)
-							allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
-						if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
-							allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
+					//	if(myObject.getVelocity()[0] > MAX_VELOCITY)
+					//		myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
+					//	if(myObject.getVelocity()[1] > MAX_VELOCITY)
+					//		myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
+					//	if(allObjects.get(i).getVelocity()[0] > MAX_VELOCITY)
+					//		allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
+					//	if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
+					//		allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
 						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
 						//System.out.println(direction[0] + ", " + direction[1]);
 					}
