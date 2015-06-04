@@ -129,7 +129,7 @@ class ScreenEditor extends ScreenAdapter{
 	 * Draws the screen transition when the screen is shown.
 	 * When transition is complete, if draws the grid and all GameObjects added.
 	 * Also controls the drawing of the button table, so that it is hidden when not moused over or tapped.
-	 * If the screen ever has a Gdx.input.isTouched() input call, {@link #spawnObject() spawnObject()} is called.
+	 * If the screen ever has a {@link com.badlogic.gdx.Input#isTouched() isTouched} input call, {@link #spawnObject() spawnObject()} is called.
 	 * @param delta Amount of time passed between each render call. In seconds
 	 */
 	@Override
