@@ -28,22 +28,28 @@ import com.badlogic.gdx.utils.Array;
 	*/
 	
 public class ScreenMaze extends ScreenAdapter implements InputProcessor{
-
+	/** Map to be displayed */
 	private TiledMap map;
+	/** Orthographic Camera to look at map from top down */
 	private OrthographicCamera camera;
+	/** Tiled map renderer to display the map */
 	private TiledMapRenderer mapRenderer;
+	/** Sprite, SpriteBatch, and Textrue for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
 	private Sprite sprite;
+	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
+	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	private int mapTilesX, mapTilesY;
 	private float mazeWidth, mazeHeight;
+	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
+	/** Array of rectangle to strore the location of miniGame triggers */
 	private Array<Rectangle> minigameRects = new Array<Rectangle>();
-
+	/** Vector to store the last touch of the user */
 	private Vector2 lastTouch = new Vector2();
-
 	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -64,16 +70,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-		
-		
-		
+				
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 		sprite = new Sprite(spriteTexture);
 		//make sure all the layers are set to visible by default.
 		//this is the source of error for the 'missing' background tiles
 		
-
 		//Setup map properties
 		properties = map.getProperties();
 		mapTilesX = properties.get("width", Integer.class);
@@ -159,7 +162,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						minigameRects.removeValue(m, true);
 						sprite.setX(m.getX());
 						sprite.setY(m.getY());
-						//NEed to fix sprite positions
+						//sprite.setCenterY(m.getY());
+						//Need to fix sprite positions
 						//sprite.setPosition(m.getX() + sprite.getWidth(), m.getY() + sprite.getHeight());						
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 					}
@@ -201,7 +205,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	/**
 	 * Gets where a user first touched down on their device and 
-	 * saves its position as a vector
+	 * saves its position as a vector.
 	 * @param screenX x coordinate of users down touch
 	 * @param screenY y coordinate of users down touch
 	 * @param pointer not used
@@ -258,9 +262,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 	
 	/**
-	 * Sets the maze to be shown, makes sure the player is not moving initially
-	 * Sets all layers of the maze to visible 
-	 * Sets input processor to the maze to begin getting user input for navigation
+	 * Sets the maze to be shown, makes sure the player is not moving initially.
+	 * Sets all layers of the maze to visible. 
+	 * Sets input processor to the maze to begin getting user input for navigation.
 	 */
 
 	@Override
@@ -286,8 +290,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 	
 	/**
-	 * Hides the maze by setting all layers to not visible
-	 * Sets input processor back to the stage
+	 * Hides the maze by setting all layers to not visible.
+	 * Sets input processor back to the stage.
 	 */
 	
 	@Override
