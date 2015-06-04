@@ -34,7 +34,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-
+/**
+ * This is the Editor Screen
+ * This allows user to place objects with attributes on a screen and then export the level with a correct XML file.
+ * @author Nathaniel Jacobi
+ *
+ */
 class ScreenEditor extends ScreenAdapter{	
 	private String levelName = "Base";
 	private String packageName;
@@ -81,6 +86,11 @@ class ScreenEditor extends ScreenAdapter{
 	private Array<String> inputListeners;
 	private ObjectMap<Attribute,Array<String>> attributes;
 	
+	/**
+	 * The constructor for the screen editor.
+	 * Gets the main game and the asset manager.
+	 * Created its button table, the dialog, and fills the grid. 
+	 */
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		text = new Array<Texture>();
@@ -105,12 +115,24 @@ class ScreenEditor extends ScreenAdapter{
 		attributes = new ObjectMap<Attribute,Array<String>>();
 	}
 	//When hidden removes it's table
+	
+	/**
+	 * Hides the editor button table and the GameObject dialog window if it's up.
+	 */
 	@Override
 	public void hide() {
 		editorTable.remove();
 		window.remove();
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
+	
+	/**
+	 * Draws the screen transition when the screen is shown.
+	 * When transition is complete, if draws the grid and all GameObjects added.
+	 * Also controls the drawing of the button table, so that it is hidden when not moused over or tapped.
+	 * If the screen ever has a isTouched input call, spawnObject() is called.
+	 * @param delta Amount of time passed between each render call. In seconds
+	 */
 	@Override
 	public void render(float delta) {
 		ScreenAdapterManager.getInstance().screenTransitionOutComplete = ScreenAdapterManager.getInstance().screenTransitionOut();
@@ -160,6 +182,11 @@ class ScreenEditor extends ScreenAdapter{
 
 	}
 	//Shows the table when called upon
+	
+	/**
+	 * Called when the screen is selected and everything is rendered.
+	 * Adds the editorTable to the game's stage and has the levelName window pop.
+	 */
 	@Override
 	public void show() {
 		if(isRendered) {
@@ -173,13 +200,17 @@ class ScreenEditor extends ScreenAdapter{
 		}
 	};
 	
-	//Dispose, will be implemented later
+//	//Dispose, will be implemented later
 //	@Override
 //	public void dispose() {
 //		
 //	}
 
 	//Function to instantiate the button table
+	/**
+	 * Function that sets up the buttonTable at the bottom of the screen
+	 * Calls createButtons() to add to the table.
+	 */
 	private void createEditorTable() {
 		//Sets up the needed variables and parameters
 		editorTable = new Table();
@@ -196,6 +227,11 @@ class ScreenEditor extends ScreenAdapter{
 	
 	
 	//Fills the grid according to the gridImage size relative to the screen size
+	/**
+	 * Creates the grid used for the editor.
+	 * Based on the gridImage size that will be used and the screen size.
+	 * Initializes rectangles to go with the images to deal with detection.
+	 */
 	private void fillGrid() {
 		for (int i=0; i*gridSize<Gdx.graphics.getWidth(); i++) {
 			gridCol++;
@@ -213,6 +249,13 @@ class ScreenEditor extends ScreenAdapter{
 	}
 	
 	//Called when there is a touch on the screen
+	/**
+	 * Called when Gdx.input.isTouched() is true, so there was a touch on the screen.
+	 * If the user is able to make a GameObject, the object is placed in a particular place.
+	 * It checks the grid rectangles to see which one was touched and this is where the GameObject will go.
+	 * If there is a GameObject there already, it replaces it and assumes its ID.
+	 * It is then added to and array of GameObjects and the canSetObj boolean is reset.
+	 */
 	private void spawnObject() {
 		//If canSetObj is false, no object is spawned
 		if (!canSetObj)
@@ -257,6 +300,10 @@ class ScreenEditor extends ScreenAdapter{
 	}
 	
 	//Switches between two images
+	
+	/**
+	 * Increments every time the ballButton is pressed and selects a particular image for the object to use
+	 */
 	private void selectImage() {
 		ballOrBox++;
 		ballOrBox = ballOrBox % 3;
@@ -270,23 +317,40 @@ class ScreenEditor extends ScreenAdapter{
 			objectImage = manager.get("editorAssets/BoxHalf.png");
 		}
 	}
+	
+	/**
+	 * Shows the editorButtonTable when applicable.
+	 */
 	private void enableButtons() {
-		editorTable.setVisible(true);
-		
+		editorTable.setVisible(true);	
 	}
 	
+	/**
+	 * Shows the editorButtonTable when applicable.
+	 */
 	private void disableButtons() {
 		editorTable.setVisible(false);
 	}
 	
+	/**
+	 * Class for the little textBox that comes up when the screen is shown
+	 * @author Nathaniel Jacobi
+	 *
+	 */
 	private class EditorTextInputListener implements TextInputListener {
-
+		/**
+		 * Called when the OK button is selected.
+		 * Sets the textInput to be the levelName
+		 * @param text The inputed text
+		 */
 		@Override
 		public void input(String text) {
 			levelName = text;
-			
 		}
-
+		
+		/**
+		 * Empty, called when the cancel button is selected. 
+		 */
 		@Override
 		public void canceled() {
 			
@@ -294,6 +358,11 @@ class ScreenEditor extends ScreenAdapter{
 		
 	}
 	
+	/**
+	 * Creates (for now) all the buttons that are going to be used by the screen
+	 * First the table buttons are created and added.
+	 * Then the dialog window's buttons are created and added.
+	 */
 	private void createButtons() {
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
@@ -306,11 +375,15 @@ class ScreenEditor extends ScreenAdapter{
 		TextButton backButton = new TextButton("", textButtonStyleBack);
 		
 		//Creates the listener for the Back button
-		backButton.addListener(new ChangeListener() { 			
+		backButton.addListener(new ChangeListener() { 
+			/**
+			 * Called when the backButton is selected.
+			 * Uses the ScreenAdapterManager and selects the screen to be the Main screen.
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//Calls the screen manager and has main be the shown screen if Back is hit
-				window.setVisible(false);
+				//window.setVisible(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		});
@@ -325,7 +398,11 @@ class ScreenEditor extends ScreenAdapter{
 		TextButton ballButton = new TextButton("", styleBall);
 		
 		//Ball button listener
-		ballButton.addListener(new ChangeListener() { 			
+		ballButton.addListener(new ChangeListener() { 
+			/**
+			 * Called when the ballButton is selected.
+			 * Calls selectImage() and sets the dialog window for GameObjects to be visible.
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//Changes the image to be drawn and lets the user place one object
@@ -344,6 +421,10 @@ class ScreenEditor extends ScreenAdapter{
 		TextButton exportButton = new TextButton("", styleExport);
 		
 		exportButton.addListener(new ChangeListener() {
+			/**
+			 * Called when the exportButton is selected.
+			 * Calls the game's XMLWriter and outputs the level file.
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
@@ -411,6 +492,11 @@ class ScreenEditor extends ScreenAdapter{
 			window.setKeepWithinStage(true);
 			
 			attributeBox.addListener(new ChangeListener()  {
+				/**
+				 * Called when any of the attribute checkboxes are selected.
+				 * If the attribute is in the map, it is removed.
+				 * If it is not, it is added.
+				 */
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					if (attributes.containsKey(enums)) {
@@ -431,6 +517,10 @@ class ScreenEditor extends ScreenAdapter{
 		window.add(cancelButton);
 		
 		okButton.addListener(new ChangeListener() {
+			/**
+			 * When OK is pressed, allows the user to place a GameObject.
+			 * Sets the attribute window to not visible.
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				canSetObj = true;
@@ -438,7 +528,11 @@ class ScreenEditor extends ScreenAdapter{
 			}
 			
 		});
+		
 		cancelButton.addListener(new ChangeListener() {
+			/**
+			 * When cancel is selected, sets the attribute window to not visible
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				window.setVisible(false);
@@ -446,7 +540,10 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		
 		destroyBox.addListener(new ChangeListener() {
-
+			/**
+			 * Called if the destroy in click listener is checked. 
+			 * It adds it to the list of listeners if it isn't in the list, removes if it is.  
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				String destroy = "destroy_on_click";
