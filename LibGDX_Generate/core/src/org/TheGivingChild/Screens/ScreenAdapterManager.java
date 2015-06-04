@@ -2,6 +2,8 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
 
+import sun.security.jca.GetInstance.Instance;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,10 +20,10 @@ import com.badlogic.gdx.utils.IntMap;
 import com.sun.jndi.ldap.ManageReferralControl;
 /**
  * 
- * The ScreenAdapterManager class is follows the Singleton pattern.
- *-Keeps track of all instances of screens.
- *-Houses methods for the screen transitions.
- *-Handles disposal of screens when the program ends. (Assuming the ScreenAdpaters are disposed properly)
+ * The {@link ScreenAdapterManager} follows the Singleton pattern.
+ *-Keeps track of all {@link Instance}s of screens.
+ *-Handles screenTransitions via {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.
+ *-Handles disposal of {@link ScreenAdapter}s when the program ends. (Assuming the {@link ScreenAdapter}s disposal methods are correct)
  *-final to avoid inheritance, static so only one instance is referred to.
  * @author Jack Wesley Nelson
  *
@@ -34,13 +36,13 @@ public final class ScreenAdapterManager {
 	private ScreenAdapterEnums currentEnum;
 	/**Reference to {@link TGC_Engine}. */
 	public TGC_Engine game;
-	/**Map of {@link ScreenAdapter}'s built from {@link ScreenAdapterEnums}.*/
+	/**Map of {@link ScreenAdapter}s built from {@link ScreenAdapterEnums}.*/
 	private IntMap<ScreenAdapter> screens;
 	/**Reference to the {@link AssetManager} in {@link TGC_Engine}.*/
 	private AssetManager manager;
-	/**{@link SpriteBatch} used for rendering screen transitions. */
+	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Batch batch = new SpriteBatch();
-	/**{@link TextureRegion}'s to be drawn for screen transitions. */
+	/**{@link TextureRegion}'s to be drawn for {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Array<TextureRegion> screenTransitions;
 	/**Start position for drawing the left screen during {@link #screenTransitionOut()}.*/
 	protected float outLeftScreenStart;
@@ -62,11 +64,12 @@ public final class ScreenAdapterManager {
 	protected float SCREEN_TRANSITION_TIME_LEFT;
 	/**screenTransition state to reference when other events should occur*/
 	public boolean screenTransitionInComplete;
-	/**The speed at which the curtains should transition in.*/
+	/**The speed at which the curtains should {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.*/
 	public float screenTransitionSpeed;
 
 	/**
-	 * Constructor: initializes an instance of the adapter. initializes the empty map.
+	 * Constructor: initializes an instance of the adapter. 
+	 * Initializes the {@link ScreenAdapter} map for {@link #screens}.
 	 */
 	private ScreenAdapterManager() {
 		screens = new IntMap<ScreenAdapter>();
