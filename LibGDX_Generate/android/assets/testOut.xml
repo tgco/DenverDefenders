@@ -20,7 +20,7 @@
 		<collidesWithObjectsID value1=".5" value1="4"/>
 	</GameObject>
 	
-	<GameObject ID="4" attributes="bounceOffEdgeOfScreen,moves,mass" imageFilename="Box.png" initialLocation="300,300" listeners="destroy_on_click">
+	<GameObject ID="4" attributes="bounceOffEdgeOfScreen,moves,mass" imageFilename="Box.png" initialLocation="500,500" listeners="destroy_on_click">
 		<moves value1 = "150" value2 = "150"/>
 		<mass value1="1"/>
 		<bounceOffEdgeOfScreen/>

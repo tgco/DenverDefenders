@@ -22,6 +22,7 @@ public final class  GameClock {
 			
 		}
 		
+		
 		return clock;
 	
 	}
@@ -34,8 +35,10 @@ public final class  GameClock {
 		
 	public void render()
 	{
-		totalGameTime = totalGameTime + TimeUtils.timeSinceNanos(totalGameTime);
-		levelLength = levelLength - TimeUtils.timeSinceNanos((long) Gdx.graphics.getDeltaTime() * 1000000000);
+		//totalGameTime = totalGameTime + TimeUtils.timeSinceNanos(totalGameTime);
+		//levelLength = levelLength - TimeUtils.timeSinceNanos((long) Gdx.graphics.getDeltaTime());
+		levelLength = (long) (levelLength - Gdx.graphics.getDeltaTime()*1000000000);
+		
 		
 		if(levelLength <=0)
 		{
