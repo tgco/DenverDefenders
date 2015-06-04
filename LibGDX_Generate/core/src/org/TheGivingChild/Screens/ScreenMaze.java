@@ -22,8 +22,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 /**
-	*Represents the maze screen that the player will navigate around
-	*Player will be able to trigger a minigame by finding a child in the maze
+	*Maze screen that the user will navigate around.
+	*Player will be able to trigger a miniGame by finding a child in the maze.
 	*@author mtzimour
 	*/
 	
@@ -46,10 +46,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	
 	/**
-	 * Creates a new maze screen with a given maze file
-	 * Draws a new player sprite on screen with a given texture file
-	 * Sets up map properties such as dimensions in tiles
-	 * Sets up collision rectangles from map layers
+	 * Creates a new maze screen and draws the players sprite on it.
+	 * Sets up map properties such as dimensions and collision areas
 	 * @param mazeFile The name of the maze file in the assets folder
 	 * @param spriteFile The name of the sprite texture file in the assets folder
 	 */
@@ -109,8 +107,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/**
 	 * Draws the maze on the screen with a red background
 	 * Determines if the sprite is making a valid move within the 
-	 * bounds of the maze and not on a collision, if so allow it to move
-	 * If the player triggers a minigame set that to the current playscreen
+	 * bounds of the maze and not on a collision, if so allow it to move.
+	 * If the player triggers a miniGame set that to the current screen.
 	 */
 	
 	@Override 
@@ -204,6 +202,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/**
 	 * Gets where a user first touched down on their device and 
 	 * saves its position as a vector
+	 * @param screenX x coordinate of users down touch
+	 * @param screenY y coordinate of users down touch
+	 * @param pointer not used
+	 * @param button not used
 	 */
 	
 	@Override
@@ -218,6 +220,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * its position as a vector. Uses the touch up and the previous recorded
 	 * touch to determine what direction the swipe was in and sets the
 	 * players movement to the corresponding direction.
+	 * @param screenX x coordinate of users up touch
+	 * @param screenY y coordinate of users up touch
+	 * @param ponter not used
+	 * @param button not used
 	 */
 	
 	@Override

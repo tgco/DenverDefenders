@@ -4,10 +4,10 @@ import org.TheGivingChild.Engine.XML.GameObject;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 /**
- * @author Jack Wesley Nelson
- * 
  * These enumerations return InputListener()'s that take in a game object, and are added to the game object.
  * This allows for easy addition of new listeners, such as dragAndDrop, and destroyOnClick.
+ * @author Jack Wesley Nelson
+ * 
  */
 
 public enum InputListenerEnums{
