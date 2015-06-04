@@ -21,10 +21,18 @@ import com.sun.jndi.ldap.ManageReferralControl;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
- *-Keeps track of all {@link Instance}s of screens.
+ * <p>
+ * -Keeps track of all {@link Instance}s of screens.
+ * </p>
+ * <p>
  *-Handles screenTransitions via {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.
- *-Handles disposal of {@link ScreenAdapter}s when the program ends. (Assuming the {@link ScreenAdapter}s disposal methods are correct)
- *-final to avoid inheritance, static so only one instance is referred to.
+ *</p>
+ *<p>
+ *-Handles disposal of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} when the program ends. (Assuming the {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} disposal methods are correct)
+ *</p>
+ *<p>
+ *-Final to avoid inheritance, static so only one instance is referred to.
+ *</p>
  * @author Jack Wesley Nelson
  *
  */
@@ -32,13 +40,13 @@ import com.sun.jndi.ldap.ManageReferralControl;
 public final class ScreenAdapterManager {
 	/**Instance of the {@link #ScreenAdapterManager}.*/
 	private static ScreenAdapterManager instance;
-	/**Enumeration of the current {@link #ScreenAdapter} shown. */
+	/**Enumeration of the current {@link com.badlogic.gdx.ScreenAdapter ScreenAdapter} shown. */
 	private ScreenAdapterEnums currentEnum;
-	/**Reference to {@link TGC_Engine}. */
+	/**Reference to {@link org.TheGivingChild.Engine.TGC_Engine TGC_Engine}. */
 	public TGC_Engine game;
-	/**Map of {@link ScreenAdapter}s built from {@link ScreenAdapterEnums}.*/
+	/**Map of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} built from {@link ScreenAdapterEnums}.*/
 	private IntMap<ScreenAdapter> screens;
-	/**Reference to the {@link AssetManager} in {@link TGC_Engine}.*/
+	/**Reference to the {@link AssetManager} in {@link org.TheGivingChild.Engine.TGC_Engine TGC_Engine}.*/
 	private AssetManager manager;
 	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Batch batch = new SpriteBatch();
@@ -71,7 +79,7 @@ public final class ScreenAdapterManager {
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
-	 * Initializes the {@link ScreenAdapter} map for {@link #screens}.
+	 * Initializes the {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} map for {@link #screens}.
 	 */
 	private ScreenAdapterManager() {
 		screens = new IntMap<ScreenAdapter>();
@@ -104,10 +112,10 @@ public final class ScreenAdapterManager {
 		batch.dispose();
 	}
 	/**
-	 * Dispose of the screen corresponding to the enumeration passed in.
-	 * If the map doesn't contain the screen we're asked to dispose, then we have nothing to do.
-	 * Otherwise, the map contains the screen. Call dispose on the screen, and remove it from the map.
-	 * @param screenEnum is a ScreenAdapterEnums enumeration
+	 * <p>Dispose of the screen corresponding to the enumeration passed in.</p>
+	 * <p>If the map doesn't contain the screen we're asked to dispose, then we have nothing to do.</p>
+	 * <p>Otherwise, the map contains the screen. Call dispose on the screen, and remove it from the map.</p>
+	 * @param screenEnum is a {@link org.TheGivingChild.Screens.ScreenAdapterEnums ScreenAdapterEnums} enumeration
 	 */
 	public void dispose(ScreenAdapterEnums screenEnum) {
 		if (!screens.containsKey(screenEnum.ordinal())) return;
@@ -120,14 +128,14 @@ public final class ScreenAdapterManager {
 		return currentEnum;
 	}
 	/**
-	 * Get a reference to the calling TGC_Engine
-	 * Load the .pack of ScreenTransitions
-	 * Finish loading the pack, since we need transitions everywhere
-	 * Create a TextureAtlas from the .pack
-	 * Fill the screenTransitons Texture array using the TextureAtlas
-	 * Set the needed variables, specifically:
-	 * 	-screenTransition state
-	 * 	-screenStartPositions
+	 * <p>Get a reference to the calling TGC_Engine</p>
+	 * <p>Load the .pack of ScreenTransitions</p>
+	 * <p>Finish loading the pack, since we need transitions everywhere.</p>
+	 * <p>Create a TextureAtlas from the .pack</p>
+	 * <p>Fill the screenTransitons Texture array using the TextureAtlas</p>
+	 * <p>Set the needed variables, specifically:</p>
+	 * <p>	-screenTransition state</p>
+	 * <p>	-screenStartPositions</p>
 	 * @param game is the reference to the TGC_Engine that calls initialize
 	 */
 	public void initialize(TGC_Engine game) {
@@ -167,8 +175,8 @@ public final class ScreenAdapterManager {
 		batch.end();
 	}
 	/**
-	 * Moves the curtains from outside the rendered screen to the middle, closing in on a level
-	 * Starts on the outside, moves curtains inward to cover the current level
+	 * <p>Moves the curtains from outside the rendered screen to the middle, closing in on a level</p>
+	 * <p>Starts on the outside, moves curtains inward to cover the current level</p>
 	 * @return true if coverage is complete. Used for knowing when to call screenTransitionOut().
 	 */
 	public boolean screenTransitionIn(){
@@ -184,8 +192,8 @@ public final class ScreenAdapterManager {
 		return true;
 	}
 	/**
-	 * Moves the curtains from covering the screen to out of the rendered view
-	 * Starts in the middle and then move curtains toward the outside to uncover the new level
+	 * <p>Moves the curtains from covering the screen to out of the rendered view</p>
+	 * <p>Starts in the middle and then move curtains toward the outside to uncover the new level</p>
 	 * @return Returns true when transition is complete.
 	 */
 	public boolean screenTransitionOut(){
@@ -201,13 +209,13 @@ public final class ScreenAdapterManager {
 		return true;
 	}
 	/**
-	 * The show method used to switch to other screenAdapters
-	 * Show the screen in the argument, hide the current.
-	 * If the game is null, then we have no screens to show.
-	 * Check if the map contains this ScreenAdapter enumeration.
-	 * If not, then add the screenAdapter to the map.
-	 * Reset the starting locations for screenTransitions
-	 * setScreenTransitionState to false
+	 * <p>The show method used to switch to other screenAdapters</p>
+	 * <p>Show the screen in the argument, hide the current.</p>
+	 * <p>If the game is null, then we have no screens to show.</p>
+	 * <p>Check if {@link #screens} contains this {@link ScreenAdapterEnums} enumeration.</p>
+	 * <p>If not, then add the screenAdapter to the map.</p>
+	 * <p>Reset the starting locations for screenTransitions</p>
+	 * <p>set {@link #screenTransitionInComplete} to false</p>
 	 * @param screenEnum The screen to switch to.
 	 */
 	public void show(ScreenAdapterEnums screenEnum) {
