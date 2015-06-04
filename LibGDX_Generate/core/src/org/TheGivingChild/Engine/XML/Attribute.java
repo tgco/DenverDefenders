@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.MinigameClock;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
@@ -135,6 +136,9 @@ public enum Attribute {
 						
 						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
 						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+						
+						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
+						mp3Sound.play();
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 						if(myObject.getVelocity()[0] > MAX_VELOCITY)
