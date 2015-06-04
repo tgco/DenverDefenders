@@ -85,7 +85,7 @@ class ScreenEditor extends ScreenAdapter{
 	
 	private Array<String> inputListeners;
 	private ObjectMap<Attribute,Array<String>> attributes;
-	
+	private Array<CheckBox> checkButtons;
 	/**
 	 * The constructor for the screen editor.
 	 * Gets the main game and the asset manager.
@@ -96,6 +96,7 @@ class ScreenEditor extends ScreenAdapter{
 		text = new Array<Texture>();
 		mainGame = ScreenAdapterManager.getInstance().game;
 		manager = mainGame.getAssetManager();
+		checkButtons = new Array<CheckBox>();
 		createEditorTable();
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
@@ -109,7 +110,6 @@ class ScreenEditor extends ScreenAdapter{
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();		
-		this.
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
 	}
@@ -276,6 +276,7 @@ class ScreenEditor extends ScreenAdapter{
 					y = grid[i][j].y;
 					float[] drawPos =  {x, y};	
 					//Create the new editor game object
+					attributes = attributesSelected();
 					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
 							inputListeners, attributes);
 					for (int k=0; k<gameObjects.size; k++) {
@@ -294,9 +295,8 @@ class ScreenEditor extends ScreenAdapter{
 				}
 			}
 		}
-		
 		canSetObj = false;
-		
+		resetCheckBoxes();
 	}
 	
 	//Switches between two images
@@ -480,7 +480,7 @@ class ScreenEditor extends ScreenAdapter{
 		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
 		CheckBox destroyBox = new CheckBox("Destroy", attStyle);
 		window.add(destroyBox);
-		
+		checkButtons.add(destroyBox);
 		for (final Attribute enums: Attribute.values()) {
 			CheckBoxStyle attributeStyle = new CheckBoxStyle();
 			attributeStyle.font = font;
@@ -489,28 +489,29 @@ class ScreenEditor extends ScreenAdapter{
 			CheckBox attributeBox = new CheckBox(enums.getXMLName(), attributeStyle);
 			window.row();
 			window.add(attributeBox);
+			checkButtons.add(attributeBox);
 			window.setKeepWithinStage(true);
-			
-			attributeBox.addListener(new ChangeListener()  {
+			attributeBox.setName(enums.getXMLName());
+			//attributeBox.addListener(new ChangeListener()  {
 				/**
 				 * Called when any of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} checkboxes are selected.
 				 * If the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} is in the map, it is removed.
 				 * If it is not, it is added.
 				 */
-				@Override
-				public void changed(ChangeEvent event, Actor actor) {
-					if (attributes.containsKey(enums)) {
-						attributes.remove(enums);
-				}
-					else {
-						Array<String> attributeValues = new Array<String>();
-						for (int i=0; i < enums.getVariableNames().size; i++) {
-							attributeValues.add("0.0");
-						}
-						attributes.put(enums, attributeValues);
-						System.out.println(attributes.size);
-					}}
-			});
+//				@Override
+//				public void changed(ChangeEvent event, Actor actor) {
+//					if (attributes.containsKey(enums)) {
+//						attributes.remove(enums);
+//				}
+//					else {
+//						Array<String> attributeValues = new Array<String>();
+//						for (int i=0; i < enums.getVariableNames().size; i++) {
+//							attributeValues.add("0.0");
+//						}
+//						attributes.put(enums, attributeValues);
+//						System.out.println(attributes.size);
+//					}}
+//			});
 		}
 		window.row();
 		window.add(okButton);
@@ -555,8 +556,29 @@ class ScreenEditor extends ScreenAdapter{
 			}
 			
 		});
+		
 		window.align(Align.topLeft);
 		window.setVisible(false);
 		window.show(mainGame.getStage());
+	}
+	
+	private void resetCheckBoxes() {
+		for (CheckBox button: checkButtons)
+			button.setChecked(false);
+	}
+	
+	private ObjectMap<Attribute,Array<String>> attributesSelected() {
+		ObjectMap<Attribute,Array<String>> selectedAttributes = new ObjectMap<Attribute, Array<String>>();
+		for (CheckBox button: checkButtons) {
+			if (button.isChecked()) {
+				Attribute enums = Attribute.newType(button.getName());
+				Array<String> attributeValues = new Array<String>();
+				for (int i=0; i < enums.getVariableNames().size; i++) {
+					attributeValues.add("0.0");
+				}
+				selectedAttributes.put(enums, attributeValues);
+			}
+		}
+		return selectedAttributes;
 	}
 }

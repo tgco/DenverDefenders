@@ -85,7 +85,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 					else if(j == 2)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
 					else if(j == 3)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);
 					else
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					hide();
