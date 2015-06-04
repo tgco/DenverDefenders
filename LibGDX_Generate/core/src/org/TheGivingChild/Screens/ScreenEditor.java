@@ -562,11 +562,25 @@ class ScreenEditor extends ScreenAdapter{
 		window.show(mainGame.getStage());
 	}
 	
+	/**
+	 * Resets all of the {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} used to 
+	 * see what {@link org.TheGivingChild.Engine.XML.Attribute Attribute} and 
+	 * {@link org.TheGivingChild.Engine.Attributes.InputListenersEnums InputListeners} are wanted.
+	 */
 	private void resetCheckBoxes() {
 		for (CheckBox button: checkButtons)
 			button.setChecked(false);
 	}
 	
+	/**
+	 * Goes through all of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} 
+	 * {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} and if they are checked, it adds the 
+	 * Attribute and it's needed values to a temporary data structure that is returned and used to initialize a 
+	 * {@link org.TheGivingChild.Engine.XML.GameObject GameObject}.
+	 * 
+	 * @return Returns an ObjectMap with Attribute keys and an Array of Strings for it's values
+	 * of all of the attributes that were selected.
+	 */
 	private ObjectMap<Attribute,Array<String>> attributesSelected() {
 		ObjectMap<Attribute,Array<String>> selectedAttributes = new ObjectMap<Attribute, Array<String>>();
 		for (CheckBox button: checkButtons) {
