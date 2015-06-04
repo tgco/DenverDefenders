@@ -1,6 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.GameClock;
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
@@ -31,18 +31,18 @@ public class Level {
 		loseConditions.addAll(newLoseConditions);
 		
 		//Set default level length to 10 sec.
-		GameClock.getInstance().setLevelLength(10);
+		MinigameClock.getInstance().setLevelLength(10);
 		
 	}
 	
 	public void update(){
 		//update the state of the actors and clock
-		GameClock.getInstance().render();
+		MinigameClock.getInstance().render();
 		
 		if(!checkLose())
 		{
 		
-		System.out.println("gameclock is at " + GameClock.getInstance().getLevelTime());
+		System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
 			currentObject.update(actors);
@@ -64,7 +64,7 @@ public class Level {
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
-		GameClock.getInstance().setLevelLength(10);
+		MinigameClock.getInstance().setLevelLength(10);
 		
 		//remove the game objects from the stage
 		for(GameObject gameObject: actors){
@@ -81,7 +81,7 @@ public class Level {
 	}
 	
 	public boolean checkLose(){
-		return GameClock.getInstance().outOfTime();
+		return MinigameClock.getInstance().outOfTime();
 	}
 	
 	public String toString(){
