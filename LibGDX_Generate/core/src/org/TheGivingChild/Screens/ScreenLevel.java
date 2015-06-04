@@ -69,6 +69,7 @@ public class ScreenLevel extends ScreenAdapter{
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
+				batch.draw((Texture) manager.get(level.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				for (GameObject g : level.getGameObjects()) {
 					if(!g.isDisposed()){
 						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());

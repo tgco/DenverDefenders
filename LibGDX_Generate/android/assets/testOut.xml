@@ -1,30 +1,22 @@
-<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="LEVELIMAGESTRING">
-	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves,collidesWithObjectsID,mass" imageFilename="ball.png" initialLocation="5.0,5.0" listeners="destroy_on_click">
+<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="TEMPORARY_Cartoon_City.png">
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves,collidesWithObjectsID,mass" imageFilename="Grid.png" initialLocation="450,5.0" listeners="destroy_on_click">
 		<moves value1 = "-200" value2 = "200"/>
-		<collidesWithObjectsID value1="1" value2="2,3,4"/>
+		<collidesWithObjectsID value1="1" value2="2,3"/>
 		<mass value1="1"/>
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
-	<GameObject ID="2" attributes="bounceOffEdgeOfScreen,moves,mass,collidesWithObjectsID" imageFilename="BoxHalf.png" initialLocation="100,100" listeners="destroy_on_click">
-		<moves value1 = "100" value2 = "100"/>
-		<mass value1="100"/>
-		<collidesWithObjectsID value1="1" value2="3,4"/>
+	<GameObject ID="2" attributes="bounceOffEdgeOfScreen,moves,mass,collidesWithObjectsID" imageFilename="BoxHalf.png" initialLocation="100.0,100.0" listeners="destroy_on_click">
+		<moves value1 = "100" value2 = "50"/>
+		<mass value1="2"/>
+		<collidesWithObjectsID value1="1" value2="3"/>
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
-	<GameObject ID="3" attributes="bounceOffEdgeOfScreen,moves,mass,collidesWithObjectsID" imageFilename="Box.png" initialLocation="300,300" listeners="destroy_on_click">
-		<moves value1 = "150" value2 = "150"/>
+	<GameObject ID="3" attributes="bounceOffEdgeOfScreen,moves,mass" imageFilename="Box.png" initialLocation="300.0,300.0" listeners="destroy_on_click">
+		<moves value1 = "50" value2 = "200"/>
 		<mass value1="1"/>
 		<bounceOffEdgeOfScreen/>
-		<collidesWithObjectsID value1="1" value2="4"/>
-	</GameObject>
-	
-	<GameObject ID="4" attributes="bounceOffEdgeOfScreen,moves,mass,spawnObjectOnTimer" imageFilename="Box.png" initialLocation="500,500" listeners="destroy_on_click">
-		<moves value1 = "150" value2 = "150"/>
-		<mass value1="1"/>
-		<bounceOffEdgeOfScreen/>
-		<spawnObjectOnTimer value1="10" value2="ball.png" value3="destory_on_click" value4="0.0,-200.0"/>
 	</GameObject>
 	
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
