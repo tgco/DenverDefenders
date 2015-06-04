@@ -11,12 +11,20 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
-
+/**
+ * Used to read in an .xml file and compile a Level object from it
+ * Call setupNewFile to setup the given level, and compileLevel to get the actual Levelk object
+ * @author Kevin D
+ */
 public class XML_Reader {	
 	private XmlReader reader = new XmlReader();
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	
-	//THIS IS THE METHOD YOU CALL TO READ IN A WHOLE LEVEL
+	/**
+	 * Receives a FileHandle, reads in the new file, and parses it into a tree to later be compiled into a Level
+	 * @param The FileHandle containing the information to read from the .xml file
+	 * @see setupNewFile
+	 */
 	public void setupNewFile(FileHandle file){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
 		String XML_Filename = new String();
 		XML_Filename = file.name();
@@ -26,7 +34,11 @@ public class XML_Reader {
 		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
 		root = reader.parse(xml_file);
 	}
-	
+	/**
+	 * Compiles and returns the new Level object
+	 * @return	The Level object from the .xml file
+	 * @see		compileLevel
+	 */
 	public Level compileLevel(){
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
@@ -35,7 +47,11 @@ public class XML_Reader {
 				compileLoseConditions(),
 				compileGameObjects());
 	}
-	
+	/**
+	 * Compiles a libGDX Array object of GameObjects with their given attributes and returns it
+	 * @return	A libGDX Array object of GameObjects
+	 * @see compileGameObjects
+	 */
 	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
@@ -99,12 +115,6 @@ public class XML_Reader {
 	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
 		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
 		return temp;
-	}
-	
-	private LevelGoal compileLevelGoal(){//will parse through xml_file and get the win/loss conditions
-		LevelGoal levelGoal = new LevelGoal();
-		//that code tho
-		return levelGoal;
 	}
 	
 	private Array<String> compileListenerNames(String input){
