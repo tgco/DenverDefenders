@@ -1,8 +1,7 @@
 package org.TheGivingChild.Screens;
 
-import java.awt.Checkbox;
-
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Attributes.InputListenersEnums;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
@@ -49,13 +48,13 @@ class ScreenEditor extends ScreenAdapter{
 	private BitmapFont font;
 	private Skin skinBack;
 	private Skin skinTable;
-	
+
 	//TextureAtlas and the Table for the buttons
 	private Table editorTable;
-	
+
 	//SpriteBatch that draws the objects
 	private SpriteBatch batch;
-	
+
 	//Variables used for the grid, its data structure, texture, and size
 	private Texture gridImage;
 	private float gridSize;
@@ -64,28 +63,30 @@ class ScreenEditor extends ScreenAdapter{
 	private Rectangle grid[][];
 	//Sees if object can be placed, goes to true when ballButton is hit
 	private boolean canSetObj = false;
-	
+
 	//Toggles the Textures used
 	private int ballOrBox = 1;
-	
+
 	//create placeholder game
 	private TGC_Engine mainGame;
-	
+
 	//Stores the texture that is going to be used by the a EditorGameObject
 	private Texture objectImage;
 	private Array<Texture> text;
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
-	
+
 	private AssetManager manager;
 	private boolean isRendered = false;
 	private boolean isLoaded = false;
-	
+
 	private Dialog window;
-	
+
 	private Array<String> inputListeners;
 	private ObjectMap<Attribute,Array<String>> attributes;
-	private Array<CheckBox> checkButtons;
+	private Array<CheckBox> attributeCheckBoxes;
+	private Array<CheckBox> listenerCheckBoxes;
+
 	/**
 	 * The constructor for the screen editor.
 	 * Gets the main game and the asset manager.
@@ -96,17 +97,18 @@ class ScreenEditor extends ScreenAdapter{
 		text = new Array<Texture>();
 		mainGame = ScreenAdapterManager.getInstance().game;
 		manager = mainGame.getAssetManager();
-		checkButtons = new Array<CheckBox>();
+		attributeCheckBoxes = new Array<CheckBox>();
+		listenerCheckBoxes = new Array<CheckBox>();
 		createEditorTable();
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
 		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
 		//Instantiate Array for the gameObjects
 		gameObjects = new Array<GameObject>();
-		
+
 		//This is so that there is no nullPointerEx, so objectImage has a texture 
 		selectImage();
-		
+
 		//Makes sure the grid is based off the image size and then fills the grid out
 		gridSize = gridImage.getHeight();
 		fillGrid();		
@@ -114,7 +116,7 @@ class ScreenEditor extends ScreenAdapter{
 		attributes = new ObjectMap<Attribute,Array<String>>();
 	}
 	//When hidden removes it's table
-	
+
 	/**
 	 * Hides the editor button table and the GameObject dialog window if it's up.
 	 */
@@ -124,7 +126,7 @@ class ScreenEditor extends ScreenAdapter{
 		window.remove();
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
-	
+
 	/**
 	 * Draws the screen transition when the screen is shown.
 	 * When transition is complete, if draws the grid and all GameObjects added.
@@ -150,21 +152,21 @@ class ScreenEditor extends ScreenAdapter{
 							, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
 					batch.end();
 				}
-				
+
 				//If touched, call spawnObjects
 				if(Gdx.input.isTouched()) {
 					spawnObject();
 				}
-				
+
 				//Draws all EditorGameObjects stored and all grid pieces
 				batch.begin();
-				
+
 				for (int i=0; i<gridCol; i++) {
 					for (int j=0; j<gridRows; j++) {
 						batch.draw((Texture) manager.get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
 					}
 				}
-				
+
 				for (GameObject obj : gameObjects) {
 					batch.draw((obj).getTexture(), obj.getX(), obj.getY());
 				}
@@ -181,7 +183,7 @@ class ScreenEditor extends ScreenAdapter{
 
 	}
 	//Shows the table when called upon
-	
+
 	/**
 	 * Called when the screen is selected and everything is rendered.
 	 * Adds the {@link #editorTable editorTable} to the game's stage and has the levelName window pop.
@@ -199,12 +201,12 @@ class ScreenEditor extends ScreenAdapter{
 			isRendered = false;
 		}
 	};
-	
-//	//Dispose, will be implemented later
-//	@Override
-//	public void dispose() {
-//		
-//	}
+
+	//	//Dispose, will be implemented later
+	//	@Override
+	//	public void dispose() {
+	//		
+	//	}
 
 	//Function to instantiate the button table
 	/**
@@ -216,16 +218,16 @@ class ScreenEditor extends ScreenAdapter{
 		editorTable = new Table();
 		skinTable = new Skin();
 		skinTable.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-		
+
 		//Creates the buttons and sets table to origin
 		createButtons();
 		editorTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		editorTable.align(Align.bottom);
 		editorTable.setVisible(false);
 	}
-	
-	
-	
+
+
+
 	//Fills the grid according to the gridImage size relative to the screen size
 	/**
 	 * Creates the grid used for the editor.
@@ -239,7 +241,7 @@ class ScreenEditor extends ScreenAdapter{
 		for (int j=(int) Gdx.graphics.getHeight(); j>0; j-=gridSize) {
 			gridRows++;
 		}
-		
+
 		grid = new Rectangle[gridCol][gridRows];
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
@@ -247,7 +249,7 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		}
 	}
-	
+
 	//Called when there is a touch on the screen
 	/**
 	 * Called when Gdx.input.isTouched() is true, so there was a touch on the screen.
@@ -260,15 +262,15 @@ class ScreenEditor extends ScreenAdapter{
 		//If canSetObj is false, no object is spawned
 		if (!canSetObj)
 			return;
-		
+
 		//Variables used, EditorGameObject to store the new instance and a bool to keep track
 		GameObject obj;
 		boolean added = false;
-		
+
 		//Store the coordinates of where the user clicked
 		float x = Gdx.input.getX();
 		float y = Gdx.graphics.getHeight()-Gdx.input.getY();
-		
+
 		for (int i=0; i<gridCol; i++) {
 			for (int j=0; j<gridRows; j++) {
 				if (grid[i][j].contains(x,y)) {
@@ -277,6 +279,7 @@ class ScreenEditor extends ScreenAdapter{
 					float[] drawPos =  {x, y};	
 					//Create the new editor game object
 					attributes = attributesSelected();
+					inputListeners = listenersSelected();
 					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
 							inputListeners, attributes);
 					for (int k=0; k<gameObjects.size; k++) {
@@ -298,9 +301,9 @@ class ScreenEditor extends ScreenAdapter{
 		canSetObj = false;
 		resetCheckBoxes();
 	}
-	
+
 	//Switches between two images
-	
+
 	/**
 	 * Increments every time the ballButton is pressed and selects a particular image for the object to use
 	 */
@@ -317,21 +320,21 @@ class ScreenEditor extends ScreenAdapter{
 			objectImage = manager.get("editorAssets/BoxHalf.png");
 		}
 	}
-	
+
 	/**
 	 * Shows the editorButtonTable when applicable.
 	 */
 	private void enableButtons() {
 		editorTable.setVisible(true);	
 	}
-	
+
 	/**
 	 * Shows the editorButtonTable when applicable.
 	 */
 	private void disableButtons() {
 		editorTable.setVisible(false);
 	}
-	
+
 	/**
 	 * Class for the little textBox that comes up when the screen is shown
 	 * @author Nathaniel Jacobi
@@ -347,17 +350,17 @@ class ScreenEditor extends ScreenAdapter{
 		public void input(String text) {
 			levelName = text;
 		}
-		
+
 		/**
 		 * Empty, called when the cancel button is selected. 
 		 */
 		@Override
 		public void canceled() {
-			
+
 		}
-		
+
 	}
-	
+
 	/**
 	 * Creates (for now) all the buttons that are going to be used by the screen
 	 * First the table buttons are created and added.
@@ -373,7 +376,7 @@ class ScreenEditor extends ScreenAdapter{
 		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
 		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
 		TextButton backButton = new TextButton("", textButtonStyleBack);
-		
+
 		//Creates the listener for the Back button
 		backButton.addListener(new ChangeListener() { 
 			/**
@@ -389,14 +392,14 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		//Setting the size and adding the Back button to the table
 		editorTable.add(backButton).align(Align.bottom);
-		
+
 		//Uses some of the same variables, so gets images ready for the Ball button
 		TextButtonStyle styleBall = new TextButtonStyle();
 		styleBall.font = font;
 		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
 		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
 		TextButton ballButton = new TextButton("", styleBall);
-		
+
 		//Ball button listener
 		ballButton.addListener(new ChangeListener() { 
 			/**
@@ -412,14 +415,14 @@ class ScreenEditor extends ScreenAdapter{
 		});
 		//Adds the Ball button
 		editorTable.add(ballButton).align(Align.bottom);
-		
+
 		TextButtonStyle styleExport = new TextButtonStyle();
 		styleExport.font = font;
 		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
 		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
-		
+
 		TextButton exportButton = new TextButton("", styleExport);
-		
+
 		exportButton.addListener(new ChangeListener() {
 			/**
 			 * Called when the exportButton is selected.
@@ -434,53 +437,44 @@ class ScreenEditor extends ScreenAdapter{
 				testWin1.setValues(testWin1Values);
 				Array<WinEnum> testWinArray = new Array<WinEnum>();
 				testWinArray.add(testWin1);
-				
+
 				LoseEnum testLose1 = LoseEnum.TIMEOUT;
 				Array<String>testLose1Values =  new Array<String>();
 				testLose1Values.add("42");
 				testLose1.setValues(testLose1Values);
 				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
 				testLoseArray.add(testLose1);
-				
+
 				LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
 				Array<String>testLose2Values =  new Array<String>();
 				testLose2Values.add("42");
 				testLose2Values.add("72");
 				testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
-				
+
 				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
 				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}
 		});
-		
+
 		editorTable.add(exportButton).align(Align.bottom);
 		Window.WindowStyle winStyle = new Window.WindowStyle();
 		winStyle.titleFont = font;
 		window = new Dialog("Onject Select" , winStyle);
-		
+
 		TextButtonStyle okStyle = new TextButtonStyle();
 		okStyle.font = font;
 		okStyle.up = skinBack.getDrawable("Button_Editor_Ok");
 		okStyle.down = skinBack.getDrawable("Button_Editor_OkPressed");
 		TextButton okButton = new TextButton("", okStyle);
-		
+
 		TextButtonStyle cancelStyle = new TextButtonStyle();
 		cancelStyle.font = font;
 		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
 		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
 
-		CheckBoxStyle attStyle = new CheckBoxStyle();
-		attStyle.font = font;
-		attStyle.font.setColor(Color.RED);
-		attStyle.checkedOverFontColor = Color.CYAN;
-		attStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
-		attStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
-		CheckBox destroyBox = new CheckBox("Destroy", attStyle);
-		window.add(destroyBox);
-		checkButtons.add(destroyBox);
 		for (final Attribute enums: Attribute.values()) {
 			CheckBoxStyle attributeStyle = new CheckBoxStyle();
 			attributeStyle.font = font;
@@ -489,34 +483,27 @@ class ScreenEditor extends ScreenAdapter{
 			CheckBox attributeBox = new CheckBox(enums.getXMLName(), attributeStyle);
 			window.row();
 			window.add(attributeBox);
-			checkButtons.add(attributeBox);
 			window.setKeepWithinStage(true);
 			attributeBox.setName(enums.getXMLName());
-			//attributeBox.addListener(new ChangeListener()  {
-				/**
-				 * Called when any of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} checkboxes are selected.
-				 * If the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} is in the map, it is removed.
-				 * If it is not, it is added.
-				 */
-//				@Override
-//				public void changed(ChangeEvent event, Actor actor) {
-//					if (attributes.containsKey(enums)) {
-//						attributes.remove(enums);
-//				}
-//					else {
-//						Array<String> attributeValues = new Array<String>();
-//						for (int i=0; i < enums.getVariableNames().size; i++) {
-//							attributeValues.add("0.0");
-//						}
-//						attributes.put(enums, attributeValues);
-//						System.out.println(attributes.size);
-//					}}
-//			});
+			attributeCheckBoxes.add(attributeBox);
+		}
+
+		for (final InputListenersEnums enums: InputListenersEnums.values()) {
+			CheckBoxStyle listenerStyle = new CheckBoxStyle();
+			listenerStyle.font = font;
+			listenerStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
+			listenerStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
+			CheckBox listenerBox = new CheckBox(enums.getXMLName(), listenerStyle);
+			window.row();
+			window.add(listenerBox);
+			window.setKeepWithinStage(true);
+			listenerBox.setName(enums.getXMLName());
+			listenerCheckBoxes.add(listenerBox);
 		}
 		window.row();
 		window.add(okButton);
 		window.add(cancelButton);
-		
+
 		okButton.addListener(new ChangeListener() {
 			/**
 			 * When OK is pressed, allows the user to place a GameObject.
@@ -527,9 +514,9 @@ class ScreenEditor extends ScreenAdapter{
 				canSetObj = true;
 				window.setVisible(false);
 			}
-			
+
 		});
-		
+
 		cancelButton.addListener(new ChangeListener() {
 			/**
 			 * When cancel is selected, sets the attribute window to not visible
@@ -539,39 +526,24 @@ class ScreenEditor extends ScreenAdapter{
 				window.setVisible(false);
 			}
 		});
-		
-		destroyBox.addListener(new ChangeListener() {
-			/**
-			 * Called if the destroy in click listener is checked. 
-			 * It adds it to the list of listeners if it isn't in the list, removes if it is.  
-			 */
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				String destroy = "destroy_on_click";
-				if (inputListeners.contains(destroy, false))
-					inputListeners.removeValue(destroy, false);
-				else 
-					inputListeners.add(destroy);	
-					
-			}
-			
-		});
-		
+
 		window.align(Align.topLeft);
 		window.setVisible(false);
 		window.show(mainGame.getStage());
 	}
-	
+
 	/**
 	 * Resets all of the {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} used to 
 	 * see what {@link org.TheGivingChild.Engine.XML.Attribute Attribute} and 
 	 * {@link org.TheGivingChild.Engine.Attributes.InputListenersEnums InputListeners} are wanted.
 	 */
 	private void resetCheckBoxes() {
-		for (CheckBox button: checkButtons)
+		for (CheckBox button: attributeCheckBoxes)
+			button.setChecked(false);
+		for (CheckBox button: listenerCheckBoxes)
 			button.setChecked(false);
 	}
-	
+
 	/**
 	 * Goes through all of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} 
 	 * {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} and if they are checked, it adds the 
@@ -583,10 +555,11 @@ class ScreenEditor extends ScreenAdapter{
 	 */
 	private ObjectMap<Attribute,Array<String>> attributesSelected() {
 		ObjectMap<Attribute,Array<String>> selectedAttributes = new ObjectMap<Attribute, Array<String>>();
-		for (CheckBox button: checkButtons) {
+		Array<String> attributeValues = new Array<String>();
+
+		for (CheckBox button: attributeCheckBoxes) {
 			if (button.isChecked()) {
 				Attribute enums = Attribute.newType(button.getName());
-				Array<String> attributeValues = new Array<String>();
 				for (int i=0; i < enums.getVariableNames().size; i++) {
 					attributeValues.add("0.0");
 				}
@@ -594,5 +567,22 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		}
 		return selectedAttributes;
+	}
+	
+	/**
+	 * Goes through all of the {@link org.TheGivingChild.Engine.Attributes.InputListenersEnums InputListners} 
+	 * {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} and if they are checked, it adds the 
+	 * InputListener a to a temporary data structure that is returned and used to initialize a 
+	 * {@link org.TheGivingChild.Engine.XML.GameObject GameObject}.
+	 * 
+	 * @return Returns an Array of Strings with InputListeners that were selected.
+	 */
+	private Array<String> listenersSelected() {
+		Array<String> selectedListeners = new Array<String>();
+		for (CheckBox button: listenerCheckBoxes) {
+			if (button.isChecked()) 
+				selectedListeners.add(button.getName());
+		}
+		return selectedListeners;
 	}
 }

@@ -25,8 +25,14 @@ public enum InputListenersEnums {
 				}
 			};
 		}
+
+		@Override
+		public String getXMLName() {
+			return "destroy_on_click";
+		}
 		
 	};
 	
 	public abstract InputListener getInputListener(GameObject gameObject);
+	public abstract String getXMLName();
 }
