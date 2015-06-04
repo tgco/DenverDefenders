@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
-
+//1024x576
 /**
  * Each GameObject holds a list of attributes, these attributes do various operations on the object based on their specific implementations of their methods<br>
  * Each Attribute must implement update, setup, getVariableNames, getValues, and getXMLName
@@ -75,25 +75,6 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
-	HEALTH{
-		public void update(GameObject myObject,Array<GameObject> allObjects){
-			//System.out.println("\nHealth Update\n" + health);
-		}
-		public void setup(GameObject myObject){
-			
-		}
-		
-		public Array<String> getVariableNames(){
-			Array<String> temp = new Array<String>();
-			temp.add("Initial Health");
-			return temp;
-		}
-		public String getXMLName(){return "health";}
-		@Override
-		public Array<String> getValues(GameObject myObject) {
-			return myObject.getAttributeData().get(HEALTH);
-		}
-	},
 	SPINS{
 		private float rate;
 		public void update(GameObject myObject){
@@ -132,13 +113,18 @@ public enum Attribute {
 	 */
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
-		final float MAX_VELOCITY = 350;
+		static final float MAX_VELOCITY = 250;
+		static final float bufferCoefficient = 50000;
+		float buffer = Gdx.graphics.getDeltaTime()*bufferCoefficient;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
+			Rectangle juanSmall = new Rectangle(myObject.getX()+buffer,myObject.getY()+buffer,myObject.getWidth()-buffer,myObject.getHeight()-buffer);
+			Rectangle juanBig = new Rectangle(myObject.getX()-buffer,myObject.getY()-buffer,myObject.getWidth()+buffer,myObject.getHeight()+buffer);
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
-					Rectangle two = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
-					if(juan.overlaps(two)){
+					Rectangle tooSmall = new Rectangle(allObjects.get(i).getX()+buffer,allObjects.get(i).getY()+buffer,allObjects.get(i).getWidth()-buffer,allObjects.get(i).getHeight()-buffer);
+					Rectangle tooBig = new Rectangle(allObjects.get(i).getX()-buffer,allObjects.get(i).getY()-buffer,allObjects.get(i).getWidth()+buffer,allObjects.get(i).getHeight()+buffer);
+					if(juanBig.overlaps(tooBig) && juanSmall.overlaps(tooSmall)){
+						
 						System.out.println("COLLISION DETECETED: " + myObject.getID() + ", " + allObjects.get(i).getID());
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
@@ -151,6 +137,9 @@ public enum Attribute {
 						
 						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
 						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+						
+						//myObject.setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)+v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)+v2iy*(2*m2/(m1+m2)))});
+						//allObjects.get(i).setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)-v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)-v2iy*(2*m2/(m1+m2)))});
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 						if(myObject.getVelocity()[0] > MAX_VELOCITY)
@@ -272,7 +261,7 @@ public enum Attribute {
 
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			long currentTime = MinigameClock.getInstance().getLevelTime();
+			long currentTime = MinigameClock.getInstance().getLevelTimeInSeconds();
 			int time = Integer.parseInt(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
 			
 		}

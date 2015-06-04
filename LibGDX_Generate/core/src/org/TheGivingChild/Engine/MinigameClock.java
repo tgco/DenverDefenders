@@ -82,7 +82,7 @@ public final class  MinigameClock {
 	public long getLevelTimeInSeconds(){
 		return levelLength/1000000000;
 	}
-
+	
 	
 	
 	

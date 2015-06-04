@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 public class Level {
 	private String levelName;
 	private String packageName;
+	private String levelImage;
 	private Array<GameObject> actors;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
@@ -33,6 +34,7 @@ public class Level {
 		//Set default level length to 10 sec.
 		MinigameClock.getInstance().setLevelLength(60);
 		
+		this.levelImage = levelImage;
 	}
 	
 	public void update(){
@@ -100,7 +102,7 @@ public class Level {
 	}
 	
 	public String getLevelImage(){
-		return "LEVELIMAGESTRING";
+		return levelImage;
 	}
 	
 	public Array<GameObject> getGameObjects(){
