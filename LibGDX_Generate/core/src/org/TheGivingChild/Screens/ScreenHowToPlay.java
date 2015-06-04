@@ -35,8 +35,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "Button_MainScreen_Editor", 
 											  "ButtonPressed_MainScreen_Options", 
 											  "Button_MainScreen_Options",
-											  "ButtonPressed_MainScreen_CharacterCreator",
-											  "Button_MainScreen_CharacterCreator"};
+											  "ButtonPressed_MainScreen_Main",
+											  "Button_MainScreen_Main"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
 	private boolean isRendered = false;

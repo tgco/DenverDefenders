@@ -111,6 +111,13 @@ Button_MainScreen_Main
   orig: 533, 300
   offset: 0, 0
   index: -1
+ButtonPressed_MainScreen_Main
+  rotate: true
+  xy: 534, 366
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
 
 Buttons4.png
 format: RGBA8888
