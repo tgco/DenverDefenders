@@ -239,7 +239,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * players movement to the corresponding direction.
 	 * @param screenX x coordinate of users up touch
 	 * @param screenY y coordinate of users up touch
-	 * @param ponter not used
+	 * @param pointer not used
 	 * @param button not used
 	 */
 	

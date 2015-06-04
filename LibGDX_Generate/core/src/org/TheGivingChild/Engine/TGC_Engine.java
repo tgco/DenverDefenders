@@ -28,10 +28,19 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+/**
+ * This is the main class that is passed between all the screens.
+ * It holds the {@link com.badlogic.gdx.assets.AssetManager AssetManager} which allows easy access to all of our assets.
+ * It also holds the {@link org.TheGivingChild.Engine.XML.XML_Writer XML Writer} and 
+ * {@link org.TheGivingChild.Engine.XML.XML_Reader XML Reader} that some screens use themselves. 
+ * 
+ * @author all of us
+ *
+ */
 public class TGC_Engine extends Game {
-	final static int DESKTOP_WIDTH = 1024;
-	final static int DESKTOP_HEIGHT = 576;
-	final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
+	private final static int DESKTOP_WIDTH = 1024;
+	private final static int DESKTOP_HEIGHT = 576;
+	private final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
 	//create the stage for our actors
 	private TGC_Stage stage;
 	//button atlas reference names
