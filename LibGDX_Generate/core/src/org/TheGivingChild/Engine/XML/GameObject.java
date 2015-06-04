@@ -29,8 +29,9 @@ public class GameObject extends Actor implements Disposable{
 	private String imageFilename;
 	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
-	/** Two element Position array<br> First element is X position, second is Y position */
+	private float[] initialVelocity;
 	private float[] position;
+	private float[] initialPosition;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean disposed;
@@ -52,6 +53,7 @@ public class GameObject extends Actor implements Disposable{
 		position = newPosition;
 		//the the initial position from xml
 		setPosition(position[0],position[1]);
+		
 		//initialize a velocity of 0
 		velocity = new float[] {0,0};
 		//get the reference to the game
@@ -94,13 +96,15 @@ public class GameObject extends Actor implements Disposable{
 			//System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
 			currentAttribute.setup(this);
 		}
+		initialPosition = position;
+		initialVelocity = velocity;
 	}
-	
+
 	public void update(Array<GameObject> allObjects){
 		for(Attribute currentAttribute:attributeData.keys().toArray())
 			currentAttribute.update(this, allObjects);
 	}
-	
+
 	public Array<Attribute> getAttributes(){
 		return attributeData.keys().toArray();
 	}
@@ -118,7 +122,10 @@ public class GameObject extends Actor implements Disposable{
 		disposed = true;
 	}
 	public void resetObject(){
-		setPosition(position[0], position[1]);
+		setVelocity(initialVelocity);
+		setPosition(initialPosition[0], initialPosition[1]);
+		System.out.println("Game objects velocity: " + velocity[0] + ", " + velocity[1]);
+		System.out.println("Game objects position: " + position[0] + ", " + position[1]);
 		disposed = false;
 	}
 	public boolean isDisposed(){
