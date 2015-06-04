@@ -47,7 +47,6 @@ public class ScreenLevel extends ScreenAdapter{
 
 		
 		level.loadObjectsToStage();
-		System.out.println("Game objects reset");
 		for(GameObject gameObject: level.getGameObjects()){
 			gameObject.resetObject();
 		}
