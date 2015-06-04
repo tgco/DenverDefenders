@@ -17,13 +17,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 /**
  * 
- * @author Jack Wesley Nelson
- *
  * The ScreenAdapterManager class is follows the Singleton pattern.
  *-Keeps track of all instances of screens.
  *-Houses methods for the screen transitions.
  *-Handles disposal of screens when the program ends. (Assuming the ScreenAdpaters are disposed properly)
  *-final to avoid inheritance, static so only one instance is referred to.
+ * @author Jack Wesley Nelson
+ *
  */
 
 public final class ScreenAdapterManager {
