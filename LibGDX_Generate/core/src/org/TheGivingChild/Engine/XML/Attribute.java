@@ -136,9 +136,6 @@ public enum Attribute {
 						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
 						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
 						
-						//myObject.setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)+v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)+v2iy*(2*m2/(m1+m2)))});
-						//allObjects.get(i).setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)-v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)-v2iy*(2*m2/(m1+m2)))});
-						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 						if(myObject.getVelocity()[0] > MAX_VELOCITY)
 							myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
