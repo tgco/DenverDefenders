@@ -251,6 +251,15 @@ public enum Attribute {
 		
 	};
 	/**
+	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
+	 * @return	The Attribute associated with the given string
+	 */
+	public static Attribute newType(String type){
+		return valueOf(type.toUpperCase());
+	}
+	
+	//ALL BELOW METHODS MUST BE IMPLEMENTED
+	/**
 	 * Called once within the GameObject's constructor, used to setup initial values
 	 * @param	myObject	the GameObject that currently holds this attribute
 	 */
@@ -277,11 +286,4 @@ public enum Attribute {
 	 * @return	The string containing the name to write to the .xml file
 	 */
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
-	/**
-	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
-	 * @return	The Attribute associated with the given string
-	 */
-	public static Attribute newType(String type){
-		return valueOf(type.toUpperCase());
-	}
 }
