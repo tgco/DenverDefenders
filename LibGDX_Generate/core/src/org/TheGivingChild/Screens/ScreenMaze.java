@@ -49,11 +49,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private float mazeWidth, mazeHeight;
 	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
-	/** Array of rectangle to strore the location of miniGame triggers */
+	/** Array of rectangle to store the location of miniGame triggers */
 	private Array<Rectangle> minigameRects = new Array<Rectangle>();
 	/** Vector to store the last touch of the user */
 	private Vector2 lastTouch = new Vector2();
-
+	
+	private TGC_Engine game;
+	private AssetManager manager;
+	
 	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
