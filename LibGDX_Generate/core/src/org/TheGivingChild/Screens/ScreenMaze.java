@@ -138,7 +138,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					if(m.overlaps(spriteRec))
 					{
 						minigameRects.removeValue(m, true);
-						sprite.setPosition(spriteMoveX, spriteMoveY);						
+						sprite.setX(m.getX());
+						sprite.setY(m.getY());
+						//NEed to fix sprite positions
+						//sprite.setPosition(m.getX() + sprite.getWidth(), m.getY() + sprite.getHeight());						
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 					}
 				}
