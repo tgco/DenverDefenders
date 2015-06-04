@@ -1,6 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
+import org.TheGivingChild.Engine.MinigameClock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Each GameObject holds a list of attributes, these attributes do various operations on the object based on their specific implementations of their methods
+ * Each GameObject holds a list of attributes, these attributes do various operations on the object based on their specific implementations of their methods<br>
  * Each Attribute must implement update, setup, getVariableNames, getValues, and getXMLName
  * @author Kevin D
  */
@@ -124,13 +125,14 @@ public enum Attribute {
 		}
 	},
 	/**
-	 * An object with this attribute will collide with the objects which it was told to
-	 * All objects with this attribute AS WELL AS objects it will be colliding with, must have the MASS Attribute
-	 * Do not give this attribute to both objects which will be colliding, for instance, if you want object1 to collide with object2, only give this attribute to object1, and pass it object2's ID
+	 * An object with this attribute will collide with the objects which it was told to.<br>
+	 * All objects with this attribute AS WELL AS objects it will be colliding with, must have the MASS Attribute<br>
+	 * Do not give this attribute to both objects which will be colliding, for instance, if you want object1 to collide with object2, only give this attribute to object1, and pass it object2's ID<br>
 	 * currently buggy, not working as intended.
 	 */
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
+		final float MAX_VELOCITY = 350;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
@@ -149,6 +151,16 @@ public enum Attribute {
 						
 						myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
 						allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+						
+						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
+						if(myObject.getVelocity()[0] > MAX_VELOCITY)
+							myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
+						if(myObject.getVelocity()[1] > MAX_VELOCITY)
+							myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
+						if(allObjects.get(i).getVelocity()[0] > MAX_VELOCITY)
+							allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
+						if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
+							allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
 						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
 						//System.out.println(direction[0] + ", " + direction[1]);
 					}
@@ -248,6 +260,42 @@ public enum Attribute {
 		
 		private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
 			return new float[] {myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index-1)*4),myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index+1)*4)};
+		}
+		
+	},
+	SPAWNOBJECTONTIMER{
+
+		@Override
+		public void setup(GameObject myObject) {
+			
+		}
+
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			long currentTime = MinigameClock.getInstance().getLevelTime();
+			int time = Integer.parseInt(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
+			
+		}
+
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			Array<String> values = new Array<String>();
+			return values;
+		}
+
+		@Override
+		public Array<String> getVariableNames() {
+			Array<String> varNames = new Array<String>();
+			varNames.add("Object image filename");
+			varNames.add("Listener names to add, delimited by commas");
+			varNames.add("List of attributes, delimited by commas");
+			varNames.add("");
+			return varNames;
+		}
+		
+		@Override
+		public String getXMLName() {
+			return "spawnObjectOnTimer";
 		}
 		
 	};
