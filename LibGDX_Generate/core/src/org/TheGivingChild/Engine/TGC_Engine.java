@@ -242,7 +242,6 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
-		//ScreenAdapterManager.getInstance().screenTransitionIn();
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 
 		 * done loading, it will display a transition until it is done loading. Once 
