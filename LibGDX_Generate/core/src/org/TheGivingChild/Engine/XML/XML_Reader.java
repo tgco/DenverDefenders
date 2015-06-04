@@ -12,27 +12,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import com.badlogic.gdx.utils.Array;
 
-public class XML_Reader {
-	
-//		the main method is for testing only
-//		public static void main(String cheese[]){
-//		XML_Reader test = new XML_Reader();
-//		FileHandle filename = new FileHandle("ball.png");
-//		test.setupNewFile(filename);
-//		Level larry = test.compileLevel();
-//		
-//		/*for(GameObject currentObject:larry.getGameObjects()){
-//			System.out.println("|" + currentObject);
-//			for(Attribute current:currentObject.getAttributes()){
-//				System.out.println("\t|" + current.getXMLName());
-//				for(String currentValue:current.getValues()){
-//					System.out.println("\t\t|" + currentValue);
-//				}
-//			}
-//		}*/
-//		larry.update();
-//	}
-	
+public class XML_Reader {	
 	private XmlReader reader = new XmlReader();
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
 	

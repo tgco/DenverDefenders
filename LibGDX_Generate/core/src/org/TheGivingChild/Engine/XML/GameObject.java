@@ -87,7 +87,7 @@ public class GameObject extends Actor implements Disposable{
 		}
 		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
 		for(Attribute currentAttribute:attributeData.keys().toArray()){
-			//System.out.println(currentAttribute.getXMLName());
+			System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
 			currentAttribute.setup(this);
 		}
 	}
