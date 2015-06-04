@@ -51,8 +51,6 @@ public class GameObject extends Actor implements Disposable{
 		//set the imagefilename from the xml
 		imageFilename = img;
 		position = newPosition;
-		//the the initial position from xml
-		setPosition(position[0],position[1]);
 		
 		//initialize a velocity of 0
 		velocity = new float[] {0,0};
@@ -96,8 +94,10 @@ public class GameObject extends Actor implements Disposable{
 			//System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
 			currentAttribute.setup(this);
 		}
+		//the the initial position from xml
+		setPosition(position[0],position[1]);
 		initialPosition = position;
-		initialVelocity = velocity;
+		initialVelocity = new float[] {Float.parseFloat(getAttributeData().get(Attribute.MOVES).get(0)),Float.parseFloat(getAttributeData().get(Attribute.MOVES).get(1))};
 	}
 
 	public void update(Array<GameObject> allObjects){
