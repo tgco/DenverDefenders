@@ -61,7 +61,7 @@ class ScreenMain extends ScreenAdapter {
 			bs.up = skin.getDrawable(game.getButtonAtlasNamesArray()[i+1]);
 			TextButton b = new TextButton("", bs);
 			b.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
-			table.add(b).size(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
+			table.add(b).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad(5*(game.getButtonAtlasNamesArray().length/2));
 			buttonHeight = b.getHeight();
 			final int j = i;
 			//button to transition to different screens.
