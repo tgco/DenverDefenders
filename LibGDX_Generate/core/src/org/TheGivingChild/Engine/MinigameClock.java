@@ -83,10 +83,12 @@ public final class  MinigameClock {
 		return levelLength/1000000000;
 	}
 	
-	
 	public String toString()
 	{
-		return getLevelTimeInSeconds() + " seconds remaining";
+		
+		return String.format("%2d", (levelLength % 1000000000));
+		//return levelLength % 1000000000;
+		//return getLevelTimeInSeconds() + "." + String.format("%02d",levelLength % 1000000000) + " seconds remaining.";
 	}
 	
 	
