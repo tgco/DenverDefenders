@@ -1,0 +1,16 @@
+<level packageName="packageTest" levelName="ThisLooksBetter" levelImage="TEMPORARY_Cartoon_City.png">
+	<GameObject ID="0" attributes="movesOnSetPath,moves" imageFilename="editorAssets/ball.png" initialLocation="297.0,279.0" listeners="destroy_on_click">
+		<movesOnSetPath value1="0.0" value2="0.0"/>
+		<moves value1="0.0" value2="0.0"/>
+	</GameObject>
+	<GameObject ID="1" attributes="spins,bounceOffEdgeOfScreen,moves" imageFilename="editorAssets/Box.png" initialLocation="594.0,279.0" listeners="destroy_on_click">
+		<spins value1="0.0" value2="0.0" value3="0.0"/>
+		<bounceOffEdgeOfScreen value1="0.0" value2="0.0" value3="0.0"/>
+		<moves value1="0.0" value2="0.0"/>
+	</GameObject>
+	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+		<collisionWithObjectWin win1="420" win2="9001"/>
+		<timeout lose1="42.0"/>
+		<collisionWithObjectLose lose2="42" lose3="72"/>
+	</levelGoals>
+</level>
