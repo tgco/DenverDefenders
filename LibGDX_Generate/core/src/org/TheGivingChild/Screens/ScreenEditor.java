@@ -348,7 +348,8 @@ class ScreenEditor extends ScreenAdapter{
 		 */
 		@Override
 		public void input(String text) {
-			levelName = text;
+			if (!text.isEmpty())
+				levelName = text;
 		}
 
 		/**
