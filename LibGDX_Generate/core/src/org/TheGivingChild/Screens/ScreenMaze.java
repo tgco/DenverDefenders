@@ -282,7 +282,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void show(){
-		
+		game.loadLevelPackets();
 		xMove = 0;
 		yMove = 0;
 		
