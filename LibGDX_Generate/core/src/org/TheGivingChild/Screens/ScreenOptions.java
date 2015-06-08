@@ -45,6 +45,8 @@ class ScreenOptions extends ScreenAdapter {
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private CheckBoxStyle cbStyle;
+	private CheckBoxStyle muteStyle;
+	private CheckBox mute;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private SpriteBatch batch;
@@ -183,11 +185,25 @@ class ScreenOptions extends ScreenAdapter {
 	 private void createSlider() {
 		 sliderTable = new Table();
 		 sliderSkin = new Skin();
+		 muteStyle = new CheckBoxStyle();
 		 font = game.getBitmapFontButton();
 		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Slider.pack"));
 		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("Slider"), sliderSkin.getDrawable("Knob"));
 		 LabelStyle ls = new LabelStyle();
 		 ls.font = font;
+		 muteStyle.font = font;
+		 muteStyle.checkboxOff = sliderSkin.getDrawable("Volume_On");
+		 muteStyle.checkboxOn = sliderSkin.getDrawable("Mute");
+		 mute = new CheckBox(" ", muteStyle);
+		 mute.addListener(new ChangeListener() {
+			 @Override
+			 public void changed(ChangeEvent event, Actor actor) {
+				 if(mute.isChecked()) {
+					 updateSliderValue(0);
+					 slider.setValue(0);
+				 }
+			 }
+		 });
 		 slider = new Slider(0, 100, 1, false, ss);
 		 slider.setValue(0);
 		 slider.addListener(new ChangeListener() {
@@ -199,9 +215,10 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
-		 sliderTable.add(sliderName).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
-		 sliderTable.add(slider).width(500).height(Gdx.graphics.getHeight()/3);
-		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
 	 private void updateSliderValue(float v) {

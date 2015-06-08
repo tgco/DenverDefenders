@@ -5,15 +5,15 @@ filter: Nearest,Nearest
 repeat: none
 CheckBox
   rotate: false
-  xy: 0, 0
-  size: 100, 100
-  orig: 100, 100
+  xy: 0, 60
+  size: 51, 55
+  orig: 51, 55
   offset: 0, 0
   index: -1
 CheckBox_Checked
   rotate: false
-  xy: 0, 100
-  size: 100, 100
-  orig: 100, 100
+  xy: 0, 0
+  size: 58, 60
+  orig: 58, 60
   offset: 0, 0
   index: -1
