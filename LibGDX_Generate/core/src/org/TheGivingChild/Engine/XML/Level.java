@@ -16,7 +16,7 @@ public class Level {
 	private Array<GameObject> actors;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
-	
+	private boolean completed;
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
 		//set the level and packageNames
@@ -35,6 +35,8 @@ public class Level {
 		MinigameClock.getInstance().setLevelLength(60);
 		
 		this.levelImage = levelImage;
+		
+		completed = false;
 	}
 	
 	public void update(){
@@ -73,7 +75,7 @@ public class Level {
 			gameObject.remove();
 		}
 		//go to the main screen, will likely need to return to the last maze screen being played
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 	}
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage(){
@@ -84,6 +86,10 @@ public class Level {
 	
 	public boolean checkLose(){
 		return MinigameClock.getInstance().outOfTime();
+	}
+	
+	public void setCompleted(boolean state) {
+		completed = state;
 	}
 	
 	public String toString(){
@@ -123,5 +129,9 @@ public class Level {
 	
 	public Array<LoseEnum> getLoseConditions(){
 		return loseConditions;
+	}
+	
+	public boolean getCompleted() {
+		return completed;
 	}
 }
