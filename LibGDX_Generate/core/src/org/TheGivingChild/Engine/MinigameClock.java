@@ -85,10 +85,11 @@ public final class  MinigameClock {
 	
 	public String toString()
 	{
+		String millis = String.format("%2d", (levelLength % 1000000000)).substring(0, 2);
 		
-		return String.format("%2d", (levelLength % 1000000000));
+		//return String.format("%2d", (levelLength % 1000000000));
 		//return levelLength % 1000000000;
-		//return getLevelTimeInSeconds() + "." + String.format("%02d",levelLength % 1000000000) + " seconds remaining.";
+		return getLevelTimeInSeconds() + "." + millis + " seconds remaining.";
 	}
 	
 	
