@@ -453,7 +453,7 @@ class ScreenEditor extends ScreenAdapter{
 				testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 
-				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
+				Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
 				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}

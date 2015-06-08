@@ -79,7 +79,7 @@ public class XML_Writer {
 			//write to file
 			//FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
 			System.out.println(currentLevel.getLevelName());
-			FileHandle fileWriter = Gdx.files.local("../android/assets/Levels/" +currentLevel.getLevelName() + ".xml");
+			FileHandle fileWriter = Gdx.files.local("../android/assets/Levels/created/" +currentLevel.getLevelName() + ".xml");
 			//FileHandle fileWriter = new FileHandle("testOutTEST.xml");
 			fileWriter.writeString(stringWriter.toString(),false);
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}

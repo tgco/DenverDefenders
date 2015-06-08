@@ -10,10 +10,11 @@ public class LevelPacket implements Iterable<Level>{
 	public LevelPacket(String name){
 		packetName = name;
 		levels = new Array<Level>();
+		loadLevels();
 	}
 	
-	public void addLevel(Level l){
-		levels.add(l);
+	public void addLevel(Level level){
+		levels.add(level);
 	}
 	public Array<Level> getLevels(){
 		return levels;
@@ -21,7 +22,11 @@ public class LevelPacket implements Iterable<Level>{
 	public String getPacketName(){
 		return packetName;
 	}
-
+	
+	private void loadLevels() {
+		
+	}
+	
 	//added to be able to iterate over the levels in the packet
 	@Override
 	public Iterator<Level> iterator() {
