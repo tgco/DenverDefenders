@@ -137,6 +137,7 @@ public class TGC_Engine extends Game {
 		manager.load("editorAssets/BoxHalf.png", Texture.class);
 		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
 		manager.load("editorAssets/Grid.png", Texture.class);
+		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.finishLoading();
