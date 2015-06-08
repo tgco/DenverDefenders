@@ -123,6 +123,7 @@ public enum Attribute {
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 					Rectangle too = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(juan.overlaps(too) ){//&& juanSmall.overlaps(tooSmall)
+						//collision has been detected, getting needed information for the collision equation(using momentum)
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
@@ -132,6 +133,7 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
+						//setting new velocities of objects 
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
@@ -142,11 +144,12 @@ public enum Attribute {
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
 						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
+						//this loop will make sure the objects aren't overlapping after collision has occured, will likely remove loop and change code if time allows.
 						while(juan.overlaps(too)){
-							if(mag1>mag2){
+							if(mag1>mag2){//if object 1 is travelling faster than object 2 after the collision, then we want it to travel slightly farther, otherwise collision continually happens and bad things happen :( CHANGE ME AFTER LUNCH
 								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
-							}else{
+							}else{//else object 2 is faster than obj1, repeat.
 								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
 								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 							}								
