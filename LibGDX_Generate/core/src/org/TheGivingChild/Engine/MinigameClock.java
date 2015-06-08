@@ -84,6 +84,12 @@ public final class  MinigameClock {
 	}
 	
 	
+	public String toString()
+	{
+		return getLevelTimeInSeconds() + " seconds remaining";
+	}
+	
+	
 	
 	
 	
