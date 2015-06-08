@@ -175,8 +175,8 @@ class ScreenOptions extends ScreenAdapter {
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
 			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
-			checkbox.setSize(100, 50);
-			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/8).height(Gdx.graphics.getHeight()/8);
+			checkbox.setSize(200, 100);
+			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
 			options.add(checkbox);
 		}
 	}
@@ -184,8 +184,8 @@ class ScreenOptions extends ScreenAdapter {
 		 sliderTable = new Table();
 		 sliderSkin = new Skin();
 		 font = game.getBitmapFontButton();
-		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
-		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("SliderBackground"), sliderSkin.getDrawable("SliderKnob"));
+		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Slider.pack"));
+		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("Slider"), sliderSkin.getDrawable("Knob"));
 		 LabelStyle ls = new LabelStyle();
 		 ls.font = font;
 		 slider = new Slider(0, 100, 1, false, ss);
@@ -199,9 +199,9 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
-		 sliderTable.add(sliderName).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
-		 sliderTable.add(slider).width(500).height(Gdx.graphics.getHeight()/6);
-		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
+		 sliderTable.add(sliderName).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(slider).width(500).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
 	 private void updateSliderValue(float v) {
