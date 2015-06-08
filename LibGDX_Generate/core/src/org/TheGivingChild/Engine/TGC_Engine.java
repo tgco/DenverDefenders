@@ -3,22 +3,26 @@ package org.TheGivingChild.Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -48,7 +52,7 @@ public class TGC_Engine extends Game {
 	//bitmap font for buttons
 	private BitmapFont bitmapFontButton;
     private Array<Level> levels = new Array<Level>();
-    
+    private Array<LevelPacket> levelPackets;
     private boolean screenManagerLoaded = false;
     
     private float width;
@@ -105,6 +109,29 @@ public class TGC_Engine extends Game {
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
 	}
+	
+	public void loadLevelPackets() {
+		levelPackets = new Array<LevelPacket>();
+		FileHandle dirHandle;
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			  dirHandle = Gdx.files.internal("Levels");
+			} else {
+			  // ApplicationType.Desktop ..
+			  dirHandle = Gdx.files.internal("./bin/Levels");
+			}
+		for (FileHandle entry: dirHandle.list()) {
+			LevelPacket packet = new LevelPacket(entry.name());
+			for (FileHandle levelFile: entry.list()) {
+				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
+				System.out.println(levelFile.name());
+				reader.setupNewFile(levelFile);
+				Level level = reader.compileLevel();
+				packet.addLevel(level);
+			}
+			levelPackets.add(packet);
+		}
+	}
+	
 	@Override
 	public void create () {
 		switch(Gdx.app.getType()){
@@ -140,6 +167,7 @@ public class TGC_Engine extends Game {
 		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
+		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.finishLoading();
 		//levels for testing packet manager.
 		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
@@ -213,6 +241,7 @@ public class TGC_Engine extends Game {
 		
 		batch = new SpriteBatch();
 		
+		loadLevelPackets();
 	}
 	public void createStage(){
 		stage = new TGC_Stage();
@@ -256,6 +285,9 @@ public class TGC_Engine extends Game {
 	}
 	public XML_Writer getXML_Writer() {
 		return writer;
+	}
+	public Array<LevelPacket> getLevelPackets() {
+		return levelPackets;
 	}
 	@Override
 	public void render () {

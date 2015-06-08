@@ -6,7 +6,13 @@ import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 public class Level {
@@ -16,6 +22,11 @@ public class Level {
 	private Array<GameObject> actors;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
+	private boolean completed;
+
+	private SpriteBatch clockBatch;
+	private BitmapFont clockFont;
+	
 	
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
@@ -35,11 +46,23 @@ public class Level {
 		MinigameClock.getInstance().setLevelLength(60);
 		
 		this.levelImage = levelImage;
+		
+		completed = false;
+		clockBatch = new SpriteBatch();
+		clockFont = new BitmapFont();
+		clockFont.setColor(Color.BLACK);
+				
+	
 	}
 	
 	public void update(){
 		//update the state of the actors and clock
-		MinigameClock.getInstance().render();
+//		MinigameClock.getInstance().render();
+//				
+//		clockBatch.begin();
+//		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+//		clockBatch.end();
+//		
 		
 		if(!checkLose())
 		{
@@ -73,7 +96,7 @@ public class Level {
 			gameObject.remove();
 		}
 		//go to the main screen, will likely need to return to the last maze screen being played
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 	}
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage(){
@@ -84,6 +107,10 @@ public class Level {
 	
 	public boolean checkLose(){
 		return MinigameClock.getInstance().outOfTime();
+	}
+	
+	public void setCompleted(boolean state) {
+		completed = state;
 	}
 	
 	public String toString(){
@@ -123,5 +150,13 @@ public class Level {
 	
 	public Array<LoseEnum> getLoseConditions(){
 		return loseConditions;
+	}
+	
+	public boolean getCompleted() {
+		return completed;
+	}
+	
+	public BitmapFont getClockFont() {
+		return clockFont;
 	}
 }

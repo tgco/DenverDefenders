@@ -45,6 +45,8 @@ class ScreenOptions extends ScreenAdapter {
 	private BitmapFont font;
 	private TextButtonStyle style;
 	private CheckBoxStyle cbStyle;
+	private CheckBoxStyle muteStyle;
+	private CheckBox mute;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private SpriteBatch batch;
@@ -60,12 +62,13 @@ class ScreenOptions extends ScreenAdapter {
 	private Label sliderValue;
 	private Label sliderName;
 	private TextureRegion region;
+	private float volume;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
 		manager = game.getAssetManager();
-		manager.load("optionsTitle.png", Texture.class);
+		manager.load("titleOptionScreen.png", Texture.class);
 		createOptionsTable();
 		createOverallTable();
 	}
@@ -74,8 +77,8 @@ class ScreenOptions extends ScreenAdapter {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				if(manager.isLoaded("optionsTitle.png"))
-					title = manager.get("optionsTitle.png");
+				if(manager.isLoaded("titleOptionScreen.png"))
+					title = manager.get("titleOptionScreen.png");
 				Gdx.gl.glClearColor(1,1,0,1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				ScreenAdapterManager.getInstance().backgroundImage();
@@ -147,11 +150,11 @@ class ScreenOptions extends ScreenAdapter {
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
-		style.up = skin.getDrawable("Button_Editor_Back");
-		style.down = skin.getDrawable("ButtonPressed_Editor_Back");
+		style.up = skin.getDrawable("Button_MainScreen");
+		style.down = skin.getDrawable("ButtonPressed_MainScreen");
 		TextButton backButton = new TextButton("", style);
 
 		//Creates the listener for the Back button
@@ -175,19 +178,41 @@ class ScreenOptions extends ScreenAdapter {
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
 			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
-			checkbox.setSize(100, 50);
-			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/8).height(Gdx.graphics.getHeight()/8);
+			checkbox.setSize(200, 100);
+			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
 			options.add(checkbox);
 		}
 	}
 	 private void createSlider() {
 		 sliderTable = new Table();
 		 sliderSkin = new Skin();
+		 muteStyle = new CheckBoxStyle();
 		 font = game.getBitmapFontButton();
-		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
-		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("SliderBackground"), sliderSkin.getDrawable("SliderKnob"));
+		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Slider.pack"));
+		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("Slider"), sliderSkin.getDrawable("Knob"));
 		 LabelStyle ls = new LabelStyle();
 		 ls.font = font;
+		 muteStyle.font = font;
+		 muteStyle.checkboxOff = sliderSkin.getDrawable("Volume_On");
+		 muteStyle.checkboxOn = sliderSkin.getDrawable("Mute");
+		 mute = new CheckBox(" ", muteStyle);
+		 mute.addListener(new ChangeListener() {
+			 @Override
+			 public void changed(ChangeEvent event, Actor actor) {
+				 if(slider.getValue() != 0)
+					 volume = slider.getValue();
+				 if(mute.isChecked()) {
+					 updateSliderValue(0);
+					 slider.setValue(0);
+					 slider.setDisabled(true);
+				 }
+				 else {
+					 updateSliderValue(volume);
+					 slider.setValue(volume);
+					 slider.setDisabled(false);
+				 }
+			 }
+		 });
 		 slider = new Slider(0, 100, 1, false, ss);
 		 slider.setValue(0);
 		 slider.addListener(new ChangeListener() {
@@ -199,9 +224,10 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
-		 sliderTable.add(sliderName).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
-		 sliderTable.add(slider).width(500).height(Gdx.graphics.getHeight()/6);
-		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/6);
+		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
+		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
 	 private void updateSliderValue(float v) {

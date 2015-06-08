@@ -59,6 +59,13 @@ ButtonPressed_MainScreen_Play
   orig: 138, 142
   offset: 0, 0
   index: -1
+ButtonPressed_MainScreen
+  rotate: false
+  xy: 445, 159
+  size: 138, 142
+  orig: 138, 142
+  offset: 0, 0
+  index: -1
 Button_MainScreen_Editor
   rotate: false
   xy: 676, 461
@@ -83,6 +90,13 @@ Button_MainScreen_Options
 Button_MainScreen_Play
   rotate: false
   xy: 676, 317
+  size: 138, 142
+  orig: 138, 142
+  offset: 0, 0
+  index: -1
+Button_MainScreen
+  rotate: false
+  xy: 445, 15
   size: 138, 142
   orig: 138, 142
   offset: 0, 0

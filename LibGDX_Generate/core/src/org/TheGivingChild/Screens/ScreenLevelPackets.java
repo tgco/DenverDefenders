@@ -57,7 +57,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		//initialize the packets
-		packets = new Array<LevelPacket>();
+		packets = game.getLevelPackets();
 		//initialize and fill levels array from the games level
 		levels = new Array<Level>(game.getLevels());
 		//group the levels into different packets.
@@ -121,6 +121,9 @@ class ScreenLevelPackets extends ScreenAdapter{
 	}
 	
 	public void createPackets(){
+		for (LevelPacket packet: packets) {
+			
+		}
 		for(Level l: levels){
 			//packet name to add to
 			String packetName = l.getPackageName();
@@ -188,6 +191,10 @@ class ScreenLevelPackets extends ScreenAdapter{
 		if(isRendered){
 			game.getStage().addActor(packetTable);
 			isRendered = false;
+			game.loadLevelPackets();
+			packets.removeRange(0, packets.size-1);
+			packets = game.getLevelPackets();
+			
 		}
 		
 	}

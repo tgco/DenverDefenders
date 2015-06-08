@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,11 +30,12 @@ import com.badlogic.gdx.utils.Align;
  */
 class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
-	private Texture message;
+	//private Texture message;
 	private TextureRegion titleRegion;
 	private TextureRegion messageRegion;
 	private Batch batch;
 	private Table table;
+	private Table messageTable;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
 											  "Button_MainScreen_Play", 
 											  "ButtonPressed_MainScreen_Editor", 
@@ -43,13 +47,14 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private boolean isRendered = false;
 	private TGC_Engine game;
 	private boolean regionsLoaded = false;
+	private Label message;
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
 		table = createButtons();
+		createMessage();
 		manager = game.getAssetManager();
-		manager.load("HowToPlay.png", Texture.class);
-		manager.load("HowToPlayMessage.png", Texture.class);
+		manager.load("titleHowToPlayScreen.png", Texture.class);
 	}
 	
 	//Function for making buttons in the HTP screen
@@ -70,7 +75,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			final int j = i/2;
 			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
@@ -94,9 +99,25 @@ class ScreenHowToPlay extends ScreenAdapter{
 		return t;
 	}
 	
+	public void createMessage() {
+		BitmapFont font = game.getBitmapFontButton();
+		LabelStyle ls = new LabelStyle();
+		ls.font = font;
+		message = new Label("Navigate your way through the maze to find the kids.\n"
+							+ "Finding a kid will trigger a mini-game.\n"
+							+ "Complete the minigame to continue playing.", ls);
+		message.setFontScale(1.5f);
+		message.setColor(Color.YELLOW);
+		messageTable = new Table();
+		messageTable.add(message);
+		messageTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		messageTable.align(Align.center);
+	}
+	
 	@Override
 	public void hide() {
 		table.remove();
+		messageTable.remove();
 	}
 	
 	@Override
@@ -106,22 +127,18 @@ class ScreenHowToPlay extends ScreenAdapter{
 		
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				if(manager.isLoaded("HowToPlay.png"))
-					title = manager.get("HowToPlay.png");
-				if(manager.isLoaded("HowToPlayMessage.png"))
-					message = manager.get("HowToPlayMessage.png");
+				if(manager.isLoaded("titleHowToPlayScreen.png"))
+					title = manager.get("titleHowToPlayScreen.png");
 				//creates background color
 				if(!regionsLoaded) {
 					titleRegion = new TextureRegion(title);
-					messageRegion = new TextureRegion(message);
 				}
 				Gdx.gl.glClearColor(0, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				ScreenAdapterManager.getInstance().backgroundImage();
 				//shows HTP title and text
 				batch.begin();
-				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
-				batch.draw(messageRegion, (Gdx.graphics.getWidth()-message.getWidth())/2, Gdx.graphics.getHeight()-message.getHeight()-title.getHeight());
+				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-(title.getHeight()*2));
 				batch.end();
 				isRendered = true;
 				show();
@@ -135,6 +152,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	public void show() {
 		if(isRendered){
 			game.getStage().addActor(table);
+			game.getStage().addActor(messageTable);
 			isRendered = false;
 		}
 	}

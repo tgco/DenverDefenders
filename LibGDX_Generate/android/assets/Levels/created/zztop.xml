@@ -1,6 +1,5 @@
-<level packageName="packageTest" levelName="Base" levelImage="test.png">
-	<GameObject ID="0" attributes="movesOnSetPath,moves" imageFilename="editorAssets/ball.png" initialLocation="500.0,276.0" listeners="">
-		<movesOnSetPath value1="0.0" value2="0.0"/>
+<level packageName="packageTest" levelName="zztop" levelImage="TEMPORARY_Cartoon_City.png">
+	<GameObject ID="0" attributes="moves" imageFilename="editorAssets/ball.png" initialLocation="198.0,180.0" listeners="destroy_on_click">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
