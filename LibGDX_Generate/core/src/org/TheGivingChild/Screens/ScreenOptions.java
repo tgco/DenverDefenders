@@ -62,6 +62,7 @@ class ScreenOptions extends ScreenAdapter {
 	private Label sliderValue;
 	private Label sliderName;
 	private TextureRegion region;
+	private float volume;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -198,9 +199,17 @@ class ScreenOptions extends ScreenAdapter {
 		 mute.addListener(new ChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
+				 if(slider.getValue() != 0)
+					 volume = slider.getValue();
 				 if(mute.isChecked()) {
 					 updateSliderValue(0);
 					 slider.setValue(0);
+					 slider.setDisabled(true);
+				 }
+				 else {
+					 updateSliderValue(volume);
+					 slider.setValue(volume);
+					 slider.setDisabled(false);
 				 }
 			 }
 		 });

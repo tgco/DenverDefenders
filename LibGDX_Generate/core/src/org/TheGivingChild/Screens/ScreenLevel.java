@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
@@ -82,6 +83,9 @@ public class ScreenLevel extends ScreenAdapter{
 						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
 					}
 				}
+				MinigameClock.getInstance().render();
+
+				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				currentLevel.update();
 				batch.end();
 				if (currentLevelPacket.allCompleted()) {
@@ -98,11 +102,6 @@ public class ScreenLevel extends ScreenAdapter{
 	}
 	
 	private void nextLevel() {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = false;
-		while (!ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-			ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-
-		}
 		levelNumber++;
 		currentLevel = levels.get(levelNumber);
 		currentLevel.loadObjectsToStage();
