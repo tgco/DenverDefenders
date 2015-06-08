@@ -70,7 +70,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad(5*(buttonAtlasNamesArray.length/2));
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			final int j = i/2;
 			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
