@@ -45,11 +45,11 @@ public class ScreenLevel extends ScreenAdapter{
 		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 
-		System.out.println("Game objects reset");
+		
+		level.loadObjectsToStage();
 		for(GameObject gameObject: level.getGameObjects()){
 			gameObject.resetObject();
 		}
-		level.loadObjectsToStage();
 		batch = new SpriteBatch();
 	}
 	

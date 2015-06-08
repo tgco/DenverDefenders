@@ -2,11 +2,7 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
 
-import sun.security.jca.GetInstance.Instance;
-
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.sun.jndi.ldap.ManageReferralControl;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
@@ -53,27 +48,31 @@ public final class ScreenAdapterManager {
 	/**{@link TextureRegion}'s to be drawn for {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Array<TextureRegion> screenTransitions;
 	/**Start position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	protected float outLeftScreenStart;
+	private float outLeftScreenStart;
 	/**End position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	protected final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
+	private final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
 	/**Start position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	protected float outRightScreenStart;
+	private float outRightScreenStart;
 	/**End position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	protected final float outRightScreenEnd = Gdx.graphics.getWidth();
+	private final float outRightScreenEnd = Gdx.graphics.getWidth();
 	/**Start position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	protected float inLeftScreenStart;
+	private float inLeftScreenStart;
 	/**End position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	protected final float inLeftScreenEnd = 0;
+	private final float inLeftScreenEnd = 0;
 	/**Start position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	protected float inRightScreenStart;
+	private float inRightScreenStart;
 	/**End position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	protected final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
+	private final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
 	/**The amount of minimum time for the screen to transition. */
-	protected float SCREEN_TRANSITION_TIME_LEFT;
+	public float SCREEN_TRANSITION_TIME_LEFT;
 	/**screenTransition state to reference when other events should occur*/
 	public boolean screenTransitionInComplete;
 	/**The speed at which the curtains should {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.*/
 	public float screenTransitionSpeed;
+	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
+	public TextureRegion backgroundRegion;
+	/**The initial Texture to be applied to {@link #backgroundRegion}*/
+	private Texture backgroundTexture;
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -151,6 +150,14 @@ public final class ScreenAdapterManager {
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
+		backgroundTexture = manager.get("DenverSkyline.jpg");
+		backgroundRegion = new TextureRegion(backgroundTexture);
+	}
+	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
+	public void backgroundImage() {
+		batch.begin();
+		batch.draw(backgroundRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 	/**
 	 * ScreenTransition is the static representation of the curtains covering the entire screen

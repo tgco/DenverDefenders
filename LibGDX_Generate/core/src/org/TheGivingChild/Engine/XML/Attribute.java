@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.MinigameClock;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
@@ -115,15 +116,16 @@ public enum Attribute {
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		static final float MAX_VELOCITY = 250;
 		static final float bufferCoefficient = 50000;
+		static final float another_stupid_constant = 1000000;
 		float buffer = Gdx.graphics.getDeltaTime()*bufferCoefficient;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			Rectangle juanSmall = new Rectangle(myObject.getX()+buffer,myObject.getY()+buffer,myObject.getWidth()-buffer,myObject.getHeight()-buffer);
+			//Rectangle juanSmall = new Rectangle(myObject.getX()+buffer,myObject.getY()+buffer,myObject.getWidth()-buffer,myObject.getHeight()-buffer);
 			Rectangle juanBig = new Rectangle(myObject.getX()-buffer,myObject.getY()-buffer,myObject.getWidth()+buffer,myObject.getHeight()+buffer);
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
-					Rectangle tooSmall = new Rectangle(allObjects.get(i).getX()+buffer,allObjects.get(i).getY()+buffer,allObjects.get(i).getWidth()-buffer,allObjects.get(i).getHeight()-buffer);
+					//Rectangle tooSmall = new Rectangle(allObjects.get(i).getX()+buffer,allObjects.get(i).getY()+buffer,allObjects.get(i).getWidth()-buffer,allObjects.get(i).getHeight()-buffer);
 					Rectangle tooBig = new Rectangle(allObjects.get(i).getX()-buffer,allObjects.get(i).getY()-buffer,allObjects.get(i).getWidth()+buffer,allObjects.get(i).getHeight()+buffer);
-					if(juanBig.overlaps(tooBig) && juanSmall.overlaps(tooSmall)){
+					if(juanBig.overlaps(tooBig) ){//&& juanSmall.overlaps(tooSmall)
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
@@ -133,6 +135,7 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
+
 						float vOne = (float) Math.pow((((v1ix)*(v1ix)) + ((v1iy) * (v1iy))),0.5);
 						float vTwo = (float) Math.pow((((v2ix)*(v2ix)) + ((v2iy) * (v2iy))),0.5); 
 						
@@ -143,9 +146,27 @@ public enum Attribute {
 						
 					//	myObject.setVelocity(new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)});
 					//	allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
+
+						/*COLLISION STICKING STUFF, IS WACK
+						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
+						myObject.setVelocity(myObjectVelocity);
+						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
+						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
+
 						
-						//myObject.setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)+v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)+v2iy*(2*m2/(m1+m2)))});
-						//allObjects.get(i).setVelocity(new float[] {v1ix*((m1-m2)/(m1+m2)-v2ix*(2*m2/(m1+m2))),v1iy*((m1-m2)/(m1+m2)-v2iy*(2*m2/(m1+m2)))});
+						
+						float[] otherObjectVelocity = new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))};
+						allObjects.get(i).setVelocity(otherObjectVelocity);
+						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
+						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
+						
+						while(juanBig.overlaps(tooBig)){
+							myObject.setPosition(myObject.getX()+myObjectDirection[0]*another_stupid_constant,myObject.getY()+myObjectDirection[1]*another_stupid_constant);
+							allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*another_stupid_constant,allObjects.get(i).getY()+otherObjectDirection[1]*another_stupid_constant);
+						}
+						*/
+						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
+						mp3Sound.play();
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 					//	if(myObject.getVelocity()[0] > MAX_VELOCITY)

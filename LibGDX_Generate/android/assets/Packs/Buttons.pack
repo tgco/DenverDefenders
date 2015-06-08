@@ -111,13 +111,6 @@ Button_MainScreen_Main
   orig: 533, 300
   offset: 0, 0
   index: -1
-ButtonPressed_MainScreen_Main
-  rotate: true
-  xy: 534, 366
-  size: 533, 300
-  orig: 533, 300
-  offset: 0, 0
-  index: -1
 
 Buttons4.png
 format: RGBA8888
@@ -128,5 +121,31 @@ SliderBackground
   xy: 1, 1
   size: 1600, 45
   orig: 1600, 45
+  offset: 0, 0
+  index: -1
+  
+Buttons5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ButtonPressed_MainScreen_Main
+  rotate: false
+  xy: 0, 0
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+ButtonPressed_MainScreen_Maze
+  rotate: false
+  xy: 0, 300
+  size: 533, 300
+  orig: 533, 300
+  offset: 0, 0
+  index: -1
+Button_MainScreen_Maze
+  rotate: false
+  xy: 0, 600
+  size: 533, 300
+  orig: 533, 300
   offset: 0, 0
   index: -1
