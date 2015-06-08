@@ -4,17 +4,29 @@ import com.badlogic.gdx.ScreenAdapter;
 /**
  * Enumerations to return ScreenAdapters for the ScreenAdapterManager
  * 
+ * The first few enums will be what the main_screen draws buttons for.
+ * The number of items being drawn can be changed in the Screen_Main
+ * 
  * @author janelson
  *
  */
 public enum ScreenAdapterEnums {
 	/**
 	 * The level packet screen, returns a new ScreenLevelPackets
-	 */
+	 *//*
 	LEVEL_PACKETS{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevelPackets();
+		}
+	},*/
+	/**
+	 * The maze 'level' screen, returns a new ScreenMaze
+	 */
+	MAZE{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenMaze();
 		}
 	},
 	/**
@@ -45,12 +57,12 @@ public enum ScreenAdapterEnums {
 		}
 	},
 	/**
-	 * The options screen, returns a new ScreenOptions
+	 * The character creator screen, returns a new ScreenCharacterCreator
 	 */
 	CHARACTER_CREATOR{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-            return new ScreenMaze();
+            return new ScreenCharacterCreator();
         }
 	},
 	/**
@@ -71,16 +83,8 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevel();
 		}
-	},
-	/**
-	 * The maze 'level' screen, returns a new ScreenMaze
-	 */
-	MAZE{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-			return new ScreenMaze();
-		}
 	};
+	
 	/**
 	 * Abstract protected class that the manager uses to return a ScreenAdapter 
 	 */
