@@ -6,7 +6,13 @@ import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 public class Level {
@@ -16,6 +22,10 @@ public class Level {
 	private Array<GameObject> actors;
 	private Array<WinEnum> winConditions;
 	private Array<LoseEnum> loseConditions;
+
+	private SpriteBatch clockBatch;
+	private BitmapFont clockFont;
+	
 	
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
@@ -35,11 +45,22 @@ public class Level {
 		MinigameClock.getInstance().setLevelLength(60);
 		
 		this.levelImage = levelImage;
+		
+		clockBatch = new SpriteBatch();
+		clockFont = new BitmapFont();
+		clockFont.setColor(Color.BLACK);
+				
+	
 	}
 	
 	public void update(){
 		//update the state of the actors and clock
 		MinigameClock.getInstance().render();
+				
+		clockBatch.begin();
+		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+		clockBatch.end();
+		
 		
 		if(!checkLose())
 		{
