@@ -136,13 +136,8 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
-<<<<<<< HEAD
 						//setting new velocities of objects 
-=======
-			
 						//COLLISION STICKING STUFF, IS WACK
-
->>>>>>> 8268f1c5b3bb74c75c2288342ae1ea7f5b9edc82
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
