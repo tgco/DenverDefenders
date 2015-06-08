@@ -115,17 +115,14 @@ public enum Attribute {
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		static final float MAX_VELOCITY = 250;
-		static final float bufferCoefficient = 50000;
-		static final float another_stupid_constant = 1000000;
-		float buffer = Gdx.graphics.getDeltaTime()*bufferCoefficient;
+		static final float COLLISION_CONSTANT = 5;
+		static final float COLLISION_OFFSET = 2;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			//Rectangle juanSmall = new Rectangle(myObject.getX()+buffer,myObject.getY()+buffer,myObject.getWidth()-buffer,myObject.getHeight()-buffer);
-			Rectangle juanBig = new Rectangle(myObject.getX()-buffer,myObject.getY()-buffer,myObject.getWidth()+buffer,myObject.getHeight()+buffer);
+			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
-					//Rectangle tooSmall = new Rectangle(allObjects.get(i).getX()+buffer,allObjects.get(i).getY()+buffer,allObjects.get(i).getWidth()-buffer,allObjects.get(i).getHeight()-buffer);
-					Rectangle tooBig = new Rectangle(allObjects.get(i).getX()-buffer,allObjects.get(i).getY()-buffer,allObjects.get(i).getWidth()+buffer,allObjects.get(i).getHeight()+buffer);
-					if(juanBig.overlaps(tooBig) ){//&& juanSmall.overlaps(tooSmall)
+					Rectangle too = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
+					if(juan.overlaps(too) ){//&& juanSmall.overlaps(tooSmall)
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
@@ -135,6 +132,7 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
+
 
 						float vOne = (float) Math.pow((((v1ix)*(v1ix)) + ((v1iy) * (v1iy))),0.5);
 						float vTwo = (float) Math.pow((((v2ix)*(v2ix)) + ((v2iy) * (v2iy))),0.5); 
@@ -148,23 +146,31 @@ public enum Attribute {
 					//	allObjects.get(i).setVelocity(new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))});
 
 						/*COLLISION STICKING STUFF, IS WACK
+
+
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
 
 						
-						
 						float[] otherObjectVelocity = new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))};
 						allObjects.get(i).setVelocity(otherObjectVelocity);
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
 						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
-						while(juanBig.overlaps(tooBig)){
-							myObject.setPosition(myObject.getX()+myObjectDirection[0]*another_stupid_constant,myObject.getY()+myObjectDirection[1]*another_stupid_constant);
-							allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*another_stupid_constant,allObjects.get(i).getY()+otherObjectDirection[1]*another_stupid_constant);
+						while(juan.overlaps(too)){
+							if(mag1>mag2){
+								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
+							}else{
+								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
+								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+							}								
+							juan.setPosition(myObject.getX(),myObject.getY());
+							too.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
 						}
-						*/
+						
 						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
 						mp3Sound.play();
 						
@@ -178,7 +184,7 @@ public enum Attribute {
 					//	if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
 					//		allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
 						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
-						//System.out.println(direction[0] + ", " + direction[1]);
+						
 					}
 				}
 			}

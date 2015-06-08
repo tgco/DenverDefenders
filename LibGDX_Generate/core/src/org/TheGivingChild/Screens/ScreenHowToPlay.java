@@ -37,9 +37,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "ButtonPressed_MainScreen_Editor", 
 											  "Button_MainScreen_Editor", 
 											  "ButtonPressed_MainScreen_Options", 
-											  "Button_MainScreen_Options",
-											  "ButtonPressed_MainScreen_Maze",
-											  "Button_MainScreen_Maze"};
+											  "Button_MainScreen_Options"};
 	private Skin skin = new Skin();
 	private AssetManager manager = new AssetManager();
 	private boolean isRendered = false;
@@ -72,20 +70,18 @@ class ScreenHowToPlay extends ScreenAdapter{
 			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
-			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
+			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			final int j = i/2;
 			//listener to change screens on button press
 			tb.addListener(new ChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					if(j == 0)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL_PACKETS);
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 					else if(j == 1)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
 					else if(j == 2)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
-					else if(j == 3)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.CHARACTER_CREATOR);
 					else
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 					hide();
