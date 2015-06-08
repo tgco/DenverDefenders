@@ -133,7 +133,7 @@ public enum Attribute {
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
 			
-						/*COLLISION STICKING STUFF, IS WACK
+						//COLLISION STICKING STUFF, IS WACK
 
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
