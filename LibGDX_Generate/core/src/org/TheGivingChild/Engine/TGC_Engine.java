@@ -1,10 +1,7 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.WinEnum;
-import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
-import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;

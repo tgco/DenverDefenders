@@ -1,12 +1,10 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.MinigameClock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 //1024x576
 /**
@@ -81,34 +79,6 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "bounceOffEdgeOfScreen";}		
 	},
-	SPINS{
-		private float rate;
-		public void update(GameObject myObject){
-			
-		}
-		public void setValues(Array<String> newValues){
-			rate = Float.parseFloat(newValues.get(0));
-		}
-
-		public Array<String> getValues(GameObject myObject){//each implementation of get Values translates the values back into the string for writing to .xml purposes
-			return myObject.getAttributeData().get(SPINS);
-		}
-		public String getXMLName(){return "spins";}
-		@Override
-		public Array<String> getVariableNames() {
-			Array<String> variableNames = new Array<String>();
-			variableNames.add("Spin Rate");
-			return variableNames;
-		}
-		@Override
-		public void setup(GameObject myObject) {
-			
-		}
-		@Override
-		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			
-		}
-	},
 	/**
 	 * An object with this attribute will collide with the objects which it was told to.<br>
 	 * All objects with this attribute AS WELL AS objects it will be colliding with, must have the MASS Attribute<br>
@@ -179,16 +149,6 @@ public enum Attribute {
 			}
 		}
 		
-		private int[] direction(float x1, float y1, float x2, float y2){
-			int x = 1;
-			int y = 1;
-			if(x2-x1 < 0)
-				x=-1;
-			if(y2-y1 < 0)
-				y=-1;				
-			return new int[] {x,y};
-		}
-		
 		public void setup(GameObject myObject){
 			String[] newValues = myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(1).split(",");
 			myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).set(1, newValues[0]);
@@ -248,7 +208,7 @@ public enum Attribute {
 		
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			float tol = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
+			//float tol = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
 			
 		}
 
