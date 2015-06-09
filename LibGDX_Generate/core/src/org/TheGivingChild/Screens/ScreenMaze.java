@@ -41,7 +41,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Sprite, SpriteBatch, and Textrue for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTexture;
-	private Sprite sprite;
+	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
 	/** Map properties to get dimensions of maze */
@@ -51,7 +51,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
 	/** Array of rectangle to store the location of miniGame triggers */
-	private Array<Rectangle> minigameRects = new Array<Rectangle>();
+	private Array<MinigameRectangle> minigameRects = new Array<MinigameRectangle>();
 	/** Vector to store the last touch of the user */
 	private Vector2 lastTouch = new Vector2();
 	
@@ -60,6 +60,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private Array<ChildSprite> mazeChildren;
 	private Array<ChildSprite> followers;
+	private MinigameRectangle miniRec;
 		
 	
 	/**
@@ -74,7 +75,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		speed = Gdx.graphics.getHeight()/4;
+		
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
@@ -84,7 +85,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
-		sprite = new Sprite(spriteTexture);
+		
+		playerCharacter = new ChildSprite(spriteTexture);
+		playerCharacter.setSpeed(Gdx.graphics.getHeight()/4);
 		
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
@@ -111,6 +114,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
 		
+		//Setup array of minigame rectangles
 		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
 		for(int i = 0; i <miniGameObjects.getCount(); i++)
 		{
@@ -118,8 +122,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			
 			Rectangle childRec = new Rectangle(rect.x, rect.y, rect.width, rect.height);
+			miniRec = new MinigameRectangle(rect.x, rect.y, rect.width, rect.height);
 			
-			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+			
 			
 			//Add children to be drawn where minigames can be triggered
 			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
@@ -128,6 +133,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			child.setRectangle(childRec);
 			mazeChildren.add(child);
 			
+			miniRec.setOccupied(child);
+			
+			minigameRects.add(miniRec);
 		}
 		
 		//Remove a child at random so there is always an open spot
@@ -166,19 +174,20 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.setProjectionMatrix(camera.combined);
 				//move the sprite left, right, up, or down
 				//Calculate where the sprite is going to move
-				float spriteMoveX = sprite.getX() + xMove*Gdx.graphics.getDeltaTime();
-				float spriteMoveY = sprite.getY() + yMove*Gdx.graphics.getDeltaTime();
+				float spriteMoveX = playerCharacter.getX() + xMove*Gdx.graphics.getDeltaTime();
+				float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
 				//If the sprite is not going off the maze allow it to move
 				//Check for a collision as well
 				boolean collision = false;
+				boolean triggerGame = false;
 				
 				
-				if(spriteMoveX >= 0 && (spriteMoveX+sprite.getWidth()) <= mazeWidth)
+				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
-					if(spriteMoveY >= 0 && (spriteMoveY+sprite.getHeight()) <= mazeHeight)
+					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight)
 					{
 						
-						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, sprite.getWidth(), sprite.getHeight());
+						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
 						
 						for(Rectangle r : collisionRects)
 						{
@@ -188,54 +197,34 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 							}
 						}
 						
-						//temp to store position of minigame triggered
-						Rectangle temp = null;
-						
-						for(Rectangle m : minigameRects)
+																
+						for(MinigameRectangle m : minigameRects)
 						{
-							if(m.overlaps(spriteRec))
+							if(m.overlaps(spriteRec) && m.isOccupied())
 							{
-								minigameRects.removeValue(m, true);
-								//sprite.setAlpha(0);
-								sprite.setPosition(m.getX(), m.getY());
 								
+								followers.add(m.getOccupant());
+								m.empty();
+								playerCharacter.setPosition(m.getX(), m.getY());
+								triggerGame = true;
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-								temp = m;													
-								collision = true;
-								
+														
 							}
 						}
-						
-						//Sprite last = followers.get(followers.size);
-						
-						//if game was triggered
-						if(temp != null)
-						{
-							for(ChildSprite s: mazeChildren)
-							{
-								//select the child
-								if(s.mySpot(temp))
-								{
-										followers.add(s);
-										mazeChildren.removeValue(s, false);
 										
-									
-								}
-							}
-							
-						}
-						
-						
 						if(!collision){
-							sprite.setPosition(spriteMoveX, spriteMoveY);
+							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 							
 							if(followers.size > 0)
 							{
-								followers.get(0).followSprite(sprite);
+								followers.get(0).followSprite(playerCharacter);
+								System.out.println("set first to follow");
 								
-								for(int i = 1; i <followers.size-1; i++)
+								
+								for(int i = 1; i <followers.size; i++)
 								{
-									followers.get(i).followSprite(followers.get(i+1));
+									followers.get(i).followSprite(followers.get(i-1));
+									System.out.println("set follow for" + followers.get(i).toString());
 								}
 								
 							}
@@ -248,11 +237,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//begin the batch that sprites will draw to
 				spriteBatch.begin();
 				//draw the main character sprite to the map
-				sprite.draw(spriteBatch);
+				playerCharacter.draw(spriteBatch);
 				//Draw the children following
+				if(followers.size != 0)
+				{
 				for(Sprite f: followers)
 				{
+					//System.out.println(followers.size);
+					//System.out.println(f.get);
 					f.draw(spriteBatch);
+				}
 				}
 				
 				//draw the children on the maze
@@ -261,7 +255,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					s.draw(spriteBatch);
 				}
 				//update the camera to be above the character
-				camera.position.set(sprite.getX(), sprite.getY(), 0);
+				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
 				
@@ -329,8 +323,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
-			if(delta.x > 0) xMove =  speed;
-			if(delta.x <= 0) xMove = -speed;
+			if(delta.x > 0) xMove =  playerCharacter.getSpeed();
+			if(delta.x <= 0) xMove = -playerCharacter.getSpeed();
 			//no vertical movement
 			yMove = 0;
 						
@@ -339,11 +333,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		else
 		{
 			//move down if the change was positive, else move left
-			if(delta.y > 0)	yMove = -speed;
-			if(delta.y <= 0) yMove = speed;
+			if(delta.y > 0)	yMove = -playerCharacter.getSpeed();
+			if(delta.y <= 0) yMove = playerCharacter.getSpeed();
 			//no horizontal movement
 			xMove = 0;
 		}
+		
+		playerCharacter.setMove(xMove, yMove);
 		
 		return true;
 				
