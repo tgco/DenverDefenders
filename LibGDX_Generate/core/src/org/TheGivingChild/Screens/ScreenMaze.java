@@ -21,6 +21,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -57,6 +58,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private TGC_Engine game;
 	private AssetManager manager;
 	
+	private Array<ChildSprite> mazeChildren;
+	private Array<ChildSprite> followers;
+		
 	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -81,6 +85,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteBatch = new SpriteBatch();
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 		sprite = new Sprite(spriteTexture);
+		
+		mazeChildren = new Array<ChildSprite>();
+		followers = new Array<ChildSprite>();
 		//make sure all the layers are set to visible by default.
 		//this is the source of error for the 'missing' background tiles
 		
@@ -109,8 +116,23 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		{
 			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
 			Rectangle rect = obj.getRectangle();
+			
+			Rectangle childRec = new Rectangle(rect.x, rect.y, rect.width, rect.height);
+			
 			minigameRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
+			
+			//Add children to be drawn where minigames can be triggered
+			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			ChildSprite child = new ChildSprite(childTexture);
+			child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
+			child.setRectangle(childRec);
+			mazeChildren.add(child);
+			
 		}
+		
+		//Remove a child at random so there is always an open spot
+		//children.removeIndex(MathUtils.random(children.size));
+		
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 	}
@@ -166,6 +188,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 							}
 						}
 						
+						//temp to store position of minigame triggered
+						Rectangle temp = null;
+						
 						for(Rectangle m : minigameRects)
 						{
 							if(m.overlaps(spriteRec))
@@ -175,14 +200,48 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								sprite.setPosition(m.getX(), m.getY());
 								
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-																								
+								temp = m;													
 								collision = true;
 								
 							}
 						}
-									
 						
-						if(!collision) sprite.setPosition(spriteMoveX, spriteMoveY);
+						//Sprite last = followers.get(followers.size);
+						
+						//if game was triggered
+						if(temp != null)
+						{
+							for(ChildSprite s: mazeChildren)
+							{
+								//select the child
+								if(s.mySpot(temp))
+								{
+										followers.add(s);
+										mazeChildren.removeValue(s, false);
+										
+									
+								}
+							}
+							
+						}
+						
+						
+						if(!collision){
+							sprite.setPosition(spriteMoveX, spriteMoveY);
+							
+							if(followers.size > 0)
+							{
+								followers.get(0).followSprite(sprite);
+								
+								for(int i = 1; i <followers.size-1; i++)
+								{
+									followers.get(i).followSprite(followers.get(i+1));
+								}
+								
+							}
+							
+						}
+						
 					}	
 				}
 				
@@ -190,6 +249,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.begin();
 				//draw the main character sprite to the map
 				sprite.draw(spriteBatch);
+				//Draw the children following
+				for(Sprite f: followers)
+				{
+					f.draw(spriteBatch);
+				}
+				
+				//draw the children on the maze
+				for(Sprite s : mazeChildren)
+				{
+					s.draw(spriteBatch);
+				}
 				//update the camera to be above the character
 				camera.position.set(sprite.getX(), sprite.getY(), 0);
 				//end the batch that sprites have drawn to
@@ -201,7 +271,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
-
+	
+	
 	@Override
 	public boolean keyDown(int keycode) {
 		//need key down to have key up function
@@ -301,6 +372,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
+		
+		
+		if(game.getLevels().get(0).getCompleted())
+		{
+			System.out.println("you beat the level");
+		}
+		
+	
 		
 		Gdx.input.setInputProcessor(this);
 
