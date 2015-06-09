@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
@@ -25,8 +26,9 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		}
 		@Override
 		public void checkWin(Level level) {
-			// TODO Auto-generated method stub
-			
+			if(MinigameClock.getInstance().outOfTime()){
+				level.setCompleted(true);
+			}
 		}
 	},
 	COLLISIONWITHOBJECTWIN{

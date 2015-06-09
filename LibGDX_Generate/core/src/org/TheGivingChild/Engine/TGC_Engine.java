@@ -27,6 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -105,6 +107,8 @@ public class TGC_Engine extends Game {
     
     private Batch batch;
     private int gameStart = 0;
+    
+    private float timeBeforeOut = 5.0f;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -123,7 +127,6 @@ public class TGC_Engine extends Game {
 			LevelPacket packet = new LevelPacket(entry.name());
 			for (FileHandle levelFile: entry.list()) {
 				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
-				System.out.println(levelFile.name());
 				reader.setupNewFile(levelFile);
 				Level level = reader.compileLevel();
 				packet.addLevel(level);
@@ -172,16 +175,6 @@ public class TGC_Engine extends Game {
 		
 		reader = new XML_Reader();
 		writer = new XML_Writer();
-		
-		boolean exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-		XML_Reader reader = new XML_Reader();
-		
-		exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-
 		ScreenAdapterManager.getInstance().initialize(this);
 		//ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 
@@ -294,8 +287,16 @@ public class TGC_Engine extends Game {
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
 		}
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
 			gameStart++;
+			ScreenAdapterManager.getInstance().screenTransition();
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 
 		 * done loading, it will display a transition until it is done loading. Once 
