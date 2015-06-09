@@ -62,28 +62,19 @@ public class Level {
 //		clockBatch.begin();
 //		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 //		clockBatch.end();
-//		
-		
-		if(!checkLose())
-		{
-		
+//				
 		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
 			currentObject.update(actors);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: WinEnum.values()){
+		for(WinEnum winEnum: winConditions){
 			winEnum.checkWin(this);
 		}
 		
-		}
-		
-		else{
-			System.out.println("you ran out of time for the level");
-			setCompleted(true);
-			//resetLevel();
-			//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		for (LoseEnum loseEnum: loseConditions) {
+			loseEnum.checkLose(this);
 		}
 		
 		

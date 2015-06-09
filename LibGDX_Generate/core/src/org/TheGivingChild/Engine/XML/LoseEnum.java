@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 
 import com.badlogic.gdx.Gdx;
@@ -19,13 +20,10 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public void setValues(Array<String> newValues){
 			time = Float.parseFloat(newValues.first());
 		}
-		public boolean checkLose(Level level){
-			time = time - Gdx.graphics.getDeltaTime();
-			if(time <= 0.0) {
+		public void checkLose(Level level){
+			if(MinigameClock.getInstance().outOfTime()) {
 				level.setCompleted(true);
-				return true;
 			}
-			return false;
 		}
 	},
 	COLLISIONWITHOBJECTLOSE{
@@ -34,8 +32,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public String getXMLDescription(){
 			return "collisionWithObjectLose";
 		}
-		public boolean checkLose(Level level){
-			return false;
+		public void checkLose(Level level){
 		}
 		public void setValues(Array<String> newValues){
 			objectID1 = Integer.parseInt(newValues.get(0));
@@ -51,7 +48,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 	public abstract String getXMLDescription();
 	public abstract Array<String> getValues();
 	public abstract void setValues(Array<String> newValues);
-	public abstract boolean checkLose(Level level);
+	public abstract void checkLose(Level level);
 	
 	public static LoseEnum newType(String type){
 		return valueOf(type.toUpperCase());

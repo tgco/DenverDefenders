@@ -26,7 +26,8 @@
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
-	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+	<levelGoals win="all_objects_destroyed,collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+	    <all_objects_destroyed/>
 		<collisionWithObjectWin win1="420" win2="9001"/>
 		<timeout lose1="42"/>
 		<collisionWithObjectLose lose2="42" lose3="72"/>

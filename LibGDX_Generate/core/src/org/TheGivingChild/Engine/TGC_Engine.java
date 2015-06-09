@@ -127,7 +127,6 @@ public class TGC_Engine extends Game {
 			LevelPacket packet = new LevelPacket(entry.name());
 			for (FileHandle levelFile: entry.list()) {
 				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
-				System.out.println(levelFile.name());
 				reader.setupNewFile(levelFile);
 				Level level = reader.compileLevel();
 				packet.addLevel(level);
@@ -181,12 +180,10 @@ public class TGC_Engine extends Game {
 		writer = new XML_Writer();
 		
 		boolean exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
 		XML_Reader reader = new XML_Reader();
 		
 		exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
 
 		ScreenAdapterManager.getInstance().initialize(this);
