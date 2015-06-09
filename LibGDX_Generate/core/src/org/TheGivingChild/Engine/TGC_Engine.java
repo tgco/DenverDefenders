@@ -186,9 +186,9 @@ public class TGC_Engine extends Game {
 		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
 
 		ScreenAdapterManager.getInstance().initialize(this);
-		ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
+		//ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 
-		levels.set(0, reader.compileLevel());
+		//levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
 		//create the stage

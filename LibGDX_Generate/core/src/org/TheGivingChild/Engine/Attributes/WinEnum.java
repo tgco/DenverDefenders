@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public enum WinEnum {//Cannot have any labels in common with LoseEnum
@@ -29,38 +30,44 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		}
 	},
 	COLLISIONWITHOBJECTWIN{
-		private int objectID1;
-		private int objectID2;
-		
+		Array<Integer> values = new Array<Integer>();
 		public String getXMLDescription(){
 			return "collisionWithObjectWin";
 		}
 		public void setValues(Array<String> newValues){
-			objectID1 = Integer.parseInt(newValues.get(0));
-			objectID2 = Integer.parseInt(newValues.get(1));
+			values.clear();
+			for(String currentValue:newValues)
+				values.add(Integer.parseInt(currentValue));
 		}
+		
 		public Array<String> getValues(){
 			Array<String> temp = new Array<String>();
-			temp.add(objectID1+"");
-			temp.add(objectID2+"");
+			temp.add("ASD");
 			return temp;
 		}
 		@Override
 		public void checkWin(Level level) {
-			// TODO Auto-generated method stub
-			
+//			Rectangle r1 = new Rectangle(level.getGameObjects().get(values.get(0)).getX(),
+//					level.getGameObjects().get(values.get(0)).getY(),
+//					level.getGameObjects().get(values.get(0)).getTexture().getWidth(),
+//					level.getGameObjects().get(values.get(0)).getTexture().getHeight());
+//			for(GameObject curObj: level.getGameObjects()){
+//				if(values.contains(curObj.getID(),false)){
+//					Rectangle r2 = new Rectangle(curObj.getX(),curObj.getY(),curObj.getTexture().getWidth(),curObj.getTexture().getHeight());
+//					
+//				}					
+//			}
+//			
 		}
 	},
 	ALL_OBJECTS_DESTROYED{
 		@Override
 		public void setValues(Array<String> newValues) {
-			// TODO Auto-generated method stub
 			
 		}
 		@Override
 		public String getXMLDescription() {
-			// TODO Auto-generated method stub
-			return null;
+			return "all_objects_destroyed";
 		}
 		@Override
 		public void checkWin(Level level) {
