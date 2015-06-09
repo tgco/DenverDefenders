@@ -3,7 +3,7 @@ TEMPORARY_sliders.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Slider
+Slider_After
   rotate: false
   xy: 0, 0
   size: 1105, 38
@@ -29,5 +29,12 @@ Mute
   xy: 157, 39
   size: 75, 64
   orig: 75, 64
+  offset: 0, 0
+  index: -1
+Slider_Before
+  rotate: false
+  xy: 0, 124
+  size: 1105, 38
+  orig: 1105, 38
   offset: 0, 0
   index: -1

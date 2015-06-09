@@ -87,8 +87,10 @@ public class XML_Reader {
 				WinEnum tempEnum = WinEnum.newType(currentWinCondition);//yo dawg i herd u liek temps
 				ObjectMap<String,String> tempMap = root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes().size;i++){
-					tempValues.add(tempMap.get("win"+(i+1)));
+				if(root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes() != null){
+					for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes().size;i++){
+						tempValues.add(tempMap.get("win"+(i+1)));
+					}
 				}
 				winEnums.add(tempEnum);
 			}
@@ -104,8 +106,10 @@ public class XML_Reader {
 				LoseEnum tempEnum = LoseEnum.newType(currentLoseCondition);//yo dawg i herd u liek temps
 				ObjectMap<String,String> tempMap = root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
-					tempValues.add(tempMap.get("lose"+(i+1)));
+				if(root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes() !=null){
+					for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
+						tempValues.add(tempMap.get("lose"+(i+1)));
+					}
 				}
 				loseEnums.add(tempEnum);
 			}

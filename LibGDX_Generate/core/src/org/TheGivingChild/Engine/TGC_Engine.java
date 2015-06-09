@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -105,6 +104,7 @@ public class TGC_Engine extends Game {
     
     private Batch batch;
     private int gameStart = 0;
+    private boolean screenSwitch = true;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -123,7 +123,6 @@ public class TGC_Engine extends Game {
 			LevelPacket packet = new LevelPacket(entry.name());
 			for (FileHandle levelFile: entry.list()) {
 				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
-				System.out.println(levelFile.name());
 				reader.setupNewFile(levelFile);
 				Level level = reader.compileLevel();
 				packet.addLevel(level);
@@ -175,20 +174,10 @@ public class TGC_Engine extends Game {
 
 		reader = new XML_Reader();
 		writer = new XML_Writer();
-		
-		boolean exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-		XML_Reader reader = new XML_Reader();
-		
-		exists = Gdx.files.internal("testOut.xml").exists();
-		System.out.println(exists);
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-
 		ScreenAdapterManager.getInstance().initialize(this);
-		ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
+		//ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 
-		levels.set(0, reader.compileLevel());
+		//levels.set(0, reader.compileLevel());
 		//button stuff
         bitmapFontButton = new BitmapFont();
 		//create the stage
@@ -289,6 +278,9 @@ public class TGC_Engine extends Game {
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
+	public void setScreenSwitch(boolean b) {
+		screenSwitch = b;
+	}
 	@Override
 	public void render () {
 		camera.update();
@@ -297,8 +289,9 @@ public class TGC_Engine extends Game {
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
 		}
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
 			gameStart++;
+		}
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 
 		 * done loading, it will display a transition until it is done loading. Once 
@@ -325,7 +318,6 @@ public class TGC_Engine extends Game {
 					//boolean = true so the loop is not entered again
 					screenManagerLoaded = true;
 				}
-				
 			}
 		}
 		//decrements the timer to check if we are still delaying the main screen
@@ -333,9 +325,17 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		stage.draw();
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
+			if(!ScreenAdapterManager.getInstance().getCurrentEnum().equals(getScreen()) && screenSwitch) {
+				try {
+					Thread.sleep(2000);
+					screenSwitch = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			ScreenAdapterManager.getInstance().screenTransitionOut();
-
+		}
 	}
 	
 	/**

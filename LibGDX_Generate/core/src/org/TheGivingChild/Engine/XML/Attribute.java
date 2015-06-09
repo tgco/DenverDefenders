@@ -118,8 +118,8 @@ public enum Attribute {
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		static final float MAX_VELOCITY = 400;
-		static final float COLLISION_CONSTANT = 5;
-		static final float COLLISION_OFFSET = 1;
+		static final float COLLISION_CONSTANT = 5;//5
+		static final float COLLISION_OFFSET = 1;//1
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
@@ -136,14 +136,13 @@ public enum Attribute {
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
 						
-
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
 
-						
-						float[] otherObjectVelocity = new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2)),c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))};
+						//new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};
+						float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
 						allObjects.get(i).setVelocity(otherObjectVelocity);
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
 						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
@@ -155,11 +154,15 @@ public enum Attribute {
 						//this loop will make sure the objects aren't overlapping after collision has occured, will likely remove loop and change code if time allows.
 						while(r1.overlaps(r2)){
 							if(mag1>mag2){//if object 1 is travelling faster than object 2 after the collision, then we want it to travel slightly farther, otherwise collision continually happens and bad things happen :( CHANGE ME AFTER LUNCH
-								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
-								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
+								//myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+								//allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
+								myObject.moveBy(myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+								allObjects.get(i).moveBy(otherObjectDirection[0]*COLLISION_CONSTANT,otherObjectDirection[1]*COLLISION_CONSTANT);
 							}else{//else object 2 is faster than obj1, repeat.
-								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
-								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+								//myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
+								//allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
+								myObject.moveBy(myObjectDirection[0]*COLLISION_CONSTANT,myObjectDirection[1]*COLLISION_CONSTANT);
+								allObjects.get(i).moveBy(otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 							}
 							r1.setPosition(myObject.getX(),myObject.getY());
 							r2.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
@@ -280,7 +283,7 @@ public enum Attribute {
 		
 	},
 	SPAWNOBJECTONTIMER{
-
+		private boolean spawned = false;
 		@Override
 		public void setup(GameObject myObject) {
 			
@@ -289,23 +292,28 @@ public enum Attribute {
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
 			long currentTime = MinigameClock.getInstance().getLevelTimeInSeconds();
-			int time = Integer.parseInt(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
-			
+			float time = Float.parseFloat(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
+			if(!myObject.isDisposed() && currentTime - time < 2.0 && !spawned) {
+				Array<String> newListeners = myObject.getListenerNames();
+				System.out.println(newListeners.size);
+				GameObject newObj = new GameObject(allObjects.size, myObject.getImageFilename(), 
+						new float[] {myObject.getX()+300,myObject.getY()+300},
+						newListeners, myObject.getAttributeData());
+				allObjects.add(newObj);
+				spawned=true;
+			}
 		}
 
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			Array<String> values = new Array<String>();
+			Array<String> values = myObject.getAttributeData().get(this);
 			return values;
 		}
 
 		@Override
 		public Array<String> getVariableNames() {
 			Array<String> varNames = new Array<String>();
-			varNames.add("Object image filename");
-			varNames.add("Listener names to add, delimited by commas");
-			varNames.add("List of attributes, delimited by commas");
-			varNames.add("");
+			varNames.add("Seconds Till is Spawns");
 			return varNames;
 		}
 		
@@ -315,6 +323,7 @@ public enum Attribute {
 		}
 		
 	};
+	
 	/**
 	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
 	 * @return	The Attribute associated with the given string
@@ -351,4 +360,6 @@ public enum Attribute {
 	 * @return	The string containing the name to write to the .xml file
 	 */
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
+	
+	//public abstract int getNumArgs();
 }

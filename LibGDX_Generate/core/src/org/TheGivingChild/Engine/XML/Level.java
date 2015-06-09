@@ -24,9 +24,8 @@ public class Level {
 	private Array<LoseEnum> loseConditions;
 	private boolean completed;
 
-	private SpriteBatch clockBatch;
 	private BitmapFont clockFont;
-	
+	private int levelTime = 5;
 	
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
@@ -43,12 +42,11 @@ public class Level {
 		loseConditions.addAll(newLoseConditions);
 		
 		//Set default level length to 10 sec.
-		MinigameClock.getInstance().setLevelLength(60);
+		MinigameClock.getInstance().setLevelLength(levelTime);
 		
 		this.levelImage = levelImage;
 		
 		completed = false;
-		clockBatch = new SpriteBatch();
 		clockFont = new BitmapFont();
 		clockFont.setColor(Color.BLACK);
 				
@@ -57,39 +55,33 @@ public class Level {
 	
 	public void update(){
 		//update the state of the actors and clock
-//		MinigameClock.getInstance().render();
+		MinigameClock.getInstance().render();
 //				
 //		clockBatch.begin();
 //		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 //		clockBatch.end();
-//		
-		
-		if(!checkLose())
-		{
-		
+//				
 		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
 			currentObject.update(actors);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: WinEnum.values()){
+		for(WinEnum winEnum: winConditions){
 			winEnum.checkWin(this);
 		}
 		
-		}
-		
-		else{
-			System.out.println("you ran out of time for the level");
-			//resetLevel();
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+
+		for (LoseEnum loseEnum: loseConditions) {
+			loseEnum.checkLose(this);
+
 		}
 		
 		
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
-		MinigameClock.getInstance().setLevelLength(60);
+		MinigameClock.getInstance().setLevelLength(levelTime);
 		
 		//remove the game objects from the stage
 		for(GameObject gameObject: actors){
@@ -158,5 +150,8 @@ public class Level {
 	
 	public BitmapFont getClockFont() {
 		return clockFont;
+	}
+	public int getLevelTime() {
+		return levelTime;
 	}
 }

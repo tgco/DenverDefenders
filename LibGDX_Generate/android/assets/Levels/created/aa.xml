@@ -1,4 +1,5 @@
 <level packageName="packageTest" levelName="aa" levelImage="TEMPORARY_Cartoon_City.png">
+<<<<<<< HEAD
 	<GameObject ID="1" attributes="moves,bounceOffEdgeOfScreen,mass" imageFilename="editorAssets/ball.png" initialLocation="0.0,81.0" listeners="destroy_on_click">
 		<moves value1="60.0" value2="0.0"/>
 		<bounceOffEdgeOfScreen/>
@@ -8,9 +9,17 @@
 	<GameObject ID="2" attributes="moves,bounceOffEdgeOfScreen,mass" imageFilename="editorAssets/Box.png" initialLocation="591.0,81.0" listeners="destroy_on_click">
 		<mass value1="1"/>
 		<bounceOffEdgeOfScreen/>
+=======
+	<GameObject ID="0" attributes="moves,spawnObjectOnTimer" imageFilename="editorAssets/ball.png" initialLocation="0.0,81.0" listeners="destroy_on_click">
+		<moves value1="60.0" value2="0.0"/>
+		<spawnObjectOnTimer value1="1.0"/>
+	</GameObject>
+	<GameObject ID="1" attributes="moves" imageFilename="editorAssets/Box.png" initialLocation="591.0,81.0" listeners="destroy_on_click">
+>>>>>>> 636d1ac0d2fedabe6dcc6d0a512f77fdbc49f147
 		<moves value1="80.0" value2="70.0"/>
 	</GameObject>
-	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+	<levelGoals win="all_objects_destroyed,collisionWithObjectWin" lose="timeout,collisionWithObjectLose">
+	    <all_objects_destroyed/>
 		<collisionWithObjectWin win1="420" win2="9001"/>
 		<timeout lose1="42.0"/>
 		<collisionWithObjectLose lose2="42" lose3="72"/>

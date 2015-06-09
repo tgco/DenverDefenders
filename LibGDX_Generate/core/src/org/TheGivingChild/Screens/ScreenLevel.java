@@ -13,6 +13,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -40,6 +41,7 @@ public class ScreenLevel extends ScreenAdapter{
 		currentLevel = null;
 		manager = null;
 		levelNumber = 0;
+		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
 	}
 	
 	/**
@@ -49,12 +51,13 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(1);
-		//currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
+
+		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
+
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		currentLevel = levels.get(levelNumber);
-		
+		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
@@ -84,8 +87,7 @@ public class ScreenLevel extends ScreenAdapter{
 						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
 					}
 				}
-				MinigameClock.getInstance().render();
-
+//				MinigameClock.getInstance().render();
 				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				currentLevel.update();
 				batch.end();
@@ -106,6 +108,7 @@ public class ScreenLevel extends ScreenAdapter{
 		levelNumber++;
 		currentLevel = levels.get(levelNumber);
 		currentLevel.loadObjectsToStage();
+		MinigameClock.getInstance().setLevelLength(currentLevel.getLevelTime());
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
 		}
@@ -115,6 +118,6 @@ public class ScreenLevel extends ScreenAdapter{
 		for (Level level: levels) {
 			level.resetLevel();
 		}
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 	}
 }
