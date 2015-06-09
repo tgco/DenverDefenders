@@ -303,7 +303,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		
 		Gdx.input.setInputProcessor(this);
-		
+
 	}
 	
 	/**
