@@ -13,6 +13,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -84,8 +85,7 @@ public class ScreenLevel extends ScreenAdapter{
 						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
 					}
 				}
-				MinigameClock.getInstance().render();
-
+//				MinigameClock.getInstance().render();
 				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				currentLevel.update();
 				batch.end();
@@ -106,6 +106,7 @@ public class ScreenLevel extends ScreenAdapter{
 		levelNumber++;
 		currentLevel = levels.get(levelNumber);
 		currentLevel.loadObjectsToStage();
+		MinigameClock.getInstance().setLevelLength(currentLevel.getLevelTime());
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
 		}
