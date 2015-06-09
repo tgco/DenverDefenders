@@ -42,7 +42,7 @@ public enum InputListenerEnums{
 				//drag moves the object to the new location that drag returns every update
 				@Override
 				public void drag(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer) {
-					gameObject.moveBy(x, y);
+					gameObject.moveBy(x-gameObject.getWidth()/2, y-gameObject.getHeight()/2);
 				};
 			});
 		}

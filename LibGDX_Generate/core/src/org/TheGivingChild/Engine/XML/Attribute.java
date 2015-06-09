@@ -147,20 +147,12 @@ public enum Attribute {
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
 						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
-						//float[] obj1center = new float[] {myObject.getX()+.5f*myObject.getTexture().getWidth(),myObject.getY()+.5f*myObject.getTexture().getHeight()};
-						//float[] obj2center = new float[] {allObjects.get(i).getX()+.5f*allObjects.get(i).getTexture().getWidth(),allObjects.get(i).getY()+.5f*allObjects.get(i).getTexture().getHeight()};
-						//float[] distance = new float[] {obj1center[0]-obj2center[0],obj1center[1]-obj2center[1]};
-						
 						//this loop will make sure the objects aren't overlapping after collision has occured, will likely remove loop and change code if time allows.
 						while(r1.overlaps(r2)){
 							if(mag1>mag2){//if object 1 is travelling faster than object 2 after the collision, then we want it to travel slightly farther, otherwise collision continually happens and bad things happen :( CHANGE ME AFTER LUNCH
-								//myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
-								//allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
 								myObject.moveBy(myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 								allObjects.get(i).moveBy(otherObjectDirection[0]*COLLISION_CONSTANT,otherObjectDirection[1]*COLLISION_CONSTANT);
 							}else{//else object 2 is faster than obj1, repeat.
-								//myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
-								//allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 								myObject.moveBy(myObjectDirection[0]*COLLISION_CONSTANT,myObjectDirection[1]*COLLISION_CONSTANT);
 								allObjects.get(i).moveBy(otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 							}
@@ -253,11 +245,19 @@ public enum Attribute {
 			Array<String> varName = new Array<String>();
 			return varName;
 		}
+		
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			float tol = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
+			//if(tol > distanceToPoint(myObject, )){
+				
+			//}
+		}
 
 		@Override
 		public void setup(GameObject myObject) {
-			// TODO Auto-generated method stub
 			
+			//myObject.getAttributeData().get(MOVESONSETPATH).add();
 		}
 
 		@Override
@@ -266,20 +266,15 @@ public enum Attribute {
 		}
 
 		@Override
-		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
 		public String getXMLName() {
 			// TODO Auto-generated method stub
 			return "movesOnSetPath";
 		}
 		
-		private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
-			return new float[] {myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index-1)*4),myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index+1)*4)};
-		}
+		//private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
+			//return new float[] {Float.parseFloat(String.toString(myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index-1)*4))),Float.parseFloat(String.toString(myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index+1)*4)))};
+		//}
+		
 		
 	},
 	SPAWNOBJECTONTIMER{

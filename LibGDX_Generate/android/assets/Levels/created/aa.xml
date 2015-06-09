@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <level packageName="packageTest" levelName="aa" levelImage="TEMPORARY_Cartoon_City.png">
 <<<<<<< HEAD
 	<GameObject ID="1" attributes="moves,bounceOffEdgeOfScreen,mass" imageFilename="editorAssets/ball.png" initialLocation="0.0,81.0" listeners="destroy_on_click">
@@ -23,5 +24,44 @@
 		<collisionWithObjectWin win1="420" win2="9001"/>
 		<timeout lose1="42.0"/>
 		<collisionWithObjectLose lose2="42" lose3="72"/>
+=======
+<level packageName="PLACEHOLDER1" levelName="testOut" levelImage="TEMPORARY_Cartoon_City.png">
+	<GameObject ID="0" attributes="bounceOffEdgeOfScreen,moves,collidesWithObjectsID,mass" imageFilename="Grid.png" initialLocation="450,5.0" listeners="destroy_on_click">
+		<moves value1 = "-200" value2 = "200"/>
+		<collidesWithObjectsID value1="1" value2="1,2,3"/>
+		<mass value1="1.25"/>
+		<bounceOffEdgeOfScreen/>
+	</GameObject>
+	
+	<GameObject ID="1" attributes="bounceOffEdgeOfScreen,moves,collidesWithObjectsID,mass" imageFilename="Grid.png" initialLocation="5.0,450.0" listeners="destroy_on_click">
+		<moves value1 = "200" value2 = "200"/>
+		<collidesWithObjectsID value1="1" value2="2,3"/>
+		<mass value1="1"/>
+		<bounceOffEdgeOfScreen/>
+	</GameObject>
+	
+	<GameObject ID="2" attributes="bounceOffEdgeOfScreen,moves,mass,collidesWithObjectsID" imageFilename="Box.png" initialLocation="100.0,100.0" listeners="destroy_on_click">
+		<moves value1 = "100" value2 = "150"/>
+		<mass value1="1"/>
+		<collidesWithObjectsID value1="1" value2="3"/>
+		<bounceOffEdgeOfScreen/>
+	</GameObject>
+	
+	<GameObject ID="3" attributes="bounceOffEdgeOfScreen,moves,mass" imageFilename="ball.png" initialLocation="300.0,300.0" listeners="destroy_on_click">
+		<moves value1 = "150" value2 = "200"/>
+		<mass value1="1"/>
+		<bounceOffEdgeOfScreen/>
+	</GameObject>
+	
+	<GameObject ID="4" attributes="moves,movesOnSetPath" imageFilename="Grid.png" initialLocation="500,500" listeners="drag_object">
+		<moves value1="0" value2="-0"/>
+		<mOvEsOnSeTPatH value1="10" value2="100,100;500,0;0,500"/>
+	</GameObject>
+	
+	<levelGoals win="all_objects_destroyed,collisionWithObjectWin" lose="timeout">
+		<all_objects_destroyed/>
+		<collisionWithObjectWin win1="4" win2="3"/>
+		<timeout lose1="42"/>
+>>>>>>> f18b2e77764ceb851a48cf5154cab01a98dc2d1e
 	</levelGoals>
 </level>
