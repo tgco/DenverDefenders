@@ -48,23 +48,28 @@ public enum Attribute {
 	 * Causes objects to collide with and bounce off of the edge of the screen, collisions are perfectly ellastic
 	 */
 	BOUNCEOFFEDGEOFSCREEN{
+		private Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			if(myObject.getX() <= 0){//left
 				float[] temp = myObject.getVelocity();
 				temp[0] = Math.abs(temp[0]);
 				myObject.setVelocity(temp);
+				mp3Sound.play();
 			}if(myObject.getX() +myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){//right
 				float[] temp = myObject.getVelocity();
 				temp[0] = -Math.abs(temp[0]);
 				myObject.setVelocity(temp);
+				mp3Sound.play();
 			}if(myObject.getY() <= 0){//bottom
 				float[] temp = myObject.getVelocity();
 				temp[1] = Math.abs(temp[1]);
 				myObject.setVelocity(temp);
+				mp3Sound.play();
 			}if(myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){//top
 				float[] temp = myObject.getVelocity();
 				temp[1] = -Math.abs(temp[1]);
 				myObject.setVelocity(temp);
+				mp3Sound.play();
 			}
 		}
 		public Array<String> getVariableNames(){
@@ -97,12 +102,10 @@ public enum Attribute {
 		}
 		@Override
 		public void setup(GameObject myObject) {
-			// TODO Auto-generated method stub
 			
 		}
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			// TODO Auto-generated method stub
 			
 		}
 	},
@@ -114,15 +117,16 @@ public enum Attribute {
 	 */
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
-		static final float MAX_VELOCITY = 250;
+		static final float MAX_VELOCITY = 400;
 		static final float COLLISION_CONSTANT = 5;
-		static final float COLLISION_OFFSET = 2;
+		static final float COLLISION_OFFSET = 1;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			Rectangle juan = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
+			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
-					Rectangle too = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
-					if(juan.overlaps(too) ){//&& juanSmall.overlaps(tooSmall)
+					Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
+					if(r1.overlaps(r2) ){//&& juanSmall.overlaps(tooSmall)
+						//collision has been detected, getting needed information for the collision equation(using momentum)
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
 						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
@@ -131,9 +135,6 @@ public enum Attribute {
 						float v2ix = allObjects.get(i).getVelocity()[0];
 						float v1iy = myObject.getVelocity()[1];
 						float v2iy = allObjects.get(i).getVelocity()[1];
-						
-			
-						//COLLISION STICKING STUFF, IS WACK
 
 						float[] myObjectVelocity = new float[] {c1*((m1-m2)*v1ix + 2*m2*v2ix)/(m1+m2),c1*((m1-m2)*v1iy + 2*m2*v2iy)/(m1+m2)};
 						myObject.setVelocity(myObjectVelocity);
@@ -146,16 +147,21 @@ public enum Attribute {
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
 						float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
-						while(juan.overlaps(too)){
-							if(mag1>mag2){
+						//float[] obj1center = new float[] {myObject.getX()+.5f*myObject.getTexture().getWidth(),myObject.getY()+.5f*myObject.getTexture().getHeight()};
+						//float[] obj2center = new float[] {allObjects.get(i).getX()+.5f*allObjects.get(i).getTexture().getWidth(),allObjects.get(i).getY()+.5f*allObjects.get(i).getTexture().getHeight()};
+						//float[] distance = new float[] {obj1center[0]-obj2center[0],obj1center[1]-obj2center[1]};
+						
+						//this loop will make sure the objects aren't overlapping after collision has occured, will likely remove loop and change code if time allows.
+						while(r1.overlaps(r2)){
+							if(mag1>mag2){//if object 1 is travelling faster than object 2 after the collision, then we want it to travel slightly farther, otherwise collision continually happens and bad things happen :( CHANGE ME AFTER LUNCH
 								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT);
-							}else{
+							}else{//else object 2 is faster than obj1, repeat.
 								myObject.setPosition(myObject.getX()+myObjectDirection[0]*COLLISION_CONSTANT,myObject.getY()+myObjectDirection[1]*COLLISION_CONSTANT);
 								allObjects.get(i).setPosition(allObjects.get(i).getX()+otherObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,allObjects.get(i).getY()+otherObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
-							}								
-							juan.setPosition(myObject.getX(),myObject.getY());
-							too.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
+							}
+							r1.setPosition(myObject.getX(),myObject.getY());
+							r2.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
 						}
 						
 						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));

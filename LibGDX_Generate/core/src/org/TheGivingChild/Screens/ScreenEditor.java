@@ -371,11 +371,11 @@ class ScreenEditor extends ScreenAdapter{
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
 		skinBack = new Skin();
-		skinBack.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		skinBack.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
 		textButtonStyleBack = new TextButtonStyle();
 		textButtonStyleBack.font = font; 
-		textButtonStyleBack.up = skinBack.getDrawable("Button_Editor_Back");
-		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_Editor_Back");
+		textButtonStyleBack.up = skinBack.getDrawable("Button_MainScreen");
+		textButtonStyleBack.down = skinBack.getDrawable("ButtonPressed_MainScreen");
 		TextButton backButton = new TextButton("", textButtonStyleBack);
 
 		//Creates the listener for the Back button
@@ -397,8 +397,8 @@ class ScreenEditor extends ScreenAdapter{
 		//Uses some of the same variables, so gets images ready for the Ball button
 		TextButtonStyle styleBall = new TextButtonStyle();
 		styleBall.font = font;
-		styleBall.up = skinBack.getDrawable("Button_Editor_Ball");
-		styleBall.down = skinBack.getDrawable("ButtonPressed_Editor_Ball");
+		styleBall.up = skinBack.getDrawable("Button_MainScreen_Editor");
+		styleBall.down = skinBack.getDrawable("ButtonPressed_MainScreen_Editor");
 		TextButton ballButton = new TextButton("", styleBall);
 
 		//Ball button listener
@@ -419,8 +419,8 @@ class ScreenEditor extends ScreenAdapter{
 
 		TextButtonStyle styleExport = new TextButtonStyle();
 		styleExport.font = font;
-		styleExport.up = skinBack.getDrawable("Button_Editor_Export");
-		styleExport.down = skinBack.getDrawable("Button_Editor_ExportPressed");
+		styleExport.up = skinBack.getDrawable("Button_MainScreen_Play");
+		styleExport.down = skinBack.getDrawable("ButtonPressed_MainScreen_Play");
 
 		TextButton exportButton = new TextButton("", styleExport);
 
@@ -453,12 +453,17 @@ class ScreenEditor extends ScreenAdapter{
 				testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 
-				Level level = new Level(levelName, "packageTest", "test.png",testWinArray, testLoseArray, gameObjects);
+				Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
 				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}
 		});
-
+		Skin okCancelSkin = new Skin();
+		okCancelSkin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		
+		Skin checkBoxSkin;
+		checkBoxSkin = new Skin();
+		checkBoxSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
 		editorTable.add(exportButton).align(Align.bottom);
 		Window.WindowStyle winStyle = new Window.WindowStyle();
 		winStyle.titleFont = font;
@@ -466,21 +471,21 @@ class ScreenEditor extends ScreenAdapter{
 
 		TextButtonStyle okStyle = new TextButtonStyle();
 		okStyle.font = font;
-		okStyle.up = skinBack.getDrawable("Button_Editor_Ok");
-		okStyle.down = skinBack.getDrawable("Button_Editor_OkPressed");
+		okStyle.up = okCancelSkin.getDrawable("Button_Editor_Ok");
+		okStyle.down = okCancelSkin.getDrawable("Button_Editor_OkPressed");
 		TextButton okButton = new TextButton("", okStyle);
 
 		TextButtonStyle cancelStyle = new TextButtonStyle();
 		cancelStyle.font = font;
-		cancelStyle.up = skinBack.getDrawable("Button_Editor_Cancel");
-		cancelStyle.down = skinBack.getDrawable("Button_Editor_CancelPressed");
+		cancelStyle.up = okCancelSkin.getDrawable("Button_Editor_Cancel");
+		cancelStyle.down = okCancelSkin.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
 
 		for (final Attribute enums: Attribute.values()) {
 			CheckBoxStyle attributeStyle = new CheckBoxStyle();
 			attributeStyle.font = font;
-			attributeStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
-			attributeStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
+			attributeStyle.checkboxOff = checkBoxSkin.getDrawable("CheckBox");
+			attributeStyle.checkboxOn = checkBoxSkin.getDrawable("CheckBox_Checked");
 			CheckBox attributeBox = new CheckBox(enums.getXMLName(), attributeStyle);
 			window.row();
 			window.add(attributeBox);
@@ -492,8 +497,8 @@ class ScreenEditor extends ScreenAdapter{
 		for (final InputListenersEnums enums: InputListenersEnums.values()) {
 			CheckBoxStyle listenerStyle = new CheckBoxStyle();
 			listenerStyle.font = font;
-			listenerStyle.checkboxOff = skinBack.getDrawable("CheckBox_Editor_Destroy");
-			listenerStyle.checkboxOn = skinBack.getDrawable("CheckBox_Editor_DestroyChecked");
+			listenerStyle.checkboxOff = checkBoxSkin.getDrawable("CheckBox");
+			listenerStyle.checkboxOn = checkBoxSkin.getDrawable("CheckBox_Checked");
 			CheckBox listenerBox = new CheckBox(enums.getXMLName(), listenerStyle);
 			window.row();
 			window.add(listenerBox);

@@ -68,7 +68,7 @@ class ScreenOptions extends ScreenAdapter {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
 		manager = game.getAssetManager();
-		manager.load("optionsTitle.png", Texture.class);
+		manager.load("titleOptionScreen.png", Texture.class);
 		createOptionsTable();
 		createOverallTable();
 	}
@@ -77,8 +77,8 @@ class ScreenOptions extends ScreenAdapter {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				if(manager.isLoaded("optionsTitle.png"))
-					title = manager.get("optionsTitle.png");
+				if(manager.isLoaded("titleOptionScreen.png"))
+					title = manager.get("titleOptionScreen.png");
 				Gdx.gl.glClearColor(1,1,0,1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				ScreenAdapterManager.getInstance().backgroundImage();
@@ -150,11 +150,11 @@ class ScreenOptions extends ScreenAdapter {
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
-		style.up = skin.getDrawable("Button_Editor_Back");
-		style.down = skin.getDrawable("ButtonPressed_Editor_Back");
+		style.up = skin.getDrawable("Button_MainScreen");
+		style.down = skin.getDrawable("ButtonPressed_MainScreen");
 		TextButton backButton = new TextButton("", style);
 
 		//Creates the listener for the Back button

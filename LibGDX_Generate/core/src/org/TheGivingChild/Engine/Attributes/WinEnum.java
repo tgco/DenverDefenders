@@ -72,7 +72,8 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			}
 			if(win){
 				System.out.println("Level "+level.getLevelName()+" won!");
-				level.resetLevel();
+				//level.resetLevel();
+				level.setCompleted(true);
 			}
 		}
 		@Override

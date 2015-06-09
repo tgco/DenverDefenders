@@ -1,7 +1,9 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
 
@@ -20,10 +22,12 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 public class ScreenLevel extends ScreenAdapter{
-
-	private Level level;
+	private LevelPacket currentLevelPacket;
+	private Level currentLevel;
+	private Array<Level> levels;
 	private SpriteBatch batch;
 	private AssetManager manager;
+	private int levelNumber;
 	
 	/**
 	 * Called when the level is complete and is returning to the main screen.
@@ -31,8 +35,11 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void hide() {
-		level = null;
+		currentLevelPacket = null;
+		levels = null;
+		currentLevel = null;
 		manager = null;
+		levelNumber = 0;
 	}
 	
 	/**
@@ -42,12 +49,13 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		level = ScreenAdapterManager.getInstance().game.getLevels().get(0);
+		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
+		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-
+		currentLevel = levels.get(levelNumber);
 		
-		level.loadObjectsToStage();
-		for(GameObject gameObject: level.getGameObjects()){
+		currentLevel.loadObjectsToStage();
+		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
 		}
 		batch = new SpriteBatch();
@@ -69,17 +77,43 @@ public class ScreenLevel extends ScreenAdapter{
 				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				batch.begin();
-				batch.draw((Texture) manager.get(level.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				for (GameObject g : level.getGameObjects()) {
+				batch.draw((Texture) manager.get(currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				for (GameObject g : currentLevel.getGameObjects()) {
 					if(!g.isDisposed()){
 						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
 					}
 				}
-				level.update();
+				MinigameClock.getInstance().render();
+
+				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+				currentLevel.update();
 				batch.end();
+				if (currentLevelPacket.allCompleted()) {
+					System.out.println("complete");
+					packetComplete();
+					return;
+				}
+				if(currentLevel.getCompleted() && levelNumber < levels.size-1)
+					nextLevel();
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+	}
+	
+	private void nextLevel() {
+		levelNumber++;
+		currentLevel = levels.get(levelNumber);
+		currentLevel.loadObjectsToStage();
+		for(GameObject gameObject: currentLevel.getGameObjects()){
+			gameObject.resetObject();
+		}
+	}
+	
+	private void packetComplete() {
+		for (Level level: levels) {
+			level.resetLevel();
+		}
+		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 	}
 }
