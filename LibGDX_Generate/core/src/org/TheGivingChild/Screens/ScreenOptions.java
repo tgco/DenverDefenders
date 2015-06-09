@@ -2,22 +2,16 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
 
-import sun.java2d.pipe.SpanClipRenderer;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -57,11 +50,9 @@ class ScreenOptions extends ScreenAdapter {
 			  						 "   Option 3   ", 
 			  						 "   Option 4   "};
 	private boolean option1, option2, option3, option4 = false;
-	private boolean allChanged = false;
 	private Slider slider;
 	//private Label sliderValue;
 	private Label sliderName;
-	private TextureRegion region;
 	private float volume;
 	private boolean before1, before2 = false;
 
@@ -72,6 +63,7 @@ class ScreenOptions extends ScreenAdapter {
 		manager.load("titleOptionScreen.png", Texture.class);
 		createOptionsTable();
 		createOverallTable();
+		game.setScreenSwitch(true);
 	}
 	@Override
 	public void render(float delta) {
@@ -127,6 +119,7 @@ class ScreenOptions extends ScreenAdapter {
 	public void hide() {
 		optionsTable.remove();
 		overallTable.remove();
+		game.setScreenSwitch(true);
 	}
 	
 	private void createOptionsTable() {
