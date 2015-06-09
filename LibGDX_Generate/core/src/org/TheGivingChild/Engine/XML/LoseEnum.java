@@ -19,10 +19,12 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public void setValues(Array<String> newValues){
 			time = Float.parseFloat(newValues.first());
 		}
-		public boolean checkLose(){
+		public boolean checkLose(Level level){
 			time = time - Gdx.graphics.getDeltaTime();
-			if(time <= 0.0)
+			if(time <= 0.0) {
+				level.setCompleted(true);
 				return true;
+			}
 			return false;
 		}
 	},
@@ -32,7 +34,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public String getXMLDescription(){
 			return "collisionWithObjectLose";
 		}
-		public boolean checkLose(){
+		public boolean checkLose(Level level){
 			return false;
 		}
 		public void setValues(Array<String> newValues){
@@ -49,7 +51,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 	public abstract String getXMLDescription();
 	public abstract Array<String> getValues();
 	public abstract void setValues(Array<String> newValues);
-	public abstract boolean checkLose();
+	public abstract boolean checkLose(Level level);
 	
 	public static LoseEnum newType(String type){
 		return valueOf(type.toUpperCase());

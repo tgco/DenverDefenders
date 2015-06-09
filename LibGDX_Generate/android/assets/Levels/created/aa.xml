@@ -2,7 +2,7 @@
 	<GameObject ID="0" attributes="moves" imageFilename="editorAssets/ball.png" initialLocation="0.0,81.0" listeners="destroy_on_click">
 		<moves value1="60.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="1" attributes="moves" imageFilename="editorAssets/Box.png" initialLocation="891.0,81.0" listeners="destroy_on_click">
+	<GameObject ID="1" attributes="moves" imageFilename="editorAssets/Box.png" initialLocation="591.0,81.0" listeners="destroy_on_click">
 		<moves value1="80.0" value2="70.0"/>
 	</GameObject>
 	<levelGoals win="collisionWithObjectWin" lose="timeout,collisionWithObjectLose">

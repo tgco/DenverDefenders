@@ -26,7 +26,7 @@ public class Level {
 
 	private SpriteBatch clockBatch;
 	private BitmapFont clockFont;
-	
+	private int levelTime = 5;
 	
 	
 	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
@@ -43,7 +43,7 @@ public class Level {
 		loseConditions.addAll(newLoseConditions);
 		
 		//Set default level length to 10 sec.
-		MinigameClock.getInstance().setLevelLength(60);
+		MinigameClock.getInstance().setLevelLength(levelTime);
 		
 		this.levelImage = levelImage;
 		
@@ -57,7 +57,7 @@ public class Level {
 	
 	public void update(){
 		//update the state of the actors and clock
-//		MinigameClock.getInstance().render();
+		MinigameClock.getInstance().render();
 //				
 //		clockBatch.begin();
 //		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
@@ -81,15 +81,16 @@ public class Level {
 		
 		else{
 			System.out.println("you ran out of time for the level");
-			resetLevel();
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			setCompleted(true);
+			//resetLevel();
+			//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 		}
 		
 		
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
-		MinigameClock.getInstance().setLevelLength(60);
+		MinigameClock.getInstance().setLevelLength(levelTime);
 		
 		//remove the game objects from the stage
 		for(GameObject gameObject: actors){
@@ -158,5 +159,8 @@ public class Level {
 	
 	public BitmapFont getClockFont() {
 		return clockFont;
+	}
+	public int getLevelTime() {
+		return levelTime;
 	}
 }
