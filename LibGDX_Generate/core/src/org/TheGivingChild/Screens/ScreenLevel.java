@@ -50,7 +50,6 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-//		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(1);
 		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();

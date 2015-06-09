@@ -53,15 +53,10 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			String[] IDList = myInfo.get(1).split(",");
 			for(int i = 0; i<IDList.length;i++){
 				int currentID = Integer.parseInt(IDList[i]);
-				System.out.println("ID:" + currentID);
-				//if(currentID == obj1.getID()){
-					System.out.println("\tTHERE");
-					//setup new rectangle with dimensions of target object
-					Rectangle r2 = new Rectangle(level.getGameObjects().get(currentID).getX(),level.getGameObjects().get(currentID).getY(),level.getGameObjects().get(currentID).getTexture().getWidth(),level.getGameObjects().get(currentID).getTexture().getHeight());
-					if(!r1.overlaps(r2)){//if the rectangle does not overlap, win condition has not been satisfied
-						win = false;
-					}
-				//}
+				//setup new rectangle with dimensions of target object
+				Rectangle r2 = new Rectangle(level.getGameObjects().get(currentID).getX(),level.getGameObjects().get(currentID).getY(),level.getGameObjects().get(currentID).getTexture().getWidth(),level.getGameObjects().get(currentID).getTexture().getHeight());
+				if(!r1.overlaps(r2))//if the rectangle does not overlap, win condition has not been satisfied
+					win = false;
 			}
 			level.setCompleted(win);
 		}

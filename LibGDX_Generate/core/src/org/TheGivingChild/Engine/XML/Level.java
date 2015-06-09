@@ -24,7 +24,7 @@ public class Level {
 	private boolean completed;
 
 	private BitmapFont clockFont;
-	private int levelTime = 5;
+	private int levelTime = 30;
 	private ObjectMap<WinEnum,Array<String>> winData;
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	
@@ -64,11 +64,11 @@ public class Level {
 			currentObject.update(actors);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: winConditions){
+		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
 		}
 		
-		for (LoseEnum loseEnum: loseConditions) {
+		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
 		}
 		
