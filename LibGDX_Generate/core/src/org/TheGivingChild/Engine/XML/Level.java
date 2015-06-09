@@ -24,7 +24,6 @@ public class Level {
 	private Array<LoseEnum> loseConditions;
 	private boolean completed;
 
-	private SpriteBatch clockBatch;
 	private BitmapFont clockFont;
 	private int levelTime = 5;
 	
@@ -48,7 +47,6 @@ public class Level {
 		this.levelImage = levelImage;
 		
 		completed = false;
-		clockBatch = new SpriteBatch();
 		clockFont = new BitmapFont();
 		clockFont.setColor(Color.BLACK);
 				

@@ -283,7 +283,7 @@ public enum Attribute {
 		
 	},
 	SPAWNOBJECTONTIMER{
-
+		private boolean spawned = false;
 		@Override
 		public void setup(GameObject myObject) {
 			
@@ -292,23 +292,28 @@ public enum Attribute {
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
 			long currentTime = MinigameClock.getInstance().getLevelTimeInSeconds();
-			int time = Integer.parseInt(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
-			//if()
+			float time = Float.parseFloat(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
+			if(!myObject.isDisposed() && currentTime - time < 2.0 && !spawned) {
+				Array<String> newListeners = myObject.getListenerNames();
+				System.out.println(newListeners.size);
+				GameObject newObj = new GameObject(allObjects.size, myObject.getImageFilename(), 
+						new float[] {myObject.getX()+300,myObject.getY()+300},
+						newListeners, myObject.getAttributeData());
+				allObjects.add(newObj);
+				spawned=true;
+			}
 		}
 
 		@Override
 		public Array<String> getValues(GameObject myObject) {
-			Array<String> values = new Array<String>();
+			Array<String> values = myObject.getAttributeData().get(this);
 			return values;
 		}
 
 		@Override
 		public Array<String> getVariableNames() {
 			Array<String> varNames = new Array<String>();
-			varNames.add("Object image filename");
-			varNames.add("Listener names to add, delimited by commas");
-			varNames.add("List of attributes, delimited by commas");
-			varNames.add("");
+			varNames.add("Seconds Till is Spawns");
 			return varNames;
 		}
 		
@@ -318,6 +323,7 @@ public enum Attribute {
 		}
 		
 	};
+	
 	/**
 	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
 	 * @return	The Attribute associated with the given string
