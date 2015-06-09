@@ -22,13 +22,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -107,8 +104,7 @@ public class TGC_Engine extends Game {
     
     private Batch batch;
     private int gameStart = 0;
-    
-    private float timeBeforeOut = 5.0f;
+    private boolean screenSwitch = true;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -279,6 +275,9 @@ public class TGC_Engine extends Game {
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
+	public void setScreenSwitch(boolean b) {
+		screenSwitch = b;
+	}
 	@Override
 	public void render () {
 		camera.update();
@@ -289,13 +288,6 @@ public class TGC_Engine extends Game {
 		}
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
 			gameStart++;
-			ScreenAdapterManager.getInstance().screenTransition();
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 
@@ -323,7 +315,6 @@ public class TGC_Engine extends Game {
 					//boolean = true so the loop is not entered again
 					screenManagerLoaded = true;
 				}
-				
 			}
 		}
 		//decrements the timer to check if we are still delaying the main screen
@@ -331,9 +322,17 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		stage.draw();
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete)
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
+			if(!ScreenAdapterManager.getInstance().getCurrentEnum().equals(getScreen()) && screenSwitch) {
+				try {
+					Thread.sleep(2000);
+					screenSwitch = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			ScreenAdapterManager.getInstance().screenTransitionOut();
-
+		}
 	}
 	
 	/**
