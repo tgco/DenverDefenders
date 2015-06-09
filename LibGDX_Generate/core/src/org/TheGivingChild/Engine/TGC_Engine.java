@@ -169,10 +169,7 @@ public class TGC_Engine extends Game {
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.finishLoading();
-		//levels for testing packet manager.
-		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-
+		
 		reader = new XML_Reader();
 		writer = new XML_Writer();
 		
