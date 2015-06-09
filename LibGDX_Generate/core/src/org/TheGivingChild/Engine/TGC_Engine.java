@@ -174,14 +174,6 @@ public class TGC_Engine extends Game {
 
 		reader = new XML_Reader();
 		writer = new XML_Writer();
-		
-		boolean exists = Gdx.files.internal("testOut.xml").exists();
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-		XML_Reader reader = new XML_Reader();
-		
-		exists = Gdx.files.internal("testOut.xml").exists();
-		reader.setupNewFile(Gdx.files.internal("testOut.xml"));
-
 		ScreenAdapterManager.getInstance().initialize(this);
 		//ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 

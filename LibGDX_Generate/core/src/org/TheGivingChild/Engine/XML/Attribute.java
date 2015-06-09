@@ -318,6 +318,7 @@ public enum Attribute {
 		}
 		
 	};
+	
 	/**
 	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
 	 * @return	The Attribute associated with the given string
