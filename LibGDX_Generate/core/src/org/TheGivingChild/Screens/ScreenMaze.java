@@ -370,14 +370,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
 		
-		
-		//if(game.getLevels().get(0).getCompleted())
-		{
-		//	System.out.println("you beat the level");
-		}
-		
-	
-		
+
 		Gdx.input.setInputProcessor(this);
 
 	}

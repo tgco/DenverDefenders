@@ -1,12 +1,8 @@
 package org.TheGivingChild.Engine.XML;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
