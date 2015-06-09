@@ -14,32 +14,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class Level {
 	private String levelName;
 	private String packageName;
 	private String levelImage;
 	private Array<GameObject> actors;
-	private Array<WinEnum> winConditions;
-	private Array<LoseEnum> loseConditions;
 	private boolean completed;
 
 	private BitmapFont clockFont;
-	private int levelTime = 5;
+	private int levelTime = 30;
+	private ObjectMap<WinEnum,Array<String>> winData;
+	private ObjectMap<LoseEnum,Array<String>> loseData;
 	
-	
-	public Level(String name, String packagename, String levelImage, Array<WinEnum> newWinConditions, Array<LoseEnum> newLoseConditions, Array<GameObject> objects){
+	public Level(String name, String packagename, String levelImage, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){
 		//set the level and packageNames
 		levelName = name;
 		packageName=packagename;
 		actors = new Array<GameObject>();
 		//add the actors of the level to an array for iteration
 		actors.addAll(objects);
-		winConditions = new Array<WinEnum>();
-		loseConditions = new Array<LoseEnum>();
-		//add win and lose conditions to iterate over
-		winConditions.addAll(newWinConditions);
-		loseConditions.addAll(newLoseConditions);
+		winData = newWinData;
+		loseData = newLoseData;
 		
 		//Set default level length to 10 sec.
 		MinigameClock.getInstance().setLevelLength(levelTime);
@@ -49,8 +46,8 @@ public class Level {
 		completed = false;
 		clockFont = new BitmapFont();
 		clockFont.setColor(Color.BLACK);
-				
-	
+		
+		
 	}
 	
 	public void update(){
@@ -67,11 +64,11 @@ public class Level {
 			currentObject.update(actors);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: winConditions){
+		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
 		}
 		
-		for (LoseEnum loseEnum: loseConditions) {
+		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
 		}
 		
@@ -126,20 +123,20 @@ public class Level {
 		return actors;
 	}
 	
-	public void addWinCondition(WinEnum newWinCondition){
-		winConditions.add(newWinCondition);
-	}
-	
 	public Array<WinEnum> getWinConditions(){
-		return winConditions;
-	}
-	
-	public void addLoseCondition(LoseEnum newLoseCondition){
-		loseConditions.add(newLoseCondition);
+		return winData.keys().toArray();
 	}
 	
 	public Array<LoseEnum> getLoseConditions(){
-		return loseConditions;
+		return loseData.keys().toArray();
+	}
+	
+	public Array<String> getWinInfo(WinEnum winEnum){
+		return winData.get(winEnum);
+	}
+	
+	public Array<String> getLoseInfo(LoseEnum loseEnum){
+		return loseData.get(loseEnum);
 	}
 	
 	public boolean getCompleted() {

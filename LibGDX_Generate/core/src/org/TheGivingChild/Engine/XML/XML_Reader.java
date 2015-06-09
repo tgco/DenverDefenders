@@ -79,8 +79,8 @@ public class XML_Reader {
 		return listOfObjects;
 	}
 	
-	public Array<WinEnum> compileWinConditions(){
-		Array<WinEnum> winEnums = new Array<WinEnum>();
+	public ObjectMap<WinEnum, Array<String>> compileWinConditions(){
+		ObjectMap<WinEnum,Array<String>> winData = new ObjectMap<WinEnum,Array<String>>();
 		String temp[] = root.getChildByName("levelGoals").getAttribute("win").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
 			for(String currentWinCondition:temp){//each element in win="stuff,things,morestuff"
@@ -92,29 +92,29 @@ public class XML_Reader {
 						tempValues.add(tempMap.get("win"+(i+1)));
 					}
 				}
-				winEnums.add(tempEnum);
+				winData.put(tempEnum,tempValues);
 			}
 		}
-		return winEnums;
+		return winData;
 	}
 	
-	public Array<LoseEnum> compileLoseConditions(){
-		Array<LoseEnum> loseEnums = new Array<LoseEnum>();
+	public ObjectMap<LoseEnum, Array<String>> compileLoseConditions(){
+		ObjectMap<LoseEnum,Array<String>> loseData = new ObjectMap<LoseEnum,Array<String>>();
 		String temp[] = root.getChildByName("levelGoals").getAttribute("lose").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
 			for(String currentLoseCondition:temp){//each element in lose="stuff,things,morestuff"
 				LoseEnum tempEnum = LoseEnum.newType(currentLoseCondition);//yo dawg i herd u liek temps
 				ObjectMap<String,String> tempMap = root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				if(root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes() !=null){
+				if(root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes() != null){
 					for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
 						tempValues.add(tempMap.get("lose"+(i+1)));
 					}
 				}
-				loseEnums.add(tempEnum);
+				loseData.put(tempEnum,tempValues);
 			}
 		}
-		return loseEnums;
+		return loseData;
 	}
 	
 	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats

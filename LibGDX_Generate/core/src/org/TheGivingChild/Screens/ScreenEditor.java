@@ -114,6 +114,7 @@ class ScreenEditor extends ScreenAdapter{
 		fillGrid();		
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
+		mainGame.setScreenSwitch(true);
 	}
 	//When hidden removes it's table
 
@@ -124,6 +125,7 @@ class ScreenEditor extends ScreenAdapter{
 	public void hide() {
 		editorTable.remove();
 		window.remove();
+		mainGame.setScreenSwitch(true);
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 
@@ -453,8 +455,8 @@ class ScreenEditor extends ScreenAdapter{
 				testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 
-				Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
-				mainGame.getXML_Writer().createLevel(level);
+				//Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
+				//mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
 			}
 		});
