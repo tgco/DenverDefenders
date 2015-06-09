@@ -134,7 +134,7 @@ public enum Attribute {
 						mp3Sound.play();
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
-						if(myObject.getVelocity()[0] > MAX_VELOCITY)
+					if(myObject.getVelocity()[0] > MAX_VELOCITY)
 							myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
 						if(myObject.getVelocity()[1] > MAX_VELOCITY)
 							myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
