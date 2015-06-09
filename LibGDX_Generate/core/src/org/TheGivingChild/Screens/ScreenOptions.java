@@ -52,17 +52,18 @@ class ScreenOptions extends ScreenAdapter {
 	private SpriteBatch batch;
 	private Texture title;
 	private boolean isRendered = false;
-	private String[] optionsArray = {"   Option 1   ", 
-			  						 "   Option 2   ", 
+	private String[] optionsArray = {"   Music   ", 
+			  						 "   Sound   ", 
 			  						 "   Option 3   ", 
 			  						 "   Option 4   "};
 	private boolean option1, option2, option3, option4 = false;
 	private boolean allChanged = false;
 	private Slider slider;
-	private Label sliderValue;
+	//private Label sliderValue;
 	private Label sliderName;
 	private TextureRegion region;
 	private float volume;
+	private boolean before1, before2 = false;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -107,7 +108,6 @@ class ScreenOptions extends ScreenAdapter {
 					else if(c.equals(options.get(3)))
 						option4 = false;
 				}
-				
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
@@ -189,7 +189,11 @@ class ScreenOptions extends ScreenAdapter {
 		 muteStyle = new CheckBoxStyle();
 		 font = game.getBitmapFontButton();
 		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Slider.pack"));
-		 SliderStyle ss = new SliderStyle(sliderSkin.getDrawable("Slider"), sliderSkin.getDrawable("Knob"));
+		 SliderStyle ss = new SliderStyle();
+		 ss.background = sliderSkin.getDrawable("Slider_After");
+		 ss.knobBefore = sliderSkin.getDrawable("Slider_Before");
+		 ss.knobAfter = sliderSkin.getDrawable("Slider_After");
+		 ss.knob = sliderSkin.getDrawable("Knob");
 		 LabelStyle ls = new LabelStyle();
 		 ls.font = font;
 		 muteStyle.font = font;
@@ -201,15 +205,31 @@ class ScreenOptions extends ScreenAdapter {
 			 public void changed(ChangeEvent event, Actor actor) {
 				 if(slider.getValue() != 0)
 					 volume = slider.getValue();
+				 if(option1)
+					 before1 = true;
+				 if(option2)
+					 before2 = true;
+				 if(option1 && !option2) {
+					 before1 = true;
+					 before2 = false;
+				 }
+				 if(!option1 && option2) {
+					 before1 = false;
+					 before2 = true;
+				 }
 				 if(mute.isChecked()) {
-					 updateSliderValue(0);
+					 //updateSliderValue(0);
 					 slider.setValue(0);
 					 slider.setDisabled(true);
+					 options.get(0).setChecked(false);
+					 options.get(1).setChecked(false);
 				 }
 				 else {
-					 updateSliderValue(volume);
+					 //updateSliderValue(volume);
 					 slider.setValue(volume);
 					 slider.setDisabled(false);
+					 options.get(0).setChecked(before1);
+					 options.get(1).setChecked(before2);
 				 }
 			 }
 		 });
@@ -219,20 +239,20 @@ class ScreenOptions extends ScreenAdapter {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
 				 float value = ((Slider) actor).getValue();
-				 updateSliderValue(value);
+				 //updateSliderValue(value);
 			 }
 		 });
-		 sliderValue = new Label("  0.0", ls);
+		 //sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
 		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
-		 sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
+		 //sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
-	 private void updateSliderValue(float v) {
+	 /*private void updateSliderValue(float v) {
 		 sliderValue.setText("  " + Float.toString(v));
-	 }
+	 }*/
 	 
 	 private void createOverallTable() {
 		 overallTable = new Table();
