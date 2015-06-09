@@ -169,14 +169,14 @@ public enum Attribute {
 						mp3Sound.play();
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
-					//	if(myObject.getVelocity()[0] > MAX_VELOCITY)
-					//		myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
-					//	if(myObject.getVelocity()[1] > MAX_VELOCITY)
-					//		myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
-					//	if(allObjects.get(i).getVelocity()[0] > MAX_VELOCITY)
-					//		allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
-					//	if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
-					//		allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
+					if(myObject.getVelocity()[0] > MAX_VELOCITY)
+							myObject.setVelocity(new float[] {MAX_VELOCITY,myObject.getVelocity()[1]});
+						if(myObject.getVelocity()[1] > MAX_VELOCITY)
+							myObject.setVelocity(new float[] {myObject.getVelocity()[0],MAX_VELOCITY});
+						if(allObjects.get(i).getVelocity()[0] > MAX_VELOCITY)
+							allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
+						if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
+							allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
 						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
 						
 					}

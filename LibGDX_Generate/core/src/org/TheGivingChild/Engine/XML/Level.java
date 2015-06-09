@@ -81,7 +81,7 @@ public class Level {
 		
 		else{
 			System.out.println("you ran out of time for the level");
-			resetLevel();
+			//resetLevel();
 			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 		}
 		
