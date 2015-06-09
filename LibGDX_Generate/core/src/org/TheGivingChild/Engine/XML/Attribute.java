@@ -249,15 +249,12 @@ public enum Attribute {
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
 			float tol = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
-			//if(tol > distanceToPoint(myObject, )){
-				
-			//}
+			
 		}
 
 		@Override
 		public void setup(GameObject myObject) {
 			
-			//myObject.getAttributeData().get(MOVESONSETPATH).add();
 		}
 
 		@Override
@@ -267,7 +264,6 @@ public enum Attribute {
 
 		@Override
 		public String getXMLName() {
-			// TODO Auto-generated method stub
 			return "movesOnSetPath";
 		}
 		
