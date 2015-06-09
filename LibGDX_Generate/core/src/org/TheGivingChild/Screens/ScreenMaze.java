@@ -371,9 +371,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		
 		
-		if(game.getLevels().get(0).getCompleted())
+		//if(game.getLevels().get(0).getCompleted())
 		{
-			System.out.println("you beat the level");
+		//	System.out.println("you beat the level");
 		}
 		
 	
