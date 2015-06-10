@@ -3,7 +3,6 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -20,12 +19,10 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -66,7 +63,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
-
+		
+	private MinigameRectangle lastRec;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -134,8 +132,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			Rectangle childRec = new Rectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
 			miniRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
-
-
+			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
 
 			//Add children to be drawn where minigames can be triggered
 			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
@@ -176,8 +173,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				Gdx.gl.glClearColor(1, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
 				//update the camera
 				camera.update();
 				//set the map to be rendered by this camera
@@ -216,11 +211,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						{
 							if(m.overlaps(spriteRec) && m.isOccupied())
 							{
-
-								followers.add(m.getOccupant());
-								m.empty();
+								//followers.add(m.getOccupant());
+								//m.empty();
+								lastRec = m;
 								playerCharacter.setPosition(m.getX(), m.getY());
 								triggerGame = true;
+								game.selectLevel();
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 
 							}
@@ -232,13 +228,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 							if(followers.size > 0)
 							{
 								followers.get(0).followSprite(playerCharacter);
-								System.out.println("set first to follow");
-
 
 								for(int i = 1; i <followers.size; i++)
 								{
 									followers.get(i).followSprite(followers.get(i-1));
-									System.out.println("set follow for" + followers.get(i).toString());
+									//System.out.println("set follow for" + followers.get(i).toString());
 								}
 
 							}
@@ -367,10 +361,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void show(){
-		game.loadLevelPackets();
+		//game.loadLevelPackets();
 		xMove = 0;
 		yMove = 0;
 
+		if (game.levelWin()) {
+			followers.add(lastRec.getOccupant());
+		}
+		lastRec.empty();
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
 		}

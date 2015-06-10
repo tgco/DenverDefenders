@@ -18,7 +18,8 @@ public class Level {
 	private ObjectMap<WinEnum,Array<String>> winData;
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	private boolean completed;
-
+	private boolean won;
+	
 	private BitmapFont clockFont;
 	private int levelTime = 5;
 	
@@ -96,6 +97,10 @@ public class Level {
 		completed = state;
 	}
 	
+	public void setWon(boolean state) {
+		won = state;
+	}
+	
 	public String toString(){
 		String levelString="Name: " + levelName + " Package: " + packageName + "\n";
 		for(GameObject curObj:actors)
@@ -136,6 +141,10 @@ public class Level {
 	
 	public boolean getCompleted() {
 		return completed;
+	}
+	
+	public boolean getWon() {
+		return won;
 	}
 	
 	public BitmapFont getClockFont() {
