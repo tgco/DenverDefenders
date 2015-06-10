@@ -30,7 +30,7 @@
   <object id="166" x="992" y="608" width="32" height="32"/>
   <object id="167" x="608" y="608" width="32" height="32"/>
  </objectgroup>
- <objectgroup color="#ff55ff" name="Collision" visible="0">
+ <objectgroup color="#ff55ff" name="Collision" visible="1">
   <object id="5" x="-24.2424" y="-33.3333" width="121.212" height="1651.52"/>
   <object id="6" x="1" y="1505" width="1664" height="96"/>
   <object id="9" x="1506.06" y="0" width="93.9394" height="1600"/>
