@@ -27,6 +27,10 @@ public class ScreenLevel extends ScreenAdapter{
 	private AssetManager manager;
 	private int levelNumber;
 	
+	public ScreenLevel() {
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
+	}
+	
 	/**
 	 * Called when the level is complete and is returning to the main screen.
 	 * Nulls everything since they are initialized whenever ScreenLevel is shown.
@@ -38,7 +42,7 @@ public class ScreenLevel extends ScreenAdapter{
 		currentLevel = null;
 		manager = null;
 		levelNumber = 0;
-		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);;
 	}
 	
 	/**
@@ -52,8 +56,7 @@ public class ScreenLevel extends ScreenAdapter{
 
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
-		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
+		currentLevel = levels.get(levelNumber);
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();

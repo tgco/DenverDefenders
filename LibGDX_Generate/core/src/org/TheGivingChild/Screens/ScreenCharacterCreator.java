@@ -72,7 +72,7 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		bodyImages = new Array<Image>();
 		feetImages = new Array<Image>();
 		buttonTable = createButton();
-		
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	public void fillImageArrays(){
@@ -143,6 +143,7 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		loadingScreen.remove();
 		characterTable.remove();
 		buttonTable.remove();
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override
