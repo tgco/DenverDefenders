@@ -62,8 +62,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Vector2 lastTouch = new Vector2();
 
 	private TGC_Engine game;
-	private AssetManager manager;
-
 	private Array<ChildSprite> mazeChildren;
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
@@ -72,8 +70,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private TextureRegion backdropTextureRegion;
 
 	private MinigameRectangle lastRec;
+	private AssetManager manager;
 	private Rectangle heroHQ;
-	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -117,12 +115,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 
-		for(TiledMapTile tile: map.getTileSets().getTileSet("CitySet")){
-			//tile.setOffsetX(pixWidth/2);
-			//tile.setOffsetY(pixHeight/2);
-
-		}
-
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
 		for(int i = 0; i <collisionObjects.getCount(); i++)
@@ -165,13 +157,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 
 		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
 		manager.finishLoadingAsset("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
+
 	}
 
 
@@ -332,6 +325,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
+				
+				if(ScreenAdapterManager.getInstance().cb.isChecked())
+					Gdx.input.setInputProcessor(this);
 
 
 			}
@@ -467,7 +463,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-24, rect.y-24, rect.width, rect.height));
 		}
-		Gdx.input.setInputProcessor(this);
+		//Gdx.input.setInputProcessor(this);
 
 	}
 
@@ -493,7 +489,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
 		collisionRects.clear();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 
 	@Override

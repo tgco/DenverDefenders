@@ -40,7 +40,7 @@ class ScreenMain extends ScreenAdapter {
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		mainScreenTable = createMainScreenTable();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 
 	private Table createMainScreenTable() {
@@ -101,6 +101,6 @@ class ScreenMain extends ScreenAdapter {
 	public void hide() {
 		isRendered = false;
 		mainScreenTable.remove();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 }
