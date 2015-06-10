@@ -19,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -142,6 +143,38 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		manager = game.getAssetManager();
 		game.setScreenSwitch(true);
 	}
+	
+	
+	public void populate()
+	{
+		
+		int theRand = 0;
+		
+		for(MinigameRectangle rect : minigameRects)
+		{
+			//Possible values 0,1,2,3,4
+			theRand = MathUtils.random(0,5);
+			//60% chance of kid being drawn
+			if(theRand >= 2 )
+			{
+				//Add children to be drawn where minigames can be triggered
+				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+				ChildSprite child = new ChildSprite(childTexture);
+				child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
+				//child.setRectangle(childRec);
+				mazeChildren.add(child);
+				
+				miniRec.setOccupied(child);
+			}
+			
+			
+			
+		}
+		
+		
+	}
+	
+	
 
 	/**
 	 * Draws the maze on the screen with a red background
