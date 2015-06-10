@@ -143,8 +143,12 @@ public class TGC_Engine extends Game {
 		}
 		
 		if (possibleLevels.size == 0) {
-			packetCompleted = true;
-			return;
+			loadLevelPackets();
+			for (Level newLevel: levelPackets.get(0).getLevels()) {
+				if (!newLevel.getCompleted()) {
+					possibleLevels.add(newLevel);
+				}
+			}
 		}
 		
 		Random rand = new Random();
