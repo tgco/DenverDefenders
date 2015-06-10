@@ -1,5 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import java.util.Random;
+
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -64,7 +68,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
-		
+	private Texture backdropTexture;
+	private TextureRegion backdropTextureRegion;
+
 	private MinigameRectangle lastRec;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -73,9 +79,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * @param spriteFile The name of the sprite texture file in the assets folder
 	 */
 
-	public ScreenMaze()
-	{
-
+	public ScreenMaze(){	
 		//map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		map = new TmxMapLoader().load("mapAssets/UrbanMaze1.tmx");
 		camera = new OrthographicCamera();
@@ -90,7 +94,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		mazeWidth = mapTilesX * pixWidth;
 		mazeHeight = mapTilesY * pixHeight;
-		camera.setToOrtho(false,16*pixWidth,10*pixHeight);
+		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -99,7 +103,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 
 		playerCharacter = new ChildSprite(spriteTexture);
-		playerCharacter.setSpeed(Gdx.graphics.getHeight()/4);
+		playerCharacter.setSpeed(4*pixHeight);
 		playerCharacter.setScale(.25f,.25f);
 
 		//Get the rect for the heros headquarters
@@ -112,7 +116,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		for(TiledMapTile tile: map.getTileSets().getTileSet("CitySet")){
 			//tile.setOffsetX(pixWidth/2);
 			//tile.setOffsetY(pixHeight/2);
-			
+
 		}
 
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
@@ -123,7 +127,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-24, rect.y-24, rect.width, rect.height));
 		}
-		
+
 		//Setup array of minigame rectangles
 		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
 		for(int i = 0; i <miniGameObjects.getCount(); i++)
@@ -136,15 +140,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 
 			//Add children to be drawn where minigames can be triggered
-		//	Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			//	Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
 			//ChildSprite child = new ChildSprite(childTexture);
 			//child.setScale(.25f);
-		//	child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
-		//	child.setRectangle(childRec);
-			
-		//	mazeChildren.add(child);
+			//	child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
+			//	child.setRectangle(childRec);
 
-		//	miniRec.setOccupied(child);
+			//	mazeChildren.add(child);
+
+			//	miniRec.setOccupied(child);
 
 			minigameRects.add(miniRec);
 		}
@@ -152,22 +156,29 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Remove a child at random so there is always an open spot
 		//children.removeIndex(MathUtils.random(children.size));
 
-		
+
 		populate();
-		
+
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		game.setScreenSwitch(true);
+
+		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
+		manager.finishLoadingAsset("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTextureRegion = new TextureRegion(backdropTexture);
+		
 	}
-	
-	
+
+
 	public void populate()
 	{
-		
+
 		int theRand = 0;
-		
+
 		for(MinigameRectangle rect : minigameRects)
 		{
+
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
@@ -178,21 +189,21 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				ChildSprite child = new ChildSprite(childTexture);
 				child.setScale(.25f);
 				child.setPosition(rect.x - child.getWidth()/4, rect.y);
-				
+
 				//child.setRectangle(childRec);
 				mazeChildren.add(child);
-				
+
 				rect.setOccupied(child);
 			}
-			
-			
-			
+
+
+
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 
 	/**
 	 * Draws the maze on the screen with a red background
@@ -208,13 +219,19 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				//set a red background
-				Gdx.gl.glClearColor(1, 0, 0, 1);
+				Gdx.gl.glClearColor(0, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				
+				
 				//update the camera
 				camera.update();
 				//set the map to be rendered by this camera
 				mapRenderer.setView(camera);
+				spriteBatch.begin();
+				//draw the background texture
+				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
 				//Make the sprite not move when the map is scrolled
@@ -227,7 +244,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean collision = false;
 				boolean triggerGame = false;
-				
+
 
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
@@ -275,7 +292,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 							}
 
-							
+
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 
 						}
@@ -408,6 +425,23 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		if (game.levelWin()) {
 			followers.add(lastRec.getOccupant());
+		}
+
+		else if (lastRec.isOccupied()){
+			Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
+			for (MinigameRectangle rect: minigameRects) {
+				if (!rect.isOccupied()) {
+					unoccupied.add(rect);
+				}
+			}
+
+			if (unoccupied.size > 0) {
+				Random rand = new Random();
+				int newPositionIndex = rand.nextInt(1000) % unoccupied.size;
+				unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
+				ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
+				child.moveTo(unoccupied.get(newPositionIndex));
+			}
 		}
 		lastRec.empty();
 		for(MapLayer layer: map.getLayers()){
