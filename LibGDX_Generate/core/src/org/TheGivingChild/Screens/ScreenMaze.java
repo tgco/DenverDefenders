@@ -143,7 +143,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 
 	/**
@@ -387,7 +387,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
 		collisionRects.clear();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override

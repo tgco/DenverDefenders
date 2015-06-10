@@ -7,13 +7,18 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.Timer;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
@@ -74,6 +79,11 @@ public final class ScreenAdapterManager {
 	public TextureRegion backgroundRegion;
 	/**The initial Texture to be applied to {@link #backgroundRegion}*/
 	private Texture backgroundTexture;
+	private Table table;
+	private Skin skin;
+	private CheckBoxStyle cbs;
+	private BitmapFont font;
+	public CheckBox cb;
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -153,6 +163,7 @@ public final class ScreenAdapterManager {
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
 		backgroundTexture = manager.get("DenverSkyline.jpg");
 		backgroundRegion = new TextureRegion(backgroundTexture);
+		createButton();
 	}
 	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
 	public void backgroundImage() {
@@ -178,7 +189,7 @@ public final class ScreenAdapterManager {
 	 * @return true if coverage is complete. Used for knowing when to call screenTransitionOut().
 	 */
 	public boolean screenTransitionIn(){
-		if(inRightScreenStart >= inRightScreenEnd-Gdx.graphics.getWidth() && inLeftScreenStart <= inLeftScreenEnd+Gdx.graphics.getHeight()){
+		if(inRightScreenStart >= inRightScreenEnd && inLeftScreenStart <= inLeftScreenEnd){
 			batch.begin();
 			batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
@@ -187,7 +198,15 @@ public final class ScreenAdapterManager {
 			inRightScreenStart-= screenTransitionSpeed;
 			return false;
 		}
-		return true;
+		else {
+			screenTransition();
+			game.getStage().addActor(cb);
+			if(cb.isChecked()) {
+				cb.remove();
+				return true;
+			}
+		}
+		return false;
 	}
 	/**
 	 * <p>Moves the curtains from covering the screen to out of the rendered view</p>
@@ -229,5 +248,21 @@ public final class ScreenAdapterManager {
 		currentEnum = screenEnum;
 		screenTransitionInComplete = false;
 		game.setScreen(screens.get(screenEnum.ordinal()));
+	}
+	
+	public void createButton() {
+		table = new Table();
+		font = new BitmapFont();
+		cbs = new CheckBoxStyle();
+		skin = new Skin();
+		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		cbs.font = font;
+		cbs.checkboxOff = skin.getDrawable("Button_Next");
+		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
+		cb = new CheckBox(" ", cbs);
+		table.add(cb);
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.align(Align.center);
+		table.align(Align.bottom);
 	}
 }

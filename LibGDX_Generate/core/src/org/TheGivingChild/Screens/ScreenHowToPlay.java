@@ -55,7 +55,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 		createMessage();
 		manager = game.getAssetManager();
 		manager.load("titleHowToPlayScreen.png", Texture.class);
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	//Function for making buttons in the HTP screen
@@ -119,7 +119,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	public void hide() {
 		table.remove();
 		messageTable.remove();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override

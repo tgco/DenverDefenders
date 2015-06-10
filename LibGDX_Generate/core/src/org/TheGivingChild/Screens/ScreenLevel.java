@@ -38,7 +38,7 @@ public class ScreenLevel extends ScreenAdapter{
 		currentLevel = null;
 		manager = null;
 		levelNumber = 0;
-		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);;
 	}
 	
 	/**
@@ -53,12 +53,12 @@ public class ScreenLevel extends ScreenAdapter{
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		currentLevel = levels.get(levelNumber);
-		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
 		}
 		batch = new SpriteBatch();
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	/**

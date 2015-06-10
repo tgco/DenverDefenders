@@ -101,7 +101,6 @@ public class TGC_Engine extends Game {
     
     private Batch batch;
     private int gameStart = 0;
-    private boolean screenSwitch = true;
    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -272,9 +271,6 @@ public class TGC_Engine extends Game {
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
-	public void setScreenSwitch(boolean b) {
-		screenSwitch = b;
-	}
 	@Override
 	public void render () {
 		camera.update();
@@ -320,15 +316,6 @@ public class TGC_Engine extends Game {
 		}
 		stage.draw();
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-			if(screenSwitch) {
-				screenSwitch = false;
-				ScreenAdapterManager.getInstance().screenTransition();
-				try {					
-					Thread.sleep(2000);	
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
 			ScreenAdapterManager.getInstance().screenTransitionOut();	
 		}
 	}
