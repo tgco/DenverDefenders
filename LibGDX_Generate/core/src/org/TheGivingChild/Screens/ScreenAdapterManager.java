@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.Timer;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
@@ -145,7 +146,7 @@ public final class ScreenAdapterManager {
 			screenTransitions.add(texture);
 		}
 		screenTransitionInComplete = false;
-		screenTransitionSpeed = Gdx.graphics.getWidth()/30*.5f;
+		screenTransitionSpeed = Gdx.graphics.getWidth()/30*0.5f;
 		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
@@ -177,7 +178,7 @@ public final class ScreenAdapterManager {
 	 * @return true if coverage is complete. Used for knowing when to call screenTransitionOut().
 	 */
 	public boolean screenTransitionIn(){
-		if(inRightScreenStart >= inRightScreenEnd && inLeftScreenStart <= inLeftScreenEnd){
+		if(inRightScreenStart >= inRightScreenEnd-Gdx.graphics.getWidth() && inLeftScreenStart <= inLeftScreenEnd+Gdx.graphics.getHeight()){
 			batch.begin();
 			batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 			batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());

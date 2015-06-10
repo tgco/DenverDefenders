@@ -326,15 +326,16 @@ public class TGC_Engine extends Game {
 		}
 		stage.draw();
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-			if(!ScreenAdapterManager.getInstance().getCurrentEnum().equals(getScreen()) && screenSwitch) {
-				try {
-					Thread.sleep(2000);
-					screenSwitch = false;
+			if(screenSwitch) {
+				screenSwitch = false;
+				ScreenAdapterManager.getInstance().screenTransition();
+				try {					
+					Thread.sleep(2000);	
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-			ScreenAdapterManager.getInstance().screenTransitionOut();
+			ScreenAdapterManager.getInstance().screenTransitionOut();	
 		}
 	}
 	
