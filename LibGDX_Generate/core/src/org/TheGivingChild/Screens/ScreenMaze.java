@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -66,6 +68,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
+	private Texture backdropTexture;
+	private TextureRegion backdropTextureRegion;
+
 	private MinigameRectangle lastRec;
 	private Rectangle heroHQ;
 	
@@ -76,9 +81,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * @param spriteFile The name of the sprite texture file in the assets folder
 	 */
 
-	public ScreenMaze()
-	{
-
+	public ScreenMaze(){	
 		//map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		map = new TmxMapLoader().load("mapAssets/UrbanMaze1.tmx");
 		camera = new OrthographicCamera();
@@ -93,7 +96,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		mazeWidth = mapTilesX * pixWidth;
 		mazeHeight = mapTilesY * pixHeight;
-		camera.setToOrtho(false,16*pixWidth,10*pixHeight);
+		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -102,7 +105,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTexture = new Texture(Gdx.files.internal("ball.png"));
 
 		playerCharacter = new ChildSprite(spriteTexture);
-		playerCharacter.setSpeed(Gdx.graphics.getHeight()/4);
+		playerCharacter.setSpeed(4*pixHeight);
 		playerCharacter.setScale(.25f,.25f);
 
 		//Get the rect for the heros headquarters
@@ -163,6 +166,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		game.setScreenSwitch(true);
+
+		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
+		manager.finishLoadingAsset("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTextureRegion = new TextureRegion(backdropTexture);
+		
 	}
 
 
@@ -214,13 +223,19 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				//set a red background
-				Gdx.gl.glClearColor(1, 0, 0, 1);
+				Gdx.gl.glClearColor(0, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				
+				
 				//update the camera
 				camera.update();
 				//set the map to be rendered by this camera
 				mapRenderer.setView(camera);
+				spriteBatch.begin();
+				//draw the background texture
+				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
 				//Make the sprite not move when the map is scrolled
