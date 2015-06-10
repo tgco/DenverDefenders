@@ -63,7 +63,7 @@ class ScreenOptions extends ScreenAdapter {
 		manager.load("titleOptionScreen.png", Texture.class);
 		createOptionsTable();
 		createOverallTable();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	@Override
 	public void render(float delta) {
@@ -119,7 +119,7 @@ class ScreenOptions extends ScreenAdapter {
 	public void hide() {
 		optionsTable.remove();
 		overallTable.remove();
-		game.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	private void createOptionsTable() {

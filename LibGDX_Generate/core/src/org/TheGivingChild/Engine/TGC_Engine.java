@@ -104,7 +104,6 @@ public class TGC_Engine extends Game {
     
     private Batch batch;
     private int gameStart = 0;
-    private boolean screenSwitch = true;
    
     private boolean levelWinOrLose;
     private boolean packetCompleted = false;;
@@ -143,8 +142,12 @@ public class TGC_Engine extends Game {
 		}
 		
 		if (possibleLevels.size == 0) {
-			packetCompleted = true;
-			return;
+			loadLevelPackets();
+			for (Level newLevel: levelPackets.get(0).getLevels()) {
+				if (!newLevel.getCompleted()) {
+					possibleLevels.add(newLevel);
+				}
+			}
 		}
 		
 		Random rand = new Random();
@@ -310,9 +313,6 @@ public class TGC_Engine extends Game {
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
-	public void setScreenSwitch(boolean b) {
-		screenSwitch = b;
-	}
 	@Override
 	public void render () {
 		camera.update();
@@ -358,15 +358,7 @@ public class TGC_Engine extends Game {
 		}
 		stage.draw();
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-			if(!ScreenAdapterManager.getInstance().getCurrentEnum().equals(getScreen()) && screenSwitch) {
-				try {
-					Thread.sleep(2000);
-					screenSwitch = false;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			ScreenAdapterManager.getInstance().screenTransitionOut();
+			ScreenAdapterManager.getInstance().screenTransitionOut();	
 		}
 	}
 	

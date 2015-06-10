@@ -110,16 +110,23 @@ SliderKnob
   index: -1
 Button_Next
   rotate: false
-  xy: 446, 15
+  xy: 585, 15
   size: 381, 138
   orig: 381, 138
   offset: 0, 0
   index: -1
 ButtonPressed_Next
   rotate: false
-  xy: 446, 159
+  xy: 585, 159
   size: 381, 138
   orig: 381, 138
+  offset: 0, 0
+  index: -1
+BlankSpace
+  rotate: false
+  xy: 832, 317
+  size: 181, 138
+  orig: 181, 138
   offset: 0, 0
   index: -1
 

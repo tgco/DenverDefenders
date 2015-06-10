@@ -111,7 +111,7 @@ class ScreenEditor extends ScreenAdapter{
 		fillGrid();		
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
-		mainGame.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	//When hidden removes it's table
 
@@ -122,7 +122,7 @@ class ScreenEditor extends ScreenAdapter{
 	public void hide() {
 		editorTable.remove();
 		window.remove();
-		mainGame.setScreenSwitch(true);
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 
