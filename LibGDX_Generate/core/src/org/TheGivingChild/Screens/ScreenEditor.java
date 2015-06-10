@@ -1,7 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.Attributes.InputListenersEnums;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
@@ -493,7 +493,7 @@ class ScreenEditor extends ScreenAdapter{
 			attributeCheckBoxes.add(attributeBox);
 		}
 
-		for (final InputListenersEnums enums: InputListenersEnums.values()) {
+		for (final InputListenerEnums enums: InputListenerEnums.values()) {
 			CheckBoxStyle listenerStyle = new CheckBoxStyle();
 			listenerStyle.font = font;
 			listenerStyle.checkboxOff = checkBoxSkin.getDrawable("CheckBox");
