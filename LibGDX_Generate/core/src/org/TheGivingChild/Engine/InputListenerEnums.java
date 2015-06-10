@@ -1,6 +1,7 @@
 package org.TheGivingChild.Engine;
 
 import org.TheGivingChild.Engine.XML.GameObject;
+
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 /**
@@ -30,6 +31,12 @@ public enum InputListenerEnums{
 				}
 			});
 		}
+
+		@Override
+		public String getXMLName() {
+			// TODO Auto-generated method stub
+			return "destroy_on_click";
+		}
 	},
 	DRAG_OBJECT{
 		@Override
@@ -46,7 +53,14 @@ public enum InputListenerEnums{
 				};
 			});
 		}
+
+		@Override
+		public String getXMLName() {
+			// TODO Auto-generated method stub
+			return "drag_object";
+		}
 	};
 	//every enum needs to override this abstract method, and return an Input Listener
 	public abstract InputListener getInputListener(GameObject object);
+	public abstract String getXMLName();
 }
