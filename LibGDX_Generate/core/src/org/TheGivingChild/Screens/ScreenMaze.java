@@ -113,12 +113,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 
-		for(TiledMapTile tile: map.getTileSets().getTileSet("CitySet")){
-			//tile.setOffsetX(pixWidth/2);
-			//tile.setOffsetY(pixHeight/2);
-
-		}
-
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
 		for(int i = 0; i <collisionObjects.getCount(); i++)
