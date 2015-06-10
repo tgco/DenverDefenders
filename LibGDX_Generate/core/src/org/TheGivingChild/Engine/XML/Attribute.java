@@ -208,13 +208,33 @@ public enum Attribute {
 		
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			//float tol = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
-			
+			//System.out.println("Initial Location: " + myObject.getX() + ", " + myObject.getY());
+			//get next point
+			//int index = Integer.parseInt(myObject.getAttributeData().get(MOVESONSETPATH).pop())+1;
+			//myObject.getAttributeData().get(MOVESONSETPATH).add(index+"");
+			float[] currentPoint = new float[] {,};
+			//check if close enough to next point
+			//if close enough to next point, setup a new point by calculating direction then setting velocity
 		}
 
 		@Override
 		public void setup(GameObject myObject) {
-			
+			String[] points = myObject.getAttributeData().get(MOVESONSETPATH).get(1).split(",");
+			myObject.getAttributeData().get(MOVESONSETPATH).add("0");//this is the "current point", 0,1,2,3,4,5,...
+			//parse points into the array
+			myObject.getAttributeData().get(MOVESONSETPATH).set(1,points[0]);
+			for(int i = 1;i<points.length;i++)
+				myObject.getAttributeData().get(MOVESONSETPATH).add(points[i]);
+			//get first point
+			float[] firstPoint = new float[] {Float.parseFloat(points[0]),Float.parseFloat(points[1])};
+			//calculate direction to that point
+			float[] distance = new float[] {myObject.getX()-firstPoint[0],myObject.getY()-firstPoint[1]};
+			float mag = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//magnitude of the distance to travel
+			float magO = (float) Math.pow(Math.pow(myObject.getVelocity()[0], 2) + Math.pow(myObject.getVelocity()[1], 2),.5);//magnitude of the object's velocity
+			//set velocity
+			float[] temp = new float[] {distance[0]*magO/mag,distance[1]*magO/mag};
+			myObject.setVelocity(temp);
+			System.out.println("VELOCITY SET TO: " + temp[0] + ", " + temp[1] + "\n\t|DISTANCE: " + distance[0] + ", " + distance[1] + " Point: " + firstPoint[0] + ", " + firstPoint[1] + " Initial Location: " + myObject.getX() + ", " + myObject.getY());
 		}
 
 		@Override
@@ -227,11 +247,9 @@ public enum Attribute {
 			return "movesOnSetPath";
 		}
 		
-		//private float[] getPoint(int index,GameObject myObject){//FINISH ME SENPAI THIS HAS CHARS NOT FLOATS
-			//return new float[] {Float.parseFloat(String.toString(myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index-1)*4))),Float.parseFloat(String.toString(myObject.getAttributeData().get(MOVESONSETPATH).get(0).charAt((index+1)*4)))};
-		//}
-		
-		
+		private float distance(float x1, float y1, float x2, float y2){
+			return 0f;
+		}
 	},
 	SPAWNOBJECTONTIMER{
 		private boolean spawned = false;

@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine;
 
+import java.util.Random;
+
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
@@ -49,6 +51,7 @@ public class TGC_Engine extends Game {
 	private BitmapFont bitmapFontButton;
     private Array<Level> levels = new Array<Level>();
     private Array<LevelPacket> levelPackets;
+    private Level currentLevel;
     private boolean screenManagerLoaded = false;
     
     private float width;
@@ -102,6 +105,9 @@ public class TGC_Engine extends Game {
     private Batch batch;
     private int gameStart = 0;
    
+    private boolean levelWinOrLose;
+    private boolean packetCompleted = false;;
+    
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
 	}
@@ -125,6 +131,36 @@ public class TGC_Engine extends Game {
 			}
 			levelPackets.add(packet);
 		}
+	}
+	
+	public void selectLevel() {
+		Array<Level> possibleLevels = new Array<Level>();
+		for (Level newLevel: levelPackets.get(0).getLevels()) {
+			if (!newLevel.getCompleted()) {
+				possibleLevels.add(newLevel);
+			}
+		}
+		
+		if (possibleLevels.size == 0) {
+			packetCompleted = true;
+		}
+		
+		Random rand = new Random();
+		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
+		currentLevel = possibleLevels.get(newLevelIndex);
+		System.out.println(currentLevel.getLevelName());
+	}
+	
+	public void levelCompleted(boolean winOrLose) {
+		levelWinOrLose = winOrLose;
+	}
+	
+	public boolean levelWin() {
+		return levelWinOrLose;
+	}
+	
+	public boolean getPacketCompleted() {
+		return packetCompleted;
 	}
 	
 	@Override
@@ -330,6 +366,11 @@ public class TGC_Engine extends Game {
 	public void resize(int width, int height) {
 		viewport.update(width, height);
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
+	}
+
+	public Level getCurrentLevel() {
+		// TODO Auto-generated method stub
+		return currentLevel;
 	}
 	
 }
