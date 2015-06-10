@@ -28,6 +28,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		public void checkWin(Level level) {
 			if(MinigameClock.getInstance().outOfTime()){
 				level.setCompleted(true);
+				level.setWon(true);
 			}
 		}
 	},
@@ -59,6 +60,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 					win = false;
 			}
 			level.setCompleted(win);
+			level.setWon(win);
 		}
 	},
 	ALL_OBJECTS_DESTROYED{
@@ -82,6 +84,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 				System.out.println("Level "+level.getLevelName()+" won!");
 				//level.resetLevel();
 				level.setCompleted(true);
+				level.setWon(true);
 			}
 		}
 		@Override
