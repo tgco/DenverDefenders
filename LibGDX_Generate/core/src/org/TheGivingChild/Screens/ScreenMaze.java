@@ -214,7 +214,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						}
 										
 						if(!collision){
-							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
+							//playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 							
 							if(followers.size > 0)
 							{
@@ -229,6 +229,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								}
 								
 							}
+							
+							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 							
 						}
 						
