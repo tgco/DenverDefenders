@@ -21,7 +21,7 @@ public class Level {
 	private boolean won;
 	
 	private BitmapFont clockFont;
-	private int levelTime = 5;
+	private int levelTime = 50;
 	
 	
 	 public Level(String name, String packagename, String levelImage, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames

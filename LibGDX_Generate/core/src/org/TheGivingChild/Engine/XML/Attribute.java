@@ -215,6 +215,8 @@ public enum Attribute {
 			float[] targetPoint = new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+2)),Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+3))};
 			if(distance(myObject.getX(),myObject.getY(),targetPoint[0],targetPoint[1]) < tolerance){//if close enough to next point
 				index++;
+				if(index*2+3 >= myObject.getAttributeData().get(MOVESONSETPATH).size) index = 0;
+				System.out.println("INDEX: " + index + " " + targetPoint[0] + ", " + targetPoint[1]);
 				myObject.getAttributeData().get(MOVESONSETPATH).set(1,index+"");
 				float[] nextPoint = new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+2)),Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+3))};
 				float[] distance = new float[] {nextPoint[0]-myObject.getX(),nextPoint[1]-myObject.getY()};
@@ -238,6 +240,7 @@ public enum Attribute {
 				myObject.getAttributeData().get(MOVESONSETPATH).add(points[i]);
 			//get first point
 			float[] firstPoint = new float[] {Float.parseFloat(points[0]),Float.parseFloat(points[1])};
+			if(firstPoint[0] == myObject.getX() && firstPoint[1] == myObject.getY()) firstPoint = new float[] {Float.parseFloat(points[2]),Float.parseFloat(points[3])};//if the object is already on the first point, go to the next point(avoids 0/0 error)
 			//calculate direction to that point
 			float[] distance = new float[] {firstPoint[0]-myObject.getX(),firstPoint[1]-myObject.getY()};
 			float magD = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//total distance to travel
@@ -245,7 +248,7 @@ public enum Attribute {
 			//set velocity
 			float[] newVelocity = new float[] {distance[0]*magO/magD,distance[1]*magO/magD};
 			myObject.setVelocity(newVelocity);
-			//System.out.println("magD: " + magD + " magO: " + magO);
+			System.out.println("Velocity set to: " + newVelocity[0] + ", " + newVelocity[1]);
 		}
 		
 		@Override

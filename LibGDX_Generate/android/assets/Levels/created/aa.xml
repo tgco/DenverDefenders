@@ -26,9 +26,9 @@
 		<bounceOffEdgeOfScreen/>
 	</GameObject>
 	
-	<GameObject ID="4" attributes="movesOnSetPath,moves" imageFilename="BoxHalf.png" initialLocation="250.0,250.0" listeners="drag_object">
+	<GameObject ID="4" attributes="movesOnSetPath,moves" imageFilename="BoxHalf.png" initialLocation="100.0,100.0" listeners="drag_object">
 		<moves value1="0.0" value2="100.0"/>
-		<movesOnSetPath value1="10" value2="100.0,100.0,500.0,0.0,0.0,500.0"/>
+		<movesOnSetPath value1="10" value2="100.0,100.0,500.0,100.0,500.0,300.0"/>
 	</GameObject>
 	
 	<levelGoals win="all_objects_destroyed,collisionWithObjectWin" lose="timeout">
