@@ -208,9 +208,10 @@ public enum Attribute {
 		
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			//System.out.println("Initial Location: " + myObject.getX() + ", " + myObject.getY());
 			//get next point
-			int index = Integer.parseInt(myObject.getAttributeData().get(MOVESONSETPATH).pop())+1;
-			myObject.getAttributeData().get(MOVESONSETPATH).add(index+"");
+			//int index = Integer.parseInt(myObject.getAttributeData().get(MOVESONSETPATH).pop())+1;
+			//myObject.getAttributeData().get(MOVESONSETPATH).add(index+"");
 			float[] currentPoint = new float[] {,};
 			//check if close enough to next point
 			//if close enough to next point, setup a new point by calculating direction then setting velocity
