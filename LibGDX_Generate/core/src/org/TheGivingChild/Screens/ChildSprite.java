@@ -2,6 +2,7 @@ package org.TheGivingChild.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -54,10 +55,10 @@ public class ChildSprite extends Sprite {
 			this.setY(leader.getY());
 			
 			if(leader.xMove > 0){
-				this.setX(leader.getX()-this.getWidth());
+				this.setX(leader.getX()-this.getWidth()/4);
 			}
 			if(leader.xMove <= 0){
-				this.setX(leader.getX()+this.getWidth());
+				this.setX(leader.getX()+this.getWidth()/4);
 			}
 		}
 		else{
@@ -66,10 +67,10 @@ public class ChildSprite extends Sprite {
 			
 			//set sprite to below leader, set yMove to leaders yMove
 			if(leader.yMove > 0){
-				this.setY(leader.getY()-this.getHeight());
+				this.setY(leader.getY()-this.getHeight()/4);
 			}
 			if(leader.yMove <= 0){
-				this.setY(leader.getY()+this.getHeight());
+				this.setY(leader.getY()+this.getHeight()/4);
 			}
 		}
 		
@@ -91,6 +92,10 @@ public class ChildSprite extends Sprite {
 		yMove = yM;
 				
 	}
-	
+	@Override
+	public void draw(Batch batch) {
+		// TODO Auto-generated method stub
+		super.draw(batch);
+	}
 	
 }
