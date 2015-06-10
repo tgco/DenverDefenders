@@ -1,7 +1,6 @@
 package org.TheGivingChild.Engine;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.TimeUtils;
 
 //GameClock for determining various timing things
 //GameClock measured in nanoseconds
