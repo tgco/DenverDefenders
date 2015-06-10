@@ -87,14 +87,13 @@ public class GameObject extends Actor implements Disposable{
 			}
 		}
 		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
-		for(Attribute currentAttribute:attributeData.keys().toArray()){
-			//System.out.println(this.getID() + ", " + currentAttribute.getXMLName());
-			currentAttribute.setup(this);
-		}
 		//the the initial position from xml
 		setPosition(position[0],position[1]);
 		initialPosition = position;
 		initialVelocity = new float[] {Float.parseFloat(getAttributeData().get(Attribute.MOVES).get(0)),Float.parseFloat(getAttributeData().get(Attribute.MOVES).get(1))};
+		//THIS NEEDS TO BE LAST
+		for(Attribute currentAttribute:attributeData.keys().toArray())
+			currentAttribute.setup(this);
 	}
 
 	public void update(Array<GameObject> allObjects){
