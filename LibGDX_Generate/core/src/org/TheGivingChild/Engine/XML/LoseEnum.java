@@ -21,6 +21,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public void checkLose(Level level){
 			if(MinigameClock.getInstance().outOfTime()) {
 				level.setCompleted(true);
+				level.setWon(false);
 			}
 		}
 	},

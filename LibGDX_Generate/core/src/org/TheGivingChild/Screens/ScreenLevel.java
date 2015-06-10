@@ -52,7 +52,7 @@ public class ScreenLevel extends ScreenAdapter{
 
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-		currentLevel = levels.get(levelNumber);
+		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
 		ScreenAdapterManager.getInstance().game.setScreenSwitch(true);
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
@@ -87,13 +87,12 @@ public class ScreenLevel extends ScreenAdapter{
 				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				currentLevel.update();
 				batch.end();
-				if (currentLevelPacket.allCompleted() || currentLevel.checkLose()) {
-					System.out.println("complete");
-					packetComplete();
-					return;
+				
+				if (currentLevel.getCompleted()) {
+					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
+					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 				}
-				if(currentLevel.getCompleted() && levelNumber < levels.size-1)
-					nextLevel();
+
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
