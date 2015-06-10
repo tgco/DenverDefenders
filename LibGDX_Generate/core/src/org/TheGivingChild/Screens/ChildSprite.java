@@ -82,7 +82,7 @@ public class ChildSprite extends Sprite {
 		float xAway = Math.abs(leader.getX() - this.getX());
 		float yAway = Math.abs(leader.getY() - this.getY());
 		
-		if(xAway > 15)
+		if(xAway > leader.getWidth()*.25f)
 		{
 		
 		//if the leader is to your right
@@ -97,7 +97,7 @@ public class ChildSprite extends Sprite {
 		}
 		}
 		
-		else if (yAway > 15) {
+		else if (yAway >  getHeight()*.25f) {
 		//if leader is above you
 		if(leader.getY() > this.getY())
 		{
@@ -110,12 +110,13 @@ public class ChildSprite extends Sprite {
 		
 		}
 		
-		else {
-			xMove = 0;
-			yMove = 0;
-		}
-		this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
-		
+//		else {
+//			xMove = 0;
+//			yMove = 0;
+//		}
+		//this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
+		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
+		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
 		
 	}
 	
