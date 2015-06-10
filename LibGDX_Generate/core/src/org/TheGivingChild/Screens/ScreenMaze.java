@@ -297,7 +297,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								for(int i = 1; i <followers.size; i++)
 								{
 									followers.get(i).followSprite(followers.get(i-1));
-									//System.out.println("set follow for" + followers.get(i).toString());
 								}
 
 							}
@@ -309,7 +308,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 					}	
 				}
-
 				//begin the batch that sprites will draw to
 				spriteBatch.begin();
 				//draw the main character sprite to the map
