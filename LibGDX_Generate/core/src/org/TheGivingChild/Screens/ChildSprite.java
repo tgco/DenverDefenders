@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class ChildSprite extends Sprite {
 	
-	private boolean follow;
+	private boolean follow, saved;
 	private Rectangle position;
 	private float moveSpeed, xMove, yMove;
 	
@@ -16,6 +16,7 @@ public class ChildSprite extends Sprite {
 			super(childTexture);
 			position = new Rectangle();
 			follow = false;
+			saved = false;
 			moveSpeed = 0;
 			xMove = 0;
 			yMove = 0;
@@ -96,6 +97,16 @@ public class ChildSprite extends Sprite {
 		yMove = yM;
 				
 	}
+	
+	public boolean getSaved() {
+		return saved;
+	}
+	
+	public void setSaved(boolean isSaved) {
+		
+		saved = isSaved;
+	}
+	
 	@Override
 	public void draw(Batch batch) {
 		// TODO Auto-generated method stub

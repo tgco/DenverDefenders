@@ -27,7 +27,6 @@ public class MinigameRectangle extends Rectangle {
 	public void setOccupied(ChildSprite s)
 	{
 		//occupant = new ChildSprite(s);
-		System.out.println("Occupant is set now");
 		occupant = s;
 		occupied = true;
 	}

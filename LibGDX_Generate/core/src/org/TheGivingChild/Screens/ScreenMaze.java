@@ -66,8 +66,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
-
 	private MinigameRectangle lastRec;
+	private Rectangle heroHQ;
+	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -107,7 +108,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Get the rect for the heros headquarters
 		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
 		playerCharacter.setPosition(startingRectangle.getRectangle().x-24,startingRectangle.getRectangle().y-16);
-
+		
+		heroHQ = startingRectangle.getRectangle();
+		
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 
@@ -228,9 +231,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
 				//If the sprite is not going off the maze allow it to move
 				//Check for a collision as well
-				boolean collision = false;
 				boolean triggerGame = false;
-
+				boolean collision = false;
 
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
@@ -262,7 +264,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 							}
 						}
-
+						
+						if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
+							for (ChildSprite child: followers) {
+								child.setSaved(true);
+								
+								followers.removeValue(child, false);
+							}
+						}
+						
 						if(!collision){
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 
@@ -321,7 +331,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		//need key down to have key up function
+		
 		return true;
 	}
 
@@ -332,8 +342,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 
 	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
+	public boolean keyTyped(char character) {		
 		return true;
 	}
 
