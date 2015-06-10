@@ -25,6 +25,7 @@ public enum Attribute {
 		}
 		
 		public void setup(GameObject myObject){
+			//if(!myObject.getAttributeData().keys().toArray().contains(MOVESONSETPATH, false))
 			myObject.setVelocity(new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVES).get(0)),Float.parseFloat(myObject.getAttributeData().get(MOVES).get(1))});
 		}
 		public Array<String> getValues(GameObject myObject){
@@ -131,7 +132,7 @@ public enum Attribute {
 						}
 						
 						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
-						mp3Sound.play();
+						mp3Sound.play(.75f);//turned the sound down a bit
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 					if(myObject.getVelocity()[0] > MAX_VELOCITY)
@@ -199,7 +200,7 @@ public enum Attribute {
 	 * Currently unimplemented, will cause object to follow a specific predefined path at a set speed
 	 */
 	MOVESONSETPATH{
-
+		
 		@Override
 		public Array<String> getVariableNames() {
 			Array<String> varName = new Array<String>();
@@ -208,33 +209,43 @@ public enum Attribute {
 		
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			//System.out.println("Initial Location: " + myObject.getX() + ", " + myObject.getY());
 			//get next point
-			//int index = Integer.parseInt(myObject.getAttributeData().get(MOVESONSETPATH).pop())+1;
-			//myObject.getAttributeData().get(MOVESONSETPATH).add(index+"");
-			float[] currentPoint = new float[] {,};
-			//check if close enough to next point
+			float tolerance = Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get(0));
+			int index = Integer.parseInt(myObject.getAttributeData().get(MOVESONSETPATH).get(1));
+			float[] targetPoint = new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+2)),Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+3))};
+			if(distance(myObject.getX(),myObject.getY(),targetPoint[0],targetPoint[1]) < tolerance){//if close enough to next point
+				index++;
+				myObject.getAttributeData().get(MOVESONSETPATH).set(1,index+"");
+				float[] nextPoint = new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+2)),Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+3))};
+				float[] distance = new float[] {nextPoint[0]-myObject.getX(),nextPoint[1]-myObject.getY()};
+				float magD = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//total distance to travel
+				float magO = (float) Math.pow(Math.pow(myObject.getVelocity()[0], 2) + Math.pow(myObject.getVelocity()[1], 2),.5);//magnitude of the object's velocity
+				float[] newVelocity = new float[] {distance[0]*magO/magD,distance[1]*magO/magD};
+				myObject.setVelocity(newVelocity);
+			}
 			//if close enough to next point, setup a new point by calculating direction then setting velocity
+		}
+		private float distance(float x1, float y1, float x2, float y2){
+			return (float) Math.pow(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2), .5);
 		}
 		
 		@Override
-		public void setup(GameObject myObject) {
+		public void setup(GameObject myObject){//tolderance, current goal index, list of points
 			String[] points = myObject.getAttributeData().get(MOVESONSETPATH).get(1).split(",");
-			myObject.getAttributeData().get(MOVESONSETPATH).add("0");//this is the "current point", 0,1,2,3,4,5,...
+			myObject.getAttributeData().get(MOVESONSETPATH).set(1,"0");//this is the "current point", 0,1,2,3,4,5,...
 			//parse points into the array
-			myObject.getAttributeData().get(MOVESONSETPATH).set(1,points[0]);
-			for(int i = 1;i<points.length;i++)
+			for(int i = 0;i<points.length;i++)
 				myObject.getAttributeData().get(MOVESONSETPATH).add(points[i]);
 			//get first point
 			float[] firstPoint = new float[] {Float.parseFloat(points[0]),Float.parseFloat(points[1])};
 			//calculate direction to that point
 			float[] distance = new float[] {firstPoint[0]-myObject.getX(),firstPoint[1]-myObject.getY()};
-			float mag = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//magnitude of the distance to travel
+			float magD = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//total distance to travel
 			float magO = (float) Math.pow(Math.pow(myObject.getVelocity()[0], 2) + Math.pow(myObject.getVelocity()[1], 2),.5);//magnitude of the object's velocity
 			//set velocity
-			float[] temp = new float[] {distance[0]*magO/mag,distance[1]*magO/mag};
-			myObject.setVelocity(temp);
-			System.out.println("VELOCITY SET TO: " + temp[0] + ", " + temp[1] + "\n\t|DISTANCE: " + distance[0] + ", " + distance[1] + " Point: " + firstPoint[0] + ", " + firstPoint[1] + " Initial Location: " + myObject.getX() + ", " + myObject.getY());
+			float[] newVelocity = new float[] {distance[0]*magO/magD,distance[1]*magO/magD};
+			myObject.setVelocity(newVelocity);
+			//System.out.println("magD: " + magD + " magO: " + magO);
 		}
 		
 		@Override
@@ -245,10 +256,6 @@ public enum Attribute {
 		@Override
 		public String getXMLName() {
 			return "movesOnSetPath";
-		}
-		
-		private float distance(float x1, float y1, float x2, float y2){
-			return 0f;
 		}
 	},
 	SPAWNOBJECTONTIMER{
