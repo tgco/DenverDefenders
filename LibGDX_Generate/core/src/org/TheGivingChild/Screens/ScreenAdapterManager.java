@@ -14,11 +14,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.math.MathUtils;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
@@ -79,11 +82,19 @@ public final class ScreenAdapterManager {
 	public TextureRegion backgroundRegion;
 	/**The initial Texture to be applied to {@link #backgroundRegion}*/
 	private Texture backgroundTexture;
-	private Table table;
+	private Table buttonTable;
+	private Table factTable;
+	private Table overallTable;
 	private Skin skin;
 	private CheckBoxStyle cbs;
 	private BitmapFont font;
 	public CheckBox cb;
+	private Label fact;
+	private LabelStyle ls;
+	private String[] facts = {"Fact: This is the first place holder fact to test if the label will wrap correctly.",
+							  "Fact: This is another place holder fact to see if the label will wrap and to see if it randomly chooses facts.",
+							  "Fact: This is a medium length fact to see how that affects the label.",
+							  "Fact: Short fact to test label."};
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -164,6 +175,11 @@ public final class ScreenAdapterManager {
 		backgroundTexture = manager.get("DenverSkyline.jpg");
 		backgroundRegion = new TextureRegion(backgroundTexture);
 		createButton();
+		createFacts(MathUtils.random(100));
+		overallTable = new Table();
+//		overallTable.add(factTable);
+//		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		overallTable.align(Align.center);
 	}
 	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
 	public void backgroundImage() {
@@ -200,9 +216,9 @@ public final class ScreenAdapterManager {
 		}
 		else {
 			screenTransition();
-			game.getStage().addActor(cb);
+			game.getStage().addActor(overallTable);
 			if(cb.isChecked()) {
-				cb.remove();
+				overallTable.remove();
 				return true;
 			}
 		}
@@ -247,11 +263,21 @@ public final class ScreenAdapterManager {
 		SCREEN_TRANSITION_TIME_LEFT = 1.0f;
 		currentEnum = screenEnum;
 		screenTransitionInComplete = false;
+		//overallTable.remove();
+		factTable.remove();
+		createFacts(MathUtils.random(100));
+		overallTable.add(factTable).align(Align.center); 
+		overallTable.row();
+		overallTable.add(buttonTable);
+		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		overallTable.align(Align.center);
 		game.setScreen(screens.get(screenEnum.ordinal()));
+		//createFacts(MathUtils.random(100));
+		
 	}
 	
 	public void createButton() {
-		table = new Table();
+		buttonTable = new Table();
 		font = new BitmapFont();
 		cbs = new CheckBoxStyle();
 		skin = new Skin();
@@ -260,9 +286,23 @@ public final class ScreenAdapterManager {
 		cbs.checkboxOff = skin.getDrawable("Button_Next");
 		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
 		cb = new CheckBox(" ", cbs);
-		table.add(cb);
-		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		table.align(Align.center);
-		table.align(Align.bottom);
+		buttonTable.add(cb).center().bottom();
+		buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
+	}
+	public void createFacts(int r) {
+		System.out.println(r);
+		factTable = new Table();
+		ls = new LabelStyle();
+		ls.font = new BitmapFont();
+		int fNum = r % 4;
+		fact = null;
+		fact = new Label(facts[fNum], ls);
+		fact.setColor(1, 1, 1, 1);
+		fact.setFontScale(1.5f);
+		fact.setWrap(true);
+		fact.setAlignment(Align.center, Align.center);
+		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
+		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 }

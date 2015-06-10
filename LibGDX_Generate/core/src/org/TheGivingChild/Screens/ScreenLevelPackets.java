@@ -63,6 +63,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		createPackets();
 		//get the UI elements that represent the packets
 		packetTable = createLevelPacketButtons();
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	public Table createLevelPacketButtons(){
@@ -164,6 +165,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 	public void hide() {
 		//game.removeTable(packetTable);
 		packetTable.remove();
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override

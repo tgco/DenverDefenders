@@ -27,6 +27,10 @@ public class ScreenLevel extends ScreenAdapter{
 	private AssetManager manager;
 	private int levelNumber;
 	
+	public ScreenLevel() {
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
+	}
+	
 	/**
 	 * Called when the level is complete and is returning to the main screen.
 	 * Nulls everything since they are initialized whenever ScreenLevel is shown.
@@ -58,7 +62,6 @@ public class ScreenLevel extends ScreenAdapter{
 			gameObject.resetObject();
 		}
 		batch = new SpriteBatch();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	/**

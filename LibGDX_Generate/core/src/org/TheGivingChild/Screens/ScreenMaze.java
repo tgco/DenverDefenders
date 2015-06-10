@@ -58,14 +58,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Vector2 lastTouch = new Vector2();
 
 	private TGC_Engine game;
-	private AssetManager manager;
-
 	private Array<ChildSprite> mazeChildren;
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
 		
 	private MinigameRectangle lastRec;
+	private AssetManager manager;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -307,6 +306,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
+				
+				if(ScreenAdapterManager.getInstance().cb.isChecked())
+					Gdx.input.setInputProcessor(this);
 
 
 			}
@@ -421,7 +423,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-24, rect.y-24, rect.width, rect.height));
 		}
-		Gdx.input.setInputProcessor(this);
+		//Gdx.input.setInputProcessor(this);
 
 	}
 
