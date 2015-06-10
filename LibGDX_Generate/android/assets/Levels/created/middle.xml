@@ -28,7 +28,7 @@
 	
 	<GameObject ID="4" attributes="moves,movesOnSetPath" imageFilename="Box.png" initialLocation="500,500" listeners="drag_object">
 		<moves value1="0" value2="-0"/>
-		<movesOnSetPath value1="10" value2="100,100;500,0;0,500"/>
+		<movesOnSetPath value1="10" value2="100,100,500,0,0,500"/>
 	</GameObject>
 	
 	<levelGoals win="all_objects_destroyed,collisionWithObjectWin" lose="timeout">

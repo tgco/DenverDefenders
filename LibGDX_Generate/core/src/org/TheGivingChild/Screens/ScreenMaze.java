@@ -209,7 +209,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 						for(MinigameRectangle m : minigameRects)
 						{
-							if(m.overlaps(spriteRec) && m.isOccupied())
+							if(m.overlaps(spriteRec) && m.isOccupied() && !game.getPacketCompleted())
 							{
 								//followers.add(m.getOccupant());
 								//m.empty();
