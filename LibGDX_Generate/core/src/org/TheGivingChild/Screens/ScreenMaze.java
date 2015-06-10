@@ -267,7 +267,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 						for(MinigameRectangle m : minigameRects)
 						{
-							if(m.overlaps(spriteRec) && m.isOccupied() && !game.getPacketCompleted())
+							if(m.overlaps(spriteRec) && m.isOccupied())
 							{
 								//followers.add(m.getOccupant());
 								//m.empty();
@@ -283,7 +283,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
 							for (ChildSprite child: followers) {
 								child.setSaved(true);
-								
 								followers.removeValue(child, false);
 							}
 						}
@@ -337,6 +336,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.end();
 
 
+			}
+			
+			if (allSaved()) {
+				System.out.println("They are all saved");
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
@@ -473,7 +477,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * Hides the maze by setting all layers to not visible.
 	 * Sets input processor back to the stage.
 	 */
-
+	
+	public boolean allSaved() {
+		boolean areSaved=true;
+		for (ChildSprite child: mazeChildren) {
+			if (!child.getSaved()) {
+				areSaved = false;
+			}
+		}
+		return areSaved;
+	}
+	
 	@Override
 	public void hide(){
 		for(MapLayer layer: map.getLayers()){
