@@ -1,6 +1,5 @@
 package org.TheGivingChild.Screens;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 public class MinigameRectangle extends Rectangle {

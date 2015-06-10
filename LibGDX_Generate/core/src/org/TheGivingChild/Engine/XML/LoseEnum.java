@@ -1,9 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.MinigameClock;
-import org.TheGivingChild.Engine.Attributes.WinEnum;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {//Cannot have any labels in common with WinEnum
@@ -23,6 +21,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public void checkLose(Level level){
 			if(MinigameClock.getInstance().outOfTime()) {
 				level.setCompleted(true);
+				level.setWon(false);
 			}
 		}
 	},
