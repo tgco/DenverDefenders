@@ -1,7 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
 import org.TheGivingChild.Engine.MinigameClock;
-import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
