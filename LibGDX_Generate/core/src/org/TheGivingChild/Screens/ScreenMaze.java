@@ -130,9 +130,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 
-			Rectangle childRec = new Rectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
-			miniRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
-			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width, rect.height);
+			Rectangle childRec = new Rectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
+			miniRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
+			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 
 			//Add children to be drawn where minigames can be triggered
 			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
