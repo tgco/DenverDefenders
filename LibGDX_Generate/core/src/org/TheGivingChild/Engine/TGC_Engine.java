@@ -1,10 +1,7 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.Attributes.WinEnum;
-import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
-import org.TheGivingChild.Engine.XML.LoseEnum;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
@@ -168,10 +165,7 @@ public class TGC_Engine extends Game {
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.finishLoading();
-		//levels for testing packet manager.
-		levels.add(new Level("level1", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-		levels.add(new Level("level2", "packet1", "badlogic.jpg", new Array<WinEnum>(), new Array<LoseEnum>(), new Array<GameObject>()));
-
+		
 		reader = new XML_Reader();
 		writer = new XML_Writer();
 		ScreenAdapterManager.getInstance().initialize(this);

@@ -4,8 +4,6 @@ import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
-import org.TheGivingChild.Engine.XML.XML_Reader;
-import org.TheGivingChild.Engine.XML.XML_Writer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,7 +11,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.CumulativeDistribution;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -51,8 +48,8 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-//		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(1);
 		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
+
 		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		currentLevel = levels.get(levelNumber);
@@ -90,7 +87,7 @@ public class ScreenLevel extends ScreenAdapter{
 				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				currentLevel.update();
 				batch.end();
-				if (currentLevelPacket.allCompleted()) {
+				if (currentLevelPacket.allCompleted() || currentLevel.checkLose()) {
 					System.out.println("complete");
 					packetComplete();
 					return;

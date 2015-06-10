@@ -32,14 +32,11 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		}
 	},
 	COLLISIONWITHOBJECTWIN{
-		Array<Integer> values = new Array<Integer>();
 		public String getXMLDescription(){
 			return "collisionWithObjectWin";
 		}
 		public void setValues(Array<String> newValues){
-			values.clear();
-			for(String currentValue:newValues)
-				values.add(Integer.parseInt(currentValue));
+			
 		}
 		
 		public Array<String> getValues(){
@@ -49,17 +46,19 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		}
 		@Override
 		public void checkWin(Level level) {
-//			Rectangle r1 = new Rectangle(level.getGameObjects().get(values.get(0)).getX(),
-//					level.getGameObjects().get(values.get(0)).getY(),
-//					level.getGameObjects().get(values.get(0)).getTexture().getWidth(),
-//					level.getGameObjects().get(values.get(0)).getTexture().getHeight());
-//			for(GameObject curObj: level.getGameObjects()){
-//				if(values.contains(curObj.getID(),false)){
-//					Rectangle r2 = new Rectangle(curObj.getX(),curObj.getY(),curObj.getTexture().getWidth(),curObj.getTexture().getHeight());
-//					
-//				}					
-//			}
-//			
+			boolean win = true;
+			Array<String> myInfo = level.getWinInfo(COLLISIONWITHOBJECTWIN);
+			GameObject obj1 = level.getGameObjects().get(Integer.parseInt(myInfo.get(0)));
+			Rectangle r1 = new Rectangle(obj1.getX(),obj1.getY(),obj1.getTexture().getWidth(),obj1.getTexture().getHeight());
+			String[] IDList = myInfo.get(1).split(",");
+			for(int i = 0; i<IDList.length;i++){
+				int currentID = Integer.parseInt(IDList[i]);
+				//setup new rectangle with dimensions of target object
+				Rectangle r2 = new Rectangle(level.getGameObjects().get(currentID).getX(),level.getGameObjects().get(currentID).getY(),level.getGameObjects().get(currentID).getTexture().getWidth(),level.getGameObjects().get(currentID).getTexture().getHeight());
+				if(!r1.overlaps(r2))//if the rectangle does not overlap, win condition has not been satisfied
+					win = false;
+			}
+			level.setCompleted(win);
 		}
 	},
 	ALL_OBJECTS_DESTROYED{

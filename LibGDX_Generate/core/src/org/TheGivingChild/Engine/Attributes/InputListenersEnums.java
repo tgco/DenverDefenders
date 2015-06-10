@@ -4,7 +4,7 @@ import org.TheGivingChild.Engine.XML.GameObject;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-
+//CHANGES
 public enum InputListenersEnums {
 	DESTROY_ON_CLICK{
 
