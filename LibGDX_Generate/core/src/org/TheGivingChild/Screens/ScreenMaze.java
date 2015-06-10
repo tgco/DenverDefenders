@@ -1,5 +1,7 @@
 package org.TheGivingChild.Screens;
 
+import java.util.Random;
+
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
@@ -68,7 +70,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	private Texture backdropTexture;
 	private TextureRegion backdropTextureRegion;
-		
+
 	private MinigameRectangle lastRec;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -114,7 +116,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		for(TiledMapTile tile: map.getTileSets().getTileSet("CitySet")){
 			//tile.setOffsetX(pixWidth/2);
 			//tile.setOffsetY(pixHeight/2);
-			
+
 		}
 
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
@@ -125,7 +127,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-24, rect.y-24, rect.width, rect.height));
 		}
-		
+
 		//Setup array of minigame rectangles
 		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
 		for(int i = 0; i <miniGameObjects.getCount(); i++)
@@ -138,15 +140,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 
 			//Add children to be drawn where minigames can be triggered
-		//	Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			//	Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
 			//ChildSprite child = new ChildSprite(childTexture);
 			//child.setScale(.25f);
-		//	child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
-		//	child.setRectangle(childRec);
-			
-		//	mazeChildren.add(child);
+			//	child.setPosition(rect.x - child.getWidth()/4, rect.y - child.getHeight()/4);
+			//	child.setRectangle(childRec);
 
-		//	miniRec.setOccupied(child);
+			//	mazeChildren.add(child);
+
+			//	miniRec.setOccupied(child);
 
 			minigameRects.add(miniRec);
 		}
@@ -154,9 +156,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Remove a child at random so there is always an open spot
 		//children.removeIndex(MathUtils.random(children.size));
 
-		
+
 		populate();
-		
+
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		game.setScreenSwitch(true);
@@ -167,15 +169,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
 	}
-	
-	
+
+
 	public void populate()
 	{
-		
+
 		int theRand = 0;
-		
+
 		for(MinigameRectangle rect : minigameRects)
 		{
+
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
@@ -186,21 +189,21 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				ChildSprite child = new ChildSprite(childTexture);
 				child.setScale(.25f);
 				child.setPosition(rect.x - child.getWidth()/4, rect.y);
-				
+
 				//child.setRectangle(childRec);
 				mazeChildren.add(child);
-				
+
 				rect.setOccupied(child);
 			}
-			
-			
-			
+
+
+
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 
 	/**
 	 * Draws the maze on the screen with a red background
@@ -241,7 +244,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean collision = false;
 				boolean triggerGame = false;
-				
+
 
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
@@ -289,7 +292,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 							}
 
-							
+
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 
 						}
@@ -422,6 +425,23 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		if (game.levelWin()) {
 			followers.add(lastRec.getOccupant());
+		}
+
+		else if (lastRec.isOccupied()){
+			Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
+			for (MinigameRectangle rect: minigameRects) {
+				if (!rect.isOccupied()) {
+					unoccupied.add(rect);
+				}
+			}
+
+			if (unoccupied.size > 0) {
+				Random rand = new Random();
+				int newPositionIndex = rand.nextInt(1000) % unoccupied.size;
+				unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
+				ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
+				child.moveTo(unoccupied.get(newPositionIndex));
+			}
 		}
 		lastRec.empty();
 		for(MapLayer layer: map.getLayers()){

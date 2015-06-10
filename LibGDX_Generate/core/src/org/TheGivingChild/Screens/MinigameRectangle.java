@@ -5,10 +5,12 @@ import com.badlogic.gdx.math.Rectangle;
 public class MinigameRectangle extends Rectangle {
 
 	private boolean occupied;
-	private ChildSprite occupant;
+	private ChildSprite occupant;	
 	
 	public MinigameRectangle(float x, float y, float width, float height) {
 		super(x,y,width,height);
+		this.x = x;
+		this.y = y;
 	}
 	
 	public boolean isOccupied()
@@ -25,6 +27,7 @@ public class MinigameRectangle extends Rectangle {
 	public void setOccupied(ChildSprite s)
 	{
 		//occupant = new ChildSprite(s);
+		System.out.println("Occupant is set now");
 		occupant = s;
 		occupied = true;
 	}
