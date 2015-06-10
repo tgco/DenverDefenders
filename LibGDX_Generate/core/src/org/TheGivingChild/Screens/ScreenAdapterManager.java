@@ -145,7 +145,7 @@ public final class ScreenAdapterManager {
 			screenTransitions.add(texture);
 		}
 		screenTransitionInComplete = false;
-		screenTransitionSpeed = Gdx.graphics.getWidth()/3*.5f;
+		screenTransitionSpeed = Gdx.graphics.getWidth()/30*.5f;
 		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
