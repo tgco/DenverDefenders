@@ -107,7 +107,7 @@ public class TGC_Engine extends Game {
     private boolean screenSwitch = true;
    
     private boolean levelWinOrLose;
-    
+    private boolean packetCompleted = false;;
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -142,6 +142,10 @@ public class TGC_Engine extends Game {
 			}
 		}
 		
+		if (possibleLevels.size == 0) {
+			packetCompleted = true;
+		}
+		
 		Random rand = new Random();
 		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
 		currentLevel = possibleLevels.get(newLevelIndex);
@@ -154,6 +158,10 @@ public class TGC_Engine extends Game {
 	
 	public boolean levelWin() {
 		return levelWinOrLose;
+	}
+	
+	public boolean getPacketCompleted() {
+		return packetCompleted;
 	}
 	
 	@Override

@@ -98,21 +98,5 @@ public class ScreenLevel extends ScreenAdapter{
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
-	
-	private void nextLevel() {
-		levelNumber++;
-		currentLevel = levels.get(levelNumber);
-		currentLevel.loadObjectsToStage();
-		MinigameClock.getInstance().setLevelLength(currentLevel.getLevelTime());
-		for(GameObject gameObject: currentLevel.getGameObjects()){
-			gameObject.resetObject();
-		}
-	}
-	
-	private void packetComplete() {
-		for (Level level: levels) {
-			level.resetLevel();
-		}
-		ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
-	}
+
 }
