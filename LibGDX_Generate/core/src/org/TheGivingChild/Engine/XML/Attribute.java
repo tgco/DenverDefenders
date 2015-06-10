@@ -216,7 +216,7 @@ public enum Attribute {
 			//check if close enough to next point
 			//if close enough to next point, setup a new point by calculating direction then setting velocity
 		}
-
+		
 		@Override
 		public void setup(GameObject myObject) {
 			String[] points = myObject.getAttributeData().get(MOVESONSETPATH).get(1).split(",");
@@ -228,7 +228,7 @@ public enum Attribute {
 			//get first point
 			float[] firstPoint = new float[] {Float.parseFloat(points[0]),Float.parseFloat(points[1])};
 			//calculate direction to that point
-			float[] distance = new float[] {myObject.getX()-firstPoint[0],myObject.getY()-firstPoint[1]};
+			float[] distance = new float[] {firstPoint[0]-myObject.getX(),firstPoint[1]-myObject.getY()};
 			float mag = (float) Math.pow(Math.pow(distance[0], 2) + Math.pow(distance[1], 2), .5);//magnitude of the distance to travel
 			float magO = (float) Math.pow(Math.pow(myObject.getVelocity()[0], 2) + Math.pow(myObject.getVelocity()[1], 2),.5);//magnitude of the object's velocity
 			//set velocity
@@ -236,7 +236,7 @@ public enum Attribute {
 			myObject.setVelocity(temp);
 			System.out.println("VELOCITY SET TO: " + temp[0] + ", " + temp[1] + "\n\t|DISTANCE: " + distance[0] + ", " + distance[1] + " Point: " + firstPoint[0] + ", " + firstPoint[1] + " Initial Location: " + myObject.getX() + ", " + myObject.getY());
 		}
-
+		
 		@Override
 		public Array<String> getValues(GameObject myObject) {
 			return myObject.getAttributeData().get(MOVESONSETPATH);
