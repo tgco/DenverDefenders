@@ -38,6 +38,10 @@ public class ChildSprite extends Sprite {
 			
 	}
 	
+	public void moveTo(MinigameRectangle rect) {
+		this.setPosition(rect.getX(), rect.getY());
+	}
+	
 	public boolean getFollow()
 	{
 		return follow;

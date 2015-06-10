@@ -144,11 +144,13 @@ public class TGC_Engine extends Game {
 		
 		if (possibleLevels.size == 0) {
 			packetCompleted = true;
+			return;
 		}
 		
 		Random rand = new Random();
 		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
 		currentLevel = possibleLevels.get(newLevelIndex);
+		currentLevel.resetLevel();
 		System.out.println(currentLevel.getLevelName());
 	}
 	
