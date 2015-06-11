@@ -84,17 +84,19 @@ public final class ScreenAdapterManager {
 	private Texture backgroundTexture;
 	private Table buttonTable;
 	private Table factTable;
+	private Table minigameTable;
 	private Table overallTable;
 	private Skin skin;
 	private CheckBoxStyle cbs;
 	private BitmapFont font;
 	public CheckBox cb;
 	private Label fact;
+	private Label minigame;
 	private LabelStyle ls;
-	private String[] facts = {"Fact: This is the first place holder fact to test if the label will wrap correctly.",
-							  "Fact: This is another place holder fact to see if the label will wrap and to see if it randomly chooses facts.",
-							  "Fact: This is a medium length fact to see how that affects the label.",
-							  "Fact: Short fact to test label."};
+	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
+							  "The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
+							  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
+							  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -175,7 +177,7 @@ public final class ScreenAdapterManager {
 		backgroundTexture = manager.get("DenverSkyline.jpg");
 		backgroundRegion = new TextureRegion(backgroundTexture);
 		createButton();
-		createFacts(MathUtils.random(100));
+		createLabels(MathUtils.random(100));
 		overallTable = new Table();
 //		overallTable.add(factTable);
 //		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -265,7 +267,7 @@ public final class ScreenAdapterManager {
 		screenTransitionInComplete = false;
 		//overallTable.remove();
 		factTable.remove();
-		createFacts(MathUtils.random(100));
+		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
 		overallTable.add(buttonTable);
@@ -290,7 +292,7 @@ public final class ScreenAdapterManager {
 		buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
 	}
-	public void createFacts(int r) {
+	public void createLabels(int r) {
 		System.out.println(r);
 		factTable = new Table();
 		ls = new LabelStyle();
@@ -304,5 +306,7 @@ public final class ScreenAdapterManager {
 		fact.setAlignment(Align.center, Align.center);
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		minigameTable = new Table();
+		minigame = null;
 	}
 }
