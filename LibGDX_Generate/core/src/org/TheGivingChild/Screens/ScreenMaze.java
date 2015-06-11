@@ -185,26 +185,37 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		int theRand = 0;
 		for(MinigameRectangle rect : minigameRects)
 		{
-			//Possible values 0,1,2,3,4
-			theRand = MathUtils.random(0,5);
-			//60% chance of kid being drawn
-			if(theRand >= 2 )
-			{
-				//Add children to be drawn where minigames can be triggered
-				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-				ChildSprite child = new ChildSprite(childTexture);
-				child.setScale(.25f);
-				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			ChildSprite child = new ChildSprite(childTexture);
+			child.setScale(.25f);
+			child.setPosition(rect.x - child.getWidth()/4, rect.y);
 
-				//child.setRectangle(childRec);
-				mazeChildren.add(child);
+			//child.setRectangle(childRec);
+			mazeChildren.add(child);
 
-				rect.setOccupied(child);
-			}
-
-
-
+			rect.setOccupied(child);
+			break;
 		}
+//			//Possible values 0,1,2,3,4
+//			theRand = MathUtils.random(0,5);
+//			//60% chance of kid being drawn
+//			if(theRand >= 2 )
+//			{
+//				//Add children to be drawn where minigames can be triggered
+//				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+//				ChildSprite child = new ChildSprite(childTexture);
+//				child.setScale(.25f);
+//				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+//
+//				//child.setRectangle(childRec);
+//				mazeChildren.add(child);
+//
+//				rect.setOccupied(child);
+//			}
+//
+//
+//
+//		}
 
 
 	}
@@ -343,7 +354,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			if (allSaved()) {
 				System.out.println("They are all saved");
-				this.dispose();
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
@@ -484,6 +494,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			lastRec.empty();
 			game.levelCompleted(false);
+			game.nullCurrentLevel();
 		}
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
