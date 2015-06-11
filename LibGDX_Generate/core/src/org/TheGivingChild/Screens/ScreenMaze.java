@@ -99,11 +99,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 
 		spriteBatch = new SpriteBatch();
-		spriteTexture = new Texture(Gdx.files.internal("ObjectImages/temp_hero.png"));
+		spriteTexture = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D.png"));
 
 		playerCharacter = new ChildSprite(spriteTexture);
 		playerCharacter.setSpeed(4*pixHeight);
-		playerCharacter.setScale(.25f,.25f);
+		//playerCharacter.setScale(.25f,.25f);
 
 		//Get the rect for the heros headquarters
 		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
