@@ -273,8 +273,7 @@ public final class ScreenAdapterManager {
 		//overallTable.remove();
 		factTable.remove();
 		minigameTable.remove();
-		if(!minigameTable.equals(null))
-			minigameTable.remove();
+
 		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
@@ -341,12 +340,16 @@ public final class ScreenAdapterManager {
 		fact.setAlignment(Align.center, Align.center);
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		
+		System.out.println(game.getFromGame());
+		
 		minigameTable = new Table();
-		if (game.getFromGame() && game.levelWin()) {
+		if ((game.getFromGame() && game.levelWin()) ) {
 			minigame = new Label("You WON!", ls);
 		}
-
+		else if (game.getFromGame() && !game.levelWin()){
+			minigame = new Label("You lost", ls);
+		}
 		else if(getInstance().game.getCurrentLevel() != null && !game.getFromGame()) {
 			Level current = getInstance().game.getCurrentLevel();
 			if(levelName == null) {
@@ -357,9 +360,7 @@ public final class ScreenAdapterManager {
 			else
 				levelName = null;
 		}
-		else if (game.getFromGame() && !game.levelWin()){
-			minigame = new Label("You lost", ls);
-		}
+
 		else {
 			minigame = new Label("", ls);
 		}
