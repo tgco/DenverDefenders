@@ -217,7 +217,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 		
 		
-		
+		//The above intializations need to be refactored
 		
 		
 		
