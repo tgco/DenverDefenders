@@ -214,6 +214,20 @@ public class TGC_Engine extends Game {
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
+		//manager.load("Packs/Fruits.pack", TextureAtlas.class);
+		
+		manager.load("ObjectImages/Banana1.png", Texture.class);
+		manager.load("ObjectImages/Cherries1.png", Texture.class);
+		manager.load("ObjectImages/Cherries2.png", Texture.class);
+		manager.load("ObjectImages/Apple1.png", Texture.class);
+		manager.load("ObjectImages/Grapes_dark.png", Texture.class);
+		manager.load("ObjectImages/Grapes_light.png", Texture.class);
+		manager.load("ObjectImages/Watermellon1.png", Texture.class);
+		manager.load("ObjectImages/Icecream1.png", Texture.class);
+		manager.load("ObjectImages/Cherry.png", Texture.class);
+		manager.load("ObjectImages/basket.png", Texture.class);
+		manager.load("ObjectImages/Grape.png", Texture.class);
+		
 		manager.finishLoading();
 		
 		reader = new XML_Reader();
