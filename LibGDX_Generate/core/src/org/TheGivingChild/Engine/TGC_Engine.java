@@ -58,6 +58,10 @@ public class TGC_Engine extends Game {
     
     private float width;
     private float height;
+    public float volume;
+    public boolean soundMuted;
+    public boolean musicMuted;
+    
     private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
     private Group objectGroup;

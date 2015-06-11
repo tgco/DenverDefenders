@@ -241,16 +241,21 @@ class ScreenOptions extends ScreenAdapter {
 				 if(mute.isChecked()) {
 					 //updateSliderValue(0);
 					 slider.setValue(0);
+					 ScreenAdapterManager.getInstance().game.volume = slider.getValue();
 					 slider.setDisabled(true);
 					 options.get(0).setChecked(false);
+					 ScreenAdapterManager.getInstance().game.musicMuted = false;
 					 options.get(1).setChecked(false);
+					 ScreenAdapterManager.getInstance().game.soundMuted = false;
 				 }
 				 else {
 					 //updateSliderValue(volume);
 					 slider.setValue(volume);
 					 slider.setDisabled(false);
 					 options.get(0).setChecked(before1);
+					 ScreenAdapterManager.getInstance().game.musicMuted = before1;
 					 options.get(1).setChecked(before2);
+					 ScreenAdapterManager.getInstance().game.soundMuted = before2;
 				 }
 			 }
 		 });
