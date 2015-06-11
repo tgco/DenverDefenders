@@ -44,6 +44,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
+	private Array<Texture> spriteWalkD, spriteWalkU, spriteWalkR, spriteWalkL;
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
@@ -97,13 +98,34 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
+		spriteWalkD = new Array<Texture>();
+		spriteWalkR = new Array<Texture>();
+		spriteWalkU = new Array<Texture>();
+		spriteWalkL = new Array<Texture>();
+		
 
 		spriteBatch = new SpriteBatch();
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D.png"));
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R.png"));
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U.png"));
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L.png"));
-		
+		//get an array for walking down
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_2.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_3.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_4.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_5.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_6.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_7.png"));
+		spriteWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
+		spriteWalkD.add(spriteTextureD);
+
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
 		playerCharacter.setSpeed(4*pixHeight);
@@ -400,7 +422,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//calculate the difference between the begin and end point
 		Vector2 delta = newTouch.cpy().sub(lastTouch);
 		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
-
+				
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
@@ -425,6 +447,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if(delta.y > 0)	
 			{
 				yMove = -playerCharacter.getSpeed();
+				//playerCharacter.setTexture(spriteTextureD);
 				playerCharacter.setTexture(spriteTextureD);
 			}
 			if(delta.y <= 0)
