@@ -17,7 +17,6 @@ public class Level {
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	private boolean completed;
 	private boolean won;
-	private boolean lost;
 	private String description;
 	
 	private BitmapFont clockFont;
