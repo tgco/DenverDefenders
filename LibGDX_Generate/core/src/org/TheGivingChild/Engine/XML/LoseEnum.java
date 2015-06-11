@@ -65,16 +65,18 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 
 		@Override
 		public void checkLose(Level level) {
-			boolean lose = true;
+			boolean lose = false;
 			for(String currentID:level.getLoseInfo(BELOW_SCREEN_LOSE_ID).get(0).split(",")){
 				GameObject currentObject = level.getObjectOfID(Integer.parseInt(currentID));
-				if(currentObject != null && currentObject.getY() > 0){//if the object exists and it's position is above y=0, don't lose
-					lose = false;
+				if(currentObject != null && currentObject.getY() < 0){//if the object exists and it's position is above y=0, don't lose
+					lose = true;
 					break;
 				}
 			}
+			if(lose) System.out.println("LOSE");
+			
 			level.setCompleted(lose);
-			level.setWon(lose);
+			level.setWon(!lose);
 		}
 		
 	};
