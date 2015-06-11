@@ -109,6 +109,10 @@ public final class ScreenAdapterManager {
 		}
 		return instance;
 	}
+	public ScreenAdapter getScreenInstance(ScreenAdapterEnums screenAdapterEnum){
+		return screens.get(screenAdapterEnum.ordinal());
+	}
+	
 	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
 			"The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
 			"Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",

@@ -109,6 +109,10 @@ class ScreenOptions extends ScreenAdapter {
 		}
 	};
 	
+	public void AAAAAAAAAAAAAAA(){
+		
+	}
+	
 	@Override
 	public void hide() {
 		optionsTable.remove();
