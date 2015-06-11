@@ -161,7 +161,8 @@ class ScreenOptions extends ScreenAdapter {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
-		
+		Skin bSkin = new Skin();
+		bSkin.add("background", manager.get("SemiTransparentBG.png"));
 		cbStyle.font = font;
 		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
@@ -169,6 +170,7 @@ class ScreenOptions extends ScreenAdapter {
 			CheckBox checkbox = new CheckBox("", cbStyle);
 			LabelStyle ls = new LabelStyle();
 			ls.font = font;
+			ls.background = bSkin.getDrawable("background");
 			Label label = new Label(optionsArray[i], ls);switch(Gdx.app.getType()){
 			case Android:
 				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
@@ -292,5 +294,18 @@ class ScreenOptions extends ScreenAdapter {
 		 overallTable.add(sliderTable);
 		 overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		 overallTable.align(Align.center);
+	 }
+	 
+	 public boolean getMusic() {
+		 return options.get(0).isChecked();
+	 }
+	 public boolean getSound() {
+		 return options.get(1).isChecked();
+	 }
+	 public boolean getMute() {
+		 return mute.isChecked();
+	 }
+	 public float getVolume() {
+		 return slider.getValue();
 	 }
 }
