@@ -5,24 +5,30 @@ import org.TheGivingChild.Engine.MinigameClock;
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {//Cannot have any labels in common with WinEnum
-	TIMEOUT{
-		private float time;
+	TIMEOUT_LOSE{
+		@Override
 		public String getXMLDescription(){
 			return "timeout";
 		}
+		@Override
 		public Array<String> getValues(Level level){
-			Array<String> temp = new Array<String>();
-			temp.add(time+"");
-			return temp;
+			return level.getLoseInfo(TIMEOUT_LOSE);
 		}
-		public void setValues(Array<String> newValues){
-			time = Float.parseFloat(newValues.first());
-		}
+		@Override
 		public void checkLose(Level level){
-			if(MinigameClock.getInstance().outOfTime()) {
+			if(MinigameClock.getInstance().outOfTime() ) {
 				level.setCompleted(true);
 				level.setWon(false);
 			}
+		}
+		@Override
+		public void setValues(Array<String> newValues) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void setup(Level level) {
+			MinigameClock.getInstance().setLevelLength(Long.parseLong(level.getLoseInfo(TIMEOUT_LOSE).get(0)));			
 		}
 	},
 	COLLISION_WITH_OBJECTLOSE{//totally not working or anything at all
@@ -42,6 +48,11 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			temp.add(objectID1+"");
 			temp.add(objectID2+"");
 			return temp;
+		}
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+			
 		}
 	},
 	BELOW_SCREEN_LOSE_ID{
@@ -78,12 +89,19 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			level.setCompleted(lose);
 			level.setWon(!lose);
 		}
+
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	};
 	public abstract String getXMLDescription();
 	public abstract Array<String> getValues(Level level);
 	public abstract void setValues(Array<String> newValues);
 	public abstract void checkLose(Level level);
+	public abstract void setup(Level level);
 	
 	public static LoseEnum newType(String type){
 		return valueOf(type.toUpperCase());
