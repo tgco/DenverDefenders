@@ -110,11 +110,25 @@ class ScreenHowToPlay extends ScreenAdapter{
 							+ "If you complete the mini-game, the kid will follow you. "
 							+ "If you lose the mini-game, the kid will go to a different part of the maze. "
 							+ "Once all of the kids have been found, return to the start of the maze to win.", ls);
-		message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+		switch(Gdx.app.getType()){
+		case Android:
+			message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+			//if using the desktop set the width and height to a 16:9 resolution.
+		case Desktop:
+			message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			break;
+		case iOS:
+			message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+		default:
+			message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			break;
+		}
 		message.setColor(Color.YELLOW);
 		message.setWrap(true);
 		messageTable = new Table();
-		messageTable.add(message).width(Gdx.graphics.getWidth()/2);
+		messageTable.add(message).width(Gdx.graphics.getWidth()*2/3);
 		messageTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		messageTable.align(Align.center);
 	}
