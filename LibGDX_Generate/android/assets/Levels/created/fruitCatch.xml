@@ -18,30 +18,15 @@
 	<GameObject ID="5" attributes="moves" imageFilename="Banana1.png" initialLocation="500.0,1500.0" listeners="">
 		<moves value1="0" value2="-300.0"/>
 	</GameObject>
-	<GameObject ID="6" attributes="moves" imageFilename="Grapes_dark.png" initialLocation="300.0,1050.0" listeners="">
-		<moves value1="0" value2="-300.0"/>
-	</GameObject>
-	<GameObject ID="7" attributes="moves" imageFilename="Watermellon1.png" initialLocation="400.0,1350.0" listeners="">
-		<moves value1="0" value2="-400.0"/>
-	</GameObject>
-	<GameObject ID="8" attributes="moves" imageFilename="Banana1.png" initialLocation="200.0,2000.0" listeners="">
-		<moves value1="0" value2="-400.0"/>
-	</GameObject>
-	<GameObject ID="9" attributes="moves" imageFilename="Icecream1.png" initialLocation="300.0,1400.0" listeners="">
-		<moves value1="0" value2="-300.0"/>
-	</GameObject>
-	<GameObject ID="10" attributes="moves" imageFilename="Cherry.png" initialLocation="400.0,1500.0" listeners="">
-		<moves value1="0" value2="-400.0"/>
-	</GameObject>
 	
 	<!--basket! -->
 	<GameObject ID="11" attributes="moves,destroysObjectsOfIDOnCollision" imageFilename="Box.png" initialLocation="600.0,50.0" listeners="drag_object_X">
 		<moves value1="0.0" value2="0.0"/>
-		<destroysObjectsOfIDOnCollision value1="0,1,2,3,4,5,6,7,8,9,10"/>
+		<destroysObjectsOfIDOnCollision value1="0,1,2,3,4,5"/>
 	</GameObject>
 	
 	<levelGoals win="objects_of_ID_destroyed" lose="below_screen_lose_ID">
-		<objects_of_ID_destroyed win1="0,1,2,3,4,5,6,7,8,9,10"/>
-		<below_screen_lose_ID lose1="0,1,2,3,4,5,6,7,8,9,10"/>
+		<objects_of_ID_destroyed win1="0,1,2,3,4,5"/>
+		<below_screen_lose_ID lose1="0,1,2,3,4,5"/>
 	</levelGoals>
 </level>
