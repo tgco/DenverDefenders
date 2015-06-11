@@ -1,7 +1,5 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.Attributes.WinEnum;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;

@@ -1,8 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
-
 import org.TheGivingChild.Engine.MinigameClock;
-import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.graphics.Color;
@@ -25,7 +23,7 @@ public class Level {
 	private int levelTime = 50;
 	
 	
-	 public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
+	public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
 		levelName = name;
 		packageName=packagename;
 		actors = new Array<GameObject>();
@@ -57,7 +55,8 @@ public class Level {
 		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
-			currentObject.update(actors);
+			if(!currentObject.isDisposed())
+				currentObject.update(actors);
 		}
 		//check the win conditions.
 		for(WinEnum winEnum: winData.keys().toArray()){
@@ -151,5 +150,21 @@ public class Level {
 	}
 	public String getDescription(){
 		return description;
+	}
+	/**
+	 * 
+	 * @param int ID of the object to find
+	 * @return returns the desired object or null if the object does not exist
+	 */
+	public GameObject getObjectOfID(int ID){
+		GameObject targetObject = null;
+		boolean found = false;//for testing
+		for(GameObject currentObject:actors){
+			if(currentObject.getID() == ID){
+				targetObject = currentObject;
+			}
+		}
+		System.out.println("target ID: " + ID + " " + found);
+		return targetObject;
 	}
 }
