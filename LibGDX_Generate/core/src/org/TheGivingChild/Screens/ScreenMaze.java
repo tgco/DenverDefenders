@@ -99,10 +99,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 
 		spriteBatch = new SpriteBatch();
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D.png"));
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R.png"));
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U.png"));
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L.png"));
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
 		
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
