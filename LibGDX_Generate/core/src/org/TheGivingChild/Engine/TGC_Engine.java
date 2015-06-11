@@ -161,7 +161,6 @@ public class TGC_Engine extends Game {
 	}
 	
 	public void levelCompleted(boolean winOrLose) {
-		System.out.println("called here");
 		levelWinOrLose = winOrLose;
 	}
 	
@@ -175,6 +174,10 @@ public class TGC_Engine extends Game {
 	
 	public void setFromGame(boolean state) {
 		fromGame = state;
+	}
+	
+	public void nullCurrentLevel() {
+		currentLevel = null;
 	}
 	
 	public boolean getFromGame() {
@@ -201,7 +204,10 @@ public class TGC_Engine extends Game {
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Assets to be added to the manager
 		manager.load("MainScreen_Splash.png", Texture.class);
-		manager.load("DenverSkyline.jpg", Texture.class);
+		manager.load("ColdMountain.png", Texture.class);
+		manager.load("SemiTransparentBG.png", Texture.class);
+		manager.finishLoadingAsset("SemiTransparentBG.png");
+		System.out.println(manager.isLoaded("SemiTransparentBG.png"));
 		//initial update so that the loading screen is loaded before everything
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);

@@ -313,7 +313,7 @@ public enum Attribute {
 					Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getTextureWidth(),allObjects.get(i).getTextureHeight());
 					if(r1.overlaps(r2)){
 						allObjects.get(i).dispose();
-						System.out.println("COLLISION DETECTED");
+						System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + allObjects.get(i).getID());
 					}
 				}
 			}
@@ -335,6 +335,33 @@ public enum Attribute {
 		public String getXMLName() {
 			return "destroysObjectsOfIDOnCollision";
 		}
+		
+	},
+	GRAVITY{
+
+		@Override
+		public void setup(GameObject myObject){}
+
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			float rate = Float.parseFloat(myObject.getAttributeData().get(GRAVITY).get(0));
+			myObject.setVelocity(new float[] {myObject.getVelocity()[0],myObject.getVelocity()[1]-rate});
+		}
+
+		@Override
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(GRAVITY);
+		}
+
+		@Override
+		public Array<String> getVariableNames(){
+			Array<String> val = new Array<String>();
+			val.add("Rate at which object falls");
+			return val;
+		}
+
+		@Override
+		public String getXMLName() {return "gravity";}
 		
 	};
 	

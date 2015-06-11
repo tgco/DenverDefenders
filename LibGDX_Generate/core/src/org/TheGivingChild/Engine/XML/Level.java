@@ -20,7 +20,7 @@ public class Level {
 	private String description;
 	
 	private BitmapFont clockFont;
-	private int levelTime = 50;
+	private int levelTime = 0;
 	
 	
 	public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
@@ -32,9 +32,6 @@ public class Level {
 		winData = newWinData;
 		loseData = newLoseData;
 		
-		//Set default level length to 10 sec.
-		MinigameClock.getInstance().setLevelLength(levelTime);
-		
 		this.levelImage = levelImage;
 		
 		completed = false;
@@ -42,6 +39,11 @@ public class Level {
 		clockFont.setColor(Color.BLACK);
 		
 		this.description = description;
+		
+		for(WinEnum current:winData.keys().toArray())
+			current.setup(this);
+		for(LoseEnum current:loseData.keys().toArray())
+			current.setup(this);
 	}
 	
 	public void update(){
@@ -57,14 +59,17 @@ public class Level {
 		for(GameObject currentObject:actors){
 			if(!currentObject.isDisposed())
 				currentObject.update(actors);
+			else
+				actors.removeValue(currentObject, true);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: winData.keys().toArray()){
+		for(WinEnum winEnum: winData.keys().toArray())
 			winEnum.checkWin(this);
-		}
-		for (LoseEnum loseEnum: loseData.keys().toArray()) {
+		
+		if(completed) return;
+		
+		for (LoseEnum loseEnum: loseData.keys().toArray())
 			loseEnum.checkLose(this);
-		}
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
@@ -76,16 +81,17 @@ public class Level {
 		}
 		//go to the main screen, will likely need to return to the last maze screen being played
 		//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		for(WinEnum current:winData.keys().toArray())
+			current.setup(this);
+		
+		for(LoseEnum current:loseData.keys().toArray())
+			current.setup(this);
 	}
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage(){
 		for(GameObject gameObject: actors){
 			ScreenAdapterManager.getInstance().game.getStage().addActor(gameObject);
 		}
-	}
-	
-	public boolean checkLose(){
-		return MinigameClock.getInstance().outOfTime();
 	}
 	
 	public void setCompleted(boolean state) {
@@ -159,7 +165,7 @@ public class Level {
 	public GameObject getObjectOfID(int ID){
 		GameObject targetObject = null;
 		for(GameObject currentObject:actors)
-			if(currentObject.getID() == ID && !currentObject.isDisposed())
+			if(currentObject.getID() == ID)
 				targetObject = currentObject;
 		return targetObject;
 	}
