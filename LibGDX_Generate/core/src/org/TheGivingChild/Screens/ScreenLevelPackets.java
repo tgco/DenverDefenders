@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
@@ -94,9 +95,10 @@ class ScreenLevelPackets extends ScreenAdapter{
 			//final variable to access within change listener
 			final int j = i;
 			//Transition to the ScreenPacketLevels Screen
-			textButton.addListener(new ChangeListener(){
+			textButton.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					super.changed(event, actor);
 					currentPacketLevelIndex = j;
 					//hide the current screen, load the main screen
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);

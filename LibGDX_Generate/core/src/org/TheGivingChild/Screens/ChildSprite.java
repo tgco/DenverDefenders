@@ -80,33 +80,6 @@ public class ChildSprite extends Sprite {
 //			}
 //		}
 
-
-//		if(leader.getLastX() >= this.getX())
-//		{
-//			xMove = leader.getSpeed();		
-//			yMove = 0;
-//		}
-//		
-//		if(leader.getLastX() < this.getX())
-//		{
-//			xMove = -leader.getSpeed();
-//			yMove = 0;
-//		}
-//		
-//		if(leader.getLastY() >= this.getY())
-//		{
-//			yMove = leader.getSpeed();
-//			xMove = 0;
-//		}
-//		
-//		if(leader.getLastY() < this.getY())
-//		{
-//			yMove = -leader.getSpeed();
-//			xMove = 0;
-//		}
-//		
-//		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
-//		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
 	
 		
 		
@@ -147,9 +120,8 @@ public class ChildSprite extends Sprite {
 				this.yMove = -this.getSpeed();
 				this.xMove = 0;
 			}
-		
 		}
-		
+
 		else {
 			
 		this.xMove = 0;
@@ -167,6 +139,7 @@ public class ChildSprite extends Sprite {
 		return((d1 > 0 && d2>0) || (d1 < 0 && d2 < 0) );
 	}
 	
+
 	public void setSpeed(float f)
 	{
 		moveSpeed = f;

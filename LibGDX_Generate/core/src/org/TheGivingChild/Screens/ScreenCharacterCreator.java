@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
@@ -107,9 +108,10 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		style.up = skin.getDrawable("Button_Editor_Back");
 		style.down = skin.getDrawable("ButtonPressed_Editor_Back");
 		TextButton backButton = new TextButton("", style);
-		backButton.addListener(new ChangeListener() {
+		backButton.addListener(new MyChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 				hide();
 			}

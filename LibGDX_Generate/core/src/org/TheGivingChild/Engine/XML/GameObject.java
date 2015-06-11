@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -33,12 +34,27 @@ public class GameObject extends Actor implements Disposable{
 	private AssetManager manager;
 	private boolean disposed;
 	private Texture texture;
+	private float objectScale;
 	/** list of the names of the listeners associated with this object*/
 	private Array<String> listenerNames;
 	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
 	private ObjectMap<Attribute,Array<String>> attributeData;
 
 	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
+		switch(Gdx.app.getType()){
+		case Android:
+			objectScale = 3;
+			break;
+		//if using the desktop set the width and height to a 16:9 resolution.
+		case Desktop:
+			objectScale = 1;
+			break;
+		case iOS:
+			objectScale = 3;
+			break;
+		default:
+			break;
+	}
 		listenerNames = new Array<String>();
 		manager = new AssetManager();
 		disposed = false;
@@ -71,7 +87,7 @@ public class GameObject extends Actor implements Disposable{
 			texture = manager.get(imageFilename);
 		}
 		//set the bounds to be as large as the textures size
-		setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+		setBounds(getX(), getY(), texture.getWidth()*objectScale, texture.getHeight()*objectScale);
 		//iterate over attributes
 		for(String listener: listenerNames){
 			//get the name, uppercase it
@@ -140,5 +156,11 @@ public class GameObject extends Actor implements Disposable{
 	}
 	public ObjectMap<Attribute,Array<String>> getAttributeData(){
 		return attributeData;
+	}
+	public float getTextureWidth(){
+		return texture.getWidth()*objectScale;
+	}
+	public float getTextureHeight(){
+		return texture.getHeight()*objectScale;
 	}
 }

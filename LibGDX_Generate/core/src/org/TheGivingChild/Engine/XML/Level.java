@@ -1,8 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
-
 import org.TheGivingChild.Engine.MinigameClock;
-import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.graphics.Color;
@@ -19,12 +17,14 @@ public class Level {
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	private boolean completed;
 	private boolean won;
+	private boolean lost;
+	private String description;
 	
 	private BitmapFont clockFont;
 	private int levelTime = 50;
 	
 	
-	 public Level(String name, String packagename, String levelImage, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
+	public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
 		levelName = name;
 		packageName=packagename;
 		actors = new Array<GameObject>();
@@ -41,8 +41,8 @@ public class Level {
 		completed = false;
 		clockFont = new BitmapFont();
 		clockFont.setColor(Color.BLACK);
-				
-	
+		
+		this.description = description;
 	}
 	
 	public void update(){
@@ -56,20 +56,16 @@ public class Level {
 		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
 		for(GameObject currentObject:actors){
-			currentObject.update(actors);
+			if(!currentObject.isDisposed())
+				currentObject.update(actors);
 		}
 		//check the win conditions.
 		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
 		}
-		
-
 		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
-
 		}
-		
-		
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
@@ -152,5 +148,20 @@ public class Level {
 	}
 	public int getLevelTime() {
 		return levelTime;
+	}
+	public String getDescription(){
+		return description;
+	}
+	/**
+	 * 
+	 * @param int ID of the object to find
+	 * @return returns the desired object or null if the object does not exist
+	 */
+	public GameObject getObjectOfID(int ID){
+		GameObject targetObject = null;
+		for(GameObject currentObject:actors)
+			if(currentObject.getID() == ID && !currentObject.isDisposed())
+				targetObject = currentObject;
+		return targetObject;
 	}
 }
