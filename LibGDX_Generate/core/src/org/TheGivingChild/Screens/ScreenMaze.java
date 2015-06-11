@@ -118,6 +118,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
+
 		//get an array for walking down
 		//spriteWalkD.add(spriteTextureD);
 		arrayWalkD.add(spriteTextureD);
@@ -142,7 +143,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
 		//spriteWalkD.add(spriteTextureD);
 		arrayWalkD.add(spriteTextureD);
-
 
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
@@ -319,7 +319,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								playerCharacter.setPosition(m.getX(), m.getY());
 								triggerGame = true;
 								game.selectLevel();
-								//game.setFromGame(true);
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 
 							}
