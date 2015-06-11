@@ -61,12 +61,13 @@ public class Level {
 				actors.removeValue(currentObject, true);
 		}
 		//check the win conditions.
-		for(WinEnum winEnum: winData.keys().toArray()){
+		for(WinEnum winEnum: winData.keys().toArray())
 			winEnum.checkWin(this);
-		}
-		for (LoseEnum loseEnum: loseData.keys().toArray()) {
+		
+		if(completed) return;
+		
+		for (LoseEnum loseEnum: loseData.keys().toArray())
 			loseEnum.checkLose(this);
-		}
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
@@ -84,10 +85,6 @@ public class Level {
 		for(GameObject gameObject: actors){
 			ScreenAdapterManager.getInstance().game.getStage().addActor(gameObject);
 		}
-	}
-	
-	public boolean checkLose(){
-		return MinigameClock.getInstance().outOfTime();
 	}
 	
 	public void setCompleted(boolean state) {
