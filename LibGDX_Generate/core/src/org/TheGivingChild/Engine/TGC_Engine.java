@@ -160,6 +160,9 @@ public class TGC_Engine extends Game {
 	
 	public void levelCompleted(boolean winOrLose) {
 		levelWinOrLose = winOrLose;
+		if (winOrLose == true) {
+			setFromGame(true);
+		}
 	}
 	
 	public boolean levelWin() {

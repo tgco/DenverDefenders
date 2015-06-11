@@ -264,7 +264,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								playerCharacter.setPosition(m.getX(), m.getY());
 								triggerGame = true;
 								game.selectLevel();
-								game.setFromGame(true);
+								//game.setFromGame(true);
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 
 							}
@@ -306,7 +306,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				{
 					for(Sprite f: followers)
 					{
-						System.out.println(followers.size);
 						//System.out.println(f.get);
 						f.draw(spriteBatch);
 					}

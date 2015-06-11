@@ -2,6 +2,7 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
@@ -95,6 +97,18 @@ public final class ScreenAdapterManager {
 	private Label fact;
 	private Label minigame;
 	private LabelStyle ls;
+	private String levelName = null;
+	/**
+	 * Allows access to {@link #instance} from outside the class.
+	 * If the {@link #instance} is null, construct it.
+	 * Return the {@link #instance} to the caller.
+	 */
+	public static ScreenAdapterManager getInstance() {
+		if (null == instance) {
+			instance = new ScreenAdapterManager();
+		}
+		return instance;
+	}
 	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
 			"The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
 			"Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
@@ -107,17 +121,6 @@ public final class ScreenAdapterManager {
 	private ScreenAdapterManager() {
 		screens = new IntMap<ScreenAdapter>();
 		screenTransitions = new Array<TextureRegion>();
-	}
-	/**
-	 * Allows access to {@link #instance} from outside the class.
-	 * If the {@link #instance} is null, construct it.
-	 * Return the {@link #instance} to the caller.
-	 */
-	public static ScreenAdapterManager getInstance() {
-		if (null == instance) {
-			instance = new ScreenAdapterManager();
-		}
-		return instance;
 	}
 	/**
 	 * dispose the manager
@@ -270,15 +273,16 @@ public final class ScreenAdapterManager {
 		//overallTable.remove();
 		factTable.remove();
 		minigameTable.remove();
+		if(!minigameTable.equals(null))
+			minigameTable.remove();
 		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
 		overallTable.add(buttonTable);
 
-		if (screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) {
+		if ((screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) || !minigameTable.equals(null)) {
 			overallTable.row();
-			overallTable.add(minigameTable.align(Align.center));
-			
+			overallTable.add(minigameTable.align(Align.center));			
 			game.setFromGame(false);
 		}
 
@@ -299,7 +303,7 @@ public final class ScreenAdapterManager {
 		cbs.font = font;
 		cbs.checkboxOff = skin.getDrawable("Button_Next");
 		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
-		cb = new CheckBox(" ", cbs);
+		cb = new CheckBox("", cbs);
 		cb.addListener(new MyChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -307,11 +311,10 @@ public final class ScreenAdapterManager {
 			}
 		});
 		buttonTable.add(cb).center().bottom();
-		buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
 	}
 	public void createLabels(int r) {
-		System.out.println(r);
 		factTable = new Table();
 		ls = new LabelStyle();
 		ls.font = new BitmapFont();
@@ -319,23 +322,36 @@ public final class ScreenAdapterManager {
 		fact = null;
 		fact = new Label(facts[fNum], ls);
 		fact.setColor(1, 1, 1, 1);
-		fact.setFontScale(1.5f);
+		fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 		fact.setWrap(true);
 		fact.setAlignment(Align.center, Align.center);
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		minigameTable = new Table();
-		if (game.levelWin()) {
+		if (game.getFromGame() && game.levelWin()) {
 			minigame = new Label("You WON!", ls);
 		}
 
-		else {
+		else if(getInstance().game.getCurrentLevel() != null && !game.getFromGame()) {
+			Level current = getInstance().game.getCurrentLevel();
+			if(levelName == null) {
+				levelName = current.getLevelName();
+				minigame = new Label(current.getDescription(), ls);
+			}
+
+			else
+				levelName = null;
+		}
+		else if (game.getFromGame() && !game.levelWin()){
 			minigame = new Label("You lost", ls);
 		}
+		else {
+			minigame = new Label("", ls);
+		}
 		minigame.setColor(1, 1, 1, 1);
-		minigame.setFontScale(1.5f);
 		minigame.setWrap(true);
+		minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 		minigame.setAlignment(Align.center, Align.center);
 		minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 		minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
