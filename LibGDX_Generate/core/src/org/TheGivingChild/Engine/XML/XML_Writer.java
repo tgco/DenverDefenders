@@ -2,8 +2,6 @@ package org.TheGivingChild.Engine.XML;
 
 import java.io.StringWriter;
 
-import org.TheGivingChild.Engine.Attributes.WinEnum;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
@@ -25,6 +23,7 @@ public class XML_Writer {
 			writer.attribute("packageName",currentLevel.getPackageName());//might wanna make this dynamic.
 			writer.attribute("levelName", currentLevel.getLevelName());
 			writer.attribute("levelImage",currentLevel.getLevelImage());
+			writer.attribute("description",currentLevel.getDescription());
 			for(GameObject currentGameObject:currentLevel.getGameObjects()){//writing game object information
 				writer.element("GameObject");//writing game object and it's required attributes
 				writer.attribute("ID",currentGameObject.getID());
@@ -54,7 +53,7 @@ public class XML_Writer {
 				int count=1;//writing win condition values
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
 					writer.element(currentWinCondition.getXMLDescription());
-					for(String currentValue:currentWinCondition.getValues()){
+					for(String currentValue:currentWinCondition.getValues(currentLevel)){
 						writer.attribute("win"+count,currentValue);
 						count++;
 					}
@@ -64,7 +63,7 @@ public class XML_Writer {
 				count=1;//writing lose condition values
 				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
 					writer.element(currentLoseCondition.getXMLDescription());
-					for(String currentValue:currentLoseCondition.getValues()){
+					for(String currentValue:currentLoseCondition.getValues(currentLevel)){
 						writer.attribute("lose"+count,currentValue);
 						count++;
 					}

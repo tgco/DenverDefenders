@@ -2,10 +2,10 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.LoseEnum;
+import org.TheGivingChild.Engine.XML.WinEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;

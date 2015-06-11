@@ -311,7 +311,6 @@ public enum Attribute {
 		return valueOf(type.toUpperCase());
 	}
 	
-	//ALL BELOW METHODS MUST BE IMPLEMENTED
 	/**
 	 * Called once within the GameObject's constructor, used to setup initial values
 	 * @param	myObject	the GameObject that currently holds this attribute
