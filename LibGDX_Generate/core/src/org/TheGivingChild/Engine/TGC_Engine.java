@@ -14,6 +14,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -217,7 +218,17 @@ public class TGC_Engine extends Game {
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
-		//manager.load("Packs/Fruits.pack", TextureAtlas.class);
+		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/04_All_of_Us.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/06_Searching.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/08_Ascending.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Sound.class);
+		manager.load("sounds/backgroundMusic/10_Arpanauts.wav", Sound.class);
+		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
 		
 		manager.load("ObjectImages/Banana1.png", Texture.class);
 		manager.load("ObjectImages/Cherries1.png", Texture.class);
@@ -230,7 +241,6 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Cherry.png", Texture.class);
 		manager.load("ObjectImages/basket.png", Texture.class);
 		manager.load("ObjectImages/Grape.png", Texture.class);
-		
 		manager.finishLoading();
 		
 		reader = new XML_Reader();
