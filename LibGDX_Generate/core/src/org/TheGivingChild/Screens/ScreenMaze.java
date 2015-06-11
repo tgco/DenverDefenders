@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import org.TheGivingChild.Engine.TGC_Engine;
@@ -28,6 +29,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.AtomicQueue;
 /**
  *Maze screen that the user will navigate around.
  *Player will be able to trigger a miniGame by finding a child in the maze.
@@ -44,7 +46,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
-	private Array<Texture> spriteWalkD, spriteWalkU, spriteWalkR, spriteWalkL;
+	private PriorityQueue<Texture> spriteWalkD, spriteWalkU, spriteWalkR, spriteWalkL;
+	private Array<Texture> arrayWalkD;
+	private Array<Texture> currentWalkSequence;
+	
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
@@ -64,6 +69,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
+	
 	private Texture backdropTexture;
 	private TextureRegion backdropTextureRegion;
 
@@ -98,33 +104,45 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-		spriteWalkD = new Array<Texture>();
-		spriteWalkR = new Array<Texture>();
-		spriteWalkU = new Array<Texture>();
-		spriteWalkL = new Array<Texture>();
+		spriteWalkD = new PriorityQueue<Texture>();
+		spriteWalkR = new PriorityQueue<Texture>();
+		spriteWalkU = new PriorityQueue<Texture>();
+		spriteWalkL = new PriorityQueue<Texture>();
+		
+		arrayWalkD = new Array<Texture>();
+		currentWalkSequence = new Array<Texture>();
 		
 
 		spriteBatch = new SpriteBatch();
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R.png"));
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U.png"));
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L.png"));
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
 		//get an array for walking down
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_2.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_3.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_4.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_5.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_6.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_7.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
-		spriteWalkD.add(spriteTextureD);
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+
 
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
@@ -334,6 +352,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 					}	
 				}
+				
+				if(currentWalkSequence.size > 0 && currentWalkSequence != null)
+				{
+				Texture next = currentWalkSequence.get(0);
+				currentWalkSequence.removeIndex(0);
+				currentWalkSequence.add(next);
+				playerCharacter.setTexture(next);
+				}
+				
+				
 				//begin the batch that sprites will draw to
 				spriteBatch.begin();
 				//draw the main character sprite to the map
@@ -422,7 +450,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//calculate the difference between the begin and end point
 		Vector2 delta = newTouch.cpy().sub(lastTouch);
 		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
-				
+		
+			
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
@@ -430,11 +459,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			{
 				xMove =  playerCharacter.getSpeed();
 				playerCharacter.setTexture(spriteTextureR);
+				//currentWalkSequence = arrayWalkR;
+				//currentWalkSq
+				//currentWalkSequence  =null;
 			}
 			if(delta.x <= 0) 
 				{
 					xMove = -playerCharacter.getSpeed();
 					playerCharacter.setTexture(spriteTextureL);
+					//currentWalkSequence = null;
 				}
 			//no vertical movement
 			yMove = 0;
@@ -447,13 +480,22 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if(delta.y > 0)	
 			{
 				yMove = -playerCharacter.getSpeed();
-				//playerCharacter.setTexture(spriteTextureD);
-				playerCharacter.setTexture(spriteTextureD);
+				//Put the next texture to end of queue
+				//Texture next = arrayWalkD.get(0);
+				//arrayWalkD.add(next);
+				//arrayWalkD.removeIndex(0);
+				//playerCharacter.setTexture(next);
+				currentWalkSequence = arrayWalkD;
+			//	playerCharacter.setTexture(spriteTextureD);
+				
+				
+				//playerCharacter.setTexture(spriteWalkD.get(walkCount));
 			}
 			if(delta.y <= 0)
 				{
 					yMove = playerCharacter.getSpeed();
 					playerCharacter.setTexture(spriteTextureU);
+					//currentWalkSequence = null;
 				}
 			//no horizontal movement
 			xMove = 0;
