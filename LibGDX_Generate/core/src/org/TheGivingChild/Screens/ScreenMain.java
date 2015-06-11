@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
@@ -64,9 +65,10 @@ class ScreenMain extends ScreenAdapter {
 			buttonHeight = b.getHeight();
 			final int j = i;
 			//button to transition to different screens.
-			b.addListener(new ChangeListener(){
+			b.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					super.changed(event, actor);
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.values()[j/2]);
 				}
 			});

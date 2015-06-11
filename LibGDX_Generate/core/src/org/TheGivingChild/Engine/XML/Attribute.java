@@ -47,28 +47,23 @@ public enum Attribute {
 	 * Causes objects to collide with and bounce off of the edge of the screen, collisions are perfectly ellastic
 	 */
 	BOUNCEOFFEDGEOFSCREEN{
-		private Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			if(myObject.getX() <= 0){//left
 				float[] temp = myObject.getVelocity();
 				temp[0] = Math.abs(temp[0]);
 				myObject.setVelocity(temp);
-				mp3Sound.play();
 			}if(myObject.getX() +myObject.getTextureWidth() >= Gdx.graphics.getWidth()){//right
 				float[] temp = myObject.getVelocity();
 				temp[0] = -Math.abs(temp[0]);
 				myObject.setVelocity(temp);
-				mp3Sound.play();
 			}if(myObject.getY() <= 0){//bottom
 				float[] temp = myObject.getVelocity();
 				temp[1] = Math.abs(temp[1]);
 				myObject.setVelocity(temp);
-				mp3Sound.play();
 			}if(myObject.getY() + myObject.getTextureHeight() >= Gdx.graphics.getHeight()){//top
 				float[] temp = myObject.getVelocity();
 				temp[1] = -Math.abs(temp[1]);
 				myObject.setVelocity(temp);
-				mp3Sound.play();
 			}
 		}
 		public Array<String> getVariableNames(){
@@ -131,7 +126,7 @@ public enum Attribute {
 							r2.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
 						}
 						
-						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/Punch.mp3"));
+						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.wav"));
 						mp3Sound.play(.75f);//turned the sound down a bit
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED

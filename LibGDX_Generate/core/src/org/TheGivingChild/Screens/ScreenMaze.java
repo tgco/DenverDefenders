@@ -7,6 +7,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -234,7 +235,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean triggerGame = false;
 				boolean collision = false;
+				
 
+				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
 					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight)
@@ -275,7 +278,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 						if(!collision){
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-
 							if(followers.size > 0)
 							{
 								followers.get(0).followSprite(playerCharacter);
@@ -288,7 +290,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 							}
 
 
-							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
+//							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 
 						}
 
@@ -303,7 +305,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				{
 					for(Sprite f: followers)
 					{
-						//System.out.println(followers.size);
+						System.out.println(followers.size);
 						//System.out.println(f.get);
 						f.draw(spriteBatch);
 					}
@@ -335,13 +337,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 
-
-	@Override
-	public boolean keyDown(int keycode) {
-
-		return true;
-	}
-
 	@Override
 	public boolean keyUp(int keycode) {
 
@@ -349,7 +344,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 
 	@Override
-	public boolean keyTyped(char character) {		
+	public boolean keyTyped(char character) {
+		if (character == 'a') {
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
 		return true;
 	}
 
@@ -453,6 +451,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			}
 
 			lastRec.empty();
+			game.levelCompleted(false);
 		}
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
@@ -518,5 +517,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		return true;
 	}
 
+	/**Override the back button to show the main menu for Android*/
+	@Override
+	public boolean keyDown(int keyCode) {
+		if(keyCode == Keys.BACK){
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+	    }
+		return true;
+	}
 
 }
