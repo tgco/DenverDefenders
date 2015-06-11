@@ -204,12 +204,12 @@ public class TGC_Engine extends Game {
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
-		manager.load("editorAssets/ball.png", Texture.class);
-		manager.load("editorAssets/ballSelected.png", Texture.class);
-		manager.load("editorAssets/Box.png", Texture.class);
-		manager.load("editorAssets/BoxHalf.png", Texture.class);
-		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
-		manager.load("editorAssets/Grid.png", Texture.class);
+		manager.load("ObjectImages/ball.png", Texture.class);
+		manager.load("ObjectImages/ballSelected.png", Texture.class);
+		manager.load("ObjectImages/Box.png", Texture.class);
+		manager.load("ObjectImages/BoxHalf.png", Texture.class);
+		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
+		manager.load("ObjectImages/Grid.png", Texture.class);
 		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
