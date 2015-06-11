@@ -234,7 +234,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean triggerGame = false;
 				boolean collision = false;
+				
 
+				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
 					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight)
@@ -275,7 +277,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 						if(!collision){
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-
 							if(followers.size > 0)
 							{
 								followers.get(0).followSprite(playerCharacter);
@@ -338,7 +339,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-
+		
 		return true;
 	}
 
@@ -349,7 +350,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 
 	@Override
-	public boolean keyTyped(char character) {		
+	public boolean keyTyped(char character) {
+		if (character == 'a') {
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
 		return true;
 	}
 
@@ -453,6 +457,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			}
 
 			lastRec.empty();
+			game.levelCompleted(false);
 		}
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
