@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import org.TheGivingChild.Engine.TGC_Engine;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,6 +30,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.AtomicQueue;
 /**
  *Maze screen that the user will navigate around.
  *Player will be able to trigger a miniGame by finding a child in the maze.
@@ -44,6 +47,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
+	private Array<Texture> arrayWalkD, arrayWalkR, arrayWalkU, arrayWalkL;
+	private Array<Texture> currentWalkSequence;
+	
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
@@ -63,14 +69,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
 
+	
 	private Texture backdropTexture;
 	private TextureRegion backdropTextureRegion;
 
 	private MinigameRectangle lastRec;
 	private AssetManager manager;
 	private Rectangle heroHQ;
-	private Array<Sound> backgroundSounds;
-	private Sound backgroundSoundToPlay;
+	private Array<Music> backgroundSounds;
+	private Music backgroundSoundToPlay;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -97,12 +104,121 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
+				
+		arrayWalkD = new Array<Texture>();
+		arrayWalkR = new Array<Texture>();
+		arrayWalkL = new Array<Texture>();
+		arrayWalkU = new Array<Texture>();
+		
+		currentWalkSequence = new Array<Texture>();
+		
 
 		spriteBatch = new SpriteBatch();
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
+
+		
+		//REFACTOR HTSI
+		//get an array for walking down
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkD.add(spriteTextureD);
+
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		
+		
+		
+		
+		
 		
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
@@ -164,17 +280,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
-		backgroundSounds = new Array<Sound>();
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/04_All_of_Us.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/06_Searching.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/08_Ascending.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Sound.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/10_Arpanauts.wav", Sound.class));
+		backgroundSounds = new Array<Music>();
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/04_All_of_Us.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/06_Searching.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/08_Ascending.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
+		backgroundSounds.add(manager.get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
 		
 	}
 
@@ -262,7 +378,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				boolean triggerGame = false;
 				boolean collision = false;
 				
-
+				if(!backgroundSoundToPlay.isPlaying()){
+					backgroundSoundToPlay = backgroundSounds.random();
+					backgroundSoundToPlay.play();
+				}
 				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
@@ -322,6 +441,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 					}	
 				}
+				
+				if(currentWalkSequence.size > 0 && collision == false)
+				{
+				Texture next = currentWalkSequence.get(0);
+				currentWalkSequence.removeIndex(0);
+				currentWalkSequence.add(next);
+				playerCharacter.setTexture(next);
+				}
+				
+				
 				//begin the batch that sprites will draw to
 				spriteBatch.begin();
 				//draw the main character sprite to the map
@@ -409,7 +538,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//calculate the difference between the begin and end point
 		Vector2 delta = newTouch.cpy().sub(lastTouch);
 		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
-
+		
+			
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
@@ -417,11 +547,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			{
 				xMove =  playerCharacter.getSpeed();
 				playerCharacter.setTexture(spriteTextureR);
+				//currentWalkSequence = arrayWalkR;
+				//currentWalkSq
+				//currentWalkSequence  =null;
+				currentWalkSequence = arrayWalkR;
 			}
 			if(delta.x <= 0) 
 				{
 					xMove = -playerCharacter.getSpeed();
 					playerCharacter.setTexture(spriteTextureL);
+					currentWalkSequence = arrayWalkL;
 				}
 			//no vertical movement
 			yMove = 0;
@@ -434,12 +569,22 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if(delta.y > 0)	
 			{
 				yMove = -playerCharacter.getSpeed();
-				playerCharacter.setTexture(spriteTextureD);
+				//Put the next texture to end of queue
+				//Texture next = arrayWalkD.get(0);
+				//arrayWalkD.add(next);
+				//arrayWalkD.removeIndex(0);
+				//playerCharacter.setTexture(next);
+				currentWalkSequence = arrayWalkD;
+			//	playerCharacter.setTexture(spriteTextureD);
+				
+				
+				//playerCharacter.setTexture(spriteWalkD.get(walkCount));
 			}
 			if(delta.y <= 0)
 				{
 					yMove = playerCharacter.getSpeed();
-					playerCharacter.setTexture(spriteTextureU);
+					//playerCharacter.setTexture(spriteTextureU);
+					currentWalkSequence = arrayWalkU;
 				}
 			//no horizontal movement
 			xMove = 0;
@@ -459,6 +604,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void show(){
+		
+		backgroundSoundToPlay = backgroundSounds.random();
+		backgroundSoundToPlay.play();
 		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		click.play(.75f);//turned the sound down a bit
 		//game.loadLevelPackets();
@@ -536,6 +684,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void hide(){
+		backgroundSoundToPlay.pause();
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(false);
 		}
