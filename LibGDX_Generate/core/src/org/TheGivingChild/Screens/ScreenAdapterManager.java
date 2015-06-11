@@ -96,9 +96,9 @@ public final class ScreenAdapterManager {
 	private Label minigame;
 	private LabelStyle ls;
 	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
-							  "The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
-							  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
-							  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
+			"The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
+			"Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
+	"Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -181,9 +181,9 @@ public final class ScreenAdapterManager {
 		createButton();
 		createLabels(MathUtils.random(100));
 		overallTable = new Table();
-//		overallTable.add(factTable);
-//		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		overallTable.align(Align.center);
+		//		overallTable.add(factTable);
+		//		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//		overallTable.align(Align.center);
 	}
 	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
 	public void backgroundImage() {
@@ -269,17 +269,27 @@ public final class ScreenAdapterManager {
 		screenTransitionInComplete = false;
 		//overallTable.remove();
 		factTable.remove();
+		minigameTable.remove();
 		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
 		overallTable.add(buttonTable);
+
+		if (screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) {
+			overallTable.row();
+			overallTable.add(minigameTable.align(Align.center));
+			
+			game.setFromGame(false);
+		}
+
 		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		overallTable.align(Align.center);
 		game.setScreen(screens.get(screenEnum.ordinal()));
+
 		//createFacts(MathUtils.random(100));
-		
+
 	}
-	
+
 	public void createButton() {
 		buttonTable = new Table();
 		font = new BitmapFont();
@@ -314,7 +324,21 @@ public final class ScreenAdapterManager {
 		fact.setAlignment(Align.center, Align.center);
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
 		minigameTable = new Table();
-		minigame = null;
+		if (game.levelWin()) {
+			minigame = new Label("You WON!", ls);
+		}
+
+		else {
+			minigame = new Label("You lost", ls);
+		}
+		minigame.setColor(1, 1, 1, 1);
+		minigame.setFontScale(1.5f);
+		minigame.setWrap(true);
+		minigame.setAlignment(Align.center, Align.center);
+		minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+		minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
+
 }
