@@ -57,6 +57,8 @@ public class Level {
 		for(GameObject currentObject:actors){
 			if(!currentObject.isDisposed())
 				currentObject.update(actors);
+			else
+				actors.removeValue(currentObject, true);
 		}
 		//check the win conditions.
 		for(WinEnum winEnum: winData.keys().toArray()){
@@ -159,7 +161,7 @@ public class Level {
 	public GameObject getObjectOfID(int ID){
 		GameObject targetObject = null;
 		for(GameObject currentObject:actors)
-			if(currentObject.getID() == ID && !currentObject.isDisposed())
+			if(currentObject.getID() == ID)
 				targetObject = currentObject;
 		return targetObject;
 	}
