@@ -1,6 +1,7 @@
 package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
@@ -378,13 +379,14 @@ class ScreenEditor extends ScreenAdapter{
 		TextButton backButton = new TextButton("", textButtonStyleBack);
 
 		//Creates the listener for the Back button
-		backButton.addListener(new ChangeListener() { 
+		backButton.addListener(new MyChangeListener() { 
 			/**
 			 * Called when the backButton is selected.
 			 * Uses the ScreenAdapterManager and selects the screen to be the Main screen.
 			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
 				//Calls the screen manager and has main be the shown screen if Back is hit
 				//window.setVisible(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
@@ -401,13 +403,14 @@ class ScreenEditor extends ScreenAdapter{
 		TextButton ballButton = new TextButton("", styleBall);
 
 		//Ball button listener
-		ballButton.addListener(new ChangeListener() { 
+		ballButton.addListener(new MyChangeListener() { 
 			/**
 			 * Called when the ballButton is selected.
 			 * Calls selectImage() and sets the dialog window for GameObjects to be visible.
 			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
 				//Changes the image to be drawn and lets the user place one object
 				selectImage();
 				window.setVisible(true);

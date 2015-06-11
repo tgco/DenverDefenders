@@ -7,6 +7,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -341,13 +342,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 
-
-	@Override
-	public boolean keyDown(int keycode) {
-		
-		return true;
-	}
-
 	@Override
 	public boolean keyUp(int keycode) {
 
@@ -508,5 +502,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		return true;
 	}
 
+	/**Override the back button to show the main menu for Android*/
+	@Override
+	public boolean keyDown(int keyCode) {
+		if(keyCode == Keys.BACK){
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+	    }
+		return true;
+	}
 
 }

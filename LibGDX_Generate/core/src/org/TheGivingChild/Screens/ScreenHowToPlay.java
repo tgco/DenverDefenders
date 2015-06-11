@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.ScreenAdapter;
@@ -79,9 +80,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			final int j = i/2;
 			//listener to change screens on button press
-			tb.addListener(new ChangeListener(){
+			tb.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					super.changed(event, actor);
 					if(j == 0)
 						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 					else if(j == 1)
