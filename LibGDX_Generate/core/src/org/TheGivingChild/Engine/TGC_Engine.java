@@ -161,7 +161,6 @@ public class TGC_Engine extends Game {
 	}
 	
 	public void levelCompleted(boolean winOrLose) {
-		System.out.println("called here");
 		levelWinOrLose = winOrLose;
 	}
 	
@@ -175,6 +174,10 @@ public class TGC_Engine extends Game {
 	
 	public void setFromGame(boolean state) {
 		fromGame = state;
+	}
+	
+	public void nullCurrentLevel() {
+		currentLevel = null;
 	}
 	
 	public boolean getFromGame() {
