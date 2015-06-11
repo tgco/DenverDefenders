@@ -46,8 +46,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
-	private PriorityQueue<Texture> spriteWalkD, spriteWalkU, spriteWalkR, spriteWalkL;
-	private Array<Texture> arrayWalkD;
+	private Array<Texture> arrayWalkD, arrayWalkR, arrayWalkU, arrayWalkL;
 	private Array<Texture> currentWalkSequence;
 	
 	private ChildSprite playerCharacter;
@@ -104,12 +103,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-		spriteWalkD = new PriorityQueue<Texture>();
-		spriteWalkR = new PriorityQueue<Texture>();
-		spriteWalkU = new PriorityQueue<Texture>();
-		spriteWalkL = new PriorityQueue<Texture>();
-		
+				
 		arrayWalkD = new Array<Texture>();
+		arrayWalkR = new Array<Texture>();
+		arrayWalkL = new Array<Texture>();
+		arrayWalkU = new Array<Texture>();
+		
 		currentWalkSequence = new Array<Texture>();
 		
 
@@ -119,6 +118,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
 
+		
+		//REFACTOR HTSI
 		//get an array for walking down
 		//spriteWalkD.add(spriteTextureD);
 		arrayWalkD.add(spriteTextureD);
@@ -144,6 +145,80 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//spriteWalkD.add(spriteTextureD);
 		arrayWalkD.add(spriteTextureD);
 
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkU.add(spriteTextureU);
+		
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkR.add(spriteTextureR);
+		
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_2.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_3.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_4.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_5.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_6.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_7.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_8.png"));
+		//spriteWalkD.add(spriteTextureD);
+		arrayWalkL.add(spriteTextureL);
+		
+		
+		
+		
+		
+		
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
 		playerCharacter.setSpeed(4*pixHeight);
@@ -352,7 +427,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					}	
 				}
 				
-				if(currentWalkSequence.size > 0 && currentWalkSequence != null)
+				if(currentWalkSequence.size > 0 && collision == false)
 				{
 				Texture next = currentWalkSequence.get(0);
 				currentWalkSequence.removeIndex(0);
@@ -461,12 +536,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//currentWalkSequence = arrayWalkR;
 				//currentWalkSq
 				//currentWalkSequence  =null;
+				currentWalkSequence = arrayWalkR;
 			}
 			if(delta.x <= 0) 
 				{
 					xMove = -playerCharacter.getSpeed();
 					playerCharacter.setTexture(spriteTextureL);
-					//currentWalkSequence = null;
+					currentWalkSequence = arrayWalkL;
 				}
 			//no vertical movement
 			yMove = 0;
@@ -493,8 +569,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if(delta.y <= 0)
 				{
 					yMove = playerCharacter.getSpeed();
-					playerCharacter.setTexture(spriteTextureU);
-					//currentWalkSequence = null;
+					//playerCharacter.setTexture(spriteTextureU);
+					currentWalkSequence = arrayWalkU;
 				}
 			//no horizontal movement
 			xMove = 0;
