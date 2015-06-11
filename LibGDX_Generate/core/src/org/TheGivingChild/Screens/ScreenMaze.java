@@ -256,7 +256,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					backgroundSoundToPlay = backgroundSounds.random();
 					backgroundSoundToPlay.play();
 				}
-				backgroundSoundToPlay.setVolume(ScreenAdapterManager.getInstance().getScreenInstance(ScreenAdapterEnums.OPTIONS));
+				//backgroundSoundToPlay.setVolume(ScreenAdapterManager.getInstance().getScreenInstance(ScreenAdapterEnums.OPTIONS));
 				
 				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
