@@ -32,7 +32,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
 	//private Texture message;
 	private TextureRegion titleRegion;
-	private TextureRegion messageRegion;
 	private Batch batch;
 	private Table table;
 	private Table messageTable;
@@ -104,13 +103,16 @@ class ScreenHowToPlay extends ScreenAdapter{
 		BitmapFont font = game.getBitmapFontButton();
 		LabelStyle ls = new LabelStyle();
 		ls.font = font;
-		message = new Label("Navigate your way through the maze to find the kids.\n"
-							+ "Finding a kid will trigger a mini-game.\n"
-							+ "Complete the minigame to continue playing.", ls);
-		message.setFontScale(1.5f);
+		message = new Label("Make your way through the maze to find the kids. "
+							+ "Finding a kid will trigger a mini-game. "
+							+ "If you complete the mini-game, the kid will follow you. "
+							+ "If you lose the mini-game, the kid will go to a different part of the maze. "
+							+ "Once all of the kids have been found, return to the start of the maze to win.", ls);
+		message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 		message.setColor(Color.YELLOW);
+		message.setWrap(true);
 		messageTable = new Table();
-		messageTable.add(message);
+		messageTable.add(message).width(Gdx.graphics.getWidth()/2);
 		messageTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		messageTable.align(Align.center);
 	}
