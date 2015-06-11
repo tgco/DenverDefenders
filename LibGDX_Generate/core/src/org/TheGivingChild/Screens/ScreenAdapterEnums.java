@@ -26,7 +26,7 @@ public enum ScreenAdapterEnums {
 	MAZE{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-			return new ScreenMaze();
+			return  new ScreenMaze();
 		}
 	},
 	/**
