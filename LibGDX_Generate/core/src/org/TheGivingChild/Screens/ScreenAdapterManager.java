@@ -273,14 +273,13 @@ public final class ScreenAdapterManager {
 		//overallTable.remove();
 		factTable.remove();
 		minigameTable.remove();
-		if(!minigameTable.equals(null))
-			minigameTable.remove();
+
 		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
 		overallTable.add(buttonTable);
 
-		if ((screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) || !minigameTable.equals(null)) {
+		if ((screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) || getInstance().game.getCurrentLevel() != null) {
 			overallTable.row();
 			overallTable.add(minigameTable.align(Align.center));			
 			game.setFromGame(false);
@@ -342,33 +341,41 @@ public final class ScreenAdapterManager {
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+		minigame = null;
 		minigameTable = new Table();
 		if (game.getFromGame() && game.levelWin()) {
 			minigame = new Label("You WON!", ls);
-		}
-
-		else if(getInstance().game.getCurrentLevel() != null && !game.getFromGame()) {
-			Level current = getInstance().game.getCurrentLevel();
-			if(levelName == null) {
-				levelName = current.getLevelName();
-				minigame = new Label(current.getDescription(), ls);
-			}
-
-			else
-				levelName = null;
+			minigame.setColor(1, 1, 1, 1);
+			minigame.setWrap(true);
+			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			minigame.setAlignment(Align.center, Align.center);
+			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		else if (game.getFromGame() && !game.levelWin()){
 			minigame = new Label("You lost", ls);
+			minigame.setColor(1, 1, 1, 1);
+			minigame.setWrap(true);
+			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			minigame.setAlignment(Align.center, Align.center);
+			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
+		else if(getInstance().game.getCurrentLevel() != null && !game.getFromGame()) {
+			Level current = getInstance().game.getCurrentLevel();
+			levelName = current.getLevelName();
+			minigame = new Label(current.getDescription(), ls);
+			minigame.setColor(1, 1, 1, 1);
+			minigame.setWrap(true);
+			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			minigame.setAlignment(Align.center, Align.center);
+			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
+
 		else {
-			minigame = new Label("", ls);
+			minigame = null;
 		}
-		minigame.setColor(1, 1, 1, 1);
-		minigame.setWrap(true);
-		minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-		minigame.setAlignment(Align.center, Align.center);
-		minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-		minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 }

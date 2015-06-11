@@ -93,6 +93,7 @@ public class ScreenLevel extends ScreenAdapter{
 				System.out.println(currentLevel.getLevelName());
 				if (currentLevel.getCompleted()) {
 					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
+					ScreenAdapterManager.getInstance().game.setFromGame(true);
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
 				}
 
