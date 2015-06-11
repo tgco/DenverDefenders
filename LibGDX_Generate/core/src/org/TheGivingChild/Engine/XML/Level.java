@@ -17,6 +17,7 @@ public class Level {
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	private boolean completed;
 	private boolean won;
+	private boolean lost;
 	private String description;
 	
 	private BitmapFont clockFont;
@@ -158,13 +159,9 @@ public class Level {
 	 */
 	public GameObject getObjectOfID(int ID){
 		GameObject targetObject = null;
-		boolean found = false;//for testing
-		for(GameObject currentObject:actors){
-			if(currentObject.getID() == ID){
+		for(GameObject currentObject:actors)
+			if(currentObject.getID() == ID && !currentObject.isDisposed())
 				targetObject = currentObject;
-			}
-		}
-		System.out.println("target ID: " + ID + " " + found);
 		return targetObject;
 	}
 }
