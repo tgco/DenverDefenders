@@ -287,7 +287,7 @@ public final class ScreenAdapterManager {
 			overallTable.add(minigameTable.align(Align.center));			
 			game.setFromGame(false);
 		}
-		
+		System.out.println(game.getMazeCompleted());
 		if (screenEnum.equals(ScreenAdapterEnums.MAIN) && game.getMazeCompleted()) {
 			overallTable.row();
 			overallTable.add(mazeTable.align(Align.center));
@@ -385,13 +385,13 @@ public final class ScreenAdapterManager {
 		}
 		
 		mazeTable = new Table();
-		if (game.getFromGame()) {
+		if (game.getMazeCompleted()) {
 			maze = new Label("You Saved All the Kids!", ls);
 			maze.setColor(1, 1, 1, 1);
 			maze.setWrap(true);
 			maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			maze.setAlignment(Align.center, Align.center);
-			mazeTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+			mazeTable.add(maze).width(Gdx.graphics.getWidth()/2);
 			mazeTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		else {

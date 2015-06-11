@@ -484,6 +484,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			if (allSaved()) {
 				System.out.println("They are all saved");
+				game.setMazeCompleted(true);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}

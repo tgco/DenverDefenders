@@ -64,6 +64,9 @@ public class Level {
 		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
 		}
+		
+		if (completed) return;
+		
 		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
 		}
