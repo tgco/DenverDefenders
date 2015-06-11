@@ -109,9 +109,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Get the rect for the heros headquarters
 		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
 		playerCharacter.setPosition(startingRectangle.getRectangle().x-24,startingRectangle.getRectangle().y-16);
-		
+
 		heroHQ = startingRectangle.getRectangle();
-		
+
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 
@@ -163,7 +163,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		manager.finishLoadingAsset("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
-		
+
 
 	}
 
@@ -172,26 +172,33 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	{
 
 		int theRand = 0;
-
 		for(MinigameRectangle rect : minigameRects)
 		{
+			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			ChildSprite child = new ChildSprite(childTexture);
+			child.setScale(.25f);
+			child.setPosition(rect.x - child.getWidth()/4, rect.y);
 
-			//Possible values 0,1,2,3,4
-			theRand = MathUtils.random(0,5);
-			//60% chance of kid being drawn
-			if(theRand >= 2 )
-			{
-				//Add children to be drawn where minigames can be triggered
-				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-				ChildSprite child = new ChildSprite(childTexture);
-				child.setScale(.25f);
-				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+			mazeChildren.add(child);
 
-				//child.setRectangle(childRec);
-				mazeChildren.add(child);
-
-				rect.setOccupied(child);
-			}
+			rect.setOccupied(child);
+			break;
+			//			//Possible values 0,1,2,3,4
+			//			theRand = MathUtils.random(0,5);
+			//			//60% chance of kid being drawn
+			//			if(theRand >= 2 )
+			//			{
+			//				//Add children to be drawn where minigames can be triggered
+			//				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			//				ChildSprite child = new ChildSprite(childTexture);
+			//				child.setScale(.25f);
+			//				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+			//
+			//				//child.setRectangle(childRec);
+			//				mazeChildren.add(child);
+			//
+			//				rect.setOccupied(child);
+			//			}
 
 
 
@@ -219,8 +226,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				Gdx.gl.glClearColor(0, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				
-				
+
+
 				//update the camera
 				camera.update();
 				//set the map to be rendered by this camera
@@ -272,14 +279,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 							}
 						}
-						
+
 						if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
 							for (ChildSprite child: followers) {
 								child.setSaved(true);
 								followers.removeValue(child, false);
 							}
 						}
-						
+
 						if(!collision){
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
 
@@ -325,15 +332,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
-				
+
 				if(ScreenAdapterManager.getInstance().cb.isChecked())
 					Gdx.input.setInputProcessor(this);
 
 
 			}
-			
+
 			if (allSaved()) {
 				System.out.println("They are all saved");
+				this.dispose();
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
@@ -344,7 +352,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		
+
 		return true;
 	}
 
@@ -431,27 +439,35 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		xMove = 0;
 		yMove = 0;
 
-		if (game.levelWin()) {
-			followers.add(lastRec.getOccupant());
+		if(allSaved()) {
+			reset();
 		}
 
-		else if (lastRec.isOccupied()){
-			Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
-			for (MinigameRectangle rect: minigameRects) {
-				if (!rect.isOccupied()) {
-					unoccupied.add(rect);
+		else {
+			if (game.levelWin()) {
+				followers.add(lastRec.getOccupant());
+			}
+
+			else if (lastRec.isOccupied()){
+				Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
+				for (MinigameRectangle rect: minigameRects) {
+					if (!rect.isOccupied()) {
+						unoccupied.add(rect);
+					}
 				}
+
+				if (unoccupied.size > 0) {
+					Random rand = new Random();
+					int newPositionIndex = rand.nextInt(1000) % unoccupied.size;
+					unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
+					ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
+					child.moveTo(unoccupied.get(newPositionIndex));
+				}
+
 			}
 
-			if (unoccupied.size > 0) {
-				Random rand = new Random();
-				int newPositionIndex = rand.nextInt(1000) % unoccupied.size;
-				unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
-				ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
-				child.moveTo(unoccupied.get(newPositionIndex));
-			}
+			lastRec.empty();
 		}
-		lastRec.empty();
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(true);
 		}
@@ -471,7 +487,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 * Hides the maze by setting all layers to not visible.
 	 * Sets input processor back to the stage.
 	 */
-	
+
+	public void reset() {
+		mazeChildren.clear();
+		followers.clear();
+		
+		playerCharacter.setPosition(heroHQ.x-24,heroHQ.y-16);
+		populate();
+	}
+
 	public boolean allSaved() {
 		boolean areSaved=true;
 		for (ChildSprite child: mazeChildren) {
@@ -481,7 +505,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		}
 		return areSaved;
 	}
-	
+
 	@Override
 	public void hide(){
 		for(MapLayer layer: map.getLayers()){
