@@ -108,9 +108,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		//Get the rect for the heros headquarters
 		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
-		playerCharacter.setPosition(startingRectangle.getRectangle().x-24,startingRectangle.getRectangle().y-16);
-
 		heroHQ = startingRectangle.getRectangle();
+		playerCharacter.setPosition(heroHQ.x-24, heroHQ.y-16);
+
 
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
@@ -131,7 +131,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 
-			Rectangle childRec = new Rectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 			miniRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight, rect.width*.25f, rect.height);
 
@@ -174,31 +173,22 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		int theRand = 0;
 		for(MinigameRectangle rect : minigameRects)
 		{
-			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-			ChildSprite child = new ChildSprite(childTexture);
-			child.setScale(.25f);
-			child.setPosition(rect.x - child.getWidth()/4, rect.y);
+			//Possible values 0,1,2,3,4
+			theRand = MathUtils.random(0,5);
+			//60% chance of kid being drawn
+			if(theRand >= 2 )
+			{
+				//Add children to be drawn where minigames can be triggered
+				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+				ChildSprite child = new ChildSprite(childTexture);
+				child.setScale(.25f);
+				child.setPosition(rect.x - child.getWidth()/4, rect.y);
 
-			mazeChildren.add(child);
+				//child.setRectangle(childRec);
+				mazeChildren.add(child);
 
-			rect.setOccupied(child);
-			break;
-			//			//Possible values 0,1,2,3,4
-			//			theRand = MathUtils.random(0,5);
-			//			//60% chance of kid being drawn
-			//			if(theRand >= 2 )
-			//			{
-			//				//Add children to be drawn where minigames can be triggered
-			//				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-			//				ChildSprite child = new ChildSprite(childTexture);
-			//				child.setScale(.25f);
-			//				child.setPosition(rect.x - child.getWidth()/4, rect.y);
-			//
-			//				//child.setRectangle(childRec);
-			//				mazeChildren.add(child);
-			//
-			//				rect.setOccupied(child);
-			//			}
+				rect.setOccupied(child);
+			}
 
 
 
@@ -491,7 +481,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public void reset() {
 		mazeChildren.clear();
 		followers.clear();
-		
+
 		playerCharacter.setPosition(heroHQ.x-24,heroHQ.y-16);
 		populate();
 	}
