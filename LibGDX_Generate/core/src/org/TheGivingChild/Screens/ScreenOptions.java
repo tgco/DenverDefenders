@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -48,10 +50,8 @@ class ScreenOptions extends ScreenAdapter {
 	private Texture title;
 	private boolean isRendered = false;
 	private String[] optionsArray = {"   Music   ", 
-			  						 "   Sound   ", 
-			  						 "   Option 3   ", 
-			  						 "   Option 4   "};
-	private boolean option1, option2, option3, option4 = false;
+			  						 "   Sound   "};
+	private boolean option1, option2 = false;
 	private Slider slider;
 	//private Label sliderValue;
 	private Label sliderName;
@@ -88,19 +88,11 @@ class ScreenOptions extends ScreenAdapter {
 							option1 = true;
 						else if(c.equals(options.get(1)))
 							option2 = true;
-						else if(c.equals(options.get(2)))
-							option3 = true;
-						else if(c.equals(options.get(3)))
-							option4 = true;
 					}
 					else if(c.equals(options.get(0)))
 						option1 = false;
 					else if(c.equals(options.get(1)))
 						option2 = false;
-					else if(c.equals(options.get(2)))
-						option3 = false;
-					else if(c.equals(options.get(3)))
-						option4 = false;
 				}
 			}
 		}
@@ -169,19 +161,26 @@ class ScreenOptions extends ScreenAdapter {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
+		
 		cbStyle.font = font;
 		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
-			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
+			CheckBox checkbox = new CheckBox("", cbStyle);
+			LabelStyle ls = new LabelStyle();
+			ls.font = font;
+			Label label = new Label(optionsArray[i], ls);
+			label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			checkbox.setSize(0.2f*Gdx.graphics.getWidth(), 0.2f*Gdx.graphics.getHeight());
+			checkbox.setScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			checkbox.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
 				}
 			});
-			checkbox.setSize(200, 100);
 			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
+			choicesTable.add(label);
 			options.add(checkbox);
 		}
 	}
@@ -247,6 +246,7 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 //sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);
+		 sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
 		 //sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);

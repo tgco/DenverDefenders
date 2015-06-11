@@ -196,12 +196,12 @@ public class TGC_Engine extends Game {
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
-		manager.load("editorAssets/ball.png", Texture.class);
-		manager.load("editorAssets/ballSelected.png", Texture.class);
-		manager.load("editorAssets/Box.png", Texture.class);
-		manager.load("editorAssets/BoxHalf.png", Texture.class);
-		manager.load("editorAssets/BoxHalfSelected.png", Texture.class);
-		manager.load("editorAssets/Grid.png", Texture.class);
+		manager.load("ObjectImages/ball.png", Texture.class);
+		manager.load("ObjectImages/ballSelected.png", Texture.class);
+		manager.load("ObjectImages/Box.png", Texture.class);
+		manager.load("ObjectImages/BoxHalf.png", Texture.class);
+		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
+		manager.load("ObjectImages/Grid.png", Texture.class);
 		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
@@ -217,6 +217,18 @@ public class TGC_Engine extends Game {
 		manager.load("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Sound.class);
 		manager.load("sounds/backgroundMusic/10_Arpanauts.wav", Sound.class);
 		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
+		
+		manager.load("ObjectImages/Banana1.png", Texture.class);
+		manager.load("ObjectImages/Cherries1.png", Texture.class);
+		manager.load("ObjectImages/Cherries2.png", Texture.class);
+		manager.load("ObjectImages/Apple1.png", Texture.class);
+		manager.load("ObjectImages/Grapes_dark.png", Texture.class);
+		manager.load("ObjectImages/Grapes_light.png", Texture.class);
+		manager.load("ObjectImages/Watermellon1.png", Texture.class);
+		manager.load("ObjectImages/Icecream1.png", Texture.class);
+		manager.load("ObjectImages/Cherry.png", Texture.class);
+		manager.load("ObjectImages/basket.png", Texture.class);
+		manager.load("ObjectImages/Grape.png", Texture.class);
 		manager.finishLoading();
 		
 		reader = new XML_Reader();
