@@ -25,11 +25,11 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			}
 		}
 	},
-	COLLISIONWITHOBJECTLOSE{
+	COLLISION_WITH_OBJECTLOSE{//totally not working or anything at all
 		private int objectID1;
 		private int objectID2;
 		public String getXMLDescription(){
-			return "collisionWithObjectLose";
+			return "collision_With_ObjectLose";
 		}
 		public void checkLose(Level level){
 		}
@@ -43,6 +43,39 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			temp.add(objectID2+"");
 			return temp;
 		}
+	},
+	BELOW_SCREEN_LOSE_ID{
+
+		@Override
+		public String getXMLDescription() {
+			return "below_screen_lose";
+		}
+
+		@Override
+		public Array<String> getValues(Level level) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setValues(Array<String> newValues) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void checkLose(Level level) {
+			boolean win = true;
+			for(String currentID:level.getWinInfo(OBJECTS_OF_ID_DESTROYED).get(0).split(",")){
+				if(level.getObjectOfID(Integer.parseInt(currentID)) != null){//if the object exists, set win to false, exit loop
+					win = false;
+					break;
+				}
+			}
+			level.setCompleted(win);
+			level.setWon(win);
+		}
+		
 	};
 	public abstract String getXMLDescription();
 	public abstract Array<String> getValues(Level level);
