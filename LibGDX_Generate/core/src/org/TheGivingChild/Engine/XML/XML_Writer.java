@@ -25,6 +25,7 @@ public class XML_Writer {
 			writer.attribute("packageName",currentLevel.getPackageName());//might wanna make this dynamic.
 			writer.attribute("levelName", currentLevel.getLevelName());
 			writer.attribute("levelImage",currentLevel.getLevelImage());
+			writer.attribute("description",currentLevel.getDescription());
 			for(GameObject currentGameObject:currentLevel.getGameObjects()){//writing game object information
 				writer.element("GameObject");//writing game object and it's required attributes
 				writer.attribute("ID",currentGameObject.getID());

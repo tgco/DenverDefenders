@@ -1,4 +1,4 @@
-<level packageName="PLACEHOLDER1" levelName="aa" levelImage="TEMPORARY_Cartoon_City.png">
+<level packageName="PLACEHOLDER1" levelName="aa" levelImage="TEMPORARY_Cartoon_City.png" description="TEST DESCRIPTION">
 	<GameObject ID="0" attributes="bounceOffEdgeOfScreen,moves,collidesWithObjectsID,mass" imageFilename="Grid.png" initialLocation="450.0,5.0" listeners="destroy_on_click">
 		<moves value1 = "-200.0" value2 = "200.0"/>
 		<collidesWithObjectsID value1="1" value2="1,2,3"/>

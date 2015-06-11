@@ -19,12 +19,13 @@ public class Level {
 	private ObjectMap<LoseEnum,Array<String>> loseData;
 	private boolean completed;
 	private boolean won;
+	private String description;
 	
 	private BitmapFont clockFont;
 	private int levelTime = 50;
 	
 	
-	 public Level(String name, String packagename, String levelImage, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
+	 public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
 		levelName = name;
 		packageName=packagename;
 		actors = new Array<GameObject>();
@@ -41,8 +42,8 @@ public class Level {
 		completed = false;
 		clockFont = new BitmapFont();
 		clockFont.setColor(Color.BLACK);
-				
-	
+		
+		this.description = description;
 	}
 	
 	public void update(){
@@ -62,14 +63,9 @@ public class Level {
 		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
 		}
-		
-
 		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
-
 		}
-		
-		
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
@@ -152,5 +148,8 @@ public class Level {
 	}
 	public int getLevelTime() {
 		return levelTime;
+	}
+	public String getDescription(){
+		return description;
 	}
 }

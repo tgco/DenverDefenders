@@ -40,6 +40,7 @@ public class XML_Reader {
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
 				root.getAttribute("levelImage"),
+				root.getAttribute("description"),
 				compileWinConditions(),
 				compileLoseConditions(),
 				compileGameObjects());
