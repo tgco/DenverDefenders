@@ -205,7 +205,6 @@ class ScreenOptions extends ScreenAdapter {
 		 mute.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
-				 super.changed(event, actor);
 				 if(slider.getValue() != 0)
 					 volume = slider.getValue();
 				 if(option1)
