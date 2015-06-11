@@ -43,7 +43,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private TiledMapRenderer mapRenderer;
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
-	private Texture spriteTexture;
+	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove, speed;
@@ -99,9 +99,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 
 		spriteBatch = new SpriteBatch();
-		spriteTexture = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D.png"));
-
-		playerCharacter = new ChildSprite(spriteTexture);
+		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
+		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
+		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
+		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
+		
+		
+		playerCharacter = new ChildSprite(spriteTextureD);
 		playerCharacter.setSpeed(4*pixHeight);
 		//playerCharacter.setScale(.25f,.25f);
 
@@ -399,8 +403,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		if (Math.abs(delta.x) > Math.abs(delta.y))
 		{
 			//if the change was positive, move right, else move left
-			if(delta.x > 0) xMove =  playerCharacter.getSpeed();
-			if(delta.x <= 0) xMove = -playerCharacter.getSpeed();
+			if(delta.x > 0) 
+			{
+				xMove =  playerCharacter.getSpeed();
+				playerCharacter.setTexture(spriteTextureR);
+			}
+			if(delta.x <= 0) 
+				{
+					xMove = -playerCharacter.getSpeed();
+					playerCharacter.setTexture(spriteTextureL);
+				}
 			//no vertical movement
 			yMove = 0;
 
@@ -408,9 +420,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//otherwise y>=x so move vertically 
 		else
 		{
-			//move down if the change was positive, else move left
-			if(delta.y > 0)	yMove = -playerCharacter.getSpeed();
-			if(delta.y <= 0) yMove = playerCharacter.getSpeed();
+			//move down if the change was positive, else move up
+			if(delta.y > 0)	
+			{
+				yMove = -playerCharacter.getSpeed();
+				playerCharacter.setTexture(spriteTextureD);
+			}
+			if(delta.y <= 0)
+				{
+					yMove = playerCharacter.getSpeed();
+					playerCharacter.setTexture(spriteTextureU);
+				}
 			//no horizontal movement
 			xMove = 0;
 		}

@@ -169,8 +169,21 @@ class ScreenOptions extends ScreenAdapter {
 			CheckBox checkbox = new CheckBox("", cbStyle);
 			LabelStyle ls = new LabelStyle();
 			ls.font = font;
-			Label label = new Label(optionsArray[i], ls);
-			label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			Label label = new Label(optionsArray[i], ls);switch(Gdx.app.getType()){
+			case Android:
+				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
 			checkbox.setSize(0.2f*Gdx.graphics.getWidth(), 0.2f*Gdx.graphics.getHeight());
 			checkbox.setScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			checkbox.addListener(new MyChangeListener(){
@@ -204,6 +217,7 @@ class ScreenOptions extends ScreenAdapter {
 		 mute.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
+				 super.changed(event, actor);
 				 if(slider.getValue() != 0)
 					 volume = slider.getValue();
 				 if(option1)
@@ -239,14 +253,26 @@ class ScreenOptions extends ScreenAdapter {
 		 slider.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
-				 super.changed(event, actor);
 				 float value = ((Slider) actor).getValue();
 				 //updateSliderValue(value);
 			 }
 		 });
 		 //sliderValue = new Label("  0.0", ls);
-		 sliderName = new Label("Volume  ", ls);
-		 sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+		 sliderName = new Label("Volume  ", ls);switch(Gdx.app.getType()){
+			case Android:
+				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
 		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
 		 //sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);

@@ -321,7 +321,21 @@ public final class ScreenAdapterManager {
 		fact = null;
 		fact = new Label(facts[fNum], ls);
 		fact.setColor(1, 1, 1, 1);
-		fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+		switch(Gdx.app.getType()){
+		case Android:
+			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+			//if using the desktop set the width and height to a 16:9 resolution.
+		case Desktop:
+			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			break;
+		case iOS:
+			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+		default:
+			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			break;
+		}
 		fact.setWrap(true);
 		fact.setAlignment(Align.center, Align.center);
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
