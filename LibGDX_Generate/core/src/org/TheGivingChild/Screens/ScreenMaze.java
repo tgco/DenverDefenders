@@ -99,7 +99,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 
 		spriteBatch = new SpriteBatch();
-		spriteTexture = new Texture(Gdx.files.internal("ObjectImages/temp_hero.png"));
+		spriteTexture = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D.png"));
 
 		playerCharacter = new ChildSprite(spriteTexture);
 		playerCharacter.setSpeed(4*pixHeight);
