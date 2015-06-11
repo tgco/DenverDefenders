@@ -94,6 +94,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 					break;
 				}
 			}
+			if(win) System.out.println("WIN");
 			level.setCompleted(win);
 			level.setWon(win);
 		}
