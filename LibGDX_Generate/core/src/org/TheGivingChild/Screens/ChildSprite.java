@@ -11,6 +11,7 @@ public class ChildSprite extends Sprite {
 	private boolean follow, saved;
 	private Rectangle position;
 	private float moveSpeed, xMove, yMove;
+	private float lastX, lastY;
 	
 	public ChildSprite(Texture childTexture) {
 			super(childTexture);
@@ -50,11 +51,11 @@ public class ChildSprite extends Sprite {
 	
 	public void followSprite(ChildSprite leader)
 	{
-		follow = true;
-		//set sprite to left of leader, set xMove to leaders xMove
+//		follow = true;
+//		//set sprite to left of leader, set xMove to leaders xMove
 //		yMove = leader.yMove;
 //		xMove = leader.xMove;
-		
+//		
 //		if(Math.abs(xMove) > Math.abs(yMove)){
 //			
 //			this.setY(leader.getY());
@@ -78,53 +79,70 @@ public class ChildSprite extends Sprite {
 //				this.setY(leader.getY()+this.getHeight()/4);
 //			}
 //		}
-//
-		float xAway = Math.abs(leader.getX() - this.getX());
-		float yAway = Math.abs(leader.getY() - this.getY());
-		
-		if(xAway > leader.getWidth()*.25f)
-		{
-		
-		//if the leader is to your right
-		if(leader.getX() > this.getX())
-		{
-			xMove = leader.moveSpeed;
-		}
-		if(leader.getX() <= this.getX())
-		{
-			xMove = -leader.moveSpeed;
 
-		}
-		}
+	
 		
-		else if (yAway >  getHeight()*.25f) {
-		//if leader is above you
-		if(leader.getY() > this.getY())
+		
+		float xAway = Math.abs(leader.getLastX() - this.getX());
+		float yAway = Math.abs(leader.getLastY() - this.getY());
+		
+		this.setSpeed(leader.getSpeed());
+		
+		//ifxAway > leader.getWidth()*.25f
+		if(xAway > leader.getWidth()*.15f)
 		{
-			yMove = leader.moveSpeed;
-		}
-		if(leader.getY() <= this.getY())
-		{
-			yMove = -leader.moveSpeed;
+		
+			//if the leader is to your right
+			if(leader.getLastX() > this.getX())
+			{
+				this.xMove = this.getSpeed();
+				this.yMove = 0;
+			}
+			//if(leader.getLastX() <= this.getX())
+			else
+			{
+				this.xMove = -this.getSpeed();
+				this.yMove = 0;
+	
+			}
 		}
 		
+		else if (yAway >  leader.getHeight()*.15f) {
+			//if leader is above you
+			if(leader.getLastY() > this.getY())
+			{
+				this.yMove = this.getSpeed();
+				this.xMove = 0;
+			}
+			//if(leader.getLastY() <= this.getY())
+			else
+			{
+				this.yMove = -this.getSpeed();
+				this.xMove = 0;
+			}
 		}
-		
-//		else {
-//			xMove = 0;
-//			yMove = 0;
-//		}
+
+		else {
+			
+		this.xMove = 0;
+		this.yMove = 0;
+				
+	}
 		//this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
 		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
 		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
 		
 	}
 	
-	
-	
-	public void setSpeed(int sp)
+	public boolean sameDirection(float d1, float d2)
 	{
-		moveSpeed = sp;
+		return((d1 > 0 && d2>0) || (d1 < 0 && d2 < 0) );
+	}
+	
+
+	public void setSpeed(float f)
+	{
+		moveSpeed = f;
 	}
 	
 	public float getSpeed()
@@ -145,12 +163,45 @@ public class ChildSprite extends Sprite {
 	public void setSaved(boolean isSaved) {
 		
 		saved = isSaved;
+		follow = false;
 	}
 	
 	@Override
 	public void draw(Batch batch) {
 		// TODO Auto-generated method stub
 		super.draw(batch);
+	}
+	
+	@Override
+	public void setPosition(float x, float y){
+		this.lastX = this.getX();
+		this.lastY = this.getY();
+		super.setPosition(x, y);
+		
+	}
+	
+	@Override
+	public void setX(float x)
+	{
+		this.lastX = this.getX();
+		super.setX(x);
+	}
+	
+	@Override
+	public void setY(float y)
+	{
+		this.lastY = this.getY();
+		super.setY(y);
+	}
+	
+	public float getLastX()
+	{
+		return lastX;
+	}
+	
+	public float getLastY()
+	{
+		return lastY;
 	}
 	
 }

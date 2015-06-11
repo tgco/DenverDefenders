@@ -62,7 +62,7 @@ public class GameObject extends Actor implements Disposable{
 		//set the id from the xml
 		ID = newID;
 		//set the imagefilename from the xml
-		imageFilename = img;
+		imageFilename = "ObjectImages/"+img;
 		position = newPosition;
 		
 		//initialize a velocity of 0

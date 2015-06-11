@@ -48,7 +48,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 
 		@Override
 		public String getXMLDescription() {
-			return "below_screen_lose";
+			return "below_screen_lose_ID";
 		}
 
 		@Override
@@ -65,15 +65,16 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 
 		@Override
 		public void checkLose(Level level) {
-			boolean win = true;
-			for(String currentID:level.getWinInfo(OBJECTS_OF_ID_DESTROYED).get(0).split(",")){
-				if(level.getObjectOfID(Integer.parseInt(currentID)) != null){//if the object exists, set win to false, exit loop
-					win = false;
+			boolean lose = true;
+			for(String currentID:level.getLoseInfo(BELOW_SCREEN_LOSE_ID).get(0).split(",")){
+				GameObject currentObject = level.getObjectOfID(Integer.parseInt(currentID));
+				if(currentObject != null && currentObject.getY() > 0){//if the object exists and it's position is above y=0, don't lose
+					lose = false;
 					break;
 				}
 			}
-			level.setCompleted(win);
-			level.setWon(win);
+			level.setCompleted(lose);
+			level.setWon(lose);
 		}
 		
 	};

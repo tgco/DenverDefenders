@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.Level;
 
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -295,7 +297,17 @@ public final class ScreenAdapterManager {
 		cbs.font = font;
 		cbs.checkboxOff = skin.getDrawable("Button_Next");
 		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
+<<<<<<< HEAD
 		cb = new CheckBox("", cbs);
+=======
+		cb = new CheckBox(" ", cbs);
+		cb.addListener(new MyChangeListener(){
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
+			}
+		});
+>>>>>>> b56de2d23c546a0caa5089ae61d95bcf53ca279d
 		buttonTable.add(cb).center().bottom();
 		//buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());

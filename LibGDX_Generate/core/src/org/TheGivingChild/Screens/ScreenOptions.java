@@ -1,6 +1,8 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+
 
 
 import com.badlogic.gdx.Gdx;
@@ -141,9 +143,10 @@ class ScreenOptions extends ScreenAdapter {
 		TextButton backButton = new TextButton("", style);
 
 		//Creates the listener for the Back button
-		backButton.addListener(new ChangeListener() { 			
+		backButton.addListener(new MyChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
 				//Calls the screen manager and has main be the shown screen if Back is hit
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
@@ -161,6 +164,7 @@ class ScreenOptions extends ScreenAdapter {
 		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
+<<<<<<< HEAD
 			CheckBox checkbox = new CheckBox("", cbStyle);
 			LabelStyle ls = new LabelStyle();
 			ls.font = font;
@@ -168,6 +172,16 @@ class ScreenOptions extends ScreenAdapter {
 			label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			checkbox.setSize(0.2f*Gdx.graphics.getWidth(), 0.2f*Gdx.graphics.getHeight());
 			checkbox.setScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+=======
+			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
+			checkbox.addListener(new MyChangeListener(){
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					super.changed(event, actor);
+				}
+			});
+			checkbox.setSize(200, 100);
+>>>>>>> b56de2d23c546a0caa5089ae61d95bcf53ca279d
 			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
 			choicesTable.add(label);
 			options.add(checkbox);
@@ -190,9 +204,10 @@ class ScreenOptions extends ScreenAdapter {
 		 muteStyle.checkboxOff = sliderSkin.getDrawable("Volume_On");
 		 muteStyle.checkboxOn = sliderSkin.getDrawable("Mute");
 		 mute = new CheckBox(" ", muteStyle);
-		 mute.addListener(new ChangeListener() {
+		 mute.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
+				 super.changed(event, actor);
 				 if(slider.getValue() != 0)
 					 volume = slider.getValue();
 				 if(option1)
@@ -225,9 +240,10 @@ class ScreenOptions extends ScreenAdapter {
 		 });
 		 slider = new Slider(0, 100, 1, false, ss);
 		 slider.setValue(0);
-		 slider.addListener(new ChangeListener() {
+		 slider.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
+				 super.changed(event, actor);
 				 float value = ((Slider) actor).getValue();
 				 //updateSliderValue(value);
 			 }
