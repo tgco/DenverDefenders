@@ -283,7 +283,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								playerCharacter.setPosition(m.getX(), m.getY());
 								triggerGame = true;
 								game.selectLevel();
-								//game.setFromGame(true);
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 
 							}
