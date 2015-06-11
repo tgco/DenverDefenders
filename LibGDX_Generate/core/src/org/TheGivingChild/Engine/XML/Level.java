@@ -20,7 +20,7 @@ public class Level {
 	private String description;
 	
 	private BitmapFont clockFont;
-	private int levelTime = 50;
+	private int levelTime = 0;
 	
 	
 	public Level(String name, String packagename, String levelImage, String description, ObjectMap<WinEnum,Array<String>> newWinData, ObjectMap<LoseEnum,Array<String>> newLoseData, Array<GameObject> objects){ 		//set the level and packageNames
@@ -32,9 +32,6 @@ public class Level {
 		winData = newWinData;
 		loseData = newLoseData;
 		
-		//Set default level length to 10 sec.
-		MinigameClock.getInstance().setLevelLength(levelTime);
-		
 		this.levelImage = levelImage;
 		
 		completed = false;
@@ -42,6 +39,11 @@ public class Level {
 		clockFont.setColor(Color.BLACK);
 		
 		this.description = description;
+		
+		for(WinEnum current:winData.keys().toArray())
+			current.setup(this);
+		for(LoseEnum current:loseData.keys().toArray())
+			current.setup(this);
 	}
 	
 	public void update(){
@@ -79,6 +81,11 @@ public class Level {
 		}
 		//go to the main screen, will likely need to return to the last maze screen being played
 		//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		for(WinEnum current:winData.keys().toArray())
+			current.setup(this);
+		
+		for(LoseEnum current:loseData.keys().toArray())
+			current.setup(this);
 	}
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage(){
