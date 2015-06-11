@@ -179,7 +179,7 @@ public final class ScreenAdapterManager {
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
-		backgroundTexture = manager.get("CityNight.jpg");
+		backgroundTexture = manager.get("ColdMountain.png");
 		backgroundRegion = new TextureRegion(backgroundTexture);
 		createButton();
 		createLabels(MathUtils.random(100));
@@ -341,7 +341,7 @@ public final class ScreenAdapterManager {
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		System.out.println(game.getFromGame());
+		//System.out.println(game.getFromGame());
 		
 		minigameTable = new Table();
 		if ((game.getFromGame() && game.levelWin()) ) {

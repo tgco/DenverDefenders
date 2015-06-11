@@ -52,8 +52,8 @@ class ScreenHowToPlay extends ScreenAdapter{
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
 		table = createButtons();
-		createMessage();
 		manager = game.getAssetManager();
+		createMessage();
 		manager.load("titleHowToPlayScreen.png", Texture.class);
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
@@ -105,6 +105,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 		BitmapFont font = game.getBitmapFontButton();
 		LabelStyle ls = new LabelStyle();
 		ls.font = font;
+		Skin newSkin = new Skin();
+		System.out.println(manager.isLoaded("SemiTransparentBG.png"));
+		newSkin.add("background", manager.get("SemiTransparentBG.png"));
+		ls.background = newSkin.getDrawable("background");
 		message = new Label("Make your way through the maze to find the kids. "
 							+ "Finding a kid will trigger a mini-game. "
 							+ "If you complete the mini-game, the kid will follow you. "
@@ -125,7 +129,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 			message.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			break;
 		}
-		message.setColor(Color.YELLOW);
+		message.setColor(Color.WHITE);
 		message.setWrap(true);
 		messageTable = new Table();
 		messageTable.add(message).width(Gdx.graphics.getWidth()*2/3);
@@ -158,7 +162,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 				ScreenAdapterManager.getInstance().backgroundImage();
 				//shows HTP title and text
 				batch.begin();
-				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-(title.getHeight()*2));
+				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
 				batch.end();
 				isRendered = true;
 				show();
