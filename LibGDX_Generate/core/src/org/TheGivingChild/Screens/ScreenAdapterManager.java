@@ -179,7 +179,7 @@ public final class ScreenAdapterManager {
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
-		backgroundTexture = manager.get("DenverSkyline.jpg");
+		backgroundTexture = manager.get("CityNight.jpg");
 		backgroundRegion = new TextureRegion(backgroundTexture);
 		createButton();
 		createLabels(MathUtils.random(100));

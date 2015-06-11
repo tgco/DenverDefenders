@@ -202,7 +202,7 @@ public class TGC_Engine extends Game {
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Assets to be added to the manager
 		manager.load("MainScreen_Splash.png", Texture.class);
-		manager.load("DenverSkyline.jpg", Texture.class);
+		manager.load("CityNight.jpg", Texture.class);
 		//initial update so that the loading screen is loaded before everything
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
