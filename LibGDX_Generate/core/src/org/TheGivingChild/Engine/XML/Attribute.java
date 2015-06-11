@@ -54,7 +54,7 @@ public enum Attribute {
 				temp[0] = Math.abs(temp[0]);
 				myObject.setVelocity(temp);
 				mp3Sound.play();
-			}if(myObject.getX() +myObject.getTexture().getWidth() >= Gdx.graphics.getWidth()){//right
+			}if(myObject.getX() +myObject.getTextureWidth() >= Gdx.graphics.getWidth()){//right
 				float[] temp = myObject.getVelocity();
 				temp[0] = -Math.abs(temp[0]);
 				myObject.setVelocity(temp);
@@ -64,7 +64,7 @@ public enum Attribute {
 				temp[1] = Math.abs(temp[1]);
 				myObject.setVelocity(temp);
 				mp3Sound.play();
-			}if(myObject.getY() + myObject.getTexture().getHeight() >= Gdx.graphics.getHeight()){//top
+			}if(myObject.getY() + myObject.getTextureHeight() >= Gdx.graphics.getHeight()){//top
 				float[] temp = myObject.getVelocity();
 				temp[1] = -Math.abs(temp[1]);
 				myObject.setVelocity(temp);

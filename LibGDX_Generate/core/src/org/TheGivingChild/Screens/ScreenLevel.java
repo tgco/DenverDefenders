@@ -83,7 +83,7 @@ public class ScreenLevel extends ScreenAdapter{
 				batch.draw((Texture) manager.get(currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				for (GameObject g : currentLevel.getGameObjects()) {
 					if(!g.isDisposed()){
-						batch.draw((Texture) manager.get(g.getImageFilename()), g.getX(), g.getY());
+						batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());
 					}
 				}
 //				MinigameClock.getInstance().render();
