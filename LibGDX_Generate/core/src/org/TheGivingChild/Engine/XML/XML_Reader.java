@@ -1,7 +1,5 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.Attributes.WinEnum;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
@@ -40,6 +38,7 @@ public class XML_Reader {
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
 				root.getAttribute("levelImage"),
+				root.getAttribute("description"),
 				compileWinConditions(),
 				compileLoseConditions(),
 				compileGameObjects());

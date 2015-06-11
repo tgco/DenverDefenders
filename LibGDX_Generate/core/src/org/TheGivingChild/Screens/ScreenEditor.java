@@ -3,10 +3,10 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.Attributes.WinEnum;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.LoseEnum;
+import org.TheGivingChild.Engine.XML.WinEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -433,18 +433,19 @@ class ScreenEditor extends ScreenAdapter{
 			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				WinEnum testWin1 = WinEnum.COLLISIONWITHOBJECTWIN;
+				/*
+				WinEnum testWin1 = WinEnum.COLLISION_WITH_OBJECT_WIN;
 				Array<String> testWin1Values = new Array<String>();
 				testWin1Values.add("420");
 				testWin1Values.add("9001");
-				testWin1.setValues(testWin1Values);
+				//testWin1.setValues(testWin1Values);
 				Array<WinEnum> testWinArray = new Array<WinEnum>();
 				testWinArray.add(testWin1);
 
 				LoseEnum testLose1 = LoseEnum.TIMEOUT;
 				Array<String>testLose1Values =  new Array<String>();
 				testLose1Values.add("42");
-				testLose1.setValues(testLose1Values);
+				//testLose1.setValues(testLose1Values);
 				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
 				testLoseArray.add(testLose1);
 
@@ -452,12 +453,13 @@ class ScreenEditor extends ScreenAdapter{
 				Array<String>testLose2Values =  new Array<String>();
 				testLose2Values.add("42");
 				testLose2Values.add("72");
-				testLose2.setValues(testLose2Values);
+				//testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 
 				//Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
 				//mainGame.getXML_Writer().createLevel(level);
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);				
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+				*/			
 			}
 		});
 		Skin okCancelSkin = new Skin();

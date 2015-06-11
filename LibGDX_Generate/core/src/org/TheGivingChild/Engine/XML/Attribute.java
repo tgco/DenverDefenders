@@ -211,7 +211,6 @@ public enum Attribute {
 			if(distance(myObject.getX(),myObject.getY(),targetPoint[0],targetPoint[1]) < tolerance){//if close enough to next point
 				index++;
 				if(index*2+3 >= myObject.getAttributeData().get(MOVESONSETPATH).size) index = 0;
-				System.out.println("INDEX: " + index + " " + targetPoint[0] + ", " + targetPoint[1]);
 				myObject.getAttributeData().get(MOVESONSETPATH).set(1,index+"");
 				float[] nextPoint = new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+2)),Float.parseFloat(myObject.getAttributeData().get(MOVESONSETPATH).get((index*2)+3))};
 				float[] distance = new float[] {nextPoint[0]-myObject.getX(),nextPoint[1]-myObject.getY()};
@@ -243,7 +242,6 @@ public enum Attribute {
 			//set velocity
 			float[] newVelocity = new float[] {distance[0]*magO/magD,distance[1]*magO/magD};
 			myObject.setVelocity(newVelocity);
-			System.out.println("Velocity set to: " + newVelocity[0] + ", " + newVelocity[1]);
 		}
 		
 		@Override
@@ -269,7 +267,7 @@ public enum Attribute {
 			float time = Float.parseFloat(myObject.getAttributeData().get(SPAWNOBJECTONTIMER).get(0));
 			if(!myObject.isDisposed() && currentTime - time < 2.0 && !spawned) {
 				Array<String> newListeners = myObject.getListenerNames();
-				System.out.println(newListeners.size);
+				//System.out.println(newListeners.size);
 				GameObject newObj = new GameObject(allObjects.size, myObject.getImageFilename(), 
 						new float[] {myObject.getX()+300,myObject.getY()+300},
 						newListeners, myObject.getAttributeData());
@@ -296,6 +294,48 @@ public enum Attribute {
 			return "spawnObjectOnTimer";
 		}
 		
+	},
+	DESTROYSOBJECTSOFIDONCOLLISION{
+
+		@Override
+		public void setup(GameObject myObject){
+			String[] list = myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).get(0).split(",");
+			myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).set(0, list[0]);
+			for(int i = 1;i<list.length;i++)
+				myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).add(list[i]);
+		}
+
+		@Override
+		public void update(GameObject myObject, Array<GameObject> allObjects) {
+			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getTextureHeight(),myObject.getTextureWidth());
+			for(int i = 0;i<allObjects.size;i++){
+				if(myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).contains(allObjects.get(i).getID()+"", false)){
+					Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getTextureWidth(),allObjects.get(i).getTextureHeight());
+					if(r1.overlaps(r2)){
+						allObjects.get(i).dispose();
+						System.out.println("COLLISION DETECTED");
+					}
+				}
+			}
+		}
+
+		@Override
+		public Array<String> getValues(GameObject myObject) {
+			return myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION);
+		}
+
+		@Override
+		public Array<String> getVariableNames(){
+			Array<String> names = new Array<String>();
+			names.add("TODO");
+			return names;
+		}
+
+		@Override
+		public String getXMLName() {
+			return "destroysObjectsOfIDOnCollision";
+		}
+		
 	};
 	
 	/**
@@ -306,7 +346,6 @@ public enum Attribute {
 		return valueOf(type.toUpperCase());
 	}
 	
-	//ALL BELOW METHODS MUST BE IMPLEMENTED
 	/**
 	 * Called once within the GameObject's constructor, used to setup initial values
 	 * @param	myObject	the GameObject that currently holds this attribute
