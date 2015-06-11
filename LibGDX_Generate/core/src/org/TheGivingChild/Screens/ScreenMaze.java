@@ -312,7 +312,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 //			rect.setOccupied(child);
 //			break;
 //		}	
-//====================
 		
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
@@ -493,6 +492,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			if (allSaved()) {
 				System.out.println("They are all saved");
+				game.setMazeCompleted(true);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
