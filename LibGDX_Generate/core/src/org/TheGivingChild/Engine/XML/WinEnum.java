@@ -23,6 +23,11 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 				level.setWon(true);
 			}
 		}
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+			
+		}
 	},
 	COLLISION_WITH_OBJECT_WIN{
 		public String getXMLDescription(){
@@ -53,6 +58,12 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			level.setCompleted(win);
 			level.setWon(win);
 		}
+
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+			
+		}
 	},
 	ALL_OBJECTS_DESTROYED{
 		@Override
@@ -77,6 +88,11 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		@Override
 		public Array<String> getValues(Level level) {
 			return new Array<String>();
+		}
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+			
 		}		
 	},
 	OBJECTS_OF_ID_DESTROYED{
@@ -103,7 +119,11 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		public Array<String> getValues(Level level) {
 			return level.getWinInfo(OBJECTS_OF_ID_DESTROYED);
 		}
-		
+
+		@Override
+		public void setup(Level level) {
+			// TODO Auto-generated method stub
+		}
 	};
 	/**
 	 * @return String containing the level name to write to the .xml file
@@ -120,7 +140,10 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 	 */
 	public abstract Array<String> getValues(Level level);
 	
+	public abstract void setup(Level level);
+	
 	public static WinEnum newType(String type){
+		System.out.println(type);
 		return valueOf(type.toUpperCase());
 	}
 	
