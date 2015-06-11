@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -164,7 +166,6 @@ class ScreenOptions extends ScreenAdapter {
 		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
 		for(int i = 0; i < optionsArray.length; i++) {
-<<<<<<< HEAD
 			CheckBox checkbox = new CheckBox("", cbStyle);
 			LabelStyle ls = new LabelStyle();
 			ls.font = font;
@@ -172,16 +173,12 @@ class ScreenOptions extends ScreenAdapter {
 			label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			checkbox.setSize(0.2f*Gdx.graphics.getWidth(), 0.2f*Gdx.graphics.getHeight());
 			checkbox.setScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-=======
-			CheckBox checkbox = new CheckBox(optionsArray[i], cbStyle);
 			checkbox.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
 				}
 			});
-			checkbox.setSize(200, 100);
->>>>>>> b56de2d23c546a0caa5089ae61d95bcf53ca279d
 			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
 			choicesTable.add(label);
 			options.add(checkbox);

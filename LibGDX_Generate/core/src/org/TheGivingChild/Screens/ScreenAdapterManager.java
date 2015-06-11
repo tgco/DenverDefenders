@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
@@ -297,17 +298,13 @@ public final class ScreenAdapterManager {
 		cbs.font = font;
 		cbs.checkboxOff = skin.getDrawable("Button_Next");
 		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
-<<<<<<< HEAD
 		cb = new CheckBox("", cbs);
-=======
-		cb = new CheckBox(" ", cbs);
 		cb.addListener(new MyChangeListener(){
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
 			}
 		});
->>>>>>> b56de2d23c546a0caa5089ae61d95bcf53ca279d
 		buttonTable.add(cb).center().bottom();
 		//buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
