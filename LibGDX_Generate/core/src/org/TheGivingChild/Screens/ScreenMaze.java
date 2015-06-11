@@ -301,38 +301,38 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		for(MinigameRectangle rect : minigameRects)
 		{
 
-			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-			ChildSprite child = new ChildSprite(childTexture);
-			child.setScale(.25f);
-			child.setPosition(rect.x - child.getWidth()/4, rect.y);
-
-			//child.setRectangle(childRec);
-			mazeChildren.add(child);
-
-			rect.setOccupied(child);
-			break;
-		}	
+//			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+//			ChildSprite child = new ChildSprite(childTexture);
+//			child.setScale(.25f);
+//			child.setPosition(rect.x - child.getWidth()/4, rect.y);
+//
+//			//child.setRectangle(childRec);
+//			mazeChildren.add(child);
+//
+//			rect.setOccupied(child);
+//			break;
+//		}	
 		
-//			//Possible values 0,1,2,3,4
-//			theRand = MathUtils.random(0,5);
-//			//60% chance of kid being drawn
-//			if(theRand >= 2 )
-//			{
-//				//Add children to be drawn where minigames can be triggered
-//				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-//				ChildSprite child = new ChildSprite(childTexture);
-//				child.setScale(.25f);
-//				child.setPosition(rect.x - child.getWidth()/4, rect.y);
-//
-//				//child.setRectangle(childRec);
-//				mazeChildren.add(child);
-//
-//				rect.setOccupied(child);
-//			}
-//
-//
-//
-//		}
+			//Possible values 0,1,2,3,4
+			theRand = MathUtils.random(0,5);
+			//60% chance of kid being drawn
+			if(theRand >= 2 )
+			{
+				//Add children to be drawn where minigames can be triggered
+				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+				ChildSprite child = new ChildSprite(childTexture);
+				child.setScale(.25f);
+				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+
+				//child.setRectangle(childRec);
+				mazeChildren.add(child);
+
+				rect.setOccupied(child);
+			}
+
+
+
+		}
 
 
 	}
