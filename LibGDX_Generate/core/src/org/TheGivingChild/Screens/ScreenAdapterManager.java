@@ -341,8 +341,6 @@ public final class ScreenAdapterManager {
 		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
 		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		System.out.println(game.getCurrentLevel());
-		System.out.println("IS it froma  game: " + game.getFromGame());
 		minigame = null;
 		minigameTable = new Table();
 		if (game.getFromGame() && game.levelWin()) {
