@@ -51,86 +51,98 @@ public class ChildSprite extends Sprite {
 	
 	public void followSprite(ChildSprite leader)
 	{
-//		follow = true;
-//		//set sprite to left of leader, set xMove to leaders xMove
-//		yMove = leader.yMove;
-//		xMove = leader.xMove;
-//		
-//		if(Math.abs(xMove) > Math.abs(yMove)){
-//			
-//			this.setY(leader.getY());
-//			
-//			if(leader.xMove > 0){
-//				this.setX(leader.getX()-this.getWidth()/4);
-//			}
-//			if(leader.xMove <= 0){
-//				this.setX(leader.getX()+this.getWidth()/4);
-//			}
-//		}
-//		else{
-//			
-//			this.setX(leader.getX());
-//			
-//			//set sprite to below leader, set yMove to leaders yMove
-//			if(leader.yMove > 0){
-//				this.setY(leader.getY()-this.getHeight()/4);
-//			}
-//			if(leader.yMove <= 0){
-//				this.setY(leader.getY()+this.getHeight()/4);
-//			}
-//		}
-
 	
+//		float xAway = Math.abs(leader.getLastX() - this.getX());
+//		float yAway = Math.abs(leader.getLastY() - this.getY());
+//		
+//		this.setSpeed(leader.getSpeed());
+//		
+//		//ifxAway > leader.getWidth()*.25f
+//		if(xAway > this.getWidth()*.25f)
+//		{
+//		
+//			//if the leader is to your right
+//			if(leader.getLastX() > this.getX())
+//			{
+//				this.xMove = this.getSpeed();
+//				this.yMove = 0;
+//			}
+//			//if(leader.getLastX() <= this.getX())
+//			else
+//			{
+//				this.xMove = -this.getSpeed();
+//				this.yMove = 0;
+//	
+//			}
+//		}
+//		
+//		else if (yAway >  this.getHeight()*.25f) {
+//			//if leader is above you
+//			if(leader.getLastY() > this.getY())
+//			{
+//				this.yMove = this.getSpeed();
+//				this.xMove = 0;
+//			}
+//			//if(leader.getLastY() <= this.getY())
+//			else
+//			{
+//				this.yMove = -this.getSpeed();
+//				this.xMove = 0;
+//			}
+//		}
+//
+//		else {
+//			
+//		this.xMove = 0;
+//		this.yMove = 0;
+//				
+//	}
+//		//this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
+//		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
+//		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
 		
+		float xAway = Math.abs((leader.getLastX() - this.getX()));
+		float yAway = Math.abs((leader.getLastY() - this.getY()));
 		
-		float xAway = Math.abs(leader.getLastX() - this.getX());
-		float yAway = Math.abs(leader.getLastY() - this.getY());
+		float followTolerance = (float)Math.pow(2048, 0.5);
 		
 		this.setSpeed(leader.getSpeed());
 		
-		//ifxAway > leader.getWidth()*.25f
-		if(xAway > this.getWidth()*.25f)
-		{
+		if(leader.xMove < 0) followTolerance = (followTolerance - 2*this.getWidth()) - 4*this.getWidth();
+		//if(leader.xMove < 0) followTolerance = this.getWidth()*.25f;
+		//if(leader.yMove < 0) followTolerance = followTolerance - 2*this.getHeight();
+		if(leader.yMove != 0 && this.xMove == 0) followTolerance = 32;
+		//if(leader.xMove !=0  && this.xMove == 0) followTolerance = 32;
+		//if(leader.yMove < 0 && this.yMove == 0) followTolerance = 32;
 		
-			//if the leader is to your right
-			if(leader.getLastX() > this.getX())
-			{
-				this.xMove = this.getSpeed();
-				this.yMove = 0;
-			}
-			//if(leader.getLastX() <= this.getX())
-			else
-			{
-				this.xMove = -this.getSpeed();
-				this.yMove = 0;
 	
-			}
+		if(xAway >= followTolerance)
+		{
+			this.yMove = 0;
+			
+			if(leader.getLastX() - this.getX() > 0) this.xMove = this.moveSpeed;
+			else this.xMove = -this.moveSpeed;		
+		
 		}
 		
-		else if (yAway >  this.getHeight()*.25f) {
-			//if leader is above you
-			if(leader.getLastY() > this.getY())
-			{
-				this.yMove = this.getSpeed();
-				this.xMove = 0;
-			}
-			//if(leader.getLastY() <= this.getY())
-			else
-			{
-				this.yMove = -this.getSpeed();
-				this.xMove = 0;
-			}
+		else if(yAway >= followTolerance)
+		{
+			this.xMove = 0;
+			if(leader.getLastY() - this.getY() > 0) this.yMove = this.moveSpeed;
+			else this.yMove = -this.moveSpeed;
 		}
-
-		else {
-			
-		this.xMove = 0;
-		this.yMove = 0;
+		
+		else
+		{
+			this.xMove = 0;
+			this.yMove = 0;
+		}
 				
-	}
-		//this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
+		
 		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
 		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
+		
+		
 		
 	}
 	
@@ -203,5 +215,16 @@ public class ChildSprite extends Sprite {
 	{
 		return lastY;
 	}
+	
+	public float getNextX()
+	{
+		return this.getX() + xMove*Gdx.graphics.getDeltaTime();
+	}
+	
+	public float getNextY()
+	{
+		return this.getY() + xMove*Gdx.graphics.getDeltaTime();
+	}
+	
 	
 }
