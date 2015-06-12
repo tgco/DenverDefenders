@@ -312,7 +312,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 //			rect.setOccupied(child);
 //			break;
 //		}	
-//====================
 		
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
@@ -384,6 +383,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					backgroundSoundToPlay = backgroundSounds.random();
 					backgroundSoundToPlay.play();
 				}
+				//working on sound control through options
+//				if(game.musicMuted){
+//					backgroundSoundToPlay.setVolume(0f);
+//				}
+//				else{
+//					backgroundSoundToPlay.setVolume(game.volume);
+//				}
+				
 				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
 				{
@@ -485,6 +492,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			if (allSaved()) {
 				System.out.println("They are all saved");
+				game.setMazeCompleted(true);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}

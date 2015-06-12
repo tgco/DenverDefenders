@@ -58,6 +58,10 @@ public class TGC_Engine extends Game {
     
     private float width;
     private float height;
+    public float volume;
+    public boolean soundMuted;
+    public boolean musicMuted;
+    
     private final static float SCREEN_TRANSITION_TIMER = 1.0f;
     private float screenTransitionTimeLeft;
     private Group objectGroup;
@@ -108,7 +112,7 @@ public class TGC_Engine extends Game {
     private int gameStart = 0;
    
     private boolean levelWinOrLose;
-    private boolean packetCompleted = false;
+    private boolean currentMazeCompleted = false;
     private boolean fromGame = false;
     
 	public void addLevels(Array<Level> levels){
@@ -168,8 +172,12 @@ public class TGC_Engine extends Game {
 		return levelWinOrLose;
 	}
 	
-	public boolean getPacketCompleted() {
-		return packetCompleted;
+	public void setMazeCompleted(boolean state) {
+		currentMazeCompleted = state;
+	}
+	
+	public boolean getMazeCompleted() {
+		return currentMazeCompleted;
 	}
 	
 	public void setFromGame(boolean state) {
