@@ -25,11 +25,12 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 /** 
  * <p>
- * This was used for the initial requirements of putting minigames in packages.
+ * No longer used.
  * </p>
  * <p>
- * As the engine progresses, this will not be used at all since the minigames will be called from maze when characters are run into.
+ * This was used for the initial requirements of putting minigames in packages.
  * </p>
+
  * @author janelson
  *
  */
@@ -59,7 +60,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		//initialize the packets
 		packets = game.getLevelPackets();
 		//initialize and fill levels array from the games level
-		levels = new Array<Level>(game.getLevels());
+		//levels = new Array<Level>(game.getLevels());
 		//group the levels into different packets.
 		createPackets();
 		//get the UI elements that represent the packets
