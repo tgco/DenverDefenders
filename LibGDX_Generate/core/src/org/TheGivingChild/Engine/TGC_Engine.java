@@ -221,7 +221,7 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Grid.png", Texture.class);
 		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
-		manager.load("TEMPORARY_Cartoon_Forest.jpg", Texture.class);
+		manager.load("TEMPORARY_Cartoon_Forest.png", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class);
 		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class);
@@ -245,7 +245,17 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Icecream1.png", Texture.class);
 		manager.load("ObjectImages/Cherry.png", Texture.class);
 		manager.load("ObjectImages/basket.png", Texture.class);
+		manager.load("ObjectImages/bowl.png", Texture.class);
+		manager.load("ObjectImages/basket_new.png", Texture.class);
 		manager.load("ObjectImages/Grape.png", Texture.class);
+		manager.load("ObjectImages/Candy1.png", Texture.class);
+		manager.load("ObjectImages/Candy2.png", Texture.class);
+		manager.load("ObjectImages/Kiwi.png", Texture.class);
+		manager.load("ObjectImages/Lollipop1.png", Texture.class);
+		manager.load("ObjectImages/Lollipop2.png", Texture.class);
+		manager.load("ObjectImages/Lollipop3.png", Texture.class);
+		manager.load("ObjectImages/Sundae1.png", Texture.class);
+		manager.load("ObjectImages/Sundae2.png", Texture.class);
 		manager.finishLoading();
 		
 		reader = new XML_Reader();

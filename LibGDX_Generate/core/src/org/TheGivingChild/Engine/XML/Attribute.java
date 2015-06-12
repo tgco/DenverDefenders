@@ -293,7 +293,6 @@ public enum Attribute {
 		public String getXMLName() {
 			return "spawnObjectOnTimer";
 		}
-		
 	},
 	DESTROYSOBJECTSOFIDONCOLLISION{
 
@@ -307,13 +306,14 @@ public enum Attribute {
 
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
-			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getTextureHeight(),myObject.getTextureWidth());
-			for(int i = 0;i<allObjects.size;i++){
-				if(myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).contains(allObjects.get(i).getID()+"", false)){
-					Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getTextureWidth(),allObjects.get(i).getTextureHeight());
+			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getTextureWidth(),myObject.getTextureHeight());
+			for(int i = 0; i<allObjects.size;i++){
+				GameObject currentObject = allObjects.get(i);
+				if(myObject.getAttributeData().get(DESTROYSOBJECTSOFIDONCOLLISION).contains(currentObject.getID()+"", false)){
+					Rectangle r2 = new Rectangle(currentObject.getX(),currentObject.getY(),currentObject.getTextureWidth(),currentObject.getTextureHeight());
 					if(r1.overlaps(r2)){
 						allObjects.get(i).dispose();
-						System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + allObjects.get(i).getID());
+						System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + currentObject.getID() + "|| Position: " + myObject.getX() + ", " + myObject.getY() + "DIM: " + myObject.getTextureWidth() + ", " + myObject.getTextureHeight());
 					}
 				}
 			}

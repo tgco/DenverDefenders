@@ -77,15 +77,15 @@ public class XML_Reader {
 	
 	public ObjectMap<WinEnum, Array<String>> compileWinConditions(){
 		ObjectMap<WinEnum,Array<String>> winData = new ObjectMap<WinEnum,Array<String>>();
-		String temp[] = root.getChildByName("levelGoals").getAttribute("win").split(",");
+		String temp[] = root.getChildByName("LevelGoals").getAttribute("win").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
 			for(String currentWinCondition:temp){//each element in win="stuff,things,morestuff"
 				WinEnum tempEnum = WinEnum.newType(currentWinCondition);//yo dawg i herd u liek temps
-				ObjectMap<String,String> tempMap = root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes();//saves lookup time if there are multiple conditions
+				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				if(root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes() != null){
-					for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentWinCondition).getAttributes().size;i++){
-						tempValues.add(tempMap.get("win"+(i+1)));
+				if(root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes() != null){
+					for(int i=0;i<root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes().size;i++){
+						tempValues.add(tempMap.get("value"+(i+1)));
 					}
 				}
 				winData.put(tempEnum,tempValues);
@@ -96,15 +96,15 @@ public class XML_Reader {
 	
 	public ObjectMap<LoseEnum, Array<String>> compileLoseConditions(){
 		ObjectMap<LoseEnum,Array<String>> loseData = new ObjectMap<LoseEnum,Array<String>>();
-		String temp[] = root.getChildByName("levelGoals").getAttribute("lose").split(",");
+		String temp[] = root.getChildByName("LevelGoals").getAttribute("lose").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
 			for(String currentLoseCondition:temp){//each element in lose="stuff,things,morestuff"
 				LoseEnum tempEnum = LoseEnum.newType(currentLoseCondition);//yo dawg i herd u liek temps
-				ObjectMap<String,String> tempMap = root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
+				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				if(root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes() != null){
-					for(int i=0;i<root.getChildByName("levelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
-						tempValues.add(tempMap.get("lose"+(i+1)));
+				if(root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes() != null){
+					for(int i=0;i<root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
+						tempValues.add(tempMap.get("value"+(i+1)));
 					}
 				}
 				loseData.put(tempEnum,tempValues);
