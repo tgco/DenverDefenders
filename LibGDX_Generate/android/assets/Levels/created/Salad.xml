@@ -1,21 +1,21 @@
-<Level packageName="PLACEHOLDER1" levelName="Salad" levelImage="TEMPORARY_Cartoon_City.png" description="Move the healthy foods to the bowl!">
+<Level packageName="PLACEHOLDER1" levelName="Salad" levelImage="TEMPORARY_Cartoon_Forest.png" description="Move the healthy foods to the bowl!">
 	<!-- Good food -->
 	<GameObject ID="0" attributes="moves" imageFilename="Watermellon1.png" initialLocation="100.0,100.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="1" attributes="moves" imageFilename="Cherry.png" initialLocation="700.0,300.0" listeners="drag_object">
+	<GameObject ID="1" attributes="moves" imageFilename="Cherry.png" initialLocation="500.0,300.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="2" attributes="moves" imageFilename="Apple1.png" initialLocation="300.0,500.0" listeners="drag_object">
+	<GameObject ID="2" attributes="moves" imageFilename="Apple1.png" initialLocation="300.0,400.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="3" attributes="moves" imageFilename="Banana1.png" initialLocation="800.0,100.0" listeners="drag_object">
+	<GameObject ID="3" attributes="moves" imageFilename="Banana1.png" initialLocation="550.0,100.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="4" attributes="moves" imageFilename="Grape.png" initialLocation="710.0,444.0" listeners="drag_object">
+	<GameObject ID="4" attributes="moves" imageFilename="Grape.png" initialLocation="410.0,344.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="5" attributes="moves" imageFilename="kiwi.png" initialLocation="444.0,666.0" listeners="drag_object">
+	<GameObject ID="5" attributes="moves" imageFilename="kiwi.png" initialLocation="466.0,333.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
 	
@@ -23,10 +23,10 @@
 	<GameObject ID="6" attributes="moves" imageFilename="Sundae1.png" initialLocation="222.0,222.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="7" attributes="moves" imageFilename="Lollipop2.png" initialLocation="123.0,321.0" listeners="drag_object">
+	<GameObject ID="7" attributes="moves" imageFilename="Lollipop2.png" initialLocation="123.0,271.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="8" attributes="moves" imageFilename="Candy2.png" initialLocation="654.0,456.0" listeners="drag_object">
+	<GameObject ID="8" attributes="moves" imageFilename="Candy2.png" initialLocation="654.0,356.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
 	
@@ -35,8 +35,9 @@
 		<destroysObjectsOfIDOnCollision value1="0,1,2,3,4,5,6,7,8"/>
 	</GameObject>
 	
-	<LevelGoals win="objects_of_ID_destroyed_win" lose="any_objects_of_ID_destroyed_lose">
+	<LevelGoals win="objects_of_ID_destroyed_win" lose="any_objects_of_ID_destroyed_lose,timeout_lose">
 		<objects_of_ID_destroyed_win value1="0,1,2,3,4,5"/>
 		<any_objects_of_ID_destroyed_lose value1="6,7,8"/>
+		<timeout_lose value1="10"/>
 	</LevelGoals>
 </Level>
