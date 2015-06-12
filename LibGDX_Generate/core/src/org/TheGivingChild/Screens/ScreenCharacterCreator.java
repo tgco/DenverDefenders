@@ -129,7 +129,6 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(1, 1, 1, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				//loadingScreen.remove();
 				fillImageArrays();
 				characterTable = characterAppearanceTable();
 				game.getStage().addActor(characterTable);

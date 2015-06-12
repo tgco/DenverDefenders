@@ -52,7 +52,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
-	private float xMove, yMove, speed;
+	private float xMove, yMove;
 	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	private int mapTilesX, mapTilesY;

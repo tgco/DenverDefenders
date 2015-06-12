@@ -5,8 +5,6 @@ import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
-import org.TheGivingChild.Engine.XML.LoseEnum;
-import org.TheGivingChild.Engine.XML.WinEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -39,7 +37,6 @@ import com.badlogic.gdx.utils.ObjectMap;
  */
 class ScreenEditor extends ScreenAdapter{	
 	private String levelName = "Base";
-	private String packageName;
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
 	//Skins and the font
