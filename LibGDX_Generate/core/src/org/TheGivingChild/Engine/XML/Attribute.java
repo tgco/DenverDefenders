@@ -1,6 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.MinigameClock;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -127,7 +128,9 @@ public enum Attribute {
 						}
 						
 						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.wav"));
-						mp3Sound.play(.75f);//turned the sound down a bit
+						if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
+							mp3Sound.play(ScreenAdapterManager.getInstance().game.volume);
+						}
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 					if(myObject.getVelocity()[0] > MAX_VELOCITY)
