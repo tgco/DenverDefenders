@@ -366,6 +366,30 @@ public enum Attribute {
 		@Override
 		public String getXMLName() {return "gravity";}
 		
+	},
+	/**
+	 * Causes objects to collide with and bounce off of the top and bottom of the screen, collisions are perfectly ellastic
+	 */
+	BOUNCEOFFTOPANDBOTTOM{
+		public void update(GameObject myObject,Array<GameObject> allObjects){
+			if(myObject.getY() <= 0){//bottom
+				float[] temp = myObject.getVelocity();
+				temp[1] = Math.abs(temp[1]);
+				myObject.setVelocity(temp);
+			}if(myObject.getY() + myObject.getTextureHeight() >= Gdx.graphics.getHeight()){//top
+				float[] temp = myObject.getVelocity();
+				temp[1] = -Math.abs(temp[1]);
+				myObject.setVelocity(temp);
+			}
+		}
+		public Array<String> getVariableNames(){
+			return new Array<String>();
+		}
+		public void setup(GameObject myObject){}//doesnt need to setup anything		
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(BOUNCEOFFTOPANDBOTTOM);
+		}
+		public String getXMLName(){return "bounceOffTopAndBottom";}		
 	};
 	
 	/**
