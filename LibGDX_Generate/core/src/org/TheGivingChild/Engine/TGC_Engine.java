@@ -270,6 +270,7 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Lollipop3.png", Texture.class);
 		manager.load("ObjectImages/Sundae1.png", Texture.class);
 		manager.load("ObjectImages/Sundae2.png", Texture.class);
+		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.finishLoading();
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));

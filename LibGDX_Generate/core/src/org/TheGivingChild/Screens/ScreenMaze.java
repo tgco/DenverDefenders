@@ -72,10 +72,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private Texture backdropTexture;
 	private TextureRegion backdropTextureRegion;
-
+	
 	private MinigameRectangle lastRec;
 	private AssetManager manager;
 	private Rectangle heroHQ;
+	
+	private Texture heartTexture;
+	private TextureRegion healthTextureRegion;
+	private int playerHealth = 3;
+	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -278,7 +283,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
-		
+		heartTexture = manager.get("ObjectImages/heart.png");
+		healthTextureRegion = new TextureRegion(heartTexture);
 	}
 
 
@@ -353,6 +359,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.begin();
 				//draw the background texture
 				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				spriteBatch.draw(healthTextureRegion,playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, heartTexture.getWidth(), heartTexture.getHeight());
 				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
