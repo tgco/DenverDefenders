@@ -76,8 +76,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	private MinigameRectangle lastRec;
 	private AssetManager manager;
 	private Rectangle heroHQ;
-	private Array<Music> backgroundSounds;
-	private Music backgroundSoundToPlay;
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -279,17 +277,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
-		backgroundSounds = new Array<Music>();
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/04_All_of_Us.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/06_Searching.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/08_Ascending.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
+		
 		
 	}
 
@@ -316,7 +304,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
-			if(theRand >= 2 )
+			if(theRand == 2 )
 			{
 				//Add children to be drawn where minigames can be triggered
 				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
@@ -378,18 +366,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean triggerGame = false;
 				boolean collision = false;
-				
-				if(!backgroundSoundToPlay.isPlaying()){
-					backgroundSoundToPlay = backgroundSounds.random();
-					backgroundSoundToPlay.play();
-				}
-				//working on sound control through options
-//				if(game.musicMuted){
-//					backgroundSoundToPlay.setVolume(0f);
-//				}
-//				else{
-//					backgroundSoundToPlay.setVolume(game.volume);
-//				}
 				
 				
 				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
@@ -615,10 +591,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	@Override
 	public void show(){
 		
-		backgroundSoundToPlay = backgroundSounds.random();
-		backgroundSoundToPlay.play();
 		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
-		click.play(.75f);//turned the sound down a bit
+		if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
+			click.play(ScreenAdapterManager.getInstance().game.volume);
+		}
 		//game.loadLevelPackets();
 		xMove = 0;
 		yMove = 0;
@@ -666,6 +642,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
 		}
 		//Gdx.input.setInputProcessor(this);
+		
 
 	}
 
@@ -694,7 +671,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void hide(){
-		backgroundSoundToPlay.pause();
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(false);
 		}

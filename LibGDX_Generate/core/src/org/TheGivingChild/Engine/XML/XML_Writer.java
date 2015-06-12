@@ -54,7 +54,7 @@ public class XML_Writer {
 				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
 					writer.element(currentWinCondition.getXMLDescription());
 					for(String currentValue:currentWinCondition.getValues(currentLevel)){
-						writer.attribute("win"+count,currentValue);
+						writer.attribute("value"+count,currentValue);
 						count++;
 					}
 					writer.pop();
@@ -64,7 +64,7 @@ public class XML_Writer {
 				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
 					writer.element(currentLoseCondition.getXMLDescription());
 					for(String currentValue:currentLoseCondition.getValues(currentLevel)){
-						writer.attribute("lose"+count,currentValue);
+						writer.attribute("value"+count,currentValue);
 						count++;
 					}
 					writer.pop();

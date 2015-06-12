@@ -66,6 +66,10 @@ class ScreenOptions extends ScreenAdapter {
 		createOptionsTable();
 		createOverallTable();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
+		//set the inital state of sound to be on
+		for(CheckBox c: options){
+			c.setChecked(true);
+		}
 	}
 	@Override
 	public void render(float delta) {
@@ -84,15 +88,23 @@ class ScreenOptions extends ScreenAdapter {
 				show();
 				for(CheckBox c : options) {
 					if(c.isChecked()) {
-						if(c.equals(options.get(0)))
+						if(c.equals(options.get(0))){
 							option1 = true;
-						else if(c.equals(options.get(1)))
+							game.musicEnabled = true;
+						}
+						else if(c.equals(options.get(1))){
 							option2 = true;
+							game.soundEnabled = true;
+						}
 					}
-					else if(c.equals(options.get(0)))
-						option1 = false;
-					else if(c.equals(options.get(1)))
-						option2 = false;
+					else if(c.equals(options.get(0))){
+						option1 = true;
+						game.musicEnabled = false;
+					}
+					else if(c.equals(options.get(1))){
+						option2 = true;
+						game.soundEnabled = false;
+					}
 				}
 			}
 		}
@@ -241,30 +253,27 @@ class ScreenOptions extends ScreenAdapter {
 				 if(mute.isChecked()) {
 					 //updateSliderValue(0);
 					 slider.setValue(0);
-					 ScreenAdapterManager.getInstance().game.volume = slider.getValue();
+					 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
 					 slider.setDisabled(true);
-					 options.get(0).setChecked(false);
-					 ScreenAdapterManager.getInstance().game.musicMuted = false;
-					 options.get(1).setChecked(false);
-					 ScreenAdapterManager.getInstance().game.soundMuted = false;
+					 game.muteAll = true;
 				 }
 				 else {
 					 //updateSliderValue(volume);
 					 slider.setValue(volume);
 					 slider.setDisabled(false);
-					 options.get(0).setChecked(before1);
-					 ScreenAdapterManager.getInstance().game.musicMuted = before1;
-					 options.get(1).setChecked(before2);
-					 ScreenAdapterManager.getInstance().game.soundMuted = before2;
+					 game.muteAll = false;
 				 }
 			 }
 		 });
 		 slider = new Slider(0, 100, 1, false, ss);
-		 slider.setValue(0);
+		 slider.setValue(75);
+		 slider.setDisabled(false);
+		 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
 		 slider.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
 				 float value = ((Slider) actor).getValue();
+				 ScreenAdapterManager.getInstance().game.volume = value/100f;
 				 //updateSliderValue(value);
 			 }
 		 });

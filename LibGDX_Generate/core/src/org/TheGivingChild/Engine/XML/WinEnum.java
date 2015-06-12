@@ -7,9 +7,9 @@ import com.badlogic.gdx.utils.Array;
 
 public enum WinEnum {//Cannot have any labels in common with LoseEnum
 	
-	TIMEOUT{//completely broken, code has been completely changed since this was added in
+	TIMEOUT_WIN{//completely broken, code has been completely changed since this was added in
 		public String getXMLDescription(){
-			return "timeout";
+			return "timeout_win";
 		}
 		public Array<String> getValues(Level level){
 			Array<String> temp = new Array<String>();
@@ -65,10 +65,10 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			
 		}
 	},
-	ALL_OBJECTS_DESTROYED{
+	ALL_OBJECTS_DESTROYED_WIN{
 		@Override
 		public String getXMLDescription() {
-			return "all_objects_destroyed";
+			return "all_objects_destroyed_win";
 		}
 		@Override
 		public void checkWin(Level level) {
@@ -95,16 +95,16 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			
 		}		
 	},
-	OBJECTS_OF_ID_DESTROYED{
+	OBJECTS_OF_ID_DESTROYED_WIN{
 		@Override
 		public String getXMLDescription() {
-			return "objects_of_ID_destroyed";
+			return "objects_of_ID_destroyed_win";
 		}
 
 		@Override
 		public void checkWin(Level level) {
 			boolean win = true;
-			for(String currentID:level.getWinInfo(OBJECTS_OF_ID_DESTROYED).get(0).split(",")){
+			for(String currentID:level.getWinInfo(OBJECTS_OF_ID_DESTROYED_WIN).get(0).split(",")){
 				if(level.getObjectOfID(Integer.parseInt(currentID)) != null){//if the object exists, set win to false, exit loop
 					win = false;
 					break;
@@ -117,7 +117,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 
 		@Override
 		public Array<String> getValues(Level level) {
-			return level.getWinInfo(OBJECTS_OF_ID_DESTROYED);
+			return level.getWinInfo(OBJECTS_OF_ID_DESTROYED_WIN);
 		}
 
 		@Override
