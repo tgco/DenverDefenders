@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
  */
 
 public enum InputListenerEnums{
+	/**This destroys the game object when clicked.*/
 	DESTROY_ON_CLICK{
 		@Override
 		public InputListener getInputListener(GameObject object) {
@@ -38,6 +39,7 @@ public enum InputListenerEnums{
 			return "destroy_on_click";
 		}
 	},
+	/**This drags the object to follow the current position of a drag event*/
 	DRAG_OBJECT{
 		@Override
 		public InputListener getInputListener(GameObject object) {
@@ -60,6 +62,7 @@ public enum InputListenerEnums{
 			return "drag_object";
 		}
 	},
+	/**This allows the object to be drug left and right only*/
 	DRAG_OBJECT_X{
 		@Override
 		public InputListener getInputListener(GameObject object) {
@@ -80,6 +83,7 @@ public enum InputListenerEnums{
 			return "drag_object_x";
 		}
 	},
+	/**This allows the object to be drug up and down only.*/
 	DRAG_OBJECT_Y{
 		@Override
 		public InputListener getInputListener(GameObject object) {
@@ -101,6 +105,8 @@ public enum InputListenerEnums{
 		}
 	};
 	//every enum needs to override this abstract method, and return an Input Listener
+	/**Abstract method that game objects can use to add listeners.*/
 	public abstract InputListener getInputListener(GameObject object);
+	/**Abstract method that returns the name of the enum so the editor can use it in the xml writer.*/
 	public abstract String getXMLName();
 }

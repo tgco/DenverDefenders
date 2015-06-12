@@ -25,8 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -53,7 +51,6 @@ class ScreenOptions extends ScreenAdapter {
 			  						 "   Sound   "};
 	private boolean option1, option2 = false;
 	private Slider slider;
-	//private Label sliderValue;
 	private Label sliderName;
 	private float volume;
 	private boolean before1, before2 = false;
@@ -120,11 +117,7 @@ class ScreenOptions extends ScreenAdapter {
 			isRendered = false;
 		}
 	};
-	
-	public void AAAAAAAAAAAAAAA(){
 		
-	}
-	
 	@Override
 	public void hide() {
 		optionsTable.remove();
@@ -251,14 +244,12 @@ class ScreenOptions extends ScreenAdapter {
 					 before2 = true;
 				 }
 				 if(mute.isChecked()) {
-					 //updateSliderValue(0);
 					 slider.setValue(0);
 					 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
 					 slider.setDisabled(true);
 					 game.muteAll = true;
 				 }
 				 else {
-					 //updateSliderValue(volume);
 					 slider.setValue(volume);
 					 slider.setDisabled(false);
 					 game.muteAll = false;
@@ -274,10 +265,8 @@ class ScreenOptions extends ScreenAdapter {
 			 public void changed(ChangeEvent event, Actor actor) {
 				 float value = ((Slider) actor).getValue();
 				 ScreenAdapterManager.getInstance().game.volume = value/100f;
-				 //updateSliderValue(value);
 			 }
 		 });
-		 //sliderValue = new Label("  0.0", ls);
 		 sliderName = new Label("Volume  ", ls);switch(Gdx.app.getType()){
 			case Android:
 				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
@@ -295,13 +284,9 @@ class ScreenOptions extends ScreenAdapter {
 			}
 		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
-		 //sliderTable.add(sliderValue).width(Gdx.graphics.getWidth()/6).height(Gdx.graphics.getHeight()/3);
 		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
-	 /*private void updateSliderValue(float v) {
-		 sliderValue.setText("  " + Float.toString(v));
-	 }*/
 	 
 	 private void createOverallTable() {
 		 overallTable = new Table();

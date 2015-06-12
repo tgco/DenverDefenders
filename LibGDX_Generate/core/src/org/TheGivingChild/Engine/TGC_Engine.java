@@ -13,6 +13,7 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -25,10 +26,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.org.apache.regexp.internal.REUtil;
 
 /**
  * This is the main class that is passed between all the screens.
@@ -36,35 +39,45 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * It also holds the {@link org.TheGivingChild.Engine.XML.XML_Writer XML Writer} and 
  * {@link org.TheGivingChild.Engine.XML.XML_Reader XML Reader} that some screens use themselves. 
  * 
- * @author all of us
+ * @author Jack Wesley Nelson, Corey Tokunaga-Reichert, Kevin Day, Milton Tzimourakas, Nathaniel Jacobi
  *
  */
 public class TGC_Engine extends Game {
+	/**{@link #DESKTOP_WIDTH} is our width in pixels for desktop testing.*/
 	private final static int DESKTOP_WIDTH = 1024;
+	/**{@link #DESKTOP_HEIGHT} is our Height in pixels for desktop testing.*/
 	private final static int DESKTOP_HEIGHT = 576;
-	private final static int BUTTON_STATES = 2;//corresponds to how many states each button has for the Buttons.pack textures pack.
-	//create the stage for our actors
+	/**{@link #BUTTON_STATES} is the number of changed states that each button contains in Buttons.pack.*/
+	private final static int BUTTON_STATES = 2;
+	/**The stage to place actors to.*/
 	private TGC_Stage stage;
-	//button atlas reference names
+	/**{@link #buttonAtlasNamesArray} holds reference to the names of elements within Buttons.pack for different buttons and their corresponding states. */
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	//skin from atlas
+	/**{@link #skin} is the {@link com.badlogic.gdx.scenes.scene2d.ui.Skin Skin} created from the Buttons.pack {@link com.badlogic.gdx.scenes.scene2d.ui.Skin TextureAtlas}.*/
 	private Skin skin = new Skin();
-	//bitmap font for buttons
+	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
 	private BitmapFont bitmapFontButton; 
-    
-	private Array<Level> levels = new Array<Level>();
+    /**{@link #levelPackets} is the container for levels to be played during a maze.*/
 	private Array<LevelPacket> levelPackets;
+	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
+	/**{@link #screenManagerLoaded} keeps track of whether the {@link ScreenAdapterManager} has been instantiated.*/
 	private boolean screenManagerLoaded = false;
-
+	/**{@link #width} is set equal to Gdx.graphics.getWidth().*/
 	private float width;
+	/**{@link #height} is set equal to Gdx.graphics.getHeight().*/
 	private float height;
+	/**{@link #volume} keeps track of the current volume for sounds and music.*/
 	public float volume;
+	/**{@link #soundEnabled} is used for checking whether to play sounds.*/
 	public boolean soundEnabled;
+	/**{@link #musicEnabled} is used for checking whether to play music.*/
 	public boolean musicEnabled;
+	/**{@link #muteAll} will keep sounds and music from playing when set to true.*/
 	public boolean muteAll;
-
+	/**{@link #SCREEN_TRANSITION_TIMER} is the initial screen splash length.*/
 	private final static float SCREEN_TRANSITION_TIMER = 1.0f;
+	/**{@link #screenTransitionTimeLeft} only keeps track of the current state of the initial {@link #SCREEN_TRANSITION_TIMER}.*/
 	private float screenTransitionTimeLeft;
 	private Group objectGroup;
 	//Asset Manager to store assets
@@ -116,13 +129,9 @@ public class TGC_Engine extends Game {
 	private boolean levelWinOrLose;
 	private boolean currentMazeCompleted = false;
 	private boolean fromGame = false;
-	private boolean allSaved;
+	private boolean allSaved = false;
 	private Array<Music> backgroundSounds;
 	private Music backgroundSoundToPlay;
-
-	public void addLevels(Array<Level> levels){
-		this.levels.addAll(levels);
-	}
 
 	public void loadLevelPackets() {
 		levelPackets = new Array<LevelPacket>();
@@ -184,19 +193,28 @@ public class TGC_Engine extends Game {
 	public boolean getMazeCompleted() {
 		return currentMazeCompleted;
 	}
-
+	
+	public boolean getAllSaved() {
+		return allSaved;
+	}
+	
+	public void setAllSaved(boolean state) {
+		allSaved = state;
+	}
+	
 	public void setFromGame(boolean state) {
 		fromGame = state;
 	}
-
+	/**{@link #nullCurrentLevel()} sets {@link #currentLevel} to null*/
 	public void nullCurrentLevel() {
 		currentLevel = null;
 	}
-
+	/**{@link #getFromGame()} returns {@link #fromGame}: whether a screen transition came from a minigame.*/
 	public boolean getFromGame() {
 		return fromGame;
 	}
 
+	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
 	@Override
 	public void create () {
 		switch(Gdx.app.getType()){
@@ -206,7 +224,6 @@ public class TGC_Engine extends Game {
 			//if using the desktop set the width and height to a 16:9 resolution.
 		case Desktop:
 			Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
-
 			break;
 		case iOS:
 			break;
@@ -270,6 +287,7 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Lollipop3.png", Texture.class);
 		manager.load("ObjectImages/Sundae1.png", Texture.class);
 		manager.load("ObjectImages/Sundae2.png", Texture.class);
+		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.finishLoading();
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
@@ -286,9 +304,7 @@ public class TGC_Engine extends Game {
 		reader = new XML_Reader();
 		writer = new XML_Writer();
 		ScreenAdapterManager.getInstance().initialize(this);
-		//ScreenAdapterManager.getInstance().game.getLevels().set(0, reader.compileLevel());
 
-		//levels.set(0, reader.compileLevel());
 		//button stuff
 		bitmapFontButton = new BitmapFont();
 		//create the stage
@@ -298,41 +314,21 @@ public class TGC_Engine extends Game {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 
-
 		//Game input processor
-		//Gdx.input.setInputProcessor(input);
-		objectGroup = new Group();
-		//Iterate through current level and add objects to stage?
-		//		for(final GameObject o : levels.first().getGameObjects())
-		//		{
-		//			objectGroup.addActor(o);
-		//		}
-
 		InputMultiplexer mp = new InputMultiplexer();
 		mp.addProcessor(stage);
-		//	mp.addProcessor(new UserInputListener());
-
-		stage.addActor(objectGroup);
-
-		stage.setKeyboardFocus(objectGroup);
-		//stage.addTouchFocus(listener, listenerActor, target, pointer, button);
-
 		Gdx.input.setInputProcessor(stage);
-
-		//System.out.println("stage has this many actors:" + stage.getActors().size);
-		//System.out.println("other processor has this many actors" + input.getActors().size);
-
 		//Map stuff
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		mapCamera = new OrthographicCamera();
 		mapCamera.setToOrtho(false, w, h);
 
-		/*Viewport stuff
-		 * Sets up the camera that will keep track of the screen
-		 * Creates the viewport to keep track of the aspect ratio
-		 * Applies the viewport to the camera
-		 * Repositions the camera accordingly
+		/**Viewport handling
+		 * Sets up the camera that will keep track of the screen.
+		 * Creates the viewport to keep track of the aspect ratio.
+		 * Applies the viewport to the camera.
+		 * Repositions the camera accordingly.
 		 */
 		camera = new OrthographicCamera();
 		viewport = new StretchViewport(16, 9, camera);
@@ -355,52 +351,61 @@ public class TGC_Engine extends Game {
 		}
 		backgroundSoundToPlay.play();
 	}
+	/**{@link #createStage()} initializes the stage for actors to be drawn to. */
 	public void createStage(){
 		stage = new TGC_Stage();
 		//create main menu images
 		Gdx.input.setInputProcessor(stage);
 	}
-	//dispose of resources, done when the game is destroyed
+	/**{@link #dispose()} handles the resource disposal when {@link TGC_Engine} exits.*/
 	@Override
 	public void dispose(){
 		super.dispose();
 		//dispose the screen manager, and in doing so all screens
 		ScreenAdapterManager.getInstance().dispose();
 	};
-	//getters for accessing variables in other areas of the engine
+	/**{@link #getBitmapFontButton()} returns {@link #bitmapFontButton}.*/
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
+	/**{@link #getButtonAtlasNamesArray()} returns {@link #buttonAtlasNamesArray}. */
 	public String[] getButtonAtlasNamesArray() {
 		return buttonAtlasNamesArray;
 	}
+	/**{@link #getButtonAtlasSkin()} returns {@link #skin}. */
 	public Skin getButtonAtlasSkin(){
 		return skin;
 	}
+	/**{@link #getButtonStates()} returns {@link #BUTTON_STATES}. */
 	public int getButtonStates(){
 		return BUTTON_STATES;
 	}
+	/**{@link #getHeight()} returns {@link #height}. */
 	public float getHeight(){
 		return height;
 	}
-	public Array<Level> getLevels(){
-		return levels;
-	}
+	/**{@link #getStage()} returns {@link #stage}. */
 	public Stage getStage() {
 		return stage;
 	}	
+	/**{@link #getWidth()} returns {@link #width}. */
 	public float getWidth(){
 		return width;
 	}
+	/**{@link #getAssetManager()} returns {@link #manager}. */
 	public AssetManager getAssetManager() {
 		return manager;
 	}
+	/**{@link #getXML_Writer()} returns {@link #writer}. */
 	public XML_Writer getXML_Writer() {
 		return writer;
 	}
+	/**{@link #getLevelPackets()} returns {@link #levelPackets}. */
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
+
+	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
 	public void render () {
 		camera.update();
@@ -417,7 +422,6 @@ public class TGC_Engine extends Game {
 		 * done loading, it will display a transition until it is done loading. Once 
 		 * the manager is done updating, it will display another transition and move
 		 * to the next screen.
-		 * @author ctokunag
 		 */
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
@@ -434,8 +438,6 @@ public class TGC_Engine extends Game {
 					backgroundSoundToPlay.play();
 				}
 				//working on sound control through options
-
-				//stage.draw();
 				super.render();
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 					skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
@@ -466,7 +468,6 @@ public class TGC_Engine extends Game {
 	 * This overridden resize function is what allows the viewport to scale the screen.
 	 * It is constantly called so if the screen is different in any way, it will update
 	 * the viewport and reposition the camera accordingly.
-	 * @author ctokunag
 	 */
 	@Override
 	public void resize(int width, int height) {
@@ -474,6 +475,7 @@ public class TGC_Engine extends Game {
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 	}
 
+	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
 	public Level getCurrentLevel() {
 		// TODO Auto-generated method stub
 		return currentLevel;

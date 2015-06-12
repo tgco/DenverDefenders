@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
 
@@ -95,7 +94,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 				}
 			});
 		}
-		//t.setPosition(Gdx.graphics.getWidth()/widthDivider, buttonHeight/3);
 		t.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		t.align(Align.bottom);
 		return t;
@@ -146,7 +144,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		//boolean transitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		
 		if(manager.update()) {

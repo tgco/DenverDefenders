@@ -6,24 +6,26 @@ import com.badlogic.gdx.Gdx;
 //GameClock measured in nanoseconds
 /**
  * Serves as the gameclock for the minigames
- * static clock is only created once
+ * Static clock is only created once.
+ *<p>
+ *-Final to avoid inheritance, static so only one instance is referred to.
+ *</p>
  * @author mtzimour
- *
  */
 
 public final class  MinigameClock {
-
-	private long levelLength;				//Time remaining in level
+	/**Time remaining in level */
+	private long levelLength;
+	/**Boolean to keep track of whether time remains*/
 	private boolean outOfTime = false;
 	
 	private static MinigameClock clock;
 	
 	/**
-	 * Gets the static instance of gameclock if it has already been created
-	 * creates a new instance if there is no clock yet
-	 * @return returns the static clock or a new one
+	 * Gets the static instance of gameclock if it has already been created.
+	 * Creates a new instance if there is no clock yet.
+	 * @return returns the static clock or a new one.
 	 */
-	
 	public static MinigameClock getInstance()
 	{
 		if (null == clock){
@@ -35,10 +37,9 @@ public final class  MinigameClock {
 	}
 	
 	/**
-	 * Sets the length of time allowed to complete a minigame
-	 * @param time Level time allowed in seconds
+	 * Sets the length of time allowed to complete a minigame.
+	 * @param time Level time allowed in seconds.
 	 */
-	
 	public void setLevelLength(long time)
 	{
 		levelLength = time * 1000000000;
@@ -46,8 +47,8 @@ public final class  MinigameClock {
 	}
 		
 	/**
-	 * decrements the level time remaining by time since the last frame
-	 * Checks if level is out of time and raises a flag if it is
+	 * Decrements the level time remaining by time since the last frame.
+	 * Checks if level is out of time and raises a flag if it is.
 	 */
 	public void render()
 	{
@@ -61,8 +62,8 @@ public final class  MinigameClock {
 	}
 		
 	/**
-	 * Gets the time remaining in the level
-	 * @return total level time remaining in nanoseconds
+	 * Gets the time remaining in the level.
+	 * @return total Level time remaining in nanoseconds.
 	 */
 	public long getLevelTime()
 	{
@@ -70,24 +71,27 @@ public final class  MinigameClock {
 	}
 	
 	/**
-	 * Returns true if level is out of time, or false if level still has time remaining
-	 * @return if there is still time remaining or not
+	 * Returns true if level is out of time, or false if level still has time remaining.
+	 * @return If there is still time remaining or not.
 	 */
 	public boolean outOfTime()
 	{
 		return outOfTime;
 	}
-	
+	/**
+	 * Gets the time remaining in the level.
+	 * @return total Level time remaining in seconds.
+	 */
 	public long getLevelTimeInSeconds(){
 		return levelLength/1000000000;
 	}
-	
+	/**
+	 * Gets the time remaining in the level.
+	 * @return total Level time remaining in milliseconds.
+	 */
 	public String toString()
 	{
 		String millis = String.format("%2d", (levelLength % 1000000000)).substring(0, 2);
-		
-		//return String.format("%2d", (levelLength % 1000000000));
-		//return levelLength % 1000000000;
 		return getLevelTimeInSeconds() + "." + millis + " seconds remaining.";
 	}
 	
