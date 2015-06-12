@@ -97,7 +97,6 @@ public final class ScreenAdapterManager {
 	private Label fact;
 	private Label minigame;
 	private LabelStyle ls;
-	private String levelName = null;
 	/**
 	 * Allows access to {@link #instance} from outside the class.
 	 * If the {@link #instance} is null, construct it.
@@ -360,10 +359,18 @@ public final class ScreenAdapterManager {
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
-		else if(getInstance().game.getCurrentLevel() != null && !game.getFromGame()) {
+		else if(game.getCurrentLevel() != null && !game.getFromGame()) {
 			Level current = getInstance().game.getCurrentLevel();
-			levelName = current.getLevelName();
 			minigame = new Label(current.getDescription(), ls);
+			minigame.setColor(1, 1, 1, 1);
+			minigame.setWrap(true);
+			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			minigame.setAlignment(Align.center, Align.center);
+			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
+		else if(game.getAllSaved()) {
+			minigame = new Label("You saved them all! Congratulations!", ls);
 			minigame.setColor(1, 1, 1, 1);
 			minigame.setWrap(true);
 			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));

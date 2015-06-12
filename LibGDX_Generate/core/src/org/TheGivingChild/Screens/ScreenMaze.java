@@ -317,7 +317,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
-			if(theRand >= 2 )
+			if(theRand == 2 )
 			{
 				//Add children to be drawn where minigames can be triggered
 				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
@@ -617,6 +617,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		if(allSaved()) {
 			reset();
+			game.setAllSaved(true);
 		}
 
 		else {
@@ -658,6 +659,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
 		}
 		//Gdx.input.setInputProcessor(this);
+		
 
 	}
 
@@ -681,6 +683,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				areSaved = false;
 			}
 		}
+		game.setAllSaved(areSaved);
 		return areSaved;
 	}
 

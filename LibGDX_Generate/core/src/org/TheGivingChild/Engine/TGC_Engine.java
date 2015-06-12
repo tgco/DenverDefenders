@@ -110,6 +110,7 @@ public class TGC_Engine extends Game {
     private boolean levelWinOrLose;
     private boolean packetCompleted = false;
     private boolean fromGame = false;
+    private boolean allSaved;
     
 	public void addLevels(Array<Level> levels){
 			this.levels.addAll(levels);
@@ -157,7 +158,7 @@ public class TGC_Engine extends Game {
 		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
 		currentLevel = possibleLevels.get(newLevelIndex);
 		currentLevel.resetLevel();
-		System.out.println(currentLevel.getLevelName());
+		//System.out.println(currentLevel.getLevelName());
 	}
 	
 	public void levelCompleted(boolean winOrLose) {
@@ -418,6 +419,14 @@ public class TGC_Engine extends Game {
 	public Level getCurrentLevel() {
 		// TODO Auto-generated method stub
 		return currentLevel;
+	}
+	
+	public void setAllSaved(boolean done) {
+		allSaved = done;
+	}
+	
+	public boolean getAllSaved() {
+		return allSaved;
 	}
 	
 }
