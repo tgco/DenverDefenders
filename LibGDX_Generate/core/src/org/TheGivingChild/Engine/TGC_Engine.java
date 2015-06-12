@@ -127,6 +127,8 @@ public class TGC_Engine extends Game {
 	private boolean fromGame = false;
 	/**{@link #backgroundSounds} is an {@link com.badlogic.gdx.utils.Array Array} of {@link com.badlogic.gdx.audio.Music Music} to play in the background.*/
 	private Array<Music> backgroundSounds;
+	/**{@link #allSaved} is true if all the kids in the maze have been saved.*/
+	private boolean allSaved = false;
 	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
 	private Music backgroundSoundToPlay;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
@@ -190,6 +192,15 @@ public class TGC_Engine extends Game {
 	/**{@link #getMazeCompleted()} returns {@link #currentMazeCompleted}. */
 	public boolean getMazeCompleted() {
 		return currentMazeCompleted;
+	}
+	/**{@link #getAllSaved()} returns {@link #allSaved} */
+	public boolean getAllSaved() {
+		return allSaved;
+	}
+	/**{@link #getAllSaved()} sets {@link #allSaved} to state.
+	 * @param state {@link #allSaved} is set to this.*/
+	public void setAllSaved(boolean state) {
+		allSaved = state;
 	}
 	/**
 	 * {@link #setFromGame(boolean)} sets {@link #fromGame} state.
@@ -280,6 +291,7 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Lollipop3.png", Texture.class);
 		manager.load("ObjectImages/Sundae1.png", Texture.class);
 		manager.load("ObjectImages/Sundae2.png", Texture.class);
+		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.finishLoading();
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));

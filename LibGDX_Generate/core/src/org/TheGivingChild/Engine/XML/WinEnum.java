@@ -2,6 +2,7 @@ package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.MinigameClock;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -123,6 +124,37 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 		@Override
 		public void setup(Level level) {
 			// TODO Auto-generated method stub
+		}
+	},
+	COLLIDES_WITH_RIGHT_WIN{
+
+		@Override
+		public String getXMLDescription() {
+			return "collides_with_right_win";
+		}
+
+		@Override
+		public void checkWin(Level level) {
+			for(String currentID:level.getWinInfo(COLLIDES_WITH_RIGHT_WIN)){
+				GameObject currentObject = level.getObjectOfID(Integer.parseInt(currentID));
+				if(currentObject.getX() + currentObject.getTextureWidth() > Gdx.graphics.getWidth()){
+					level.setCompleted(true);
+					level.setWon(true);
+				}
+			}
+		}
+
+		@Override
+		public Array<String> getValues(Level level) {
+			return level.getWinInfo(COLLIDES_WITH_RIGHT_WIN);
+		}
+
+		@Override
+		public void setup(Level level) {
+			String[] temp = level.getWinInfo(COLLIDES_WITH_RIGHT_WIN).get(0).split(",");
+			level.getWinInfo(COLLIDES_WITH_RIGHT_WIN).set(0, temp[0]);
+			for(int i = 1;i<temp.length;i++)
+				level.getWinInfo(COLLIDES_WITH_RIGHT_WIN).add(temp[i]);
 		}
 	};
 	/**

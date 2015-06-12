@@ -49,7 +49,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
-	private float xMove, yMove;
+	private float xMove, yMove, speed;
 	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	private int mapTilesX, mapTilesY;
@@ -69,10 +69,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private Texture backdropTexture;
 	private TextureRegion backdropTextureRegion;
-
+	
 	private MinigameRectangle lastRec;
 	private AssetManager manager;
 	private Rectangle heroHQ;
+	
+	private Texture heartTexture;
+	private TextureRegion healthTextureRegion;
+	private int playerHealth = 3;
+	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -275,7 +280,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
-		
+		heartTexture = manager.get("ObjectImages/heart.png");
+		healthTextureRegion = new TextureRegion(heartTexture);
 	}
 
 
@@ -301,7 +307,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
-			if(theRand >= 2 )
+			if(theRand >= 2 )//== 2
 			{
 				//Add children to be drawn where minigames can be triggered
 				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
@@ -314,12 +320,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 				rect.setOccupied(child);
 			}
-
-
-
 		}
-
-
 	}
 
 
@@ -350,10 +351,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.begin();
 				//draw the background texture
 				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				
 				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
+				
+
 				//Make the sprite not move when the map is scrolled
 				spriteBatch.setProjectionMatrix(camera.combined);
 				//move the sprite left, right, up, or down
@@ -452,6 +454,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					s.draw(spriteBatch);
 				}
 				//update the camera to be above the character
+				for (int i=0; i<playerHealth; i++) {
+					float xPos = camera.position.x - camera.viewportWidth/2;
+					float heartSize = camera.viewportHeight/10;
+					float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
+					spriteBatch.draw(healthTextureRegion, xPos + (heartSize*i), yPos, heartSize, heartSize);
+				}
 				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
 				spriteBatch.end();
@@ -465,6 +473,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if (allSaved()) {
 				System.out.println("They are all saved");
 				game.setMazeCompleted(true);
+				game.setAllSaved(true);
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			}
+			
+			if (playerHealth <= 0) {
+				System.out.println("You have ran out of lives :(");
+				game.setMazeCompleted(true);
+				game.setAllSaved(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
@@ -595,7 +611,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		xMove = 0;
 		yMove = 0;
 
-		if(allSaved()) {
+		if(allSaved() || playerHealth <= 0) {
 			reset();
 		}
 
@@ -619,7 +635,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 					ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
 					child.moveTo(unoccupied.get(newPositionIndex));
 				}
-
+				playerHealth--;
 			}
 
 			lastRec.empty();
@@ -650,8 +666,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public void reset() {
 		mazeChildren.clear();
 		followers.clear();
-
+		for (MinigameRectangle rect: minigameRects) {
+			rect.empty();
+		}
+		playerHealth = 3;
 		playerCharacter.setPosition(heroHQ.x,heroHQ.y);
+		game.setAllSaved(false);
+		game.setMazeCompleted(false);
 		populate();
 	}
 
