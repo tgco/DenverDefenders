@@ -16,7 +16,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,14 +23,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.org.apache.regexp.internal.REUtil;
 
 /**
  * This is the main class that is passed between all the screens.
@@ -79,8 +75,6 @@ public class TGC_Engine extends Game {
 	private final static float SCREEN_TRANSITION_TIMER = 1.0f;
 	/**{@link #screenTransitionTimeLeft} only keeps track of the current state of the initial {@link #SCREEN_TRANSITION_TIMER}.*/
 	private float screenTransitionTimeLeft;
-	private Group objectGroup;
-	//Asset Manager to store assets
 	/**
 	 * This is the asset manager that will store all of the textures, packs, and sounds.
 	 * It is accessed throughout all of the game and can be loaded and accessed at any point.
@@ -95,13 +89,13 @@ public class TGC_Engine extends Game {
 	 * @author ctokunag
 	 */
 	private AssetManager manager = new AssetManager();
-
+	/**{@link #reader} allows minigames to be read in.*/
 	private XML_Reader reader;
+	/**{@link #writer} allows minigames to be written in the editor.*/
 	private XML_Writer writer;
-	//Map stuff
+	/**{@link #mapCamera} controls the maps camera.*/
 	private OrthographicCamera mapCamera;
-
-	//Viewport stuff
+	/**{@link #camera} controls the normal render camera.*/
 	private OrthographicCamera camera;
 	/**
 	 * This viewport is used to scale the game to whatever screen is being used.
@@ -119,20 +113,25 @@ public class TGC_Engine extends Game {
 	 * will be no black bars, but the images may be distorted. We have decided to go with
 	 * StretchViewport as most of the aspect ratios we will be dealing with will be fairly
 	 * close, so we shouldn't have to deal with too much distortion.
-	 * @author ctokunag
 	 */
 	private Viewport viewport;
-
+	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
-	private int gameStart = 0;
-
+	/**{@link #gameStart} is true if the game has gone past the original splash screen. False otherwise */
+	private boolean gameStart = false;
+	/**{@link #levelWinOrLose} is true if the minigame was just won, false if the minigame was lost.*/
 	private boolean levelWinOrLose;
+	/**{@link #currentMazeCompleted} is true if the maze has been completed.*/
 	private boolean currentMazeCompleted = false;
+	/**{@link #fromGame} is true if the screen transitioned from a minigame.*/
 	private boolean fromGame = false;
-	private boolean allSaved = false;
+	/**{@link #backgroundSounds} is an {@link com.badlogic.gdx.utils.Array Array} of {@link com.badlogic.gdx.audio.Music Music} to play in the background.*/
 	private Array<Music> backgroundSounds;
+	/**{@link #allSaved} is true if all the kids in the maze have been saved.*/
+	private boolean allSaved = false;
+	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
 	private Music backgroundSoundToPlay;
-
+	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
 	public void loadLevelPackets() {
 		levelPackets = new Array<LevelPacket>();
 		FileHandle dirHandle;
@@ -153,7 +152,7 @@ public class TGC_Engine extends Game {
 			levelPackets.add(packet);
 		}
 	}
-
+	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
 	public void selectLevel() {
 		Array<Level> possibleLevels = new Array<Level>();
 		for (Level newLevel: levelPackets.get(0).getLevels()) {
@@ -170,42 +169,47 @@ public class TGC_Engine extends Game {
 				}
 			}
 		}
-
 		Random rand = new Random();
 		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
 		currentLevel = possibleLevels.get(newLevelIndex);
 		currentLevel.resetLevel();
 		//System.out.println(currentLevel.getLevelName());
 	}
-
+	/**{@link #levelCompleted(boolean)} sets the {@link #levelWinOrLose} to winOrLose.
+	 * @param winOrLose {@link #levelWinOrLose} is set to this.*/
 	public void levelCompleted(boolean winOrLose) {
 		levelWinOrLose = winOrLose;
 	}
-
+	/**{@link #levelWin()} returns {@link #levelWinOrLose}.*/
 	public boolean levelWin() {
 		return levelWinOrLose;
 	}
-
+	/**{@link #setMazeCompleted(boolean)} sets the {@link #currentMazeCompleted} to state.
+	 * @param state {@link #currentMazeCompleted} is set to this. */
 	public void setMazeCompleted(boolean state) {
 		currentMazeCompleted = state;
 	}
-
+	/**{@link #getMazeCompleted()} returns {@link #currentMazeCompleted}. */
 	public boolean getMazeCompleted() {
 		return currentMazeCompleted;
 	}
-	
+	/**{@link #getAllSaved()} returns {@link #allSaved} */
 	public boolean getAllSaved() {
 		return allSaved;
 	}
-	
+	/**{@link #getAllSaved()} sets {@link #allSaved} to state.
+	 * @param state {@link #allSaved} is set to this.*/
 	public void setAllSaved(boolean state) {
 		allSaved = state;
 	}
-	
+	/**
+	 * {@link #setFromGame(boolean)} sets {@link #fromGame} state.
+	 * @param state {@link #fromGame} is set to this.
+	 */
 	public void setFromGame(boolean state) {
 		fromGame = state;
 	}
-	/**{@link #nullCurrentLevel()} sets {@link #currentLevel} to null*/
+	/**{@link #nullCurrentLevel()} sets {@link #currentLevel} to null.*/
 	public void nullCurrentLevel() {
 		currentLevel = null;
 	}
@@ -409,13 +413,13 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
-		if(!ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
+		if(!ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
 		}
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && gameStart < 1) {
-			gameStart++;
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart) {
+			gameStart = true;
 		}
 		/**
 		 * This checks if the manager is done updating or not. If the manager is not 

@@ -49,11 +49,9 @@ class ScreenOptions extends ScreenAdapter {
 	private boolean isRendered = false;
 	private String[] optionsArray = {"   Music   ", 
 			  						 "   Sound   "};
-	private boolean option1, option2 = false;
 	private Slider slider;
 	private Label sliderName;
 	private float volume;
-	private boolean before1, before2 = false;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -86,20 +84,16 @@ class ScreenOptions extends ScreenAdapter {
 				for(CheckBox c : options) {
 					if(c.isChecked()) {
 						if(c.equals(options.get(0))){
-							option1 = true;
 							game.musicEnabled = true;
 						}
 						else if(c.equals(options.get(1))){
-							option2 = true;
 							game.soundEnabled = true;
 						}
 					}
 					else if(c.equals(options.get(0))){
-						option1 = true;
 						game.musicEnabled = false;
 					}
 					else if(c.equals(options.get(1))){
-						option2 = true;
 						game.soundEnabled = false;
 					}
 				}
@@ -231,18 +225,6 @@ class ScreenOptions extends ScreenAdapter {
 				 super.changed(event, actor);
 				 if(slider.getValue() != 0)
 					 volume = slider.getValue();
-				 if(option1)
-					 before1 = true;
-				 if(option2)
-					 before2 = true;
-				 if(option1 && !option2) {
-					 before1 = true;
-					 before2 = false;
-				 }
-				 if(!option1 && option2) {
-					 before1 = false;
-					 before2 = true;
-				 }
 				 if(mute.isChecked()) {
 					 slider.setValue(0);
 					 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
