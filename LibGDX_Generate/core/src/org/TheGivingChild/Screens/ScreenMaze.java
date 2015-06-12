@@ -359,6 +359,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.begin();
 				//draw the background texture
 				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				
 				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
