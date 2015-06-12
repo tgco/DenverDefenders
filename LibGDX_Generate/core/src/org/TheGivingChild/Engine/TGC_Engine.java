@@ -468,12 +468,4 @@ public class TGC_Engine extends Game {
 		return currentLevel;
 	}
 	
-	public void setAllSaved(boolean done) {
-		allSaved = done;
-	}
-	
-	public boolean getAllSaved() {
-		return allSaved;
-	}
-	
 }

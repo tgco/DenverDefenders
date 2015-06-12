@@ -419,15 +419,29 @@ public final class ScreenAdapterManager {
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
-		else if(game.getAllSaved()) {
-			minigame = new Label("You saved them all! Congratulations!", ls);
-			minigame.setColor(1, 1, 1, 1);
-			minigame.setWrap(true);
-			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-			minigame.setAlignment(Align.center, Align.center);
-			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
+//		else if(game.getAllSaved()) {
+//			minigame = new Label("You saved them all! Congratulations!", ls);
+//			minigame.setColor(1, 1, 1, 1);
+//			minigame.setWrap(true);
+//			switch(Gdx.app.getType()){
+//			case Android:
+//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+//				break;
+//				//if using the desktop set the width and height to a 16:9 resolution.
+//			case Desktop:
+//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+//				break;
+//			case iOS:
+//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+//				break;
+//			default:
+//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+//				break;
+//			}
+//			minigame.setAlignment(Align.center, Align.center);
+//			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
+//			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		}
 
 		else {
 			minigame = null;
@@ -435,22 +449,22 @@ public final class ScreenAdapterManager {
 		
 		mazeTable = new Table();
 		if (game.getMazeCompleted()) {
-			maze = new Label("You Saved All the Kids!", ls);
+			maze = new Label("You Saved All the Kids! Congratulations!", ls);
 			maze.setColor(1, 1, 1, 1);
 			maze.setWrap(true);
 			switch(Gdx.app.getType()){
 			case Android:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
 				break;
 				//if using the desktop set the width and height to a 16:9 resolution.
 			case Desktop:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 				break;
 			case iOS:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
 				break;
 			default:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 				break;
 			}
 			maze.setAlignment(Align.center, Align.center);

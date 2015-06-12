@@ -601,7 +601,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		if(allSaved()) {
 			reset();
-			game.setAllSaved(true);
 		}
 
 		else {
@@ -667,7 +666,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				areSaved = false;
 			}
 		}
-		game.setAllSaved(areSaved);
 		return areSaved;
 	}
 
