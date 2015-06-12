@@ -2,6 +2,7 @@ package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.MinigameClock;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -112,6 +113,36 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			if(lose) System.out.println("LOSE");
 			level.setCompleted(lose);
 			level.setWon(!lose);
+		}
+	},
+	COLLIDES_WITH_LEFT_LOSE{
+
+		@Override
+		public String getXMLDescription() {
+			return "collides_with_right_win";
+		}
+
+		@Override
+		public void checkLose(Level level) {
+			for(String currentID:level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE)){
+				if(level.getObjectOfID(Integer.parseInt(currentID)).getX() <= 0){
+					level.setCompleted(true);
+					level.setWon(false);
+				}
+			}
+		}
+
+		@Override
+		public Array<String> getValues(Level level) {
+			return level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE);
+		}
+
+		@Override
+		public void setup(Level level) {
+			String[] temp = level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE).get(0).split(",");
+			level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE).set(0, temp[0]);
+			for(int i = 1;i<temp.length;i++)
+				level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE).add(temp[i]);
 		}
 	};
 	public abstract String getXMLDescription();
