@@ -20,13 +20,11 @@ public class MinigameRectangle extends Rectangle {
 	
 	public ChildSprite getOccupant()
 	{
-		//return new ChildSprite(occupant);
 		return occupant;
 	}
 	
 	public void setOccupied(ChildSprite s)
 	{
-		//occupant = new ChildSprite(s);
 		System.out.println("Occupied");
 		occupant = s;
 		occupied = true;
