@@ -52,7 +52,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
-	private float xMove, yMove;
+	private float xMove, yMove, speed;
 	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	private int mapTilesX, mapTilesY;
@@ -671,8 +671,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	public void reset() {
 		mazeChildren.clear();
 		followers.clear();
+		for (MinigameRectangle rect: minigameRects) {
+			rect.empty();
+		}
 		playerHealth = 3;
 		playerCharacter.setPosition(heroHQ.x,heroHQ.y);
+		game.setAllSaved(false);
+		game.setMazeCompleted(false);
 		populate();
 	}
 
