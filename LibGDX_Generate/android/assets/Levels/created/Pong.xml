@@ -1,0 +1,7 @@
+<Level packageName="PLACEHOLDER1" levelName="Pong" levelImage="black.png" description="Let us play Pong.">
+	<!-- ball -->
+	<GameObject ID="0" attributes="moves,bounceOffTopAndBottom" imageFilename="pong_ball.png" initialLocation="100.0,1000.0" listeners="">
+		<moves value1="0" value2="-440.0"/>
+	</GameObject>
+	
+</Level>
