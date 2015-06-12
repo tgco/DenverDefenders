@@ -295,38 +295,38 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		for(MinigameRectangle rect : minigameRects)
 		{
 
-//			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-//			ChildSprite child = new ChildSprite(childTexture);
-//			child.setScale(.25f);
-//			child.setPosition(rect.x - child.getWidth()/4, rect.y);
-//
-//			//child.setRectangle(childRec);
-//			mazeChildren.add(child);
-//
-//			rect.setOccupied(child);
-//			break;
-//		}	
+			Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+			ChildSprite child = new ChildSprite(childTexture);
+			child.setScale(.25f);
+			child.setPosition(rect.x - child.getWidth()/4, rect.y);
+
+			//child.setRectangle(childRec);
+			mazeChildren.add(child);
+
+			rect.setOccupied(child);
+			break;
+		}	
 		
-			//Possible values 0,1,2,3,4
-			theRand = MathUtils.random(0,5);
-			//60% chance of kid being drawn
-			if(theRand == 2 )
-			{
-				//Add children to be drawn where minigames can be triggered
-				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
-				ChildSprite child = new ChildSprite(childTexture);
-				child.setScale(.25f);
-				child.setPosition(rect.x - child.getWidth()/4, rect.y);
-
-				//child.setRectangle(childRec);
-				mazeChildren.add(child);
-
-				rect.setOccupied(child);
-			}
-
-
-
-		}
+//			//Possible values 0,1,2,3,4
+//			theRand = MathUtils.random(0,5);
+//			//60% chance of kid being drawn
+//			if(theRand == 2 )
+//			{
+//				//Add children to be drawn where minigames can be triggered
+//				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+//				ChildSprite child = new ChildSprite(childTexture);
+//				child.setScale(.25f);
+//				child.setPosition(rect.x - child.getWidth()/4, rect.y);
+//
+//				//child.setRectangle(childRec);
+//				mazeChildren.add(child);
+//
+//				rect.setOccupied(child);
+//			}
+//
+//
+//
+//		}
 
 
 	}
@@ -359,10 +359,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.begin();
 				//draw the background texture
 				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				spriteBatch.draw(healthTextureRegion,playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, heartTexture.getWidth(), heartTexture.getHeight());
 				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
+				
+
 				//Make the sprite not move when the map is scrolled
 				spriteBatch.setProjectionMatrix(camera.combined);
 				//move the sprite left, right, up, or down
@@ -465,8 +466,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//update the camera to be above the character
 				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 				//end the batch that sprites have drawn to
+//				spriteBatch.end();
+//				
+//				spriteBatch.begin();
+				spriteBatch.draw(healthTextureRegion,playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()+Gdx.graphics.getHeight()/2-heartTexture.getHeight(), heartTexture.getWidth(), heartTexture.getHeight());
 				spriteBatch.end();
-
+				
 				if(ScreenAdapterManager.getInstance().cb.isChecked())
 					Gdx.input.setInputProcessor(this);
 

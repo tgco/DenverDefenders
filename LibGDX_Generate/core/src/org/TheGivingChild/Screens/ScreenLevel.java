@@ -98,6 +98,7 @@ public class ScreenLevel extends ScreenAdapter{
 				}
 				currentLevel.update();
 				batch.end();
+				System.out.println(currentLevel.getCompleted());
 				if (currentLevel.getCompleted()) {
 					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
 					ScreenAdapterManager.getInstance().game.setFromGame(true);

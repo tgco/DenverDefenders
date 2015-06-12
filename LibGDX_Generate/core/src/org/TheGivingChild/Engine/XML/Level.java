@@ -65,13 +65,14 @@ public class Level {
 		//check the win conditions.
 		for(WinEnum winEnum: winData.keys().toArray()){
 			winEnum.checkWin(this);
+			if (completed) return;
 		}
-		
-		if (completed) return;
 		
 		for (LoseEnum loseEnum: loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
+			if (completed) return;
 		}
+
 	}
 	public void resetLevel(){
 		//Reset level clock to 10
