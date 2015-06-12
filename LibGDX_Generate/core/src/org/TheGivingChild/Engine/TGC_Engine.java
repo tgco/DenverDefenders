@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.org.apache.regexp.internal.REUtil;
 
 /**
  * This is the main class that is passed between all the screens.
@@ -116,7 +117,7 @@ public class TGC_Engine extends Game {
 	private boolean levelWinOrLose;
 	private boolean currentMazeCompleted = false;
 	private boolean fromGame = false;
-	private boolean allSaved;
+	private boolean allSaved = false;
 	private Array<Music> backgroundSounds;
 	private Music backgroundSoundToPlay;
 
@@ -184,7 +185,15 @@ public class TGC_Engine extends Game {
 	public boolean getMazeCompleted() {
 		return currentMazeCompleted;
 	}
-
+	
+	public boolean getAllSaved() {
+		return allSaved;
+	}
+	
+	public void setAllSaved(boolean state) {
+		allSaved = state;
+	}
+	
 	public void setFromGame(boolean state) {
 		fromGame = state;
 	}

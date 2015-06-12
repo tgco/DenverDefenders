@@ -448,8 +448,31 @@ public final class ScreenAdapterManager {
 		}
 		
 		mazeTable = new Table();
-		if (game.getMazeCompleted()) {
+		if (game.getMazeCompleted() && game.getAllSaved()) {
 			maze = new Label("You Saved All the Kids! Congratulations!", ls);
+			maze.setColor(1, 1, 1, 1);
+			maze.setWrap(true);
+			switch(Gdx.app.getType()){
+			case Android:
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
+			maze.setAlignment(Align.center, Align.center);
+			mazeTable.add(maze).width(Gdx.graphics.getWidth()/2);
+			mazeTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
+		else if (game.getMazeCompleted() && !game.getAllSaved()) {
+			maze = new Label("You Ran Out of Lives! Try Again!", ls);
 			maze.setColor(1, 1, 1, 1);
 			maze.setWrap(true);
 			switch(Gdx.app.getType()){
