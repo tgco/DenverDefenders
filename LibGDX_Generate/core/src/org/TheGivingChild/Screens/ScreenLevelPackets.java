@@ -9,9 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -49,7 +47,6 @@ class ScreenLevelPackets extends ScreenAdapter{
 	
 	private AssetManager manager;
 	private boolean isRendered = false;
-	private Batch batch = new SpriteBatch();
 	
 	//constructor. Initialize the variables.
 	public ScreenLevelPackets() {
@@ -123,9 +120,6 @@ class ScreenLevelPackets extends ScreenAdapter{
 	}
 	
 	public void createPackets(){
-		for (LevelPacket packet: packets) {
-			
-		}
 		for(Level l: levels){
 			//packet name to add to
 			String packetName = l.getPackageName();

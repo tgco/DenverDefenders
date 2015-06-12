@@ -362,7 +362,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
 				//If the sprite is not going off the maze allow it to move
 				//Check for a collision as well
-				boolean triggerGame = false;
 				boolean collision = false;
 				
 				
@@ -390,7 +389,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 								//m.empty();
 								lastRec = m;
 								playerCharacter.setPosition(m.getX(), m.getY());
-								triggerGame = true;
 								game.selectLevel();
 								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
 

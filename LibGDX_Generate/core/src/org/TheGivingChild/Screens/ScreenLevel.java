@@ -3,7 +3,6 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
-import org.TheGivingChild.Engine.XML.LevelPacket;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * Takes a given {@link org.TheGivingChild.Engine.XML.Level Level} and allows the user to play it.
@@ -20,12 +18,9 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 public class ScreenLevel extends ScreenAdapter{
-	private LevelPacket currentLevelPacket;
 	private Level currentLevel;
-	private Array<Level> levels;
 	private SpriteBatch batch;
 	private AssetManager manager;
-	private int levelNumber;
 	
 	public ScreenLevel() {
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
@@ -37,11 +32,8 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void hide() {
-		currentLevelPacket = null;
-		levels = null;
 		currentLevel = null;
 		manager = null;
-		levelNumber = 0;
 		ScreenAdapterManager.getInstance().cb.setChecked(false);;
 	}
 	
@@ -52,9 +44,6 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		currentLevelPacket = ScreenAdapterManager.getInstance().game.getLevelPackets().get(0);
-
-		levels = currentLevelPacket.getLevels();
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
 		currentLevel.loadObjectsToStage();

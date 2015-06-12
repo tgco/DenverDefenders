@@ -35,7 +35,7 @@ import com.badlogic.gdx.utils.ObjectMap;
  * @author Nathaniel Jacobi
  *
  */
-class ScreenEditor extends ScreenAdapter{	
+class ScreenEditor extends ScreenAdapter{
 	private String levelName = "Base";
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
@@ -67,7 +67,6 @@ class ScreenEditor extends ScreenAdapter{
 
 	//Stores the texture that is going to be used by the a EditorGameObject
 	private Texture objectImage;
-	private Array<Texture> text;
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
 
@@ -89,7 +88,6 @@ class ScreenEditor extends ScreenAdapter{
 	 */
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
-		text = new Array<Texture>();
 		mainGame = ScreenAdapterManager.getInstance().game;
 		manager = mainGame.getAssetManager();
 		attributeCheckBoxes = new Array<CheckBox>();
