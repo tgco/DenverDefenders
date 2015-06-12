@@ -304,7 +304,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			//Possible values 0,1,2,3,4
 			theRand = MathUtils.random(0,5);
 			//60% chance of kid being drawn
-			if(theRand == 2 )
+			if(theRand >= 2 )//== 2
 			{
 				//Add children to be drawn where minigames can be triggered
 				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));

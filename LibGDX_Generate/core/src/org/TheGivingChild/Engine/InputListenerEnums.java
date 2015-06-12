@@ -63,7 +63,6 @@ public enum InputListenerEnums{
 	DRAG_OBJECT_X{
 		@Override
 		public InputListener getInputListener(GameObject object) {
-
 			//create a final reference to gameObject to be used within the anonymous class.
 			final GameObject gameObject = object;
 			//return a new input listener, overriding needed interactions
@@ -78,8 +77,27 @@ public enum InputListenerEnums{
 
 		@Override
 		public String getXMLName() {
-			// TODO Auto-generated method stub
-			return "drag_object";
+			return "drag_object_x";
+		}
+	},
+	DRAG_OBJECT_Y{
+		@Override
+		public InputListener getInputListener(GameObject object) {
+			//create a final reference to gameObject to be used within the anonymous class.
+			final GameObject gameObject = object;
+			//return a new input listener, overriding needed interactions
+			return(new DragListener(){
+				//drag moves the object to the new location that drag returns every update
+				@Override
+				public void drag(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer) {
+					gameObject.moveBy(0,y-gameObject.getHeight()/2);
+				};
+			});
+		}
+
+		@Override
+		public String getXMLName() {
+			return "drag_object_y";
 		}
 	};
 	//every enum needs to override this abstract method, and return an Input Listener
