@@ -89,7 +89,7 @@ public class ChildSprite extends Sprite {
 		this.setSpeed(leader.getSpeed());
 		
 		//ifxAway > leader.getWidth()*.25f
-		if(xAway > leader.getWidth()*.15f)
+		if(xAway > this.getWidth()*.25f)
 		{
 		
 			//if the leader is to your right
@@ -107,7 +107,7 @@ public class ChildSprite extends Sprite {
 			}
 		}
 		
-		else if (yAway >  leader.getHeight()*.15f) {
+		else if (yAway >  this.getHeight()*.25f) {
 			//if leader is above you
 			if(leader.getLastY() > this.getY())
 			{

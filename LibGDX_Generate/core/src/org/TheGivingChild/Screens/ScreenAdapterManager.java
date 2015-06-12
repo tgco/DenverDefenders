@@ -89,6 +89,7 @@ public final class ScreenAdapterManager {
 	private Table buttonTable;
 	private Table factTable;
 	private Table minigameTable;
+	private Table mazeTable;
 	private Table overallTable;
 	private Skin skin;
 	private CheckBoxStyle cbs;
@@ -96,6 +97,7 @@ public final class ScreenAdapterManager {
 	public CheckBox cb;
 	private Label fact;
 	private Label minigame;
+	private Label maze;
 	private LabelStyle ls;
 	private String levelName = null;
 	/**
@@ -273,7 +275,8 @@ public final class ScreenAdapterManager {
 		//overallTable.remove();
 		factTable.remove();
 		minigameTable.remove();
-
+		mazeTable.remove();
+		
 		createLabels(MathUtils.random(100));
 		overallTable.add(factTable).align(Align.center); 
 		overallTable.row();
@@ -284,7 +287,12 @@ public final class ScreenAdapterManager {
 			overallTable.add(minigameTable.align(Align.center));			
 			game.setFromGame(false);
 		}
-
+		System.out.println(game.getMazeCompleted());
+		if (screenEnum.equals(ScreenAdapterEnums.MAIN) && game.getMazeCompleted()) {
+			overallTable.row();
+			overallTable.add(mazeTable.align(Align.center));
+			game.setMazeCompleted(false);
+		}
 		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		overallTable.align(Align.center);
 		game.setScreen(screens.get(screenEnum.ordinal()));
@@ -346,7 +354,21 @@ public final class ScreenAdapterManager {
 			minigame = new Label("You WON!", ls);
 			minigame.setColor(1, 1, 1, 1);
 			minigame.setWrap(true);
-			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			switch(Gdx.app.getType()){
+			case Android:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
 			minigame.setAlignment(Align.center, Align.center);
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -355,7 +377,21 @@ public final class ScreenAdapterManager {
 			minigame = new Label("You lost", ls);
 			minigame.setColor(1, 1, 1, 1);
 			minigame.setWrap(true);
-			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			switch(Gdx.app.getType()){
+			case Android:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
 			minigame.setAlignment(Align.center, Align.center);
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -366,7 +402,21 @@ public final class ScreenAdapterManager {
 			minigame = new Label(current.getDescription(), ls);
 			minigame.setColor(1, 1, 1, 1);
 			minigame.setWrap(true);
-			minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			switch(Gdx.app.getType()){
+			case Android:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
 			minigame.setAlignment(Align.center, Align.center);
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -374,6 +424,34 @@ public final class ScreenAdapterManager {
 
 		else {
 			minigame = null;
+		}
+		
+		mazeTable = new Table();
+		if (game.getMazeCompleted()) {
+			maze = new Label("You Saved All the Kids!", ls);
+			maze.setColor(1, 1, 1, 1);
+			maze.setWrap(true);
+			switch(Gdx.app.getType()){
+			case Android:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+				//if using the desktop set the width and height to a 16:9 resolution.
+			case Desktop:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			case iOS:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+				break;
+			default:
+				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+				break;
+			}
+			maze.setAlignment(Align.center, Align.center);
+			mazeTable.add(maze).width(Gdx.graphics.getWidth()/2);
+			mazeTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
+		else {
+			maze = null;
 		}
 	}
 
