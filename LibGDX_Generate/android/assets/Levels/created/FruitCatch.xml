@@ -1,0 +1,35 @@
+<Level packageName="PLACEHOLDER1" levelName="Fruit Catch" levelImage="TEMPORARY_Cartoon_Forest.png" description="Catch all the fruit!">
+	<!--Fruit! -->
+	<GameObject ID="0" attributes="moves" imageFilename="Apple1.png" initialLocation="100.0,1000.0" listeners="">
+		<moves value1="0" value2="-440.0"/>
+	</GameObject>
+	<GameObject ID="1" attributes="moves" imageFilename="Banana1.png" initialLocation="200.0,1000.0" listeners="">
+		<moves value1="0" value2="-325.0"/>
+	</GameObject>
+	<GameObject ID="2" attributes="moves" imageFilename="Cherries1.png" initialLocation="300.0,1100.0" listeners="">
+		<moves value1="0" value2="-250.0"/>
+	</GameObject>
+	<GameObject ID="3" attributes="moves" imageFilename="Cherries2.png" initialLocation="400.0,1200.0" listeners="">
+		<moves value1="0" value2="-340.0"/>
+	</GameObject>
+	<GameObject ID="4" attributes="moves" imageFilename="Grapes_light.png" initialLocation="100.0,1000.0" listeners="">
+		<moves value1="0" value2="-390.0"/>
+	</GameObject>
+	<GameObject ID="5" attributes="moves" imageFilename="Icecream1.png" initialLocation="500.0,1500.0" listeners="">
+		<moves value1="0" value2="-310.0"/>
+	</GameObject>
+	<GameObject ID="6" attributes="moves" imageFilename="Icecream1.png" initialLocation="700.0,1500.0" listeners="">
+		<moves value1="0" value2="-330.0"/>
+	</GameObject>
+	
+	<!--basket! -->
+	<GameObject ID="11" attributes="moves,destroysObjectsOfIDOnCollision" imageFilename="basket_new.png" initialLocation="500.0,50.0" listeners="drag_object_X">
+		<moves value1="0.0" value2="0.0"/>
+		<destroysObjectsOfIDOnCollision value1="0,1,2,3,4,5,6"/>
+	</GameObject>
+	
+	<LevelGoals win="objects_of_ID_destroyed_win" lose="below_screen_lose_ID">
+		<objects_of_ID_destroyed_win value1="0,1,2,3,4,5,6"/>
+		<below_screen_lose_ID value1="0,1,2,3,4,5,6"/>
+	</LevelGoals>
+</Level>
