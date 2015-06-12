@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public enum WinEnum {//Cannot have any labels in common with LoseEnum
-	
+	/**
+	 * if timer expires, win
+	 */
 	TIMEOUT_WIN{//completely broken, code has been completely changed since this was added in
 		public String getXMLDescription(){
 			return "timeout_win";
@@ -30,6 +32,9 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			
 		}
 	},
+	/**
+	 * If all of the objects listed in value2 are in collision with object listed in value1, then win.
+	 */
 	COLLISION_WITH_OBJECT_WIN{
 		public String getXMLDescription(){
 			return "collision_With_Object_Win";
@@ -66,6 +71,9 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			
 		}
 	},
+	/**
+	 * if all objects are destroyed, win
+	 */
 	ALL_OBJECTS_DESTROYED_WIN{
 		@Override
 		public String getXMLDescription() {
@@ -96,6 +104,9 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			
 		}		
 	},
+	/**
+	 * if all objects of ID listed in value1 are destroyed, win
+	 */
 	OBJECTS_OF_ID_DESTROYED_WIN{
 		@Override
 		public String getXMLDescription() {
@@ -126,6 +137,9 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			// TODO Auto-generated method stub
 		}
 	},
+	/**
+	 * if object of ID listed in value1 collides with right edge of level, win (used for pong)
+	 */
 	COLLIDES_WITH_RIGHT_WIN{
 
 		@Override
