@@ -114,7 +114,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		arrayWalkU = new Array<Texture>();
 		
 		currentWalkSequence = new Array<Texture>();
-		
 
 		spriteBatch = new SpriteBatch();
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
