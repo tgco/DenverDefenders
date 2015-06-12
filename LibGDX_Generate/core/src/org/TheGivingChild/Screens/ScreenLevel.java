@@ -62,6 +62,9 @@ public class ScreenLevel extends ScreenAdapter{
 			gameObject.resetObject();
 		}
 		batch = new SpriteBatch();
+		
+		//make sure to set the level time so it does not go negative
+		//MinigameClock.getInstance().setLevelLength(5);
 	}
 	
 	/**
@@ -87,10 +90,14 @@ public class ScreenLevel extends ScreenAdapter{
 					}
 				}
 //				MinigameClock.getInstance().render();
+				//only draw if there is time remaining in the clock
+				//This if made the clock never drawn at all
+				if(!MinigameClock.getInstance().outOfTime())
+				{
 				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+				}
 				currentLevel.update();
 				batch.end();
-				System.out.println(currentLevel.getLevelName());
 				if (currentLevel.getCompleted()) {
 					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
 					ScreenAdapterManager.getInstance().game.setFromGame(true);

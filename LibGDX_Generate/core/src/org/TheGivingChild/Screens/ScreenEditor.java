@@ -100,7 +100,7 @@ class ScreenEditor extends ScreenAdapter{
 		createEditorTable();
 		//Instantiates the SpriteBatch, gridImage Texture and its Array
 		batch = new SpriteBatch();
-		gridImage = (Texture) mainGame.getAssetManager().get("editorAssets/Grid.png");		
+		gridImage = (Texture) mainGame.getAssetManager().get("ObjectImages/Grid.png");		
 		//Instantiate Array for the gameObjects
 		gameObjects = new Array<GameObject>();
 
@@ -163,7 +163,7 @@ class ScreenEditor extends ScreenAdapter{
 
 				for (int i=0; i<gridCol; i++) {
 					for (int j=0; j<gridRows; j++) {
-						batch.draw((Texture) manager.get("editorAssets/Grid.png"), grid[i][j].x, grid[i][j].y);
+						batch.draw((Texture) manager.get("ObjectImages/Grid.png"), grid[i][j].x, grid[i][j].y);
 					}
 				}
 
@@ -311,13 +311,13 @@ class ScreenEditor extends ScreenAdapter{
 		ballOrBox++;
 		ballOrBox = ballOrBox % 3;
 		if (ballOrBox == 0) {
-			objectImage =  manager.get("editorAssets/ball.png");
+			objectImage =  manager.get("ObjectImages/ball.png");
 		}
 		else if (ballOrBox == 1) {
-			objectImage =  manager.get("editorAssets/Box.png");
+			objectImage =  manager.get("ObjectImages/Box.png");
 		}
 		else if (ballOrBox == 2) {
-			objectImage = manager.get("editorAssets/BoxHalf.png");
+			objectImage = manager.get("ObjectImages/BoxHalf.png");
 		}
 	}
 
