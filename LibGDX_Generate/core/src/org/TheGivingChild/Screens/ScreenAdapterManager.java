@@ -21,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
@@ -111,9 +110,9 @@ public final class ScreenAdapterManager {
 		return instance;
 	}
 	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
-			"The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
-			"Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
-	"Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
+							  "The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
+							  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
+							  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -185,9 +184,6 @@ public final class ScreenAdapterManager {
 		createButton();
 		createLabels(MathUtils.random(100));
 		overallTable = new Table();
-		//		overallTable.add(factTable);
-		//		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		//		overallTable.align(Align.center);
 	}
 	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
 	public void backgroundImage() {
@@ -271,7 +267,6 @@ public final class ScreenAdapterManager {
 		SCREEN_TRANSITION_TIME_LEFT = 1.0f;
 		currentEnum = screenEnum;
 		screenTransitionInComplete = false;
-		//overallTable.remove();
 		factTable.remove();
 		minigameTable.remove();
 		mazeTable.remove();
@@ -296,7 +291,6 @@ public final class ScreenAdapterManager {
 		overallTable.align(Align.center);
 		game.setScreen(screens.get(screenEnum.ordinal()));
 
-		//createFacts(MathUtils.random(100));
 
 	}
 
@@ -317,7 +311,6 @@ public final class ScreenAdapterManager {
 			}
 		});
 		buttonTable.add(cb).center().bottom();
-		//buttonTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
 	}
 	public void createLabels(int r) {
@@ -419,30 +412,6 @@ public final class ScreenAdapterManager {
 			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
 			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
-//		else if(game.getAllSaved()) {
-//			minigame = new Label("You saved them all! Congratulations!", ls);
-//			minigame.setColor(1, 1, 1, 1);
-//			minigame.setWrap(true);
-//			switch(Gdx.app.getType()){
-//			case Android:
-//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-//				break;
-//				//if using the desktop set the width and height to a 16:9 resolution.
-//			case Desktop:
-//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-//				break;
-//			case iOS:
-//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-//				break;
-//			default:
-//				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-//				break;
-//			}
-//			minigame.setAlignment(Align.center, Align.center);
-//			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-//			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		}
-
 		else {
 			minigame = null;
 		}
