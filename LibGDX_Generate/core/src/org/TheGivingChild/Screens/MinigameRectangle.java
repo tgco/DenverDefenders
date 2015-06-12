@@ -4,6 +4,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MinigameRectangle extends Rectangle {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean occupied;
 	private ChildSprite occupant;	
 	

@@ -2,7 +2,6 @@ package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.MinigameClock;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {//Cannot have any labels in common with WinEnum

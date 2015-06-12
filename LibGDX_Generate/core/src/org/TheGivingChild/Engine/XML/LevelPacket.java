@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 public class LevelPacket implements Iterable<Level>{
 	private String packetName;
 	private Array<Level> levels;
-	private boolean allCompleted = false;
 	
 	public LevelPacket(String name){
 		packetName = name;
