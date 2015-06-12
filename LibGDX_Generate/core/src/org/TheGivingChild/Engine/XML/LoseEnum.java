@@ -5,6 +5,9 @@ import org.TheGivingChild.Engine.MinigameClock;
 import com.badlogic.gdx.utils.Array;
 
 public enum LoseEnum {//Cannot have any labels in common with WinEnum
+	/**
+	 * if timer expires, lose
+	 */
 	TIMEOUT_LOSE{
 		@Override
 		public String getXMLDescription(){
@@ -26,9 +29,10 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			MinigameClock.getInstance().setLevelLength(Long.parseLong(level.getLoseInfo(TIMEOUT_LOSE).get(0)));			
 		}
 	},
-	COLLISION_WITH_OBJECT_LOSE{//if any object within lose2 collides with lose1, lose
-		private int objectID1;
-		private int objectID2;
+	/**
+	 * if any object listed in value2 collides with value1, lose
+	 */
+	COLLISION_WITH_OBJECT_LOSE{
 		public String getXMLDescription(){
 			return "collision_With_Object_Lose";
 		}
@@ -37,8 +41,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		}
 		public Array<String> getValues(Level level){
 			Array<String> temp = new Array<String>();
-			temp.add(objectID1+"");
-			temp.add(objectID2+"");
+			//TODO
 			return temp;
 		}
 		@Override
@@ -47,6 +50,9 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			
 		}
 	},
+	/**
+	 * if any object listed in value1 falls below the screen, lose
+	 */
 	BELOW_SCREEN_LOSE_ID{
 
 		@Override
@@ -83,6 +89,9 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		}
 		
 	},
+	/**
+	 * if any object of the IDs listed in value1 are destroyed, lose
+	 */
 	ANY_OBJECTS_OF_ID_DESTROYED_LOSE{//if ANY of these objects are destroyed, lose
 		@Override
 		public String getXMLDescription() {
@@ -113,6 +122,9 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 			level.setWon(!lose);
 		}
 	},
+	/**
+	 * if any objects of ID listed in value1 collide with the left side of the screen, lose(used in PONG)
+	 */
 	COLLIDES_WITH_LEFT_LOSE{
 
 		@Override
