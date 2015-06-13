@@ -62,10 +62,10 @@ public class ChildSprite extends Sprite {
 		//Set a buffer distance dependent on who is being followed.
 		float bufferDistance;
 		if(leader.isHero){
-			bufferDistance = 8;
+			bufferDistance = Gdx.graphics.getHeight()*8/576;
 		}
 		else{
-			bufferDistance = 16;
+			bufferDistance = Gdx.graphics.getHeight()*16/576;
 		}
 		//If your leader is far enough away from it's follower
 		if((Math.abs(leader.getX() - getX()) > bufferDistance || Math.abs(leader.getY() - getY()) > bufferDistance)){

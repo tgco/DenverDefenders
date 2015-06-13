@@ -34,27 +34,13 @@ public class GameObject extends Actor implements Disposable{
 	private AssetManager manager;
 	private boolean disposed;
 	private Texture texture;
-	private float objectScale;
+	private float objectScaleX, objectScaleY;
 	/** list of the names of the listeners associated with this object*/
 	private Array<String> listenerNames;
 	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
 	private ObjectMap<Attribute,Array<String>> attributeData;
 
 	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
-		switch(Gdx.app.getType()){
-		case Android:
-			objectScale = 3;
-			break;
-		//if using the desktop set the width and height to a 16:9 resolution.
-		case Desktop:
-			objectScale = 1;
-			break;
-		case iOS:
-			objectScale = 3;
-			break;
-		default:
-			break;
-	}
 		listenerNames = new Array<String>();
 		manager = new AssetManager();
 		disposed = false;
@@ -86,8 +72,13 @@ public class GameObject extends Actor implements Disposable{
 			manager.finishLoadingAsset(imageFilename);
 			texture = manager.get(imageFilename);
 		}
+		//scale the object to the width of the new screen
+		objectScaleX = Gdx.graphics.getWidth()/1024f;
+		//scale the object to the height of the new screen
+		objectScaleY = Gdx.graphics.getHeight()/576f;
+		
 		//set the bounds to be as large as the textures size
-		setBounds(getX(), getY(), texture.getWidth()*objectScale, texture.getHeight()*objectScale);
+		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
 		//iterate over attributes
 		for(String listener: listenerNames){
 			//get the name, uppercase it
@@ -110,6 +101,7 @@ public class GameObject extends Actor implements Disposable{
 		for(Attribute currentAttribute:attributeData.keys().toArray())
 			currentAttribute.setup(this);
 		initialVelocity = new float[] {velocity[0],velocity[1]};
+		velocity = initialVelocity;
 	}
 
 	public void update(Array<GameObject> allObjects){
@@ -158,10 +150,10 @@ public class GameObject extends Actor implements Disposable{
 		return attributeData;
 	}
 	public float getTextureWidth(){
-		return texture.getWidth()*objectScale;
+		return texture.getWidth()*objectScaleX;
 	}
 	public float getTextureHeight(){
-		return texture.getHeight()*objectScale;
+		return texture.getHeight()*objectScaleY;
 	}
 	public float[] getInitialPosition(){
 		return initialPosition;
