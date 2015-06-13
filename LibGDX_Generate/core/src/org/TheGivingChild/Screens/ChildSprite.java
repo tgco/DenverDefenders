@@ -151,7 +151,6 @@ public class ChildSprite extends Sprite {
 	}
 
 	public void setSaved(boolean isSaved) {
-
 		saved = isSaved;
 		follow = false;
 	}

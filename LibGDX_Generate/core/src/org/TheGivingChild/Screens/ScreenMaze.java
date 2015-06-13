@@ -261,7 +261,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//Remove a child at random so there is always an open spot
 		//children.removeIndex(MathUtils.random(children.size));
 
-
 		populate();
 
 		game = ScreenAdapterManager.getInstance().game;
@@ -279,27 +278,38 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	public void populate()
 	{
-
-		int theRand = 0;
-		for(MinigameRectangle rect : minigameRects)
-		{
-			//Possible values 0...5 (both sides inclusive)
-			theRand = MathUtils.random(0,5);
-			//60% chance of kid being drawn
-			if(theRand >= 2 )//== 2
-			{
-				//Add children to be drawn where minigames can be triggered
+		//get the amount of spots possible to fill
+		int maxAmount = minigameRects.size;
+		//chose a percentage to try and fill
+		float percentageToFill = .75f;
+		//make a variable to store the amount to fill, and fill as closely as possible. Clamp to low and high bounds
+		int chosenAmount = (int) Math.max(1f, Math.min(maxAmount, percentageToFill*maxAmount));
+		System.out.println(chosenAmount);
+		//placeholder to see how many spots need filled still
+		int currentAmount = 0;
+		
+		while(currentAmount < chosenAmount){
+			System.out.println(currentAmount);
+			//chose a random rectangle
+			MinigameRectangle toFill = minigameRects.random();
+			//if the rectangle is not occupied, then fill it
+			if(!toFill.isOccupied()){
+				//Get the texture for the child to occupy this spot
 				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
+				//create a new child with the texture
 				ChildSprite child = new ChildSprite(childTexture);
-				
+				//Scale down the child
 				child.setScale(.5f);
+				//reset the bounds, as suggested after scaling
 				child.setBounds(child.getX(), child.getY(), child.getWidth(), child.getHeight());
-				child.setPosition(rect.x, rect.y);
-
-				//child.setRectangle(childRec);
+				//set the position to the rectangle to fill
+				child.setPosition(toFill.x, toFill.y);
+				//Add the child to the array of mazeChildren
 				mazeChildren.add(child);
-
-				rect.setOccupied(child);
+				//Occupy the rectangle
+				toFill.setOccupied(child);
+				//increment the spots that have been filled
+				currentAmount++;
 			}
 		}
 	}
@@ -379,7 +389,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
 							for (ChildSprite child: followers) {
 								child.setSaved(true);
-								followers.clear();
+								followers.removeValue(child, false);
 								playerCharacter.clearPositionQueue();
 							}
 						}
@@ -449,6 +459,16 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 			}
 
+			if(!allSaved()){
+				int i = 0;
+				for(ChildSprite mazeChild: mazeChildren){
+					if(mazeChild.getSaved() == false){
+						i++;
+					}
+				}
+				System.out.println("Not saved: " + i);
+			}
+			
 			if (allSaved()) {
 				System.out.println("They are all saved");
 				game.setMazeCompleted(true);
@@ -594,9 +614,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		else {
 			if (game.levelWin()) {
-				//get the follower to add
-				ChildSprite toAdd = lastRec.getOccupant();
-				followers.add(toAdd);
+				//add the follower from this minigame panel
+				followers.add(lastRec.getOccupant());
 				
 			}
 
@@ -653,6 +672,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		playerCharacter.clearPositionQueue();
 		//empty the array of followers.
 		followers.clear();
+		//clear the minigames
 		for (MinigameRectangle rect: minigameRects) {
 			rect.empty();
 		}
