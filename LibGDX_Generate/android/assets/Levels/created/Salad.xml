@@ -15,7 +15,7 @@
 	<GameObject ID="4" attributes="moves" imageFilename="Grape.png" initialLocation="410.0,344.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
-	<GameObject ID="5" attributes="moves" imageFilename="kiwi.png" initialLocation="466.0,333.0" listeners="drag_object">
+	<GameObject ID="5" attributes="moves" imageFilename="Kiwi.png" initialLocation="466.0,333.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>
 	</GameObject>
 	

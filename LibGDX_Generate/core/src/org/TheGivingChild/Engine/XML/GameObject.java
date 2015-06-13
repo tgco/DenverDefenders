@@ -163,4 +163,7 @@ public class GameObject extends Actor implements Disposable{
 	public float getTextureHeight(){
 		return texture.getHeight()*objectScale;
 	}
+	public float[] getInitialPosition(){
+		return initialPosition;
+	}
 }
