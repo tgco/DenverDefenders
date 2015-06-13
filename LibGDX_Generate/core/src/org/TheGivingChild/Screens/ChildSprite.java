@@ -63,12 +63,7 @@ public class ChildSprite extends Sprite {
 		Float[] leadersNextPosition = leader.positionQueue.peekLast();
 		//Set a buffer distance dependent on who is being followed.
 		float bufferDistance;
-		if(leader.isHero){
 			 bufferDistance = 32;
-		}
-		else{
-			bufferDistance = 16;
-		}
 		//If your leader is too far enough away from it's follower, and it either has no points or is far enough away from it's last point, then add their position to the queue
 		if((Math.abs(leader.getX() - getX()) > bufferDistance || Math.abs(leader.getY() - getY()) > bufferDistance) && (leadersNextPosition == null || (Math.abs(leadersNextPosition[0] - leader.getX()) > bufferDistance) || Math.abs(leadersNextPosition[1] - leader.getY()) > bufferDistance)){
 			//The hero has different sizes, and therefore needs to have different offsets.
@@ -110,7 +105,7 @@ public class ChildSprite extends Sprite {
 			Float yDifference = Math.abs(nextPosition[1] - getY());
 
 			//If childSprite is not close enough to target move closer horizontally.
-			if(xDifference >= 1f){
+			if(xDifference >= 2.5f){
 				//If childSprite is to the right, move left.
 				if(getX() > nextPosition[0]){
 					setX(getX() - moveSpeed*deltaTime);
@@ -121,7 +116,7 @@ public class ChildSprite extends Sprite {
 				}
 			}
 			//If childSprite is not close enough to target move closer vertically
-			if(yDifference >= 1f){
+			if(yDifference >= 2.5f){
 				//If childSprite is above, move down.
 				if(getY() > nextPosition[1]){
 					setY(getY() - moveSpeed*deltaTime);

@@ -645,6 +645,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	public void reset() {
 		mazeChildren.clear();
+		//empty any positional queue information the followers are holding.
+		for(ChildSprite f: followers){
+			f.clearPositionQueue();
+		}
+		//empty they pc's positional queue
+		playerCharacter.clearPositionQueue();
+		//empty the array of followers.
 		followers.clear();
 		for (MinigameRectangle rect: minigameRects) {
 			rect.empty();
