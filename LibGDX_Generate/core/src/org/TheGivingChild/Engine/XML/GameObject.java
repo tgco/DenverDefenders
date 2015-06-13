@@ -76,6 +76,12 @@ public class GameObject extends Actor implements Disposable{
 		objectScaleX = Gdx.graphics.getWidth()/1024f;
 		//scale the object to the height of the new screen
 		objectScaleY = Gdx.graphics.getHeight()/576f;
+		//scale small objects an additional 50%
+		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
+			objectScaleX *= 1.5;
+			objectScaleY *= 1.5;
+		}
+		
 		
 		//set the bounds to be as large as the textures size
 		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
