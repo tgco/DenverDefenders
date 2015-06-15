@@ -460,7 +460,7 @@ public enum Attribute {
 						//collision has been detected, getting needed information for the collision equation(using momentum)
 						
 						//float c2 = allObjects.get(i).getAttributeData();
-						float m1 = 1f;//Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
+						//float m1 = 1f;//Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
 						float m2 = 1f;//Float.parseFloat(allObjects.get(i).getAttributeData().get(MASS).get(0));
 						float v1ix = myObject.getVelocity()[0];
 						float v2ix = allObjects.get(i).getVelocity()[0];
@@ -473,8 +473,7 @@ public enum Attribute {
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
 
 						//new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};
-						float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
-						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
+						//float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
 						//float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
 						
