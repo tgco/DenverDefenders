@@ -408,7 +408,12 @@ public class TGC_Engine extends Game {
 	public Array<LevelPacket> getLevelPackets() {
 		return levelPackets;
 	}
-
+	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
+	public Level getCurrentLevel() {
+		// TODO Auto-generated method stub
+		return currentLevel;
+	}
+	
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
 	public void render () {
@@ -478,11 +483,4 @@ public class TGC_Engine extends Game {
 		viewport.update(width, height);
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 	}
-
-	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
-	public Level getCurrentLevel() {
-		// TODO Auto-generated method stub
-		return currentLevel;
-	}
-	
 }
