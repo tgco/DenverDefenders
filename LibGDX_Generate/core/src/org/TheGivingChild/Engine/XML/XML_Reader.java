@@ -75,6 +75,9 @@ public class XML_Reader {
 		return listOfObjects;
 	}
 	
+	/**	
+	*	Compiles the win conditions into a map containing the list of win conditions for the level and the data for each win condition
+	*/
 	public ObjectMap<WinEnum, Array<String>> compileWinConditions(){
 		ObjectMap<WinEnum,Array<String>> winData = new ObjectMap<WinEnum,Array<String>>();
 		String temp[] = root.getChildByName("LevelGoals").getAttribute("win").split(",");
@@ -94,6 +97,9 @@ public class XML_Reader {
 		return winData;
 	}
 	
+	/**	
+	*	Compiles the lose conditions into a map containing the list of lose conditions for the level and the data for each lose condition
+	*/	
 	public ObjectMap<LoseEnum, Array<String>> compileLoseConditions(){
 		ObjectMap<LoseEnum,Array<String>> loseData = new ObjectMap<LoseEnum,Array<String>>();
 		String temp[] = root.getChildByName("LevelGoals").getAttribute("lose").split(",");
@@ -112,14 +118,18 @@ public class XML_Reader {
 		}
 		return loseData;
 	}
-	
-	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
+	/**
+	*	converts in a string of form "1.0,1.0" and returns a 2 element array of floats
+	*/
+	private static float[] stringToPoint(String toPoint){
 		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
 		temp[0] = temp[0]/1024f * Gdx.graphics.getWidth();
 		temp[1] = temp[1]/576f * Gdx.graphics.getHeight();
 		return temp;
 	}
-	
+	/**
+	*	Converts list of list of attributes delimited by commas into an Array of strings, each containing the name of a listener
+	*/
 	private Array<String> compileListenerNames(String input){
 		Array<String> listeners = new Array<String>();
 		if(input.isEmpty())

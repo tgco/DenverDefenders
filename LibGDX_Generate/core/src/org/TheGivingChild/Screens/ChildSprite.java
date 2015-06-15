@@ -7,16 +7,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-
+/**
+ * {@link ChildSprite} controls the behavior for the children within the maze.
+ * The main player sprite within the maze is also a ChildSprite, but never utilizes the followSprite method, and has it's own logic for movement within {@link org.TheGivingChild.Screens.ScreenMaze ScreenMaze}
+ * @author janelson
+ */
 public class ChildSprite extends Sprite {
-
-	private boolean follow, saved;
+	/**{@link #follow} is a boolean to keep track of whether the sprite is following something*/
+	private boolean follow;
+	/**{@link #saved} is a boolean to keep track of whether the sprite has been saved.*/
+	private boolean saved;
 	private Rectangle position;
+	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
 	private float moveSpeed;
+	/**{@link #positionQueue} is a Deque which contains previously visited positions for followers to reference.*/
 	private Deque<Float[]> positionQueue;
+	/**{@link #nextPosition} is a Float[] that keeps track of where to move to.*/
 	Float[] nextPosition;
+	/**{@link #isHero} keeps track of whether the sprite is the playerCharacter.*/
 	private boolean isHero;
-
+	/**
+	 * {@link #ChildSprite(Texture)} is the constructor for {@link ChildSprite}.
+	 * @param childTexture The texture that the sprite will draw.
+	 */
 	public ChildSprite(Texture childTexture) {
 		super(childTexture);
 		position = new Rectangle();
@@ -27,33 +40,45 @@ public class ChildSprite extends Sprite {
 		nextPosition = null;
 		isHero = false;
 	}
-
+	/**
+	 * Sets {@link #position} to the {@link Rectangle} passed.
+	 * @param pos {@link #position} will be set to this.
+	 */
 	public void setRectangle(Rectangle pos)
 	{
 		position = pos;
 	}
-
+	/**
+	 * Returns true if {@link #position} overlaps the passed in {@link Rectangle}.
+	 * @param test is checked against {@link #position} to see if they overlap.
+	 * @return
+	 */
 	public boolean mySpot(Rectangle test)
 	{
 		return (position.overlaps(test));
 	}
-
-
-	public ChildSprite(ChildSprite c)
-	{
-		this((c.getTexture()));
-
-	}
-
+	/**
+	 * Moves the {@link ChildSprite} to the position of the {@link MinigameRectangle} passed in.
+	 * @param rect contains the new position coordinates.
+	 */
 	public void moveTo(MinigameRectangle rect) {
 		this.setPosition(rect.getX(), rect.getY());
 	}
-
+	/**
+	 * Returns whether the {@link ChildSprite} is following someone.
+	 * @return
+	 */
 	public boolean getFollow()
 	{
 		return follow;
 	}
-
+	/**
+	 * {@link #followSprite(ChildSprite)} takes in a {@link ChildSprite} as someone to follow.
+	 * The leader will then add positions to a deque, and the current {@link ChildSprite} will then move to the location.
+	 * If the position is too far away, such as when a child is initially picked up, the movement speed is increased to allow the sprite to catch up.
+	 * The bufferDistance is meant to scale to the size of the screen.
+	 * @param leader contains the {@link #positionQueue} of positions to follow.
+	 */
 	public void followSprite(ChildSprite leader){
 		//make sure that the queue doesn't get too larger
 		if(leader.positionQueue.size() >= 20){
@@ -136,42 +161,61 @@ public class ChildSprite extends Sprite {
 			System.out.println("Current position: (" + getX() + ", " +getY() + "), Needed position: (" + nextPosition[0] + ", " +nextPosition[1] + ").");
 		}
 	}
-
-	public boolean sameDirection(float d1, float d2)
-	{
-		return((d1 > 0 && d2>0) || (d1 < 0 && d2 < 0) );
-	}
-
-
+	/**
+	 * Sets the {@link #moveSpeed}.
+	 * @param f {@link #moveSpeed} will be set to this.
+	 */
 	public void setSpeed(float f)
 	{
 		moveSpeed = f;
 	}
-
+	/**
+	 * returns {@link #moveSpeed}.
+	 * @return {@link #saved}
+	 */
 	public float getSpeed()
 	{
 		return moveSpeed;
 	}
-
+	/**
+	 * returns {@link #saved}.
+	 * @return {@link #saved}
+	 */
 	public boolean getSaved() {
 		return saved;
 	}
-
+	/**
+	 * sets {@link #saved} to the boolean passed in.
+	 * Sets follow to false.
+	 * @param isSaved {@link #saved} is set to this.
+	 */
 	public void setSaved(boolean isSaved) {
 		saved = isSaved;
 		follow = false;
 	}
+	/**
+	 * returns the scaled width.
+	 */
 	@Override
 	public float getWidth() {
 		return super.getWidth()*getScaleX();
 	}
+	/**
+	 * returns the scaled height.
+	 */
 	@Override
 	public float getHeight() {
 		return super.getHeight()*getScaleY();
 	}
+	/**
+	 * set {@link #isHero} to true.
+	 */
 	public void setHero(){
 		isHero = true;
 	}
+	/**
+	 * clears the {@link #positionQueue}.
+	 */
 	public void clearPositionQueue(){
 		positionQueue.clear();
 	}
