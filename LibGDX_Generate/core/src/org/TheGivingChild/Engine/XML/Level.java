@@ -97,10 +97,6 @@ public class Level {
 		}
 	}
 	
-	public boolean checkLose(){
-		return MinigameClock.getInstance().outOfTime();
-	}
-	
 	public void setCompleted(boolean state) {
 		completed = state;
 	}

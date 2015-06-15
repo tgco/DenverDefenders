@@ -5,6 +5,9 @@ import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.Attribute;
 import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.LoseEnum;
+import org.TheGivingChild.Engine.XML.WinEnum;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -428,7 +431,7 @@ class ScreenEditor extends ScreenAdapter{
 			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				/*
+				
 				WinEnum testWin1 = WinEnum.COLLISION_WITH_OBJECT_WIN;
 				Array<String> testWin1Values = new Array<String>();
 				testWin1Values.add("420");
@@ -437,24 +440,24 @@ class ScreenEditor extends ScreenAdapter{
 				Array<WinEnum> testWinArray = new Array<WinEnum>();
 				testWinArray.add(testWin1);
 
-				LoseEnum testLose1 = LoseEnum.TIMEOUT;
+				LoseEnum testLose1 = LoseEnum.TIMEOUT_LOSE;
 				Array<String>testLose1Values =  new Array<String>();
 				testLose1Values.add("42");
 				//testLose1.setValues(testLose1Values);
 				Array<LoseEnum> testLoseArray = new Array<LoseEnum>();
 				testLoseArray.add(testLose1);
 
-				LoseEnum testLose2 = LoseEnum.COLLISIONWITHOBJECTLOSE;
+				LoseEnum testLose2 = LoseEnum.TIMEOUT_LOSE;
 				Array<String>testLose2Values =  new Array<String>();
 				testLose2Values.add("42");
 				testLose2Values.add("72");
 				//testLose2.setValues(testLose2Values);
 				testLoseArray.add(testLose2);
 
-				//Level level = new Level(levelName, "packageTest", "TEMPORARY_Cartoon_City.png",testWinArray, testLoseArray, gameObjects);
-				//mainGame.getXML_Writer().createLevel(level);
+				Level level = new Level(levelName, levelName, "test.png", "You do dis", new ObjectMap<WinEnum, Array<String>>(), new ObjectMap<LoseEnum, Array<String>>(), new Array<GameObject>());
+				mainGame.getXML_Writer().createLevel(level);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-				*/			
+						
 			}
 		});
 		Skin okCancelSkin = new Skin();
