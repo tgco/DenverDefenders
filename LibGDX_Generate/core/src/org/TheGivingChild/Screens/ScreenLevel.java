@@ -78,7 +78,6 @@ public class ScreenLevel extends ScreenAdapter{
 						batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());
 					}
 				}
-//				MinigameClock.getInstance().render();
 				//only draw if there is time remaining in the clock
 				//This if made the clock never drawn at all
 				if(!MinigameClock.getInstance().outOfTime())
