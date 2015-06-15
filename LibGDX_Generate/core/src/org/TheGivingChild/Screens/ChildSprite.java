@@ -1,230 +1,178 @@
 package org.TheGivingChild.Screens;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 public class ChildSprite extends Sprite {
-	
+
 	private boolean follow, saved;
 	private Rectangle position;
-	private float moveSpeed, xMove, yMove;
-	private float lastX, lastY;
-	
+	private float moveSpeed;
+	private Deque<Float[]> positionQueue;
+	Float[] nextPosition;
+	private boolean isHero;
+
 	public ChildSprite(Texture childTexture) {
-			super(childTexture);
-			position = new Rectangle();
-			follow = false;
-			saved = false;
-			moveSpeed = 0;
-			xMove = 0;
-			yMove = 0;
+		super(childTexture);
+		position = new Rectangle();
+		follow = false;
+		saved = false;
+		moveSpeed = 0;
+		positionQueue = new LinkedList<Float[]>();
+		nextPosition = null;
+		isHero = false;
 	}
-	
+
 	public void setRectangle(Rectangle pos)
 	{
 		position = pos;
 	}
-	
+
 	public boolean mySpot(Rectangle test)
 	{
 		return (position.overlaps(test));
 	}
-	
+
 
 	public ChildSprite(ChildSprite c)
 	{
 		this((c.getTexture()));
-			
+
 	}
-	
+
 	public void moveTo(MinigameRectangle rect) {
 		this.setPosition(rect.getX(), rect.getY());
 	}
-	
+
 	public boolean getFollow()
 	{
 		return follow;
 	}
-	
-	public void followSprite(ChildSprite leader)
-	{
-	
-//		float xAway = Math.abs(leader.getLastX() - this.getX());
-//		float yAway = Math.abs(leader.getLastY() - this.getY());
-//		
-//		this.setSpeed(leader.getSpeed());
-//		
-//		//ifxAway > leader.getWidth()*.25f
-//		if(xAway > this.getWidth()*.25f)
-//		{
-//		
-//			//if the leader is to your right
-//			if(leader.getLastX() > this.getX())
-//			{
-//				this.xMove = this.getSpeed();
-//				this.yMove = 0;
-//			}
-//			//if(leader.getLastX() <= this.getX())
-//			else
-//			{
-//				this.xMove = -this.getSpeed();
-//				this.yMove = 0;
-//	
-//			}
-//		}
-//		
-//		else if (yAway >  this.getHeight()*.25f) {
-//			//if leader is above you
-//			if(leader.getLastY() > this.getY())
-//			{
-//				this.yMove = this.getSpeed();
-//				this.xMove = 0;
-//			}
-//			//if(leader.getLastY() <= this.getY())
-//			else
-//			{
-//				this.yMove = -this.getSpeed();
-//				this.xMove = 0;
-//			}
-//		}
-//
-//		else {
-//			
-//		this.xMove = 0;
-//		this.yMove = 0;
-//				
-//	}
-//		//this.setPosition(this.getX() + xMove*Gdx.graphics.getDeltaTime(), this.getY() +yMove*Gdx.graphics.getDeltaTime());
-//		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
-//		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
-		
-		float xAway = Math.abs((leader.getLastX() - this.getX()));
-		float yAway = Math.abs((leader.getLastY() - this.getY()));
-		
-		float followTolerance = (float)Math.pow(2048, 0.5);
-		
-		this.setSpeed(leader.getSpeed());
-		
-		if(leader.xMove < 0) followTolerance = (followTolerance - 2*this.getWidth()) - 4*this.getWidth();
-		//if(leader.xMove < 0) followTolerance = this.getWidth()*.25f;
-		//if(leader.yMove < 0) followTolerance = followTolerance - 2*this.getHeight();
-		if(leader.yMove != 0 && this.xMove == 0) followTolerance = 32;
-		//if(leader.xMove !=0  && this.xMove == 0) followTolerance = 32;
-		//if(leader.yMove < 0 && this.yMove == 0) followTolerance = 32;
-		
-	
-		if(xAway >= followTolerance)
-		{
-			this.yMove = 0;
+
+	public void followSprite(ChildSprite leader){
+		//make sure that the queue doesn't get too larger
+		if(leader.positionQueue.size() >= 20){
+			leader.positionQueue.clear();
+		}
+		//Set a buffer distance dependent on who is being followed.
+		float bufferDistance;
+		if(leader.isHero){
+			bufferDistance = Gdx.graphics.getHeight()*8/576;
+		}
+		else{
+			bufferDistance = Gdx.graphics.getHeight()*16/576;
+		}
+		//If your leader is far enough away from it's follower
+		if((Math.abs(leader.getX() - getX()) > bufferDistance || Math.abs(leader.getY() - getY()) > bufferDistance)){
+			//The hero has different sizes, and therefore needs to have different offsets.
+			if(leader.isHero){
+				leader.positionQueue.add(new Float[]{
+						leader.getX()-leader.getWidth()-leader.getHeight()/2,
+						leader.getY()-leader.getHeight()+leader.getHeight()/4
+				});
+			}
+			else{
+				leader.positionQueue.add(new Float[]{
+						leader.getX(),
+						leader.getY()
+				});
+			}
+		}
+		//If nextPosition is null, then get the nextPosition
+		if(nextPosition == null){
+			//get the next position out of the queue
+			nextPosition = leader.positionQueue.pollFirst();
+		}
+		//If next position is not null, check if we are within the area we need to be.
+		if(nextPosition != null){
+			Float xDifference = Math.abs(nextPosition[0] - getX());
+			Float yDifference = Math.abs(nextPosition[1] - getY());
+			if(xDifference <= 2.5f && yDifference <= 2.5f){
+				System.out.println("Polled new position");
+				nextPosition = leader.positionQueue.pollFirst();
+			}
+		}
+		//If your have a position to move to, then move to it.
+		if(nextPosition != null){
+			//Set childSprite's speed equal to it's leader.
+			moveSpeed = leader.moveSpeed;
+			//Get the change in time since the last frame.
+			Float deltaTime = Gdx.graphics.getDeltaTime();
+			//get the distance horizontally and vertically.
+			Float xDifference = Math.abs(nextPosition[0] - getX());
+			Float yDifference = Math.abs(nextPosition[1] - getY());
+
+			if(yDifference >= bufferDistance*2 || xDifference >= bufferDistance*2){
+				moveSpeed = 5*moveSpeed;
+			}
 			
-			if(leader.getLastX() - this.getX() > 0) this.xMove = this.moveSpeed;
-			else this.xMove = -this.moveSpeed;		
-		
+			//If childSprite is not close enough to target move closer horizontally.
+			if(xDifference >= 2.5f){
+				//If childSprite is to the right, move left.
+				if(getX() > nextPosition[0]){
+					setX(getX() - moveSpeed*deltaTime);
+				}
+				//If childSprite is to the left, move right.
+				else if(getX() <= nextPosition[0]){
+					setX(getX() + moveSpeed*deltaTime);
+				}
+			}
+			//If childSprite is not close enough to target move closer vertically
+			if(yDifference >= 2.5f){
+				//If childSprite is above, move down.
+				if(getY() > nextPosition[1]){
+					setY(getY() - moveSpeed*deltaTime);
+				}
+				//If childSprite is to the below, move up.
+				else if(getY() <= nextPosition[1]){
+					setY(getY() + moveSpeed*deltaTime);
+				}
+			}
+			System.out.println("Current position: (" + getX() + ", " +getY() + "), Needed position: (" + nextPosition[0] + ", " +nextPosition[1] + ").");
 		}
-		
-		else if(yAway >= followTolerance)
-		{
-			this.xMove = 0;
-			if(leader.getLastY() - this.getY() > 0) this.yMove = this.moveSpeed;
-			else this.yMove = -this.moveSpeed;
-		}
-		
-		else
-		{
-			this.xMove = 0;
-			this.yMove = 0;
-		}
-				
-		
-		this.setX(this.getX() + xMove*Gdx.graphics.getDeltaTime());
-		this.setY(this.getY() +yMove*Gdx.graphics.getDeltaTime());
-		
-		
-		
 	}
-	
+
 	public boolean sameDirection(float d1, float d2)
 	{
 		return((d1 > 0 && d2>0) || (d1 < 0 && d2 < 0) );
 	}
-	
+
 
 	public void setSpeed(float f)
 	{
 		moveSpeed = f;
 	}
-	
+
 	public float getSpeed()
 	{
 		return moveSpeed;
 	}
-	public void setMove(float xM, float yM)
-	{
-		xMove = xM;
-		yMove = yM;
-				
-	}
-	
+
 	public boolean getSaved() {
 		return saved;
 	}
-	
+
 	public void setSaved(boolean isSaved) {
-		
 		saved = isSaved;
 		follow = false;
 	}
-	
 	@Override
-	public void draw(Batch batch) {
-		// TODO Auto-generated method stub
-		super.draw(batch);
+	public float getWidth() {
+		return super.getWidth()*getScaleX();
 	}
-	
 	@Override
-	public void setPosition(float x, float y){
-		this.lastX = this.getX();
-		this.lastY = this.getY();
-		super.setPosition(x, y);
-		
+	public float getHeight() {
+		return super.getHeight()*getScaleY();
 	}
-	
-	@Override
-	public void setX(float x)
-	{
-		this.lastX = this.getX();
-		super.setX(x);
+	public void setHero(){
+		isHero = true;
 	}
-	
-	@Override
-	public void setY(float y)
-	{
-		this.lastY = this.getY();
-		super.setY(y);
+	public void clearPositionQueue(){
+		positionQueue.clear();
 	}
-	
-	public float getLastX()
-	{
-		return lastX;
-	}
-	
-	public float getLastY()
-	{
-		return lastY;
-	}
-	
-	public float getNextX()
-	{
-		return this.getX() + xMove*Gdx.graphics.getDeltaTime();
-	}
-	
-	public float getNextY()
-	{
-		return this.getY() + xMove*Gdx.graphics.getDeltaTime();
-	}
-	
-	
 }

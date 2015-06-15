@@ -22,7 +22,7 @@ public enum Attribute {
 	 */
 	MOVES{//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]*Gdx.graphics.getWidth()/1024), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1])*Gdx.graphics.getHeight()/576);
+			myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
 		}
 		
 		public void setup(GameObject myObject){
@@ -45,7 +45,7 @@ public enum Attribute {
 		public String getXMLName(){return "moves";}
 	},
 	/**
-	 * Causes objects to collide with and bounce off of the edge of the screen, collisions are perfectly ellastic
+	 * Causes objects to collide with and bounce off of the edge of the screen
 	 */
 	BOUNCEOFFEDGEOFSCREEN{
 		public void update(GameObject myObject,Array<GameObject> allObjects){
@@ -195,7 +195,7 @@ public enum Attribute {
 		
 	},
 	/**
-	 * Currently unimplemented, will cause object to follow a specific predefined path at a set speed
+	 * The attached object will move on a set path with the same speed as it's initial velocity
 	 */
 	MOVESONSETPATH{
 		
@@ -257,6 +257,10 @@ public enum Attribute {
 			return "movesOnSetPath";
 		}
 	},
+	/**
+	 * NOT WORKING
+	 * The attached Object will spawn objects with the predefined aspects
+	 */
 	SPAWNOBJECTONTIMER{
 		private boolean spawned = false;
 		@Override
@@ -297,6 +301,9 @@ public enum Attribute {
 			return "spawnObjectOnTimer";
 		}
 	},
+	/**
+	 * The attached Object will destroy objects of the set IDs upon collision with them
+	 */
 	DESTROYSOBJECTSOFIDONCOLLISION{
 
 		@Override
@@ -340,6 +347,9 @@ public enum Attribute {
 		}
 		
 	},
+	/**
+	 * The attached object will have a constant downward acceleration
+	 */
 	GRAVITY{
 
 		@Override
@@ -391,6 +401,9 @@ public enum Attribute {
 		}
 		public String getXMLName(){return "bounceOffTopAndBottom";}		
 	},
+	/**
+	 * The attached Object will attempt to math the y position of the other object, it will move towards the object at the predefined speed
+	 */
 	FOLLOWSOBJECTY{
 		@Override
 		public void update(GameObject myObject, Array<GameObject> allObjects) {
@@ -430,6 +443,9 @@ public enum Attribute {
 		@Override
 		public void setup(GameObject myObject){}
 	},
+	/**
+	 * The attached object will collide with the listed objects, however it will not cause them to move, only itself
+	 */
 	COLLIDESWITHOBJECTSID_SELF{
 		static final float MAX_VELOCITY = 400;
 		static final float COLLISION_CONSTANT = 5;//5
@@ -444,7 +460,7 @@ public enum Attribute {
 						//collision has been detected, getting needed information for the collision equation(using momentum)
 						
 						//float c2 = allObjects.get(i).getAttributeData();
-						float m1 = 1f;//Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
+						//float m1 = 1f;//Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
 						float m2 = 1f;//Float.parseFloat(allObjects.get(i).getAttributeData().get(MASS).get(0));
 						float v1ix = myObject.getVelocity()[0];
 						float v2ix = allObjects.get(i).getVelocity()[0];
@@ -457,8 +473,7 @@ public enum Attribute {
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
 
 						//new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};
-						float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
-						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
+						//float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
 						//float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
 						
