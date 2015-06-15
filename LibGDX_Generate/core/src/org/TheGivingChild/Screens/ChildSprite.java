@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 /**
  * {@link ChildSprite} controls the behavior for the children within the maze.
  * The main player sprite within the maze is also a ChildSprite, but never utilizes the followSprite method, and has it's own logic for movement within {@link org.TheGivingChild.Screens.ScreenMaze ScreenMaze}
- * @author janelson
+ * @author Jack Wesley Nelson
  */
 public class ChildSprite extends Sprite {
 	/**{@link #follow} is a boolean to keep track of whether the sprite is following something*/

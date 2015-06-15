@@ -24,10 +24,10 @@ public class LevelPacket implements Iterable<Level>{
 	}
 	
 	/**
-	 * Itterates through all of the levels that the LevelPacket has and checks if they are all completed
+	 * Iterates through all of the levels that the LevelPacket has and checks if they are all completed
 	 * 
 	 * @return True if all of the levels are completed and False if not
-	 */
+	 */ 
 	public boolean allCompleted() {
 		for (Level level: levels) {
 			if(!level.getCompleted()) 
