@@ -115,8 +115,8 @@ public class XML_Reader {
 	
 	private static float[] stringToPoint(String toPoint){//takes in a string of form "1.0,1.0" and returns a 2 element array of floats
 		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
-		temp[0] = temp[0]/1024 * Gdx.graphics.getWidth();
-		temp[1] = temp[1]/576 * Gdx.graphics.getHeight();
+		temp[0] = temp[0]/1024f * Gdx.graphics.getWidth();
+		temp[1] = temp[1]/576f * Gdx.graphics.getHeight();
 		return temp;
 	}
 	
