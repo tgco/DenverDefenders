@@ -131,7 +131,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 		public String getXMLDescription() {
 			return "collides_with_right_win";
 		}
-
+		
 		@Override
 		public void checkLose(Level level) {
 			for(String currentID:level.getLoseInfo(COLLIDES_WITH_LEFT_LOSE)){
