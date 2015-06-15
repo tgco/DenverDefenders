@@ -11,7 +11,6 @@ public class LevelPacket implements Iterable<Level>{
 	public LevelPacket(String name){
 		packetName = name;
 		levels = new Array<Level>();
-		loadLevels();
 	}
 	
 	public void addLevel(Level level){
@@ -24,10 +23,11 @@ public class LevelPacket implements Iterable<Level>{
 		return packetName;
 	}
 	
-	private void loadLevels() {
-		
-	}
-	
+	/**
+	 * Itterates through all of the levels that the LevelPacket has and checks if they are all completed
+	 * 
+	 * @return True if all of the levels are completed and False if not
+	 */
 	public boolean allCompleted() {
 		for (Level level: levels) {
 			if(!level.getCompleted()) 
