@@ -8,12 +8,16 @@ import com.badlogic.gdx.utils.XmlWriter;
 
 public class XML_Writer {
 	private Level currentLevel;
-	
+	/**
+	*	sets up the writer to write the new level to the file
+	*/
 	public void createLevel(Level newLevel){//this is who you gonna call
 		currentLevel = newLevel;//shallow copy, but das ok
 		writeToFile();
 	}
-	
+	/**
+	*	writes the level to an .xml file
+	*/
 	public void writeToFile(){//writes whole level to an xml file
 		StringWriter stringWriter = new StringWriter();
 		XmlWriter writer = new XmlWriter(stringWriter);
@@ -81,7 +85,9 @@ public class XML_Writer {
 			fileWriter.writeString(stringWriter.toString(),false);
 		}catch(Exception e){System.out.println("Error writing to file: " + e);}
 	}
-	
+	/**
+	*	Takes a game object and returns a string delimited by commas to write to the file which lists the object's attributes
+	*/
 	private String compileAttributeList(GameObject obj){		
 		String temp = "";
 		for(Attribute currentAttribute: obj.getAttributes())
@@ -92,7 +98,9 @@ public class XML_Writer {
 			temp2 = temp.substring(0,temp.length()-1);
 		return temp2;
 	}
-	
+	/**
+	*	Compiles the list of win enum names delimited by commas
+	*/
 	private String compileWinList(){
 		String winList1 = "";
 		String winList2 = "";
@@ -104,7 +112,9 @@ public class XML_Writer {
 		}
 		return winList2;
 	}
-	
+	/**
+	*	Compiles the list of lose enum names delimited by commas
+	*/
 	private String compileLoseList(){
 		String loseList1 = "";
 		String loseList2 = "";
@@ -115,7 +125,10 @@ public class XML_Writer {
 			loseList2 = loseList1.substring(1,loseList1.length());
 		}
 		return loseList2;
-	}//GITHUB PUSH MY CHANGES YOU 
+	}
+	/**
+	*	compiles the list of listener names into a list delimited by commas
+	*/
 	
 	private String compileListenerList(GameObject myObject){
 		if(myObject.getListenerNames().size == 0)
