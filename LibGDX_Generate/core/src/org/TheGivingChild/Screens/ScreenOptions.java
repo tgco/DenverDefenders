@@ -28,6 +28,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * This is the options screen. It has check boxes to control both sound and music or each individually.
+ * It also creates a volume slider to give the user more control.
+ * @author ctokunag
+ *
+ */
 class ScreenOptions extends ScreenAdapter {
 	private Skin skin;
 	private Skin buttonSkin;
@@ -53,6 +59,10 @@ class ScreenOptions extends ScreenAdapter {
 	private Label sliderName;
 	private float volume;
 
+	/**
+	 * Instantiates the sprite batch and loads the assets it needs and initially creates the tables.
+	 * Sets the check boxes to checked.
+	 */
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
@@ -66,6 +76,11 @@ class ScreenOptions extends ScreenAdapter {
 			c.setChecked(true);
 		}
 	}
+	
+	/**
+	 * Renders the screen transition until it is complete.
+	 * Then it renders the two tables that hold all of the buttons. 
+	 */
 	@Override
 	public void render(float delta) {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
@@ -103,6 +118,10 @@ class ScreenOptions extends ScreenAdapter {
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
+	
+	/**
+	 * Adds the two tables and resets a boolean so the screen transtion is shown
+	 */
 	@Override
 	public void show() {
 		if(isRendered) {
@@ -111,7 +130,11 @@ class ScreenOptions extends ScreenAdapter {
 			isRendered = false;
 		}
 	};
-		
+	
+	/**
+	 * Removes all of the tables so they do not show on other screens.
+	 * Resets the check boxes also.
+	 */
 	@Override
 	public void hide() {
 		optionsTable.remove();
@@ -119,6 +142,9 @@ class ScreenOptions extends ScreenAdapter {
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
+	/**
+	 * Creates the table that holds the back button.
+	 */
 	private void createOptionsTable() {
 		//Sets up the needed variables and parameters
 		optionsTable = new Table();
@@ -130,13 +156,19 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.align(Align.bottom);
 	}
 	
+	/**
+	 * Creates the table that the sound and music check boxes are added to so they are formatted correctly.
+	 */
 	private void createChoices() {
 		choicesTable = new Table();
 		buttonSkin = new Skin();
 		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
 		createCheckBoxes();
 	}
-
+	
+	/**
+	 * Creates the back button to return to the main screen and it's listener.
+	 */
 	private void createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
@@ -147,7 +179,10 @@ class ScreenOptions extends ScreenAdapter {
 		style.down = skin.getDrawable("ButtonPressed_MainScreen");
 		TextButton backButton = new TextButton("", style);
 
-		//Creates the listener for the Back button
+		/**
+		 * Creates the listener for the back button.
+		 * Shows the main screen when pushed.
+		 */
 		backButton.addListener(new MyChangeListener() { 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -160,6 +195,9 @@ class ScreenOptions extends ScreenAdapter {
 		optionsTable.add(backButton);
 	}
 	
+	/**
+	 * Creates the check boxes used for the sound and the music toggle.
+	 */
 	private void createCheckBoxes() {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
@@ -202,6 +240,12 @@ class ScreenOptions extends ScreenAdapter {
 			options.add(checkbox);
 		}
 	}
+	
+	/**
+	 * Creates the slider for the volume so the level can be controlled.
+	 * <p>
+	 * Also creates a check box for the mute button
+	 */
 	 private void createSlider() {
 		 sliderTable = new Table();
 		 sliderSkin = new Skin();
@@ -269,7 +313,10 @@ class ScreenOptions extends ScreenAdapter {
 		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
 	 }
 	 
-	 
+	 /**
+	  * Creates the table that will hold the sound and music table and the volume
+	  * slider and adds and aligns them properly. 
+	  */
 	 private void createOverallTable() {
 		 overallTable = new Table();
 		 createChoices();
@@ -281,15 +328,34 @@ class ScreenOptions extends ScreenAdapter {
 		 overallTable.align(Align.center);
 	 }
 	 
+	 /**
+	  * Getter for the music check box
+	  * @return Returns whether or not the music box is checked
+	  */
 	 public boolean getMusic() {
 		 return options.get(0).isChecked();
 	 }
+	 
+	 /**
+	  * Getter for the sound check box
+	  * @return Returns whether or not the sound box is checked
+	  */
 	 public boolean getSound() {
 		 return options.get(1).isChecked();
 	 }
+	 
+	 /**
+	  * Getter for the mute button
+	  * @return Returns whether or not the mute button is selected
+	  */
 	 public boolean getMute() {
 		 return mute.isChecked();
 	 }
+	 
+	 /**
+	  * Getter for the volume slider level
+	  * @return Returns the value of the volume slider.
+	  */
 	 public float getVolume() {
 		 return slider.getValue();
 	 }

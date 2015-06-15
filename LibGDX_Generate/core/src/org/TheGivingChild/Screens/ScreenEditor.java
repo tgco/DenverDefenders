@@ -200,12 +200,6 @@ class ScreenEditor extends ScreenAdapter{
 		}
 	};
 
-	//	//Dispose, will be implemented later
-	//	@Override
-	//	public void dispose() {
-	//		
-	//	}
-
 	//Function to instantiate the button table
 	/**
 	 * Function that sets up the buttonTable at the bottom of the screen
