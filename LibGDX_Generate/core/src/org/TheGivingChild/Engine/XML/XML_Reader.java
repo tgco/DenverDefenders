@@ -54,16 +54,16 @@ public class XML_Reader {
 		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
 			ObjectMap<Attribute,Array<String>> attributeData = new ObjectMap<Attribute,Array<String>>();
-			//System.out.println(listenersToAdd);
+			System.out.println(listenersToAdd);
 				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-					//System.out.println("\t|" + currentAttribute);
+					System.out.println("\t|" + currentAttribute);
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
 						Array<String> valuesToAdd = new Array<String>();
 						if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//check if the attribute even has values
 							for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){
 								valuesToAdd.add(currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 								attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
-								//System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
+								System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 							}
 						}
 						attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
