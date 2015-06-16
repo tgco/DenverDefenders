@@ -76,7 +76,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 					break;
 				}
 			}
-			if(lose) System.out.println("LOSE");
+		
 			
 			level.setCompleted(lose);
 			level.setWon(!lose);
@@ -117,7 +117,7 @@ public enum LoseEnum {//Cannot have any labels in common with WinEnum
 					break;
 				}
 			}
-			if(lose) System.out.println("LOSE");
+	
 			level.setCompleted(lose);
 			level.setWon(!lose);
 		}

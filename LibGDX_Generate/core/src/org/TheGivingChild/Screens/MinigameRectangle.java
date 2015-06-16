@@ -43,7 +43,7 @@ public class MinigameRectangle extends Rectangle {
 	 */
 	public void setOccupied(ChildSprite s)
 	{
-		System.out.println("Occupied");
+		//System.out.println("Occupied");
 		occupant = s;
 		occupied = true;
 	}
