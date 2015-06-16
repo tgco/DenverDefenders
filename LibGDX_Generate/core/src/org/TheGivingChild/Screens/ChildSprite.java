@@ -118,7 +118,7 @@ public class ChildSprite extends Sprite {
 			Float xDifference = Math.abs(nextPosition[0] - getX());
 			Float yDifference = Math.abs(nextPosition[1] - getY());
 			if(xDifference <= 2.5f && yDifference <= 2.5f){
-				System.out.println("Polled new position");
+				//System.out.println("Polled new position");
 				nextPosition = leader.positionQueue.pollFirst();
 			}
 		}
@@ -158,7 +158,7 @@ public class ChildSprite extends Sprite {
 					setY(getY() + moveSpeed*deltaTime);
 				}
 			}
-			System.out.println("Current position: (" + getX() + ", " +getY() + "), Needed position: (" + nextPosition[0] + ", " +nextPosition[1] + ").");
+			//System.out.println("Current position: (" + getX() + ", " +getY() + "), Needed position: (" + nextPosition[0] + ", " +nextPosition[1] + ").");
 		}
 	}
 	/**

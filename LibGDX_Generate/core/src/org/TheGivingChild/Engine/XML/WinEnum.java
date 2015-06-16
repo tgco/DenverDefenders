@@ -88,7 +88,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 				}
 			}
 			if(win){
-				System.out.println("Level "+level.getLevelName()+" won!");
+			//	System.out.println("Level "+level.getLevelName()+" won!");
 				//level.resetLevel();
 				level.setCompleted(true);
 				level.setWon(true);
@@ -122,7 +122,7 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 					break;
 				}
 			}
-			if(win) System.out.println("WIN");
+		//	if(win) System.out.println("WIN");
 			level.setCompleted(win);
 			level.setWon(win);
 		}
@@ -189,7 +189,6 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 	public abstract void setup(Level level);
 	
 	public static WinEnum newType(String type){
-		System.out.println(type);
 		return valueOf(type.toUpperCase());
 	}
 	

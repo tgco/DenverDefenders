@@ -323,7 +323,7 @@ public enum Attribute {
 					Rectangle r2 = new Rectangle(currentObject.getX(),currentObject.getY(),currentObject.getTextureWidth(),currentObject.getTextureHeight());
 					if(r1.overlaps(r2)){
 						allObjects.get(i).dispose();
-						System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + currentObject.getID() + "|| Position: " + myObject.getX() + ", " + myObject.getY() + "DIM: " + myObject.getTextureWidth() + ", " + myObject.getTextureHeight());
+						//System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + currentObject.getID() + "|| Position: " + myObject.getX() + ", " + myObject.getY() + "DIM: " + myObject.getTextureWidth() + ", " + myObject.getTextureHeight());
 					}
 				}
 			}

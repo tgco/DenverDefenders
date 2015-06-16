@@ -243,7 +243,7 @@ public class TGC_Engine extends Game {
 		manager.load("ColdMountain.png", Texture.class);
 		manager.load("SemiTransparentBG.png", Texture.class);
 		manager.finishLoadingAsset("SemiTransparentBG.png");
-		System.out.println(manager.isLoaded("SemiTransparentBG.png"));
+		//System.out.println(manager.isLoaded("SemiTransparentBG.png"));
 		//initial update so that the loading screen is loaded before everything
 		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
@@ -291,9 +291,14 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Sundae1.png", Texture.class);
 		manager.load("ObjectImages/Sundae2.png", Texture.class);
 		manager.load("ObjectImages/heart.png", Texture.class);
+		manager.load("ObjectImages/Dirt1.png", Texture.class);
+		manager.load("ObjectImages/Dirt2.png", Texture.class);
+		manager.load("ObjectImages/Dirt3.png", Texture.class);
+		manager.load("ObjectImages/Sponge_REPLACEME.png", Texture.class);
 		
 		manager.load("Backgrounds/black.png", Texture.class);
 		manager.load("Backgrounds/Table.png", Texture.class);
+		manager.load("Backgrounds/Window.png", Texture.class);
 		
 		manager.finishLoading();
 		backgroundSounds = new Array<Music>();
