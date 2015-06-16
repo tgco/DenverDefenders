@@ -6,10 +6,13 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -30,12 +33,16 @@ class ScreenMain extends ScreenAdapter {
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean isRendered = false;
+	private Label gameName;
+	private LabelStyle ls;
+	private Table labelTable;
 	
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		mainScreenTable = createMainScreenTable();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
+		createLabel();
 	}
 
 	private Table createMainScreenTable() {
@@ -70,6 +77,33 @@ class ScreenMain extends ScreenAdapter {
 		table.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
 		return table;
 	}
+	
+	public void createLabel() {
+		labelTable = new Table();
+		skin.add("labelBack", manager.get("SemiTransparentBG.png"));
+		ls = new LabelStyle();
+		ls.font = game.getBitmapFontButton();
+		ls.background = skin.getDrawable("labelBack");
+		gameName = new Label("Denver Defenders", ls);
+		switch(Gdx.app.getType()){
+		case Android:
+			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+			//if using the desktop set the width and height to a 16:9 resolution.
+		case Desktop:
+			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*3));
+			break;
+		case iOS:
+			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			break;
+		default:
+			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			break;
+		}
+		gameName.setColor(Color.WHITE);
+		labelTable.add(gameName).top();
+		labelTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	}
 
 	@Override
 	public void render(float delta) {
@@ -90,13 +124,17 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void show() {
-		if(isRendered)game.getStage().addActor(mainScreenTable);
+		if(isRendered){
+			game.getStage().addActor(labelTable);
+			game.getStage().addActor(mainScreenTable);
+		}
 	}
 
 	@Override
 	public void hide() {
 		isRendered = false;
 		mainScreenTable.remove();
+		labelTable.remove();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 }

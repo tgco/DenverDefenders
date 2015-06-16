@@ -131,6 +131,8 @@ public class TGC_Engine extends Game {
 	private boolean allSaved = false;
 	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
 	private Music backgroundSoundToPlay;
+	/**{@link #splashScreenTimer} is the timer for how long the Title Splash Screen is displayed.*/
+	private float splashScreenTimer = 20.0f;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
 	public void loadLevelPackets() {
 		levelPackets = new Array<LevelPacket>();
@@ -423,8 +425,9 @@ public class TGC_Engine extends Game {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
+			splashScreenTimer -= Gdx.graphics.getDeltaTime();
 		}
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart) {
+		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart && splashScreenTimer <= 0) {
 			gameStart = true;
 		}
 		/**
