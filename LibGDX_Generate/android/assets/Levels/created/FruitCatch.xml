@@ -1,4 +1,4 @@
-<Level packageName="PLACEHOLDER1" levelName="Fruit Catch" levelImage="TEMPORARY_Cartoon_Forest.png" description="Catch all the fruit!">
+<Level packageName="PLACEHOLDER1" levelName="Fruit Catch" levelImage="Backgrounds/Table.png" description="Catch all the fruit!">
 	<!--Fruit! -->
 	<GameObject ID="0" attributes="moves" imageFilename="Apple1.png" initialLocation="100.0,1000.0" listeners="">
 		<moves value1="0" value2="-440.0"/>

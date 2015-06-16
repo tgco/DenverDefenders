@@ -1,4 +1,4 @@
-<Level packageName="PLACEHOLDER1" levelName="Salad" levelImage="TEMPORARY_Cartoon_Forest.png" description="Move the healthy foods to the bowl!">
+<Level packageName="PLACEHOLDER1" levelName="Salad" levelImage="Backgrounds/Table.png" description="Move the healthy foods to the bowl!">
 	<!-- Good food -->
 	<GameObject ID="0" attributes="moves" imageFilename="Watermellon1.png" initialLocation="100.0,100.0" listeners="drag_object">
 		<moves value1="0.0" value2="0.0"/>

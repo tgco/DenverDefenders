@@ -1,7 +1,7 @@
-<Level packageName="PLACEHOLDER1" levelName="Pong" levelImage="black.png" description="Let us play Pong.">
+<Level packageName="PLACEHOLDER1" levelName="Pong" levelImage="Backgrounds/black.png" description="Let us play Pong.">
 	<!-- ball -->
 	<GameObject ID="0" attributes="moves,bounceOffTopAndBottom,collidesWithObjectsID_self" imageFilename="pong_ball.png" initialLocation="450.0,500.0" listeners="">
-		<moves value1="300" value2="55.0"/>
+		<moves value1="400" value2="75.0"/>
 		<collidesWithObjectsID_self value1="1,2"/>
 		<bounceOffTopAndBottom/>
 	</GameObject>

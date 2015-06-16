@@ -254,9 +254,6 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
 		manager.load("ObjectImages/Grid.png", Texture.class);
 		//manager.load("editorAssets/GridLarge.png", Texture.class);
-		manager.load("TEMPORARY_Cartoon_City.png", Texture.class);
-		manager.load("TEMPORARY_Cartoon_Forest.png", Texture.class);
-		manager.load("black.png", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class);
 		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class);
@@ -292,6 +289,10 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Sundae1.png", Texture.class);
 		manager.load("ObjectImages/Sundae2.png", Texture.class);
 		manager.load("ObjectImages/heart.png", Texture.class);
+		
+		manager.load("Backgrounds/black.png", Texture.class);
+		manager.load("Backgrounds/Table.png", Texture.class);
+		
 		manager.finishLoading();
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
