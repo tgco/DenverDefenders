@@ -282,12 +282,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		float percentageToFill = .75f;
 		//make a variable to store the amount to fill, and fill as closely as possible. Clamp to low and high bounds
 		int chosenAmount = (int) Math.max(1f, Math.min(maxAmount, percentageToFill*maxAmount));
-		System.out.println(chosenAmount);
+		//System.out.println(chosenAmount);
 		//placeholder to see how many spots need filled still
 		int currentAmount = 0;
 		
 		while(currentAmount < chosenAmount){
-			System.out.println(currentAmount);
+			//System.out.println(currentAmount);
 			//chose a random rectangle
 			MinigameRectangle toFill = minigameRects.random();
 			//if the rectangle is not occupied, then fill it
@@ -464,18 +464,18 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 						i++;
 					}
 				}
-				System.out.println("Not saved: " + i);
+				//System.out.println("Not saved: " + i);
 			}
 			
 			if (allSaved()) {
-				System.out.println("They are all saved");
+				//System.out.println("They are all saved");
 				game.setMazeCompleted(true);
 				game.setAllSaved(true);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 			
 			if (playerHealth <= 0) {
-				System.out.println("You have ran out of lives :(");
+				//System.out.println("You have ran out of lives :(");
 				game.setMazeCompleted(true);
 				game.setAllSaved(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);

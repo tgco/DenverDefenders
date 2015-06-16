@@ -78,8 +78,8 @@ public class GameObject extends Actor implements Disposable{
 		objectScaleY = Gdx.graphics.getHeight()/576f;
 		//scale small objects an additional 50%
 		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
-			objectScaleX *= 1.5;
-			objectScaleY *= 1.5;
+			objectScaleX *= 2;
+			objectScaleY *= 2;
 		}
 		
 		
