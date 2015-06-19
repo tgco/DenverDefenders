@@ -1,5 +1,3 @@
-TheGivingChild git repository
-
 Installation Instructions:
 
 Download and install Java 7 or higher.
