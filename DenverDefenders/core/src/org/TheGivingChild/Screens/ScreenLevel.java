@@ -24,6 +24,8 @@ public class ScreenLevel extends ScreenAdapter{
 	
 	public ScreenLevel() {
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
+		batch = new SpriteBatch();
+		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 	}
 	
 	/**
@@ -33,8 +35,7 @@ public class ScreenLevel extends ScreenAdapter{
 	@Override
 	public void hide() {
 		currentLevel = null;
-		manager = null;
-		ScreenAdapterManager.getInstance().cb.setChecked(false);;
+		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	/**
@@ -44,16 +45,13 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+		// UNNECESSARY COUPLING TO THE MAIN CLASS, SHOULD CONSTRUCT WITH A LEVEL
 		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
+		// VAGUE METHOD CALL THAT ACTUALLY MODIFIES THE MAIN CLASS STAGE, USE A NEW STAGE INSTEAD
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
 		}
-		batch = new SpriteBatch();
-		
-		//make sure to set the level time so it does not go negative
-		//MinigameClock.getInstance().setLevelLength(5);
 	}
 	
 	/**
@@ -80,14 +78,13 @@ public class ScreenLevel extends ScreenAdapter{
 				}
 				//only draw if there is time remaining in the clock
 				//This if made the clock never drawn at all
-				if(!MinigameClock.getInstance().outOfTime())
-				{
-				currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+				if (!MinigameClock.getInstance().outOfTime()) {
+					currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 				}
 				currentLevel.update();
 				batch.end();
-				System.out.println(currentLevel.getCompleted());
 				if (currentLevel.getCompleted()) {
+					// COUPLED TO BOOLEANS IN THE MAIN CLASS
 					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
 					ScreenAdapterManager.getInstance().game.setFromGame(true);
 					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
@@ -95,6 +92,7 @@ public class ScreenLevel extends ScreenAdapter{
 
 			}
 		}
+		
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}

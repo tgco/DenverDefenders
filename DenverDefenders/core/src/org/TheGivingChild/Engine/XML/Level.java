@@ -91,8 +91,9 @@ public class Level {
 			current.setup(this);
 	}
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
-	public void loadObjectsToStage(){
+	public void loadObjectsToStage() {
 		for(GameObject gameObject: actors){
+			// COUPLED TO THE MAIN CLASS STAGE, CHANGE THIS
 			ScreenAdapterManager.getInstance().game.getStage().addActor(gameObject);
 		}
 	}

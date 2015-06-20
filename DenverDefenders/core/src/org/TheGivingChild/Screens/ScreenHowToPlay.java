@@ -41,18 +41,19 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "Button_MainScreen_Editor", 
 											  "ButtonPressed_MainScreen_Options", 
 											  "Button_MainScreen_Options"};
-	private Skin skin = new Skin();
-	private AssetManager manager = new AssetManager();
+	private Skin skin;
+	private AssetManager manager;
 	private boolean isRendered = false;
 	private TGC_Engine game;
 	private boolean regionsLoaded = false;
-	private Label message;
+	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
+		skin = new Skin();
 		table = createButtons();
 		manager = game.getAssetManager();
-		createMessage();
+		messageTable = createMessage();
 		manager.load("titleHowToPlayScreen.png", Texture.class);
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
@@ -63,7 +64,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 		Table t = new Table();
 		//set font for buttons
 		BitmapFont font = game.getBitmapFontButton();
-		//
 		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		//variable to help with table positioning
 		int widthDivider = buttonAtlasNamesArray.length;
@@ -72,12 +72,13 @@ class ScreenHowToPlay extends ScreenAdapter{
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
 			tbs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
-			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
+			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]); // i+1 HERE ELIMINATES THE USE OF += BUTTONSTATES IN THE FOR POSTOP
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			final int j = i/2;
 			//listener to change screens on button press
+			//CONFUSING USE OF J, CHANGE THIS
 			tb.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
@@ -99,15 +100,14 @@ class ScreenHowToPlay extends ScreenAdapter{
 		return t;
 	}
 	
-	public void createMessage() {
+	public Table createMessage() {
 		BitmapFont font = game.getBitmapFontButton();
 		LabelStyle ls = new LabelStyle();
 		ls.font = font;
 		Skin newSkin = new Skin();
-		System.out.println(manager.isLoaded("SemiTransparentBG.png"));
 		newSkin.add("background", manager.get("SemiTransparentBG.png"));
 		ls.background = newSkin.getDrawable("background");
-		message = new Label("Make your way through the maze to find the kids. "
+		Label message = new Label("Make your way through the maze to find the kids. "
 							+ "Finding a kid will trigger a mini-game. "
 							+ "If you complete the mini-game, the kid will follow you. "
 							+ "If you lose the mini-game, the kid will go to a different part of the maze. "
@@ -129,10 +129,11 @@ class ScreenHowToPlay extends ScreenAdapter{
 		}
 		message.setColor(Color.WHITE);
 		message.setWrap(true);
-		messageTable = new Table();
-		messageTable.add(message).width(Gdx.graphics.getWidth()*2/3);
-		messageTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		messageTable.align(Align.center);
+		Table table = new Table();
+		table.add(message).width(Gdx.graphics.getWidth()*2/3);
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.align(Align.center);
+		return table;
 	}
 	
 	@Override
@@ -145,6 +146,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	@Override
 	public void render(float delta) {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				if(manager.isLoaded("titleHowToPlayScreen.png"))
@@ -164,6 +166,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 				show();
 			}
 		}
+		
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
@@ -175,6 +178,11 @@ class ScreenHowToPlay extends ScreenAdapter{
 			game.getStage().addActor(messageTable);
 			isRendered = false;
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		skin.dispose();
 	}
 	
 }

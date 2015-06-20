@@ -323,7 +323,6 @@ public enum Attribute {
 					Rectangle r2 = new Rectangle(currentObject.getX(),currentObject.getY(),currentObject.getTextureWidth(),currentObject.getTextureHeight());
 					if(r1.overlaps(r2)){
 						allObjects.get(i).dispose();
-						//System.out.println("COLLISION DETECTED: " + myObject.getID() + ", " + currentObject.getID() + "|| Position: " + myObject.getX() + ", " + myObject.getY() + "DIM: " + myObject.getTextureWidth() + ", " + myObject.getTextureHeight());
 					}
 				}
 			}
@@ -451,7 +450,6 @@ public enum Attribute {
 		static final float COLLISION_CONSTANT = 5;//5
 		static final float COLLISION_OFFSET = 1;//1
 		public void update(GameObject myObject,Array<GameObject> allObjects){
-			System.out.println("POSITION: " + myObject.getX() + ", " + myObject.getY() + " VELOCITY: " + myObject.getVelocity()[0] + ", " + myObject.getVelocity()[1]);
 			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
@@ -558,6 +556,4 @@ public enum Attribute {
 	 * @return	The string containing the name to write to the .xml file
 	 */
 	public abstract String getXMLName();//probably gonna replace this later, but i dont wanna do it right now
-	
-	//public abstract int getNumArgs();
 }

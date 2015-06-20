@@ -33,7 +33,7 @@ import com.badlogic.gdx.utils.Array;
  *@author mtzimour
  */
 
-public class ScreenMaze extends ScreenAdapter implements InputProcessor{
+public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	/** Map to be displayed */
 	private TiledMap map;
 	/** Orthographic Camera to look at map from top down */
@@ -85,7 +85,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 */
 
 	public ScreenMaze(){	
-		//map = new TmxMapLoader().load("mapAssets/SampleUrban.tmx");
 		map = new TmxMapLoader().load("mapAssets/UrbanMaze1.tmx");
 		camera = new OrthographicCamera();
 		//Setup map properties
@@ -102,7 +101,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-
 				
 		arrayWalkD = new Array<Texture>();
 		arrayWalkR = new Array<Texture>();
@@ -117,106 +115,100 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
 
-		
-		//REFACTOR HTSI
+		//REFACTOR ASSET LOADING HERE
 		//get an array for walking down
-		//spriteWalkD.add(spriteTextureD);
+
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_2.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_3.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_4.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_5.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_6.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_7.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkD.add(spriteTextureD);
 		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkD.add(spriteTextureD);
 
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_2.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_3.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_4.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_5.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_6.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_7.png"));
-		//spriteWalkD.add(spriteTextureD);
+
 		arrayWalkU.add(spriteTextureU);
 		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_8.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkU.add(spriteTextureU);
 		
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_2.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_3.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_4.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_5.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_6.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_7.png"));
-		//spriteWalkD.add(spriteTextureD);
+	
 		arrayWalkR.add(spriteTextureR);
 		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_8.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkR.add(spriteTextureR);
 		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_2.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_3.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_4.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_5.png"));
-		//spriteWalkD.add(spriteTextureD);
+
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_6.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_7.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
 		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_8.png"));
-		//spriteWalkD.add(spriteTextureD);
+		
 		arrayWalkL.add(spriteTextureL);
-		
-		
-		
-		//The above intializations need to be refactored
-		
 		
 		
 		playerCharacter = new ChildSprite(spriteTextureD);
@@ -235,8 +227,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
-		for(int i = 0; i <collisionObjects.getCount(); i++)
-		{
+		for(int i = 0; i <collisionObjects.getCount(); i++) {
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
@@ -244,8 +235,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 		//Setup array of minigame rectangles
 		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
-		for(int i = 0; i <miniGameObjects.getCount(); i++)
-		{
+		for(int i = 0; i <miniGameObjects.getCount(); i++) {
 			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 
@@ -256,15 +246,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			minigameRects.add(miniRec);
 		}
 
-		//Remove a child at random so there is always an open spot
-		//children.removeIndex(MathUtils.random(children.size));
-
 		populate();
 
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
-		
 		
 		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
@@ -274,20 +260,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	}
 
 
-	public void populate()
-	{
+	public void populate() {
 		//get the amount of spots possible to fill
 		int maxAmount = minigameRects.size;
 		//chose a percentage to try and fill
 		float percentageToFill = .75f;
 		//make a variable to store the amount to fill, and fill as closely as possible. Clamp to low and high bounds
 		int chosenAmount = (int) Math.max(1f, Math.min(maxAmount, percentageToFill*maxAmount));
-		//System.out.println(chosenAmount);
 		//placeholder to see how many spots need filled still
 		int currentAmount = 0;
 		
-		while(currentAmount < chosenAmount){
-			//System.out.println(currentAmount);
+		while (currentAmount < chosenAmount) {
 			//chose a random rectangle
 			MinigameRectangle toFill = minigameRects.random();
 			//if the rectangle is not occupied, then fill it
@@ -322,8 +305,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 	 */
 
 	@Override 
-	public void render(float delta)
-	{
+	public void render(float delta) {
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
 		if(manager.update()) {
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
@@ -331,7 +313,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				Gdx.gl.glClearColor(0, 0, 0, 1);
 				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
 				//update the camera
 				camera.update();
@@ -343,7 +324,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				spriteBatch.end();
 				//render the map
 				mapRenderer.render();
-				
 
 				//Make the sprite not move when the map is scrolled
 				spriteBatch.setProjectionMatrix(camera.combined);
@@ -355,27 +335,18 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 				//Check for a collision as well
 				boolean collision = false;
 				
-				
-				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth)
-				{
-					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight)
-					{
-
+				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth) {
+					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight) {
 						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
-
-						for(Rectangle r : collisionRects)
-						{
-							if(r.overlaps(spriteRec))
-							{
+						
+						for(Rectangle r : collisionRects) {
+							if(r.overlaps(spriteRec)) {
 								collision = true;
 							}
 						}
 
-
-						for(MinigameRectangle m : minigameRects)
-						{
-							if(m.overlaps(spriteRec) && m.isOccupied())
-							{
+						for(MinigameRectangle m : minigameRects) {
+							if(m.overlaps(spriteRec) && m.isOccupied()) {
 								lastRec = m;
 								playerCharacter.setPosition(m.getX(), m.getY());
 								game.selectLevel();
@@ -392,52 +363,39 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 							}
 						}
 
-						if(!collision){
+						if(!collision) {
 							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-							if(followers.size > 0)
-							{
+							if(followers.size > 0) {
 								followers.get(0).followSprite(playerCharacter);
 
-								for(int i = 1; i <followers.size; i++)
-								{
+								for(int i = 1; i <followers.size; i++) {
 									followers.get(i).followSprite(followers.get(i-1));
 								}
-
 							}
-
-
-//							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-
 						}
-
 					}	
 				}
 				
-				if(currentWalkSequence.size > 0 && collision == false)
-				{
-				Texture next = currentWalkSequence.get(0);
-				currentWalkSequence.removeIndex(0);
-				currentWalkSequence.add(next);
-				playerCharacter.setTexture(next);
+				if(currentWalkSequence.size > 0 && collision == false) {
+					Texture next = currentWalkSequence.get(0);
+					currentWalkSequence.removeIndex(0);
+					currentWalkSequence.add(next);
+					playerCharacter.setTexture(next);
 				}
-				
 				
 				//begin the batch that sprites will draw to
 				spriteBatch.begin();
 				//draw the main character sprite to the map
 				playerCharacter.draw(spriteBatch);
 				//Draw the children following
-				if(followers.size != 0)
-				{
-					for(Sprite f: followers)
-					{
+				if(followers.size != 0) {
+					for(Sprite f: followers) {
 						f.draw(spriteBatch);
 					}
 				}
 
 				//draw the children on the maze
-				for(Sprite s : mazeChildren)
-				{
+				for(Sprite s : mazeChildren) {
 					s.draw(spriteBatch);
 				}
 				//update the camera to be above the character
@@ -453,47 +411,33 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 				if(ScreenAdapterManager.getInstance().cb.isChecked())
 					Gdx.input.setInputProcessor(this);
-
-
-			}
-
-			if(!allSaved()){
-				int i = 0;
-				for(ChildSprite mazeChild: mazeChildren){
-					if(mazeChild.getSaved() == false){
-						i++;
-					}
-				}
-				//System.out.println("Not saved: " + i);
 			}
 			
 			if (allSaved()) {
-				//System.out.println("They are all saved");
 				game.setMazeCompleted(true);
 				game.setAllSaved(true);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 			
 			if (playerHealth <= 0) {
-				//System.out.println("You have ran out of lives :(");
 				game.setMazeCompleted(true);
 				game.setAllSaved(false);
 				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 			}
 		}
+		
 		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
 			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-
 		return true;
 	}
 
 	@Override
 	public boolean keyTyped(char character) {
-		if (character == 'a') {
+		if (character == 'e') {
 			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 		}
 		return true;
@@ -533,60 +477,36 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		//calculate the difference between the begin and end point
 		Vector2 delta = newTouch.cpy().sub(lastTouch);
 		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
-		
-			
-		if (Math.abs(delta.x) > Math.abs(delta.y))
-		{
+		if (Math.abs(delta.x) > Math.abs(delta.y)) {
 			//if the change was positive, move right, else move left
-			if(delta.x > 0) 
-			{
+			if(delta.x > 0)  {
 				xMove =  playerCharacter.getSpeed();
 				playerCharacter.setTexture(spriteTextureR);
-				//currentWalkSequence = arrayWalkR;
-				//currentWalkSq
-				//currentWalkSequence  =null;
 				currentWalkSequence = arrayWalkR;
 			}
-			if(delta.x <= 0) 
-				{
-					xMove = -playerCharacter.getSpeed();
-					playerCharacter.setTexture(spriteTextureL);
-					currentWalkSequence = arrayWalkL;
-				}
+			if(delta.x <= 0) {
+				xMove = -playerCharacter.getSpeed();
+				playerCharacter.setTexture(spriteTextureL);
+				currentWalkSequence = arrayWalkL;
+			}
 			//no vertical movement
 			yMove = 0;
-
 		}
 		//otherwise y>=x so move vertically 
-		else
-		{
+		else {
 			//move down if the change was positive, else move up
-			if(delta.y > 0)	
-			{
+			if(delta.y > 0)	{
 				yMove = -playerCharacter.getSpeed();
-				//Put the next texture to end of queue
-				//Texture next = arrayWalkD.get(0);
-				//arrayWalkD.add(next);
-				//arrayWalkD.removeIndex(0);
-				//playerCharacter.setTexture(next);
 				currentWalkSequence = arrayWalkD;
-			//	playerCharacter.setTexture(spriteTextureD);
-				
-				
-				//playerCharacter.setTexture(spriteWalkD.get(walkCount));
 			}
-			if(delta.y <= 0)
-				{
-					yMove = playerCharacter.getSpeed();
-					//playerCharacter.setTexture(spriteTextureU);
-					currentWalkSequence = arrayWalkU;
-				}
+			if(delta.y <= 0) {
+				yMove = playerCharacter.getSpeed();
+				currentWalkSequence = arrayWalkU;
+			}
 			//no horizontal movement
 			xMove = 0;
 		}
-
 		return true;
-
 	}
 
 	/**
@@ -597,7 +517,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 
 	@Override
 	public void show(){
-		
+		// SOUND ASSET LEAKING EVERY CALL
 		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
 			click.play(ScreenAdapterManager.getInstance().game.volume);
@@ -614,9 +534,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			if (game.levelWin()) {
 				//add the follower from this minigame panel
 				followers.add(lastRec.getOccupant());
-				
-			}
-
+			} 
 			else if (lastRec.isOccupied()){
 				Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
 				for (MinigameRectangle rect: minigameRects) {
@@ -639,26 +557,17 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 			game.levelCompleted(false);
 			game.nullCurrentLevel();
 		}
-		for(MapLayer layer: map.getLayers()){
+		for(MapLayer layer: map.getLayers()) {
 			layer.setVisible(true);
 		}
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
-		for(int i = 0; i <collisionObjects.getCount(); i++)
-		{
+		for(int i = 0; i <collisionObjects.getCount(); i++) {
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
 		}
-		//Gdx.input.setInputProcessor(this);
-		
-
 	}
-
-	/**
-	 * Hides the maze by setting all layers to not visible.
-	 * Sets input processor back to the stage.
-	 */
 
 	public void reset() {
 		mazeChildren.clear();
@@ -681,18 +590,24 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor{
 		populate();
 	}
 
+	/**
+	 * Returns true if all children in the maze have been saved
+	 */
 	public boolean allSaved() {
-		boolean areSaved=true;
-		for (ChildSprite child: mazeChildren) {
+		for (ChildSprite child : mazeChildren) {
 			if (!child.getSaved()) {
-				areSaved = false;
+				return false;
 			}
 		}
-		return areSaved;
+		return true;
 	}
 
+	/**
+	 * Hides the maze by setting all layers to not visible.
+	 * Sets input processor back to the stage.
+	 */
 	@Override
-	public void hide(){
+	public void hide() {
 		for(MapLayer layer: map.getLayers()){
 			layer.setVisible(false);
 		}

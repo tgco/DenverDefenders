@@ -26,32 +26,27 @@ public class MinigameRectangle extends Rectangle {
 	/**
 	 * @returns true if {@link #occupied} == True
 	 */
-	public boolean isOccupied()
-	{
+	public boolean isOccupied() {
 		return occupied;
 	}
 	/**
 	 * @returns {@link #occupant}
 	 */
-	public ChildSprite getOccupant()
-	{
+	public ChildSprite getOccupant() {
 		return occupant;
 	}
 	/**
 	 * Sets the minigameRectangle to contain the ChildSprite passed in
 	 * @param s {@link #occupant} is set to this.
 	 */
-	public void setOccupied(ChildSprite s)
-	{
-		//System.out.println("Occupied");
+	public void setOccupied(ChildSprite s) {
 		occupant = s;
 		occupied = true;
 	}
 	/**
 	 * Emptie's out the miniGame rectangle.
 	 */
-	public void empty()
-	{
+	public void empty() {
 		occupied = false;
 		occupant = null;
 	}

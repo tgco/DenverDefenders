@@ -68,11 +68,11 @@ class ScreenOptions extends ScreenAdapter {
 		batch = new SpriteBatch();
 		manager = game.getAssetManager();
 		manager.load("titleOptionScreen.png", Texture.class);
-		createOptionsTable();
-		createOverallTable();
+		optionsTable = createOptionsTable();
+		overallTable = createOverallTable();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 		//set the inital state of sound to be on
-		for(CheckBox c: options){
+		for(CheckBox c : options){
 			c.setChecked(true);
 		}
 	}
@@ -95,7 +95,9 @@ class ScreenOptions extends ScreenAdapter {
 				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
 				batch.end();
 				isRendered = true;
+				// SHOW IS NOT MEANT TO BE CALLED EVERY FRAME
 				show();
+				// NO NEED TO SET BOOLS EVERY FRAME, SHOULD HAPPEN ON CLICK LISTENER
 				for(CheckBox c : options) {
 					if(c.isChecked()) {
 						if(c.equals(options.get(0))){
@@ -120,7 +122,7 @@ class ScreenOptions extends ScreenAdapter {
 	
 	
 	/**
-	 * Adds the two tables and resets a boolean so the screen transtion is shown
+	 * Adds the two tables and resets a boolean so the screen transition is shown
 	 */
 	@Override
 	public void show() {
@@ -142,63 +144,44 @@ class ScreenOptions extends ScreenAdapter {
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
+	@Override
+	public void dispose() {
+		skin.dispose();
+		buttonSkin.dispose();
+		sliderSkin.dispose();
+		batch.dispose();
+	}
+	
 	/**
 	 * Creates the table that holds the back button.
 	 */
-	private void createOptionsTable() {
+	private Table createOptionsTable() {
 		//Sets up the needed variables and parameters
-		optionsTable = new Table();
+		Table table = new Table();
 		skin = new Skin();
 		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
 		//Creates the buttons and sets table to origin
-		createButton();
-		optionsTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		optionsTable.align(Align.bottom);
+		table.add(createButton());
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.align(Align.bottom);
+		return table;
 	}
 	
 	/**
 	 * Creates the table that the sound and music check boxes are added to so they are formatted correctly.
 	 */
-	private void createChoices() {
-		choicesTable = new Table();
+	private Table createChoices() {
+		Table table = new Table();
 		buttonSkin = new Skin();
 		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
-		createCheckBoxes();
-	}
-	
-	/**
-	 * Creates the back button to return to the main screen and it's listener.
-	 */
-	private void createButton() {
-		font = new BitmapFont();
-		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
-		style = new TextButtonStyle();
-		style.font = font; 
-		style.up = skin.getDrawable("Button_MainScreen");
-		style.down = skin.getDrawable("ButtonPressed_MainScreen");
-		TextButton backButton = new TextButton("", style);
-
-		/**
-		 * Creates the listener for the back button.
-		 * Shows the main screen when pushed.
-		 */
-		backButton.addListener(new MyChangeListener() { 			
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				super.changed(event, actor);
-				//Calls the screen manager and has main be the shown screen if Back is hit
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			}
-		});
-		backButton.setSize(150,300);
-		optionsTable.add(backButton);
+		createCheckBoxes(table);
+		return table;
 	}
 	
 	/**
 	 * Creates the check boxes used for the sound and the music toggle.
 	 */
-	private void createCheckBoxes() {
+	private void createCheckBoxes(Table table) {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
@@ -212,7 +195,8 @@ class ScreenOptions extends ScreenAdapter {
 			LabelStyle ls = new LabelStyle();
 			ls.font = font;
 			ls.background = bSkin.getDrawable("background");
-			Label label = new Label(optionsArray[i], ls);switch(Gdx.app.getType()){
+			Label label = new Label(optionsArray[i], ls);
+			switch(Gdx.app.getType()){
 			case Android:
 				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
 				break;
@@ -235,10 +219,40 @@ class ScreenOptions extends ScreenAdapter {
 					super.changed(event, actor);
 				}
 			});
-			choicesTable.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
-			choicesTable.add(label);
+			table.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
+			table.add(label);
 			options.add(checkbox);
+			bSkin.dispose();
 		}
+	}
+	
+	/**
+	 * Creates the back button to return to the main screen and it's listener.
+	 */
+	private TextButton createButton() {
+		font = new BitmapFont();
+		skin = new Skin();
+		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		style = new TextButtonStyle();
+		style.font = font; 
+		style.up = skin.getDrawable("Button_MainScreen");
+		style.down = skin.getDrawable("ButtonPressed_MainScreen");
+		TextButton backButton = new TextButton("", style);
+
+		/**
+		 * Creates the listener for the back button.
+		 * Shows the main screen when pushed.
+		 */
+		backButton.addListener(new MyChangeListener() { 			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				super.changed(event, actor);
+				//Calls the screen manager and has main be the shown screen if Back is hit
+				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			}
+		});
+		backButton.setSize(150,300);
+		return backButton;
 	}
 	
 	/**
@@ -246,8 +260,8 @@ class ScreenOptions extends ScreenAdapter {
 	 * <p>
 	 * Also creates a check box for the mute button
 	 */
-	 private void createSlider() {
-		 sliderTable = new Table();
+	 private Table createSlider() {
+		 Table table = new Table();
 		 sliderSkin = new Skin();
 		 muteStyle = new CheckBoxStyle();
 		 font = game.getBitmapFontButton();
@@ -308,24 +322,27 @@ class ScreenOptions extends ScreenAdapter {
 				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 				break;
 			}
-		 sliderTable.add(sliderName).height(Gdx.graphics.getHeight()/3);
-		 sliderTable.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
-		 sliderTable.add(mute).height(Gdx.graphics.getHeight()/3);
+		 table.add(sliderName).height(Gdx.graphics.getHeight()/3);
+		 table.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
+		 table.add(mute).height(Gdx.graphics.getHeight()/3);
+		 return table;
 	 }
 	 
 	 /**
 	  * Creates the table that will hold the sound and music table and the volume
 	  * slider and adds and aligns them properly. 
 	  */
-	 private void createOverallTable() {
-		 overallTable = new Table();
-		 createChoices();
-		 createSlider();
-		 overallTable.add(choicesTable);
-		 overallTable.row();
-		 overallTable.add(sliderTable);
-		 overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		 overallTable.align(Align.center);
+	 private Table createOverallTable() {
+		 Table table = new Table();
+		 choicesTable = createChoices();
+		 sliderTable = createSlider();
+		 table.add(choicesTable);
+		 table.row();
+		 table.add(sliderTable);
+		 table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		 table.align(Align.center);
+		 
+		 return table;
 	 }
 	 
 	 /**
