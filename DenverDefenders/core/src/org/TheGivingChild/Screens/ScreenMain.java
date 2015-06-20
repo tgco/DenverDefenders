@@ -26,28 +26,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
  * @author ctokunag
  */
 class ScreenMain extends ScreenAdapter {
-	private BitmapFont bitmapFontButton;
 	private float buttonHeight;
-	private Table mainScreenTable;
-	private Skin skin = new Skin();
+	private Table mainScreenTable, labelTable;
+	private Skin skin;
 	private TGC_Engine game;
 	private AssetManager manager;
 	private boolean isRendered = false;
-	private Label gameName;
-	private LabelStyle ls;
-	private Table labelTable;
 	
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
 		manager = game.getAssetManager();
+		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
-		createLabel();
+		labelTable = createLabel();
 	}
 
 	private Table createMainScreenTable() {
 		//font for the buttons
-		bitmapFontButton = game.getBitmapFontButton();
+		BitmapFont bitmapFontButton = game.getBitmapFontButton();
 		//create a table for the buttons
 		Table table = new Table();
 		//adds the proper textures to skin from the asset manager
@@ -78,13 +75,13 @@ class ScreenMain extends ScreenAdapter {
 		return table;
 	}
 	
-	public void createLabel() {
-		labelTable = new Table();
+	public Table createLabel() {
+		Table table = new Table();
 		skin.add("labelBack", manager.get("SemiTransparentBG.png"));
-		ls = new LabelStyle();
+		LabelStyle ls = new LabelStyle();
 		ls.font = game.getBitmapFontButton();
 		ls.background = skin.getDrawable("labelBack");
-		gameName = new Label("Denver Defenders", ls);
+		Label gameName = new Label("Denver Defenders", ls);
 		switch(Gdx.app.getType()){
 		case Android:
 			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
@@ -101,14 +98,19 @@ class ScreenMain extends ScreenAdapter {
 			break;
 		}
 		gameName.setColor(Color.WHITE);
-		labelTable.add(gameName).top();
-		labelTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.add(gameName).top();
+		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		return table;
 	}
 
 	@Override
 	public void render(float delta) {
+		// CALLS THE CURTAIN MOVING FUNCTION
 		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
+		// UPDATES ASSET LOADING, TRUE WHEN DONE
 		if(manager.update()) {
+			
 			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 				Gdx.gl.glClearColor(1,1,1,1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -125,6 +127,7 @@ class ScreenMain extends ScreenAdapter {
 	@Override
 	public void show() {
 		if(isRendered){
+			// ADDS THE MAIN SCREEN BUTTONS AND LABEL TO THE TGC_ENGINE INSTANCE
 			game.getStage().addActor(labelTable);
 			game.getStage().addActor(mainScreenTable);
 		}
@@ -132,9 +135,16 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void hide() {
+		// ON SCREEN SWITCH, REMOVES ITS LABELS AND BUTTONS
 		isRendered = false;
 		mainScreenTable.remove();
 		labelTable.remove();
 		ScreenAdapterManager.getInstance().cb.setChecked(false);
+	}
+	
+	@Override
+	public void dispose() {
+		skin.dispose();
+		return;
 	}
 }

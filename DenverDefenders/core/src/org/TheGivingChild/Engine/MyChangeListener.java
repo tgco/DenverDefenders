@@ -23,7 +23,9 @@ public class MyChangeListener extends ChangeListener{
 	/**changed is overridden to add sound to UI elements. */
 	@Override
 	public void changed(ChangeEvent event, Actor actor) {
+		// LEAKS A NEW SOUND ON EVERY CLICK, BAD BAD BAD
 		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
+		// LET A SOUND MANAGER DECIDE IF THE GAME IS MUTED OR NOT
 		if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
 			click.play(ScreenAdapterManager.getInstance().game.volume);
 		}

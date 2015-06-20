@@ -134,6 +134,9 @@ public class TGC_Engine extends Game {
 	/**{@link #splashScreenTimer} is the timer for how long the Title Splash Screen is displayed.*/
 	private float splashScreenTimer = 20.0f;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
+	/*
+	 * 	MOVE LEVEL PACKET LOADING TO BE A RESPONSIBILITY OF WHOEVER LOADS THE MAZE
+	 */
 	public void loadLevelPackets() {
 		levelPackets = new Array<LevelPacket>();
 		FileHandle dirHandle;
@@ -155,6 +158,10 @@ public class TGC_Engine extends Game {
 		}
 	}
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
+	/*
+	 * LOADS ONLY FROM FIRST PACKET
+	 * 
+	 */
 	public void selectLevel() {
 		Array<Level> possibleLevels = new Array<Level>();
 		for (Level newLevel: levelPackets.get(0).getLevels()) {
@@ -164,7 +171,7 @@ public class TGC_Engine extends Game {
 		}
 
 		if (possibleLevels.size == 0) {
-			loadLevelPackets();
+			loadLevelPackets(); //REDUNDANT LOADING
 			for (Level newLevel: levelPackets.get(0).getLevels()) {
 				if (!newLevel.getCompleted()) {
 					possibleLevels.add(newLevel);
@@ -172,10 +179,9 @@ public class TGC_Engine extends Game {
 			}
 		}
 		Random rand = new Random();
-		int newLevelIndex = (rand.nextInt(1000)) % possibleLevels.size;
+		int newLevelIndex = (rand.nextInt(possibleLevels.size));
 		currentLevel = possibleLevels.get(newLevelIndex);
 		currentLevel.resetLevel();
-		//System.out.println(currentLevel.getLevelName());
 	}
 	/**{@link #levelCompleted(boolean)} sets the {@link #levelWinOrLose} to winOrLose.
 	 * @param winOrLose {@link #levelWinOrLose} is set to this.*/
@@ -320,36 +326,30 @@ public class TGC_Engine extends Game {
 		//button stuff
 		bitmapFontButton = new BitmapFont();
 		//create the stage
-		createStage();
-
-		//set the height and width to the Gdx graphics dimensions
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
+		stage = new TGC_Stage();
 
 		//Game input processor
 		InputMultiplexer mp = new InputMultiplexer();
 		mp.addProcessor(stage);
-		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(mp);
+		
+		//set the height and width to the Gdx graphics dimensions
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		//Map stuff
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
 		mapCamera = new OrthographicCamera();
-		mapCamera.setToOrtho(false, w, h);
+		mapCamera.setToOrtho(false, width, height);
 
-		/**Viewport handling
-		 * Sets up the camera that will keep track of the screen.
-		 * Creates the viewport to keep track of the aspect ratio.
-		 * Applies the viewport to the camera.
-		 * Repositions the camera accordingly.
-		 */
 		camera = new OrthographicCamera();
 		viewport = new StretchViewport(16, 9, camera);
 		viewport.apply();
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 
 		batch = new SpriteBatch();
-
+		
+		//LOAD NOT NECESSARY YET
 		loadLevelPackets();
+		
 		soundEnabled = true;
 		musicEnabled = true;
 		muteAll = false;
@@ -363,18 +363,17 @@ public class TGC_Engine extends Game {
 		}
 		backgroundSoundToPlay.play();
 	}
-	/**{@link #createStage()} initializes the stage for actors to be drawn to. */
-	public void createStage(){
-		stage = new TGC_Stage();
-		//create main menu images
-		Gdx.input.setInputProcessor(stage);
-	}
+
 	/**{@link #dispose()} handles the resource disposal when {@link TGC_Engine} exits.*/
 	@Override
 	public void dispose(){
 		super.dispose();
 		//dispose the screen manager, and in doing so all screens
 		ScreenAdapterManager.getInstance().dispose();
+		batch.dispose();
+		for (Music m : backgroundSounds) {
+			m.dispose();
+		}
 	};
 	/**{@link #getBitmapFontButton()} returns {@link #bitmapFontButton}.*/
 	public BitmapFont getBitmapFontButton(){
@@ -418,7 +417,6 @@ public class TGC_Engine extends Game {
 	}
 	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
 	public Level getCurrentLevel() {
-		// TODO Auto-generated method stub
 		return currentLevel;
 	}
 	
@@ -426,21 +424,18 @@ public class TGC_Engine extends Game {
 	@Override
 	public void render () {
 		camera.update();
+		// DRAWS SPLASH SCREEN
 		if(!ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart) {
 			batch.begin();
 			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
 			splashScreenTimer -= Gdx.graphics.getDeltaTime();
 		}
+		// RUNS WHEN SPLASH SCREEN IS DONE
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart && splashScreenTimer <= 0) {
 			gameStart = true;
 		}
-		/**
-		 * This checks if the manager is done updating or not. If the manager is not 
-		 * done loading, it will display a transition until it is done loading. Once 
-		 * the manager is done updating, it will display another transition and move
-		 * to the next screen.
-		 */
+		
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
 			//or to switch to displaying the main screen
@@ -472,11 +467,13 @@ public class TGC_Engine extends Game {
 				}
 			}
 		}
-		//decrements the timer to check if we are still delaying the main screen
+		//decrements transition time
 		if(screenTransitionTimeLeft >= 0){
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
+		
 		stage.draw();
+		
 		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
 			ScreenAdapterManager.getInstance().screenTransitionOut();	
 		}

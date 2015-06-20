@@ -170,7 +170,7 @@ public final class ScreenAdapterManager {
 		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
 		manager.finishLoadingAsset("Packs/ScreenTransitions.pack");
 		TextureAtlas screenTransitionAtlas = manager.get("Packs/ScreenTransitions.pack");
-		for(AtlasRegion texture :screenTransitionAtlas.getRegions()){
+		for(AtlasRegion texture : screenTransitionAtlas.getRegions()){
 			screenTransitions.add(texture);
 		}
 		screenTransitionInComplete = false;
@@ -219,8 +219,8 @@ public final class ScreenAdapterManager {
 			return false;
 		}
 		else {
-			screenTransition();
-			game.getStage().addActor(overallTable);
+			screenTransition(); //DRAWS CLOSE CURTAINS
+			game.getStage().addActor(overallTable); //TABLE WITH THE FACT AND BUTTON ON IT
 			if(cb.isChecked()) {
 				overallTable.remove();
 				return true;
@@ -260,6 +260,7 @@ public final class ScreenAdapterManager {
 		if (!screens.containsKey(screenEnum.ordinal())) {
 			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
 		} 
+		//INIT TRANSITION VARIABLES
 		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;

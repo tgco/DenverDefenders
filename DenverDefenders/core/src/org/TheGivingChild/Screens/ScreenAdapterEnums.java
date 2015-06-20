@@ -86,7 +86,7 @@ public enum ScreenAdapterEnums {
 	};
 	
 	/**
-	 * Abstract protected class that the manager uses to return a ScreenAdapter 
+	 * Abstract protected function that the manager uses to return a ScreenAdapter 
 	 */
 	protected abstract ScreenAdapter getScreenInstance();
 }
