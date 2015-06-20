@@ -27,7 +27,7 @@ public class XML_Reader {
 		String xml_file ="";
 		try{
 			xml_file = file.readString();
-		}catch(Exception e){System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
+		} catch(Exception e) {System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
 		root = reader.parse(xml_file);
 	}
 	/**
@@ -35,7 +35,7 @@ public class XML_Reader {
 	 * @return	The Level object from the .xml file
 	 * @see		compileLevel
 	 */
-	public Level compileLevel(){
+	public Level compileLevel() {
 		return new Level(root.getAttribute("levelName"),
 				root.getAttribute("packageName"),
 				root.getAttribute("levelImage"),
@@ -51,21 +51,19 @@ public class XML_Reader {
 	 */
 	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
 		Array<GameObject> listOfObjects = new Array<GameObject>();
-		for(Element currentObject:root.getChildrenByName("GameObject")){//iterate through game objects
+		for(Element currentObject : root.getChildrenByName("GameObject")){//iterate through game objects
 			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
 			ObjectMap<Attribute,Array<String>> attributeData = new ObjectMap<Attribute,Array<String>>();
-		//	System.out.println(listenersToAdd);
-				for(String currentAttribute:currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-			//		System.out.println("\t|" + currentAttribute);
+				for(String currentAttribute : currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
 					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
 						Array<String> valuesToAdd = new Array<String>();
 						if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//check if the attribute even has values
 							for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){
 								valuesToAdd.add(currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 								attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
-				//				System.out.println("\t\tValue: " + currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
 							}
 						}
+						// REDUNDANT?
 						attributeData.put(Attribute.newType(currentAttribute), valuesToAdd);
 					}
 				}
@@ -82,12 +80,12 @@ public class XML_Reader {
 		ObjectMap<WinEnum,Array<String>> winData = new ObjectMap<WinEnum,Array<String>>();
 		String temp[] = root.getChildByName("LevelGoals").getAttribute("win").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
-			for(String currentWinCondition:temp){//each element in win="stuff,things,morestuff"
+			for(String currentWinCondition : temp){//each element in win="stuff,things,morestuff"
 				WinEnum tempEnum = WinEnum.newType(currentWinCondition);//yo dawg i herd u liek temps
 				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				if(root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes() != null){
-					for(int i=0;i<root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes().size;i++){
+				if(tempMap != null){
+					for(int i = 0; i < tempMap.size; i++){
 						tempValues.add(tempMap.get("value"+(i+1)));
 					}
 				}
@@ -104,12 +102,12 @@ public class XML_Reader {
 		ObjectMap<LoseEnum,Array<String>> loseData = new ObjectMap<LoseEnum,Array<String>>();
 		String temp[] = root.getChildByName("LevelGoals").getAttribute("lose").split(",");
 		if(temp.length > 0){//in case of empty list, for whatever reason
-			for(String currentLoseCondition:temp){//each element in lose="stuff,things,morestuff"
+			for(String currentLoseCondition : temp){//each element in lose="stuff,things,morestuff"
 				LoseEnum tempEnum = LoseEnum.newType(currentLoseCondition);//yo dawg i herd u liek temps
 				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
 				Array<String> tempValues = new Array<String>();
-				if(root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes() != null){
-					for(int i=0;i<root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes().size;i++){
+				if(tempMap != null){
+					for(int i = 0; i < tempMap.size;i++){
 						tempValues.add(tempMap.get("value"+(i+1)));
 					}
 				}
@@ -135,7 +133,7 @@ public class XML_Reader {
 		if(input.isEmpty())
 			return listeners;
 		String[] temp = input.split(",");
-		for(String currentListenerName:temp)
+		for(String currentListenerName : temp)
 			listeners.add(currentListenerName);
 		return listeners;
 	}

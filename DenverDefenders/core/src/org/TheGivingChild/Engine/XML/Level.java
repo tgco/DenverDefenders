@@ -40,56 +40,53 @@ public class Level {
 		
 		this.description = description;
 		
-		for(WinEnum current:winData.keys().toArray())
+		for(WinEnum current : winData.keys().toArray())
 			current.setup(this);
-		for(LoseEnum current:loseData.keys().toArray())
+		for(LoseEnum current : loseData.keys().toArray())
 			current.setup(this);
 	}
 	
 	public void update(){
 		//update the state of the actors and clock
 		MinigameClock.getInstance().render();
-//				
-//		clockBatch.begin();
-//		clockFont.draw(clockBatch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
-//		clockBatch.end();
-//				
-		//System.out.println("gameclock is at " + MinigameClock.getInstance().getLevelTime());
 		
-		for(GameObject currentObject:actors){
+		for(GameObject currentObject : actors){
 			if(!currentObject.isDisposed())
 				currentObject.update(actors);
 			else
 				actors.removeValue(currentObject, true);
 		}
-		//check the win conditions.
-		for(WinEnum winEnum: winData.keys().toArray()){
+		
+		//check the win/lose conditions.
+		for(WinEnum winEnum : winData.keys().toArray()){
 			winEnum.checkWin(this);
 			if (completed) return;
 		}
 		
-		for (LoseEnum loseEnum: loseData.keys().toArray()) {
+		for (LoseEnum loseEnum : loseData.keys().toArray()) {
 			loseEnum.checkLose(this);
 			if (completed) return;
 		}
 
 	}
+	
 	public void resetLevel(){
-		//Reset level clock to 10
+		//Reset level clock
 		MinigameClock.getInstance().setLevelLength(levelTime);
 		
 		//remove the game objects from the stage
-		for(GameObject gameObject: actors){
+		for(GameObject gameObject : actors){
 			gameObject.remove();
 		}
+		
 		//go to the main screen, will likely need to return to the last maze screen being played
-		//ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-		for(WinEnum current:winData.keys().toArray())
+		for(WinEnum current : winData.keys().toArray())
 			current.setup(this);
 		
-		for(LoseEnum current:loseData.keys().toArray())
+		for(LoseEnum current : loseData.keys().toArray())
 			current.setup(this);
 	}
+	
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage() {
 		for(GameObject gameObject: actors){
@@ -164,7 +161,7 @@ public class Level {
 	 */
 	public GameObject getObjectOfID(int ID){
 		GameObject targetObject = null;
-		for(GameObject currentObject:actors)
+		for(GameObject currentObject : actors)
 			if(currentObject.getID() == ID)
 				targetObject = currentObject;
 		return targetObject;

@@ -260,7 +260,7 @@ public final class ScreenAdapterManager {
 		if (!screens.containsKey(screenEnum.ordinal())) {
 			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
 		} 
-		//INIT TRANSITION VARIABLES
+		// INIT TRANSITION VARIABLES
 		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
@@ -273,20 +273,16 @@ public final class ScreenAdapterManager {
 		mazeTable.remove();
 		
 		createLabels(MathUtils.random(100));
-		
 
 		if ((screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) || getInstance().game.getCurrentLevel() != null) {
-			//overallTable.row();
 			overallTable.add(minigameTable.align(Align.center));			
 			game.setFromGame(false);
 		}
-		System.out.println(game.getMazeCompleted());
+
 		if (screenEnum.equals(ScreenAdapterEnums.MAIN) && game.getMazeCompleted()) {
-			//overallTable.row();
 			overallTable.add(mazeTable.align(Align.center));
 			game.setMazeCompleted(false);
 		}
-		
 
 		overallTable.row();
 		overallTable.add(buttonTable);
@@ -296,8 +292,6 @@ public final class ScreenAdapterManager {
 		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		overallTable.align(Align.center);
 		game.setScreen(screens.get(screenEnum.ordinal()));
-
-
 	}
 
 	public void createButton() {

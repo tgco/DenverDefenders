@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-//1024x576
+
 /**
  * Each GameObject holds a list of attributes, these attributes do various operations on the object based on their specific implementations of their methods<br>
  * Each Attribute must implement update, setup, getVariableNames, getValues, and getXMLName
@@ -26,7 +26,6 @@ public enum Attribute {
 		}
 		
 		public void setup(GameObject myObject){
-			//if(!myObject.getAttributeData().keys().toArray().contains(MOVESONSETPATH, false))
 			myObject.setVelocity(new float[] {Float.parseFloat(myObject.getAttributeData().get(MOVES).get(0)),Float.parseFloat(myObject.getAttributeData().get(MOVES).get(1))});
 		}
 		public Array<String> getValues(GameObject myObject){
@@ -85,8 +84,8 @@ public enum Attribute {
 	COLLIDESWITHOBJECTSID{//only gonna get square objects working for now, circular objects wont be too hard later
 		//data is stored as value1=mass of object, all other values are the objects it can collide with
 		static final float MAX_VELOCITY = 400;
-		static final float COLLISION_CONSTANT = 5;//5
-		static final float COLLISION_OFFSET = 1;//1
+		static final float COLLISION_CONSTANT = 5;
+		static final float COLLISION_OFFSET = 1;
 		public void update(GameObject myObject,Array<GameObject> allObjects){
 			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
@@ -95,7 +94,6 @@ public enum Attribute {
 					if(r1.overlaps(r2) ){//&& juanSmall.overlaps(tooSmall)
 						//collision has been detected, getting needed information for the collision equation(using momentum)
 						float c1 = Float.parseFloat(myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).get(0));
-						//float c2 = allObjects.get(i).getAttributeData();
 						float m1 = Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
 						float m2 = Float.parseFloat(allObjects.get(i).getAttributeData().get(MASS).get(0));
 						float v1ix = myObject.getVelocity()[0];
@@ -108,7 +106,6 @@ public enum Attribute {
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
 
-						//new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};
 						float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
 						allObjects.get(i).setVelocity(otherObjectVelocity);
 						float mag2=(float) Math.pow(otherObjectVelocity[0]*otherObjectVelocity[0] + otherObjectVelocity[1]*otherObjectVelocity[1],.5);
@@ -127,6 +124,7 @@ public enum Attribute {
 							r2.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
 						}
 						
+						// SOUND ASSET LEAK
 						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.wav"));
 						if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
 							mp3Sound.play(ScreenAdapterManager.getInstance().game.volume);
@@ -141,8 +139,6 @@ public enum Attribute {
 							allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
 						if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
 							allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
-						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
-						
 					}
 				}
 			}
@@ -456,10 +452,7 @@ public enum Attribute {
 					Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 					if(r1.overlaps(r2)){
 						//collision has been detected, getting needed information for the collision equation(using momentum)
-						
-						//float c2 = allObjects.get(i).getAttributeData();
-						//float m1 = 1f;//Float.parseFloat(myObject.getAttributeData().get(MASS).get(0));
-						float m2 = 1f;//Float.parseFloat(allObjects.get(i).getAttributeData().get(MASS).get(0));
+						float m2 = 1f;
 						float v1ix = myObject.getVelocity()[0];
 						float v2ix = allObjects.get(i).getVelocity()[0];
 						float v1iy = myObject.getVelocity()[1];
@@ -469,13 +462,8 @@ public enum Attribute {
 						myObject.setVelocity(myObjectVelocity);
 						float mag1 =(float) Math.pow(myObjectVelocity[0]*myObjectVelocity[0] + myObjectVelocity[1]*myObjectVelocity[1],.5);
 						float[] myObjectDirection = {myObjectVelocity[0]/mag1,myObjectVelocity[1]/mag1};
-
-						//new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};
-						//float[] otherObjectVelocity = new float[] {-1*myObjectVelocity[0],-1*myObjectVelocity[1]};//new float[] {c1*((2*m1*v1ix+(m1-m2)*v2ix)/(m1+m2))*.9f,c1*(2*m1*v1iy+(m1-m2)*v2iy/(m1+m2))*.9f};
-						//float[] otherObjectDirection = {otherObjectVelocity[0]/mag2,otherObjectVelocity[1]/mag2};
 						
-						
-						//this loop will make sure the objects aren't overlapping after collision has occured, will likely remove loop and change code if time allows.
+						//this loop will make sure the objects aren't overlapping after collision has occurred, will likely remove loop and change code if time allows.
 						while(r1.overlaps(r2)){
 							myObject.moveBy(myObjectDirection[0]*COLLISION_CONSTANT+COLLISION_OFFSET,myObjectDirection[1]*COLLISION_CONSTANT+COLLISION_OFFSET);
 							r1.setPosition(myObject.getX(),myObject.getY());
@@ -495,30 +483,28 @@ public enum Attribute {
 							allObjects.get(i).setVelocity(new float[] {MAX_VELOCITY,allObjects.get(i).getVelocity()[1]});
 						if(allObjects.get(i).getVelocity()[1] > MAX_VELOCITY)
 							allObjects.get(i).setVelocity(new float[] {allObjects.get(i).getVelocity()[0],MAX_VELOCITY});
-						//int[] direction = direction(myObject.getX(),myObject.getY(),allObjects.get(i).getX(),allObjects.get(i).getY());
-						
 					}
 				}
 			}
 		}
 	
-	public void setup(GameObject myObject){
-		String[] newValues = myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).get(0).split(",");
-		myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).set(0, newValues[0]);
-		for(int i = 1; i < newValues.length;i++)
-			myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).add(newValues[i]);
-	}
-	
-	public Array<String> getValues(GameObject myObject){
-		return myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF);
-	}
-	
-	public Array<String> getVariableNames(){
-		Array<String> variableNames = new Array<String>();
-		variableNames.add("Object ID's in a list, delimited by commas");
-		return variableNames;
-	}
-	public String getXMLName(){return "collidesWithObjectsID_self";}
+		public void setup(GameObject myObject){
+			String[] newValues = myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).get(0).split(",");
+			myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).set(0, newValues[0]);
+			for(int i = 1; i < newValues.length;i++)
+				myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF).add(newValues[i]);
+		}
+		
+		public Array<String> getValues(GameObject myObject){
+			return myObject.getAttributeData().get(COLLIDESWITHOBJECTSID_SELF);
+		}
+		
+		public Array<String> getVariableNames(){
+			Array<String> variableNames = new Array<String>();
+			variableNames.add("Object ID's in a list, delimited by commas");
+			return variableNames;
+		}
+		public String getXMLName(){return "collidesWithObjectsID_self";}
 	};
 	
 	/**

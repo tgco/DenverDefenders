@@ -35,11 +35,10 @@ public class XML_Writer {
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
 				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());//position
 				writer.attribute("listeners", compileListenerList(currentGameObject));
-				for(Attribute currentAttribute:currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
+				for(Attribute currentAttribute : currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
-					for(String currentValue:currentAttribute.getValues(currentGameObject)){//writing the values associated with each attribute
-						System.out.println("here here " + currentValue);
+					for(String currentValue : currentAttribute.getValues(currentGameObject)){//writing the values associated with each attribute
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}
@@ -50,40 +49,37 @@ public class XML_Writer {
 			}
 			
 			//write levelGoal information, win/lose conditions
-				writer.element("levelGoals");
-				writer.attribute("win", compileWinList());
-				writer.attribute("lose", compileLoseList());
-				
-				int count=1;//writing win condition values
-				for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
-					writer.element(currentWinCondition.getXMLDescription());
-					for(String currentValue:currentWinCondition.getValues(currentLevel)){
-						writer.attribute("value"+count,currentValue);
-						count++;
-					}
-					writer.pop();
-				}
-				
-				count=1;//writing lose condition values
-				for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
-					writer.element(currentLoseCondition.getXMLDescription());
-					for(String currentValue:currentLoseCondition.getValues(currentLevel)){
-						writer.attribute("value"+count,currentValue);
-						count++;
-					}
-					writer.pop();
+			writer.element("levelGoals");
+			writer.attribute("win", compileWinList());
+			writer.attribute("lose", compileLoseList());
+			
+			int count = 1;//writing win condition values
+			for(WinEnum currentWinCondition : currentLevel.getWinConditions()){
+				writer.element(currentWinCondition.getXMLDescription());
+				for(String currentValue : currentWinCondition.getValues(currentLevel)){
+					writer.attribute("value"+count,currentValue);
+					count++;
 				}
 				writer.pop();
-			writer.pop();
+			}
+			
+			count = 1;//writing lose condition values
+			for(LoseEnum currentLoseCondition:currentLevel.getLoseConditions()){
+				writer.element(currentLoseCondition.getXMLDescription());
+				for(String currentValue:currentLoseCondition.getValues(currentLevel)){
+					writer.attribute("value"+count,currentValue);
+					count++;
+				}
+				writer.pop();
+			}
+			writer.pop(); // levelgoals
+			writer.pop(); // level
 			
 			writer.close();
 			//write to file
-			//FileHandle fileWriter = new FileHandle(currentLevel.getLevelName() + ".xml");
-			System.out.println(currentLevel.getLevelName());
-			FileHandle fileWriter = Gdx.files.local("../android/assets/Levels/created/" +currentLevel.getLevelName() + ".xml");
-			//FileHandle fileWriter = new FileHandle("testOutTEST.xml");
+			FileHandle fileWriter = Gdx.files.local("../android/assets/Levels/created/" + currentLevel.getLevelName() + ".xml");
 			fileWriter.writeString(stringWriter.toString(),false);
-		}catch(Exception e){System.out.println("Error writing to file: " + e);}
+		} catch(Exception e) { System.out.println("Error writing to file: " + e); }
 	}
 	/**
 	*	Takes a game object and returns a string delimited by commas to write to the file which lists the object's attributes
@@ -91,22 +87,22 @@ public class XML_Writer {
 	private String compileAttributeList(GameObject obj){		
 		String temp = "";
 		for(Attribute currentAttribute: obj.getAttributes())
-			temp+=currentAttribute.getXMLName() + ",";
+			temp += currentAttribute.getXMLName() + ",";
 		//remove last character
 		String temp2="";
-		if(temp.length()>1)
+		if(temp.length() > 1)
 			temp2 = temp.substring(0,temp.length()-1);
 		return temp2;
 	}
 	/**
 	*	Compiles the list of win enum names delimited by commas
 	*/
-	private String compileWinList(){
+	private String compileWinList() {
 		String winList1 = "";
 		String winList2 = "";
-		if(currentLevel.getWinConditions().size > 0){
+		if(currentLevel.getWinConditions().size > 0) {
 			for(WinEnum currentWinCondition:currentLevel.getWinConditions()){
-				winList1+="," + currentWinCondition.getXMLDescription();
+				winList1 += "," + currentWinCondition.getXMLDescription();
 			}
 			winList2 = winList1.substring(1,winList1.length());
 		}
@@ -115,7 +111,7 @@ public class XML_Writer {
 	/**
 	*	Compiles the list of lose enum names delimited by commas
 	*/
-	private String compileLoseList(){
+	private String compileLoseList() {
 		String loseList1 = "";
 		String loseList2 = "";
 		if(currentLevel.getLoseConditions().size > 0){
@@ -126,16 +122,16 @@ public class XML_Writer {
 		}
 		return loseList2;
 	}
+	
 	/**
 	*	compiles the list of listener names into a list delimited by commas
 	*/
-	
 	private String compileListenerList(GameObject myObject){
 		if(myObject.getListenerNames().size == 0)
 			return "";
 		String temp = "";
-		for(String currentListenerName:myObject.getListenerNames())
-			temp+=","+currentListenerName;
+		for(String currentListenerName : myObject.getListenerNames())
+			temp += ","+currentListenerName;
 		return temp.substring(1,temp.length());
 	}
 }

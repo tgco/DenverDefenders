@@ -55,7 +55,6 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 			for(int i = 0; i<IDList.length;i++){
 				int currentID = Integer.parseInt(IDList[i]);
 				//setup new rectangle with dimensions of target object
-				//Rectangle r2 = new Rectangle(level.getGameObjects().get(currentID).getX(),level.getGameObjects().get(currentID).getY(),level.getGameObjects().get(currentID).getTexture().getWidth(),level.getGameObjects().get(currentID).getTexture().getHeight());
 				GameObject currentObject = level.getObjectOfID(currentID);//have to look it up each time because objects can be created/deleted, not in a set index.
 				Rectangle r2 = new Rectangle(currentObject.getX(),currentObject.getY(),currentObject.getTextureWidth(),currentObject.getTextureHeight());
 				if(!r1.overlaps(r2))//if the rectangle does not overlap, win condition has not been satisfied
@@ -88,8 +87,6 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 				}
 			}
 			if(win){
-			//	System.out.println("Level "+level.getLevelName()+" won!");
-				//level.resetLevel();
 				level.setCompleted(true);
 				level.setWon(true);
 			}
@@ -122,7 +119,6 @@ public enum WinEnum {//Cannot have any labels in common with LoseEnum
 					break;
 				}
 			}
-		//	if(win) System.out.println("WIN");
 			level.setCompleted(win);
 			level.setWon(win);
 		}
