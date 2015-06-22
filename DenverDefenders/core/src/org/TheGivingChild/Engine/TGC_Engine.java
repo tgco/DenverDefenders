@@ -6,8 +6,8 @@ import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
-import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
+import org.TheGivingChild.Screens.ScreenSplash;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
@@ -57,8 +57,6 @@ public class TGC_Engine extends Game {
 	private Array<LevelPacket> levelPackets;
 	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
-	/**{@link #screenManagerLoaded} keeps track of whether the {@link ScreenAdapterManager} has been instantiated.*/
-	private boolean screenManagerLoaded = false;
 	/**{@link #width} is set equal to Gdx.graphics.getWidth().*/
 	private float width;
 	/**{@link #height} is set equal to Gdx.graphics.getHeight().*/
@@ -88,7 +86,7 @@ public class TGC_Engine extends Game {
 	 * is loaded. 
 	 * @author ctokunag
 	 */
-	private AssetManager manager = new AssetManager();
+	private AssetManager manager;
 	/**{@link #reader} allows minigames to be read in.*/
 	private XML_Reader reader;
 	/**{@link #writer} allows minigames to be written in the editor.*/
@@ -117,8 +115,6 @@ public class TGC_Engine extends Game {
 	private Viewport viewport;
 	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
-	/**{@link #gameStart} is true if the game has gone past the original splash screen. False otherwise */
-	private boolean gameStart = false;
 	/**{@link #levelWinOrLose} is true if the minigame was just won, false if the minigame was lost.*/
 	private boolean levelWinOrLose;
 	/**{@link #currentMazeCompleted} is true if the maze has been completed.*/
@@ -131,8 +127,6 @@ public class TGC_Engine extends Game {
 	private boolean allSaved = false;
 	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
 	private Music backgroundSoundToPlay;
-	/**{@link #splashScreenTimer} is the timer for how long the Title Splash Screen is displayed.*/
-	private float splashScreenTimer = 20.0f;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
 	/*
 	 * 	MOVE LEVEL PACKET LOADING TO BE A RESPONSIBILITY OF WHOEVER LOADS THE MAZE
@@ -242,16 +236,17 @@ public class TGC_Engine extends Game {
 		default:
 			break;
 		}
+		
+		manager = new AssetManager();
+		
 		//Timer for loading screen delay before transition to main screen
 		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
-		//Assets to be added to the manager
-		manager.load("MainScreen_Splash.png", Texture.class);
+		//Main UI background assets, loaded since screen manager uses on initialize
 		manager.load("ColdMountain.png", Texture.class);
 		manager.load("SemiTransparentBG.png", Texture.class);
 		manager.finishLoadingAsset("SemiTransparentBG.png");
-		//System.out.println(manager.isLoaded("SemiTransparentBG.png"));
+
 		//initial update so that the loading screen is loaded before everything
-		manager.update();
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
@@ -261,7 +256,6 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/BoxHalf.png", Texture.class);
 		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
 		manager.load("ObjectImages/Grid.png", Texture.class);
-		//manager.load("editorAssets/GridLarge.png", Texture.class);
 		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class);
 		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class);
@@ -306,7 +300,14 @@ public class TGC_Engine extends Game {
 		manager.load("Backgrounds/Table.png", Texture.class);
 		manager.load("Backgrounds/Window.png", Texture.class);
 		
+		// SORT OF DEFEATS THE PURPOSE OF USING A MANAGER IF WE JUST LOAD ALL IN ONE FRAME HERE
 		manager.finishLoading();
+		
+		// Initialize screen management
+		ScreenAdapterManager.getInstance().initialize(this);
+		// Set initial screen to splash
+		setScreen(new ScreenSplash());
+		
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class));
@@ -319,9 +320,9 @@ public class TGC_Engine extends Game {
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
 
+		// READER/WRITER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
 		writer = new XML_Writer();
-		ScreenAdapterManager.getInstance().initialize(this);
 
 		//button stuff
 		bitmapFontButton = new BitmapFont();
@@ -422,19 +423,11 @@ public class TGC_Engine extends Game {
 	
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
-	public void render () {
+	public void render() {
+		// Calls render on current screen
+		super.render();
+		
 		camera.update();
-		// DRAWS SPLASH SCREEN
-		if(!ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart) {
-			batch.begin();
-			batch.draw((Texture) manager.get("MainScreen_Splash.png"), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			batch.end();
-			splashScreenTimer -= Gdx.graphics.getDeltaTime();
-		}
-		// RUNS WHEN SPLASH SCREEN IS DONE
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete && !gameStart && splashScreenTimer <= 0) {
-			gameStart = true;
-		}
 		
 		if(manager.update()) {
 			//timer to determine whether to continue displaying loading screen
@@ -450,20 +443,11 @@ public class TGC_Engine extends Game {
 					backgroundSoundToPlay = backgroundSounds.random();
 					backgroundSoundToPlay.play();
 				}
-				//working on sound control through options
-				super.render();
 				if(manager.isLoaded("Packs/Buttons.pack")) {
 					skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
 				}
 				if(manager.isLoaded("Packs/ButtonsEditor.pack")) {
 					skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-				}
-				//makes sure the main screen is only loaded once
-				if(!screenManagerLoaded){
-					//show the main screen to be displayed first
-					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-					//boolean = true so the loop is not entered again
-					screenManagerLoaded = true;
 				}
 			}
 		}

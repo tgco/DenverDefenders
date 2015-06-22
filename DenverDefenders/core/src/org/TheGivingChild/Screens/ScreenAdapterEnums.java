@@ -83,6 +83,15 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevel();
 		}
+	},
+	/**
+	 * The splash screen.
+	 */
+	SPLASH {
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenSplash();
+		}
 	};
 	
 	/**

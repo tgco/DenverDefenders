@@ -83,8 +83,6 @@ public final class ScreenAdapterManager {
 	public float screenTransitionSpeed;
 	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
 	public TextureRegion backgroundRegion;
-	/**The initial Texture to be applied to {@link #backgroundRegion}*/
-	private Texture backgroundTexture;
 	private Table buttonTable;
 	private Table factTable;
 	private Table minigameTable;
@@ -179,8 +177,7 @@ public final class ScreenAdapterManager {
 		inRightScreenStart = Gdx.graphics.getWidth();
 		outLeftScreenStart = 0f;
 		outRightScreenStart = Gdx.graphics.getWidth()/2;
-		backgroundTexture = manager.get("ColdMountain.png");
-		backgroundRegion = new TextureRegion(backgroundTexture);
+		backgroundRegion = new TextureRegion(manager.get("ColdMountain.png", Texture.class));
 		createButton();
 		createLabels(MathUtils.random(100));
 		overallTable = new Table();
@@ -313,6 +310,7 @@ public final class ScreenAdapterManager {
 		buttonTable.add(cb).center().bottom();
 		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
 	}
+	
 	public void createLabels(int r) {
 		factTable = new Table();
 		ls = new LabelStyle();
