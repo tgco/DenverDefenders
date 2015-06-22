@@ -47,8 +47,6 @@ import com.badlogic.gdx.math.MathUtils;
 public final class ScreenAdapterManager {
 	/**Instance of the {@link #ScreenAdapterManager}.*/
 	private static ScreenAdapterManager instance;
-	/**Enumeration of the current {@link com.badlogic.gdx.ScreenAdapter ScreenAdapter} shown. */
-	private ScreenAdapterEnums currentEnum;
 	/**Reference to {@link org.TheGivingChild.Engine.TGC_Engine TGC_Engine}. */
 	public TGC_Engine game;
 	/**Map of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} built from {@link ScreenAdapterEnums}.*/
@@ -56,46 +54,14 @@ public final class ScreenAdapterManager {
 	/**Reference to the {@link AssetManager} in {@link org.TheGivingChild.Engine.TGC_Engine TGC_Engine}.*/
 	private AssetManager manager;
 	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
-	private Batch batch = new SpriteBatch();
-	/**{@link TextureRegion}'s to be drawn for {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
-	private Array<TextureRegion> screenTransitions;
-	/**Start position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	private float outLeftScreenStart;
-	/**End position for drawing the left screen during {@link #screenTransitionOut()}.*/
-	private final float outLeftScreenEnd = -Gdx.graphics.getWidth()/2;
-	/**Start position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	private float outRightScreenStart;
-	/**End position for drawing the right screen during {@link #screenTransitionOut()}.*/
-	private final float outRightScreenEnd = Gdx.graphics.getWidth();
-	/**Start position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	private float inLeftScreenStart;
-	/**End position for drawing the left screen during {@link #screenTransitionIn()}.*/
-	private final float inLeftScreenEnd = 0;
-	/**Start position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	private float inRightScreenStart;
-	/**End position for drawing the right screen during {@link #screenTransitionIn()}.*/
-	private final float inRightScreenEnd = Gdx.graphics.getWidth()/2;
-	/**The amount of minimum time for the screen to transition. */
-	public float SCREEN_TRANSITION_TIME_LEFT;
-	/**screenTransition state to reference when other events should occur*/
-	public boolean screenTransitionInComplete;
-	/**The speed at which the curtains should {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.*/
-	public float screenTransitionSpeed;
+	private Batch batch;
 	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
 	public TextureRegion backgroundRegion;
-	private Table buttonTable;
-	private Table factTable;
 	private Table minigameTable;
 	private Table mazeTable;
 	private Table overallTable;
-	private Skin skin;
-	private CheckBoxStyle cbs;
-	private BitmapFont font;
-	public CheckBox cb;
-	private Label fact;
 	private Label minigame;
 	private Label maze;
-	private LabelStyle ls;
 	/**
 	 * Allows access to {@link #instance} from outside the class.
 	 * If the {@link #instance} is null, construct it.
@@ -107,10 +73,6 @@ public final class ScreenAdapterManager {
 		}
 		return instance;
 	}
-	private String[] facts = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
-							  "The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
-							  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
-							  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 
 	/**
 	 * Constructor: initializes an instance of the adapter. 
@@ -118,7 +80,7 @@ public final class ScreenAdapterManager {
 	 */
 	private ScreenAdapterManager() {
 		screens = new IntMap<ScreenAdapter>();
-		screenTransitions = new Array<TextureRegion>();
+		batch = new SpriteBatch();
 	}
 	/**
 	 * dispose the manager
@@ -145,12 +107,14 @@ public final class ScreenAdapterManager {
 		if (!screens.containsKey(screenEnum.ordinal())) return;
 		screens.remove(screenEnum.ordinal()).dispose();
 	}
-	/**
-	 * @return returns the ScreenAdapterEnums enumeration that is currently active
-	 */
-	public ScreenAdapterEnums getCurrentEnum(){
-		return currentEnum;
+	
+	public ScreenAdapter getScreenFromEnum(ScreenAdapterEnums screenEnum) {
+		if (!screens.containsKey(screenEnum.ordinal())) {
+			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
+		} 
+		return screens.get(screenEnum.ordinal());
 	}
+	
 	/**
 	 * <p>Get a reference to the calling TGC_Engine</p>
 	 * <p>Load the .pack of ScreenTransitions</p>
@@ -165,20 +129,7 @@ public final class ScreenAdapterManager {
 	public void initialize(TGC_Engine game) {
 		this.game = game;
 		manager = game.getAssetManager();
-		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
-		manager.finishLoadingAsset("Packs/ScreenTransitions.pack");
-		TextureAtlas screenTransitionAtlas = manager.get("Packs/ScreenTransitions.pack");
-		for(AtlasRegion texture : screenTransitionAtlas.getRegions()){
-			screenTransitions.add(texture);
-		}
-		screenTransitionInComplete = false;
-		screenTransitionSpeed = Gdx.graphics.getWidth()/30*0.8f;
-		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
-		inRightScreenStart = Gdx.graphics.getWidth();
-		outLeftScreenStart = 0f;
-		outRightScreenStart = Gdx.graphics.getWidth()/2;
 		backgroundRegion = new TextureRegion(manager.get("ColdMountain.png", Texture.class));
-		createButton();
 		createLabels(MathUtils.random(100));
 		overallTable = new Table();
 	}
@@ -193,12 +144,7 @@ public final class ScreenAdapterManager {
 	 * 
 	 */
 	public void screenTransition(){
-		batch.begin();
-		//draw the first curtain starting at the left edge of the screen
-		batch.draw(screenTransitions.get(0), 0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-		//draw the second curtain starting at the middle edge of the screen
-		batch.draw(screenTransitions.get(1), Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-		batch.end();
+		Gdx.app.log("Manager", "Transition called");
 	}
 	/**
 	 * <p>Moves the curtains from outside the rendered screen to the middle, closing in on a level</p>
@@ -206,23 +152,7 @@ public final class ScreenAdapterManager {
 	 * @return true if coverage is complete. Used for knowing when to call screenTransitionOut().
 	 */
 	public boolean screenTransitionIn(){
-		if(inRightScreenStart >= inRightScreenEnd && inLeftScreenStart <= inLeftScreenEnd){
-			batch.begin();
-			batch.draw(screenTransitions.get(0), inLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-			batch.draw(screenTransitions.get(1), inRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-			batch.end();
-			inLeftScreenStart+= screenTransitionSpeed;
-			inRightScreenStart-= screenTransitionSpeed;
-			return false;
-		}
-		else {
-			screenTransition(); //DRAWS CLOSE CURTAINS
-			game.getStage().addActor(overallTable); //TABLE WITH THE FACT AND BUTTON ON IT
-			if(cb.isChecked()) {
-				overallTable.remove();
-				return true;
-			}
-		}
+		Gdx.app.log("Manager", "Transition IN");
 		return false;
 	}
 	/**
@@ -231,16 +161,8 @@ public final class ScreenAdapterManager {
 	 * @return Returns true when transition is complete.
 	 */
 	public boolean screenTransitionOut(){
-		if(outRightScreenStart <= outRightScreenEnd && outLeftScreenStart >= outLeftScreenEnd){
-			batch.begin();
-			batch.draw(screenTransitions.get(0), outLeftScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-			batch.draw(screenTransitions.get(1), outRightScreenStart, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
-			batch.end();
-			outLeftScreenStart-= screenTransitionSpeed;
-			outRightScreenStart+= screenTransitionSpeed;
-			return false;
-		}
-		return true;
+		Gdx.app.log("Manager", "Transition OUT");
+		return false;
 	}
 	/**
 	 * <p>The show method used to switch to other screenAdapters</p>
@@ -257,15 +179,7 @@ public final class ScreenAdapterManager {
 		if (!screens.containsKey(screenEnum.ordinal())) {
 			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
 		} 
-		// INIT TRANSITION VARIABLES
-		inLeftScreenStart = -Gdx.graphics.getWidth()/2;
-		inRightScreenStart = Gdx.graphics.getWidth();
-		outLeftScreenStart = 0f;
-		outRightScreenStart = Gdx.graphics.getWidth()/2;
-		SCREEN_TRANSITION_TIME_LEFT = 1.0f;
-		currentEnum = screenEnum;
-		screenTransitionInComplete = false;
-		factTable.remove();
+		
 		minigameTable.remove();
 		mazeTable.remove();
 		
@@ -280,67 +194,18 @@ public final class ScreenAdapterManager {
 			overallTable.add(mazeTable.align(Align.center));
 			game.setMazeCompleted(false);
 		}
-
-		overallTable.row();
-		overallTable.add(buttonTable);
-		overallTable.row();
-		overallTable.add(factTable).align(Align.center); 
 		
 		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		overallTable.align(Align.center);
+		
 		game.setScreen(screens.get(screenEnum.ordinal()));
-	}
-
-	public void createButton() {
-		buttonTable = new Table();
-		font = new BitmapFont();
-		cbs = new CheckBoxStyle();
-		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
-		cbs.font = font;
-		cbs.checkboxOff = skin.getDrawable("Button_Next");
-		cbs.checkboxOn = skin.getDrawable("ButtonPressed_Next");
-		cb = new CheckBox("", cbs);
-		cb.addListener(new MyChangeListener(){
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				super.changed(event, actor);
-			}
-		});
-		buttonTable.add(cb).center().bottom();
-		buttonTable.setPosition(Gdx.graphics.getWidth()/2, buttonTable.getHeight());
 	}
 	
 	public void createLabels(int r) {
-		factTable = new Table();
-		ls = new LabelStyle();
-		ls.font = new BitmapFont();
-		int fNum = r % 4;
-		fact = null;
-		fact = new Label(facts[fNum], ls);
-		fact.setColor(1, 1, 1, 1);
-		//Factoids that get displayed before/after games
-		switch(Gdx.app.getType()){
-		case Android:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
-			break;
-			//if using the desktop set the width and height to a 16:9 resolution.
-		case Desktop:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
-			break;
-		case iOS:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-			break;
-		default:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-			break;
-		}
-		fact.setWrap(true);
-		fact.setAlignment(Align.center, Align.center);
-		factTable.add(fact).width(Gdx.graphics.getWidth()/2);
-		factTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		minigame = null;
 		minigameTable = new Table();
+		LabelStyle ls = new LabelStyle();
+		ls.font = new BitmapFont();
 		if (game.getFromGame() && game.levelWin()) {
 			minigame = new Label("You WON!", ls);
 			minigame.setColor(1, 1, 1, 1);

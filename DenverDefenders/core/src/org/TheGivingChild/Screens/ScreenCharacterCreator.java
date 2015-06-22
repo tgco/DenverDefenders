@@ -31,16 +31,12 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	Array<Image> headImages;
 	Array<Image> bodyImages;
 	Array<Image> feetImages;
-	//Table for the loading screen
-	Table loadingScreen;
 	//Left Side of screen for character display
 	Table characterTable;
 	//Right side of screen for character editing
 	Table editTable;
 	//reference to the assetManager
 	AssetManager assetManager;
-	//has the loading screen been drawn?
-	boolean loadingScreenDrawn;
 	//skin for the back button
 	private Skin skin;
 	//bitmap font for back button
@@ -55,8 +51,6 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	//constructor for the new character creator screen
 	public ScreenCharacterCreator(){
 		game = ScreenAdapterManager.getInstance().game;
-		
-		assetManager = new AssetManager();
 		//get the assetManager
 		assetManager = game.getAssetManager();
 
@@ -64,15 +58,10 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 		assetManager.load("Packs/Heads.pack", TextureAtlas.class);
 		assetManager.load("Packs/Body.pack", TextureAtlas.class);
 		assetManager.load("Packs/Feet.pack", TextureAtlas.class);
-		//while they haven't been loaded yet, display the transition screen
-		//track if the screen was drawn or not
-		loadingScreenDrawn = false;
-		loadingScreen = new Table();
 		headImages = new Array<Image>();
 		bodyImages = new Array<Image>();
 		feetImages = new Array<Image>();
 		buttonTable = createButton();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	public void fillImageArrays(){
@@ -124,26 +113,19 @@ public class ScreenCharacterCreator extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(1, 1, 1, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				fillImageArrays();
-				characterTable = characterAppearanceTable();
-				game.getStage().addActor(characterTable);
-				drawButton = true;
-				show();
-			}
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		fillImageArrays();
+		characterTable = characterAppearanceTable();
+		game.getStage().addActor(characterTable);
+		drawButton = true;
+		show();
 	}
 	
 	@Override
 	public void hide() {
-		loadingScreen.remove();
 		characterTable.remove();
 		buttonTable.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override

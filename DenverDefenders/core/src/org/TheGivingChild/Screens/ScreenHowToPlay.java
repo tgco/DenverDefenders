@@ -30,8 +30,6 @@ import com.badlogic.gdx.utils.Align;
  */
 class ScreenHowToPlay extends ScreenAdapter{
 	private Texture title;
-	//private Texture message;
-	private TextureRegion titleRegion;
 	private Batch batch;
 	private Table table;
 	private Table messageTable;
@@ -42,20 +40,14 @@ class ScreenHowToPlay extends ScreenAdapter{
 											  "ButtonPressed_MainScreen_Options", 
 											  "Button_MainScreen_Options"};
 	private Skin skin;
-	private AssetManager manager;
-	private boolean isRendered = false;
 	private TGC_Engine game;
-	private boolean regionsLoaded = false;
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
 		skin = new Skin();
 		table = createButtons();
-		manager = game.getAssetManager();
 		messageTable = createMessage();
-		manager.load("titleHowToPlayScreen.png", Texture.class);
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	//Function for making buttons in the HTP screen
@@ -83,15 +75,17 @@ class ScreenHowToPlay extends ScreenAdapter{
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
+					ScreenAdapterEnums inScreen;
 					if(j == 0)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
+						inScreen = ScreenAdapterEnums.MAZE;
 					else if(j == 1)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.EDITOR);
+						inScreen = ScreenAdapterEnums.EDITOR;
 					else if(j == 2)
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.OPTIONS);
+						inScreen = ScreenAdapterEnums.OPTIONS;
 					else
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-					hide();
+						inScreen = ScreenAdapterEnums.MAIN;
+					ScreenTransition htpToOther = new ScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen);
+					game.setScreen(htpToOther);
 				}
 			});
 		}
@@ -105,7 +99,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 		LabelStyle ls = new LabelStyle();
 		ls.font = font;
 		Skin newSkin = new Skin();
-		newSkin.add("background", manager.get("SemiTransparentBG.png"));
+		newSkin.add("background", game.getAssetManager().get("SemiTransparentBG.png"));
 		ls.background = newSkin.getDrawable("background");
 		Label message = new Label("Make your way through the maze to find the kids. "
 							+ "Finding a kid will trigger a mini-game. "
@@ -140,44 +134,24 @@ class ScreenHowToPlay extends ScreenAdapter{
 	public void hide() {
 		table.remove();
 		messageTable.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				if(manager.isLoaded("titleHowToPlayScreen.png"))
-					title = manager.get("titleHowToPlayScreen.png");
-				//creates background color
-				if(!regionsLoaded) {
-					titleRegion = new TextureRegion(title);
-				}
-				Gdx.gl.glClearColor(0, 1, 1, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				ScreenAdapterManager.getInstance().backgroundImage();
-				//shows HTP title and text
-				batch.begin();
-				batch.draw(titleRegion, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
-				batch.end();
-				isRendered = true;
-				show();
-			}
-		}
-		
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		title = game.getAssetManager().get("titleHowToPlayScreen.png");
+		Gdx.gl.glClearColor(0, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		ScreenAdapterManager.getInstance().backgroundImage();
+		//shows HTP title
+		batch.begin();
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+		batch.end();
 	}
 	
 	@Override
 	public void show() {
-		if(isRendered){
-			game.getStage().addActor(table);
-			game.getStage().addActor(messageTable);
-			isRendered = false;
-		}
+		game.getStage().addActor(table);
+		game.getStage().addActor(messageTable);
 	}
 	
 	@Override

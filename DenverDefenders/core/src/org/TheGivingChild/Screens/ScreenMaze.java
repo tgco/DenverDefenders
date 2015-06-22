@@ -70,7 +70,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private TextureRegion backdropTextureRegion;
 	
 	private MinigameRectangle lastRec;
-	private AssetManager manager;
 	private Rectangle heroHQ;
 	
 	private Texture heartTexture;
@@ -249,13 +248,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		populate();
 
 		game = ScreenAdapterManager.getInstance().game;
-		manager = game.getAssetManager();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 		
-		backdropTexture = manager.get("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTexture = game.getAssetManager().get("mapAssets/UrbanMaze1Backdrop.png");
 		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
-		heartTexture = manager.get("ObjectImages/heart.png");
+		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 		healthTextureRegion = new TextureRegion(heartTexture);
 	}
 
@@ -298,7 +295,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 
 	/**
-	 * Draws the maze on the screen with a red background
+	 * Draws the maze on the screen
 	 * Determines if the sprite is making a valid move within the 
 	 * bounds of the maze and not on a collision, if so allow it to move.
 	 * If the player triggers a miniGame set that to the current screen.
@@ -306,128 +303,109 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 	@Override 
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				//set a red background
-				Gdx.gl.glClearColor(0, 0, 0, 1);
-				Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-				//update the camera
-				camera.update();
-				//set the map to be rendered by this camera
-				mapRenderer.setView(camera);
-				spriteBatch.begin();
-				//draw the background texture
-				spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				spriteBatch.end();
-				//render the map
-				mapRenderer.render();
-
-				//Make the sprite not move when the map is scrolled
-				spriteBatch.setProjectionMatrix(camera.combined);
-				//move the sprite left, right, up, or down
-				//Calculate where the sprite is going to move
-				float spriteMoveX = playerCharacter.getX() + xMove*Gdx.graphics.getDeltaTime();
-				float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
-				//If the sprite is not going off the maze allow it to move
-				//Check for a collision as well
-				boolean collision = false;
+		//update the camera
+		camera.update();
+		//set the map to be rendered by this camera
+		mapRenderer.setView(camera);
+		spriteBatch.begin();
+		//draw the background texture
+		spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		spriteBatch.end();
+		//render the map
+		mapRenderer.render();
+		//Make the sprite not move when the map is scrolled
+		spriteBatch.setProjectionMatrix(camera.combined);
+		
+		//move the sprite left, right, up, or down
+		//Calculate where the sprite is going to move
+		float spriteMoveX = playerCharacter.getX() + xMove*Gdx.graphics.getDeltaTime();
+		float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
+		//If the sprite is not going off the maze allow it to move
+		//Check for a collision as well
+		boolean collision = false;
+		
+		if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth) {
+			if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight) {
+				Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
 				
-				if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth) {
-					if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight) {
-						Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
-						
-						for(Rectangle r : collisionRects) {
-							if(r.overlaps(spriteRec)) {
-								collision = true;
-							}
-						}
-
-						for(MinigameRectangle m : minigameRects) {
-							if(m.overlaps(spriteRec) && m.isOccupied()) {
-								lastRec = m;
-								playerCharacter.setPosition(m.getX(), m.getY());
-								game.selectLevel();
-								ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-
-							}
-						}
-
-						if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
-							for (ChildSprite child: followers) {
-								child.setSaved(true);
-								followers.removeValue(child, false);
-								playerCharacter.clearPositionQueue();
-							}
-						}
-
-						if(!collision) {
-							playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-							if(followers.size > 0) {
-								followers.get(0).followSprite(playerCharacter);
-
-								for(int i = 1; i <followers.size; i++) {
-									followers.get(i).followSprite(followers.get(i-1));
-								}
-							}
-						}
-					}	
-				}
-				
-				if(currentWalkSequence.size > 0 && collision == false) {
-					Texture next = currentWalkSequence.get(0);
-					currentWalkSequence.removeIndex(0);
-					currentWalkSequence.add(next);
-					playerCharacter.setTexture(next);
-				}
-				
-				//begin the batch that sprites will draw to
-				spriteBatch.begin();
-				//draw the main character sprite to the map
-				playerCharacter.draw(spriteBatch);
-				//Draw the children following
-				if(followers.size != 0) {
-					for(Sprite f: followers) {
-						f.draw(spriteBatch);
+				for(Rectangle r : collisionRects) {
+					if(r.overlaps(spriteRec)) {
+						collision = true;
 					}
 				}
 
-				//draw the children on the maze
-				for(Sprite s : mazeChildren) {
-					s.draw(spriteBatch);
+				for(MinigameRectangle m : minigameRects) {
+					if(m.overlaps(spriteRec) && m.isOccupied()) {
+						lastRec = m;
+						playerCharacter.setPosition(m.getX(), m.getY());
+						game.selectLevel();
+						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
+					}
 				}
-				//update the camera to be above the character
-				for (int i=0; i<playerHealth; i++) {
-					float xPos = camera.position.x - camera.viewportWidth/2;
-					float heartSize = camera.viewportHeight/10;
-					float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
-					spriteBatch.draw(healthTextureRegion, xPos + (heartSize*i), yPos, heartSize, heartSize);
-				}
-				camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
-				//end the batch that sprites have drawn to
-				spriteBatch.end();
 
-				if(ScreenAdapterManager.getInstance().cb.isChecked())
-					Gdx.input.setInputProcessor(this);
-			}
-			
-			if (allSaved()) {
-				game.setMazeCompleted(true);
-				game.setAllSaved(true);
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			}
-			
-			if (playerHealth <= 0) {
-				game.setMazeCompleted(true);
-				game.setAllSaved(false);
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			}
+				if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
+					for (ChildSprite child: followers) {
+						child.setSaved(true);
+						followers.removeValue(child, false);
+						playerCharacter.clearPositionQueue();
+					}
+				}
+
+				if(!collision) {
+					playerCharacter.setPosition(spriteMoveX, spriteMoveY);
+					if(followers.size > 0) {
+						followers.get(0).followSprite(playerCharacter);
+
+						for(int i = 1; i <followers.size; i++) {
+							followers.get(i).followSprite(followers.get(i-1));
+						}
+					}
+				}
+			}	
 		}
 		
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		if(currentWalkSequence.size > 0 && collision == false) {
+			Texture next = currentWalkSequence.get(0);
+			currentWalkSequence.removeIndex(0);
+			currentWalkSequence.add(next);
+			playerCharacter.setTexture(next);
+		}
+		spriteBatch.begin();
+		//draw the main character sprite to the map
+		playerCharacter.draw(spriteBatch);
+		//Draw the children following
+		if(followers.size != 0) {
+			for(Sprite f: followers) {
+				f.draw(spriteBatch);
+			}
+		}
+
+		//draw the children on the maze
+		for(Sprite s : mazeChildren) {
+			s.draw(spriteBatch);
+		}
+		//update the camera to be above the character
+		for (int i=0; i<playerHealth; i++) {
+			float xPos = camera.position.x - camera.viewportWidth/2;
+			float heartSize = camera.viewportHeight/10;
+			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
+			spriteBatch.draw(healthTextureRegion, xPos + (heartSize*i), yPos, heartSize, heartSize);
+		}
+		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
+		//end the batch that sprites have drawn to
+		spriteBatch.end();
+			
+		if (allSaved()) {
+			game.setMazeCompleted(true);
+			game.setAllSaved(true);
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
+		
+		if (playerHealth <= 0) {
+			game.setMazeCompleted(true);
+			game.setAllSaved(false);
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		}
 	}
 
 	@Override
@@ -517,12 +495,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 	@Override
 	public void show(){
+		Gdx.input.setInputProcessor(this);
 		// SOUND ASSET LEAKING EVERY CALL
 		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 		if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
 			click.play(ScreenAdapterManager.getInstance().game.volume);
 		}
-		//game.loadLevelPackets();
+
 		xMove = 0;
 		yMove = 0;
 
@@ -613,7 +592,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
 		collisionRects.clear();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 
 	@Override

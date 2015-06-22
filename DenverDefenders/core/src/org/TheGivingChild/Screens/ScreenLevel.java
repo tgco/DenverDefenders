@@ -1,6 +1,7 @@
 package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MinigameClock;
+import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
@@ -20,12 +21,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class ScreenLevel extends ScreenAdapter{
 	private Level currentLevel;
 	private SpriteBatch batch;
-	private AssetManager manager;
+	private TGC_Engine game;
 	
 	public ScreenLevel() {
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 		batch = new SpriteBatch();
-		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+		game = ScreenAdapterManager.getInstance().game;
 	}
 	
 	/**
@@ -35,7 +35,6 @@ public class ScreenLevel extends ScreenAdapter{
 	@Override
 	public void hide() {
 		currentLevel = null;
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	/**
@@ -47,7 +46,7 @@ public class ScreenLevel extends ScreenAdapter{
 	public void show() {
 		// UNNECESSARY COUPLING TO THE MAIN CLASS, SHOULD CONSTRUCT WITH A LEVEL
 		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
-		// VAGUE METHOD CALL THAT ACTUALLY MODIFIES THE MAIN CLASS STAGE, USE A NEW STAGE INSTEAD
+		// VAGUE METHOD CALL THAT ACTUALLY MODIFIES THE MAIN CLASS STAGE
 		currentLevel.loadObjectsToStage();
 		for(GameObject gameObject: currentLevel.getGameObjects()){
 			gameObject.resetObject();
@@ -63,39 +62,24 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(0, 0.2F, 0.5f, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				batch.begin();
-				batch.draw((Texture) manager.get(currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-				for (GameObject g : currentLevel.getGameObjects()) {
-					if(!g.isDisposed()){
-						batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());
-					}
-				}
-				//only draw if there is time remaining in the clock
-				//This if made the clock never drawn at all
-				if (!MinigameClock.getInstance().outOfTime()) {
-					currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
-				}
-				currentLevel.update();
-				batch.end();
-				if (currentLevel.getCompleted()) {
-					// COUPLED TO BOOLEANS IN THE MAIN CLASS
-					ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
-					ScreenAdapterManager.getInstance().game.setFromGame(true);
-					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
-				}
-
+		batch.begin();
+		batch.draw((Texture) game.getAssetManager().get(currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		for (GameObject g : currentLevel.getGameObjects()) {
+			if(!g.isDisposed()){
+				batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());
 			}
 		}
-		
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		//only draw if there is time remaining in the clock
+		if (!MinigameClock.getInstance().outOfTime()) {
+			currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+		}
+		batch.end();
+		currentLevel.update();
+		if (currentLevel.getCompleted()) {
+			// COUPLED TO BOOLEANS IN THE MAIN CLASS
+			ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
+			ScreenAdapterManager.getInstance().game.setFromGame(true);
+			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
+		}
 	}
-	
-
 }

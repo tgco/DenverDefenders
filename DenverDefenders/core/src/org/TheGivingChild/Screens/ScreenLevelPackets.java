@@ -31,7 +31,7 @@ import com.badlogic.gdx.utils.Array;
  * @author janelson
  *
  */
-class ScreenLevelPackets extends ScreenAdapter{
+class ScreenLevelPackets extends ScreenAdapter {
 	//list of packets for each level set.
 	private Array<LevelPacket> packets;
 	//current index to select packet from packets
@@ -45,14 +45,10 @@ class ScreenLevelPackets extends ScreenAdapter{
 	//reference to the game for adding to stage, etc.
 	private TGC_Engine game;
 	
-	private AssetManager manager;
-	private boolean isRendered = false;
-	
 	//constructor. Initialize the variables.
 	public ScreenLevelPackets() {
 		//get the game from the manager instance
 		game = ScreenAdapterManager.getInstance().game;
-		manager = game.getAssetManager();
 		//initialize the packets
 		packets = game.getLevelPackets();
 		//initialize and fill levels array from the games level
@@ -61,7 +57,6 @@ class ScreenLevelPackets extends ScreenAdapter{
 		createPackets();
 		//get the UI elements that represent the packets
 		packetTable = createLevelPacketButtons();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	public Table createLevelPacketButtons(){
@@ -73,7 +68,7 @@ class ScreenLevelPackets extends ScreenAdapter{
 		float padWidth = game.getWidth()/24;
 		
 		//add regions from the asset manager to skin
-		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		//create a font for the buttons
         BitmapFont font = game.getBitmapFontButton();
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -119,8 +114,8 @@ class ScreenLevelPackets extends ScreenAdapter{
 		return table;
 	}
 	
-	public void createPackets(){
-		for(Level l: levels){
+	public void createPackets() {
+		for (Level l : levels){
 			//packet name to add to
 			String packetName = l.getPackageName();
 			boolean packetFound = false;
@@ -161,38 +156,18 @@ class ScreenLevelPackets extends ScreenAdapter{
 	public void hide() {
 		//game.removeTable(packetTable);
 		packetTable.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(.5f,0,.5f,.5f);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				ScreenAdapterManager.getInstance().backgroundImage();
-				isRendered = true;
-				show();
-				game.getStage().act();
-			}
-		}
-		
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		ScreenAdapterManager.getInstance().backgroundImage();
 	}
 	
 	@Override
 	public void show() {
-		//game.addTable(packetTable);
-		if(isRendered){
-			game.getStage().addActor(packetTable);
-			isRendered = false;
-			game.loadLevelPackets();
-			packets.removeRange(0, packets.size-1);
-			packets = game.getLevelPackets();
-			
-		}
-		
+		game.getStage().addActor(packetTable);
+		game.loadLevelPackets();
+		packets.removeRange(0, packets.size-1);
+		packets = game.getLevelPackets();
 	}
 }

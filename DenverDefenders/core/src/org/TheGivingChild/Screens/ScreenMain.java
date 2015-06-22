@@ -30,15 +30,11 @@ class ScreenMain extends ScreenAdapter {
 	private Table mainScreenTable, labelTable;
 	private Skin skin;
 	private TGC_Engine game;
-	private AssetManager manager;
-	private boolean isRendered = false;
 	
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
-		manager = game.getAssetManager();
 		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 		labelTable = createLabel();
 	}
 
@@ -67,7 +63,9 @@ class ScreenMain extends ScreenAdapter {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
-					ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.values()[j/2]);
+					// Create a transition
+					ScreenTransition mainToOther = new ScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]);
+					game.setScreen(mainToOther);
 				}
 			});
 		}
@@ -77,7 +75,7 @@ class ScreenMain extends ScreenAdapter {
 	
 	public Table createLabel() {
 		Table table = new Table();
-		skin.add("labelBack", manager.get("SemiTransparentBG.png"));
+		skin.add("labelBack",game.getAssetManager().get("SemiTransparentBG.png"));
 		LabelStyle ls = new LabelStyle();
 		ls.font = game.getBitmapFontButton();
 		ls.background = skin.getDrawable("labelBack");
@@ -106,40 +104,21 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
-		// CALLS THE CURTAIN MOVING FUNCTION
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		// UPDATES ASSET LOADING, TRUE WHEN DONE
-		if(manager.update()) {
-			
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(1,1,1,1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				ScreenAdapterManager.getInstance().backgroundImage();
-				isRendered = true;
-				show();
-			}
-		}
-		
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
+		ScreenAdapterManager.getInstance().backgroundImage();
 	}
 
 	@Override
 	public void show() {
-		if(isRendered){
-			// ADDS THE MAIN SCREEN BUTTONS AND LABEL TO THE TGC_ENGINE INSTANCE
-			game.getStage().addActor(labelTable);
-			game.getStage().addActor(mainScreenTable);
-		}
+		// Add buttons when screen is shown
+		game.getStage().addActor(labelTable);
+		game.getStage().addActor(mainScreenTable);
 	}
 
 	@Override
 	public void hide() {
-		// ON SCREEN SWITCH, REMOVES ITS LABELS AND BUTTONS
-		isRendered = false;
+		// Hide buttons on screen switch
 		mainScreenTable.remove();
 		labelTable.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override

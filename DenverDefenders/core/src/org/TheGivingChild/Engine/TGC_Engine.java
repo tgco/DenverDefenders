@@ -6,8 +6,8 @@ import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Engine.XML.XML_Writer;
+import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
-import org.TheGivingChild.Screens.ScreenSplash;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -245,6 +246,9 @@ public class TGC_Engine extends Game {
 		manager.load("ColdMountain.png", Texture.class);
 		manager.load("SemiTransparentBG.png", Texture.class);
 		manager.finishLoadingAsset("SemiTransparentBG.png");
+		
+		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
+		manager.finishLoadingAsset("Packs/ScreenTransitions.pack");
 
 		//initial update so that the loading screen is loaded before everything
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
@@ -295,6 +299,8 @@ public class TGC_Engine extends Game {
 		manager.load("ObjectImages/Dirt2.png", Texture.class);
 		manager.load("ObjectImages/Dirt3.png", Texture.class);
 		manager.load("ObjectImages/Sponge_REPLACEME.png", Texture.class);
+		manager.load("titleOptionScreen.png", Texture.class);
+		manager.load("titleHowToPlayScreen.png", Texture.class);
 		
 		manager.load("Backgrounds/black.png", Texture.class);
 		manager.load("Backgrounds/Table.png", Texture.class);
@@ -306,7 +312,7 @@ public class TGC_Engine extends Game {
 		// Initialize screen management
 		ScreenAdapterManager.getInstance().initialize(this);
 		// Set initial screen to splash
-		setScreen(new ScreenSplash());
+		setScreen(ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.SPLASH));
 		
 		backgroundSounds = new Array<Music>();
 		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
@@ -424,6 +430,8 @@ public class TGC_Engine extends Game {
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
 	public void render() {
+		Gdx.gl.glClearColor(1,1,1,1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Calls render on current screen
 		super.render();
 		
@@ -456,11 +464,8 @@ public class TGC_Engine extends Game {
 			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
 		}
 		
+		stage.act();
 		stage.draw();
-		
-		if(ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-			ScreenAdapterManager.getInstance().screenTransitionOut();	
-		}
 	}
 
 	/**

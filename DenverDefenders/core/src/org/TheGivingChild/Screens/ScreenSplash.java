@@ -13,6 +13,8 @@ public class ScreenSplash extends ScreenAdapter {
 	
 	/**{@link #splashScreenTimer} is the timer for how long the Title Splash Screen is displayed.*/
 	private float splashScreenTimer;
+	// true once auto transition has been initiated
+	private boolean transitionInit;
 
 	public ScreenSplash() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -22,7 +24,8 @@ public class ScreenSplash extends ScreenAdapter {
 		
 		batch = new SpriteBatch();
 		// Init time to show splash screen in seconds
-		splashScreenTimer = 5.0f;
+		splashScreenTimer = 1.0f;
+		transitionInit = false;
 	}
 
 	@Override
@@ -33,12 +36,19 @@ public class ScreenSplash extends ScreenAdapter {
 		
 		// Decrement timer
 		splashScreenTimer -= delta;
-		if (splashScreenTimer < 0 && game.getAssetManager().update()) {
-			// Change to main screen, splash and loading done
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
-			// Dispose of this screen, it will not be used again
-			dispose();
+		if (splashScreenTimer < 0 && game.getAssetManager().update() && !transitionInit) {
+			transitionInit = true;
+			// Transition to main screen when splash and loading done
+			ScreenTransition splashToMain = new ScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN);
+			game.setScreen(splashToMain);
 		}
+	}
+	
+	// Draws all important images without any logic updating
+	public void drawComponents() {
+		batch.begin();
+		batch.draw(game.getAssetManager().get("MainScreen_Splash.png", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 	
 	@Override

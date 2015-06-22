@@ -49,10 +49,8 @@ class ScreenOptions extends ScreenAdapter {
 	private CheckBoxStyle muteStyle;
 	private CheckBox mute;
 	private TGC_Engine game;
-	private AssetManager manager;
 	private SpriteBatch batch;
 	private Texture title;
-	private boolean isRendered = false;
 	private String[] optionsArray = {"   Music   ", 
 			  						 "   Sound   "};
 	private Slider slider;
@@ -66,11 +64,8 @@ class ScreenOptions extends ScreenAdapter {
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
 		batch = new SpriteBatch();
-		manager = game.getAssetManager();
-		manager.load("titleOptionScreen.png", Texture.class);
 		optionsTable = createOptionsTable();
 		overallTable = createOverallTable();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 		//set the inital state of sound to be on
 		for(CheckBox c : options){
 			c.setChecked(true);
@@ -83,41 +78,30 @@ class ScreenOptions extends ScreenAdapter {
 	 */
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				if(manager.isLoaded("titleOptionScreen.png"))
-					title = manager.get("titleOptionScreen.png");
-				Gdx.gl.glClearColor(1,1,0,1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				ScreenAdapterManager.getInstance().backgroundImage();
-				batch.begin();
-				batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
-				batch.end();
-				isRendered = true;
-				// SHOW IS NOT MEANT TO BE CALLED EVERY FRAME
-				show();
-				// NO NEED TO SET BOOLS EVERY FRAME, SHOULD HAPPEN ON CLICK LISTENER
-				for(CheckBox c : options) {
-					if(c.isChecked()) {
-						if(c.equals(options.get(0))){
-							game.musicEnabled = true;
-						}
-						else if(c.equals(options.get(1))){
-							game.soundEnabled = true;
-						}
-					}
-					else if(c.equals(options.get(0))){
-						game.musicEnabled = false;
-					}
-					else if(c.equals(options.get(1))){
-						game.soundEnabled = false;
-					}
+		title = game.getAssetManager().get("titleOptionScreen.png");
+		ScreenAdapterManager.getInstance().backgroundImage();
+		
+		batch.begin();
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+		batch.end();
+	
+		// NO NEED TO SET BOOLS EVERY FRAME, SHOULD HAPPEN ON CLICK LISTENER
+		for(CheckBox c : options) {
+			if(c.isChecked()) {
+				if(c.equals(options.get(0))){
+					game.musicEnabled = true;
+				}
+				else if(c.equals(options.get(1))){
+					game.soundEnabled = true;
 				}
 			}
+			else if(c.equals(options.get(0))){
+				game.musicEnabled = false;
+			}
+			else if(c.equals(options.get(1))){
+				game.soundEnabled = false;
+			}
 		}
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 	}
 	
 	
@@ -126,11 +110,8 @@ class ScreenOptions extends ScreenAdapter {
 	 */
 	@Override
 	public void show() {
-		if(isRendered) {
-			game.getStage().addActor(optionsTable);
-			game.getStage().addActor(overallTable);
-			isRendered = false;
-		}
+		game.getStage().addActor(optionsTable);
+		game.getStage().addActor(overallTable);
 	};
 	
 	/**
@@ -141,7 +122,6 @@ class ScreenOptions extends ScreenAdapter {
 	public void hide() {
 		optionsTable.remove();
 		overallTable.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	
 	@Override
@@ -159,7 +139,7 @@ class ScreenOptions extends ScreenAdapter {
 		//Sets up the needed variables and parameters
 		Table table = new Table();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		//Creates the buttons and sets table to origin
 		table.add(createButton());
 		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -173,7 +153,7 @@ class ScreenOptions extends ScreenAdapter {
 	private Table createChoices() {
 		Table table = new Table();
 		buttonSkin = new Skin();
-		buttonSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
+		buttonSkin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/CheckBoxes.pack"));
 		createCheckBoxes(table);
 		return table;
 	}
@@ -187,7 +167,7 @@ class ScreenOptions extends ScreenAdapter {
 		cbStyle = new CheckBoxStyle();
 		// Wrap label background in skin to get as a Drawable
 		Skin bSkin = new Skin();
-		bSkin.add("background", manager.get("SemiTransparentBG.png"));
+		bSkin.add("background", game.getAssetManager().get("SemiTransparentBG.png"));
 		cbStyle.font = font;
 		cbStyle.checkboxOff = buttonSkin.getDrawable("CheckBox");
 		cbStyle.checkboxOn = buttonSkin.getDrawable("CheckBox_Checked");
@@ -232,7 +212,7 @@ class ScreenOptions extends ScreenAdapter {
 	private TextButton createButton() {
 		font = new BitmapFont();
 		skin = new Skin();
-		skin.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		style = new TextButtonStyle();
 		style.font = font; 
 		style.up = skin.getDrawable("Button_MainScreen");
@@ -247,8 +227,8 @@ class ScreenOptions extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
-				//Calls the screen manager and has main be the shown screen if Back is hit
-				ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+				ScreenTransition optionsToMain = new ScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN);
+				game.setScreen(optionsToMain);
 			}
 		});
 		backButton.setSize(150,300);
@@ -265,7 +245,7 @@ class ScreenOptions extends ScreenAdapter {
 		 sliderSkin = new Skin();
 		 muteStyle = new CheckBoxStyle();
 		 font = game.getBitmapFontButton();
-		 sliderSkin.addRegions((TextureAtlas) manager.get("Packs/Slider.pack"));
+		 sliderSkin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Slider.pack"));
 		 SliderStyle ss = new SliderStyle();
 		 ss.background = sliderSkin.getDrawable("Slider_After");
 		 ss.knobBefore = sliderSkin.getDrawable("Slider_Before");

@@ -73,10 +73,6 @@ class ScreenEditor extends ScreenAdapter{
 	//Stores all created EditorGameObjects that were spawned by the user
 	private Array<GameObject> gameObjects;
 
-	private AssetManager manager;
-	private boolean isRendered = false;
-	private boolean isLoaded = false;
-
 	private Dialog window;
 
 	private Array<String> inputListeners;
@@ -92,7 +88,6 @@ class ScreenEditor extends ScreenAdapter{
 	public ScreenEditor() {
 		//fill the placeholder from the ScreenManager
 		mainGame = ScreenAdapterManager.getInstance().game;
-		manager = mainGame.getAssetManager();
 		attributeCheckBoxes = new Array<CheckBox>();
 		listenerCheckBoxes = new Array<CheckBox>();
 		createEditorTable();
@@ -110,9 +105,7 @@ class ScreenEditor extends ScreenAdapter{
 		fillGrid();		
 		inputListeners = new Array<String>();
 		attributes = new ObjectMap<Attribute,Array<String>>();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
-	//When hidden removes it's table
 
 	/**
 	 * Hides the editor button table and the GameObject dialog window if it's up.
@@ -121,7 +114,6 @@ class ScreenEditor extends ScreenAdapter{
 	public void hide() {
 		editorTable.remove();
 		window.remove();
-		ScreenAdapterManager.getInstance().cb.setChecked(false);
 	}
 	//The render function. Listens for clicks on the board and draws the grid and objects that are spawned
 
@@ -134,53 +126,39 @@ class ScreenEditor extends ScreenAdapter{
 	 */
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().screenTransitionInComplete = ScreenAdapterManager.getInstance().screenTransitionIn();
-		if(manager.update()) {
-			if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT <= 0 && ScreenAdapterManager.getInstance().screenTransitionInComplete) {
-				Gdx.gl.glClearColor(0, 1, 0, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-				if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
-						(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
-					enableButtons();
-				else
-					disableButtons();
-				if(canSetObj) {
-					batch.begin();
-					batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
-							, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
-					batch.end();
-				}
+		Gdx.gl.glClearColor(0, 1, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
+				(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
+			enableButtons();
+		else
+			disableButtons();
+		if(canSetObj) {
+			batch.begin();
+			batch.draw(objectImage, Gdx.input.getX() - objectImage.getWidth()/2
+					, Gdx.graphics.getHeight() - Gdx.input.getY() - objectImage.getHeight()/2);
+			batch.end();
+		}
 
-				//If touched, call spawnObjects
-				if(Gdx.input.isTouched()) {
-					spawnObject();
-				}
+		//If touched, call spawnObjects
+		if(Gdx.input.isTouched()) {
+			spawnObject();
+		}
 
-				//Draws all EditorGameObjects stored and all grid pieces
-				batch.begin();
+		//Draws all EditorGameObjects stored and all grid pieces
+		batch.begin();
 
-				for (int i=0; i<gridCol; i++) {
-					for (int j=0; j<gridRows; j++) {
-						batch.draw((Texture) manager.get("ObjectImages/Grid.png"), grid[i][j].x, grid[i][j].y);
-					}
-				}
-
-				for (GameObject obj : gameObjects) {
-					batch.draw((obj).getTexture(), obj.getX(), obj.getY());
-				}
-				batch.end();
-				isRendered = true;
-				if(!isLoaded) {
-					show();
-					isLoaded = true;
-				}
+		for (int i=0; i<gridCol; i++) {
+			for (int j=0; j<gridRows; j++) {
+				batch.draw((Texture) mainGame.getAssetManager().get("ObjectImages/Grid.png"), grid[i][j].x, grid[i][j].y);
 			}
 		}
-		if(ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT >= 0)
-			ScreenAdapterManager.getInstance().SCREEN_TRANSITION_TIME_LEFT -= Gdx.graphics.getDeltaTime();
 
+		for (GameObject obj : gameObjects) {
+			batch.draw((obj).getTexture(), obj.getX(), obj.getY());
+		}
+		batch.end();
 	}
-	//Shows the table when called upon
 
 	/**
 	 * Called when the screen is selected and everything is rendered.
@@ -188,19 +166,15 @@ class ScreenEditor extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		if(isRendered) {
-			mainGame.getStage().addActor(editorTable);
-			editorTable.setVisible(false);
-			window.setX(Gdx.graphics.getWidth()/2);
-			window.setY(Gdx.graphics.getHeight()/2);
+		mainGame.getStage().addActor(editorTable);
+		editorTable.setVisible(false);
+		window.setX(Gdx.graphics.getWidth()/2);
+		window.setY(Gdx.graphics.getHeight()/2);
 
-			EditorTextInputListener listener = new EditorTextInputListener();
-			Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
-			isRendered = false;
-		}
-	};
-
-	//Function to instantiate the button table
+		EditorTextInputListener listener = new EditorTextInputListener();
+		Gdx.input.getTextInput(listener, "Level Name", "", "Level Name");
+	}
+	
 	/**
 	 * Function that sets up the buttonTable at the bottom of the screen
 	 * Calls {@link #createButtons() createButtons()}  to add to the table.
@@ -209,7 +183,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Sets up the needed variables and parameters
 		editorTable = new Table();
 		skinTable = new Skin();
-		skinTable.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		skinTable.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
 
 		//Creates the buttons and sets table to origin
 		createButtons();
@@ -218,9 +192,6 @@ class ScreenEditor extends ScreenAdapter{
 		editorTable.setVisible(false);
 	}
 
-
-
-	//Fills the grid according to the gridImage size relative to the screen size
 	/**
 	 * Creates the grid used for the editor.
 	 * Based on the gridImage size that will be used and the screen size.
@@ -272,12 +243,12 @@ class ScreenEditor extends ScreenAdapter{
 					//Create the new editor game object
 					attributes = attributesSelected();
 					inputListeners = listenersSelected();
-					obj = new GameObject(gameObjects.size, manager.getAssetFileName(objectImage), drawPos, 
+					obj = new GameObject(gameObjects.size, mainGame.getAssetManager().getAssetFileName(objectImage), drawPos, 
 							inputListeners, attributes);
 					for (int k=0; k<gameObjects.size; k++) {
 						//If there is an object in the grid piece already, it gets replaced
 						if(gameObjects.get(k).getX() == obj.getX() && gameObjects.get(k).getY() == obj.getY()) {
-							obj = new GameObject(gameObjects.get(k).getID(), manager.getAssetFileName(objectImage),	
+							obj = new GameObject(gameObjects.get(k).getID(), mainGame.getAssetManager().getAssetFileName(objectImage),	
 									drawPos, inputListeners, attributes);
 							gameObjects.set(k, obj);
 							added = true;
@@ -303,13 +274,13 @@ class ScreenEditor extends ScreenAdapter{
 		ballOrBox++;
 		ballOrBox = ballOrBox % 3;
 		if (ballOrBox == 0) {
-			objectImage =  manager.get("ObjectImages/ball.png");
+			objectImage =  mainGame.getAssetManager().get("ObjectImages/ball.png");
 		}
 		else if (ballOrBox == 1) {
-			objectImage =  manager.get("ObjectImages/Box.png");
+			objectImage =  mainGame.getAssetManager().get("ObjectImages/Box.png");
 		}
 		else if (ballOrBox == 2) {
-			objectImage = manager.get("ObjectImages/BoxHalf.png");
+			objectImage = mainGame.getAssetManager().get("ObjectImages/BoxHalf.png");
 		}
 	}
 
@@ -363,7 +334,7 @@ class ScreenEditor extends ScreenAdapter{
 		//Initializes all that is needed for the Back button and gets the textured needed
 		font = new BitmapFont();
 		skinBack = new Skin();
-		skinBack.addRegions((TextureAtlas) manager.get("Packs/Buttons.pack"));
+		skinBack.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/Buttons.pack"));
 		textButtonStyleBack = new TextButtonStyle();
 		textButtonStyleBack.font = font; 
 		textButtonStyleBack.up = skinBack.getDrawable("Button_MainScreen");
@@ -455,11 +426,11 @@ class ScreenEditor extends ScreenAdapter{
 			}
 		});
 		Skin okCancelSkin = new Skin();
-		okCancelSkin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
+		okCancelSkin.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/ButtonsEditor.pack"));
 		
 		Skin checkBoxSkin;
 		checkBoxSkin = new Skin();
-		checkBoxSkin.addRegions((TextureAtlas) manager.get("Packs/CheckBoxes.pack"));
+		checkBoxSkin.addRegions((TextureAtlas) mainGame.getAssetManager().get("Packs/CheckBoxes.pack"));
 		editorTable.add(exportButton).align(Align.bottom);
 		Window.WindowStyle winStyle = new Window.WindowStyle();
 		winStyle.titleFont = font;
