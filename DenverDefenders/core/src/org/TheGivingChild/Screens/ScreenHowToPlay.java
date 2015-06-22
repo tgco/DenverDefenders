@@ -72,7 +72,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
 			tbs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
-			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]); // i+1 HERE ELIMINATES THE USE OF += BUTTONSTATES IN THE FOR POSTOP
+			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]); // i+1 HERE ELIMINATES THE USEFULNESS OF += BUTTONSTATES IN THE FOR POSTOP
 			TextButton tb = new TextButton("", tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));

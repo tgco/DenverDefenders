@@ -185,6 +185,7 @@ class ScreenOptions extends ScreenAdapter {
 		options = new Array<CheckBox>();
 		font = game.getBitmapFontButton();
 		cbStyle = new CheckBoxStyle();
+		// Wrap label background in skin to get as a Drawable
 		Skin bSkin = new Skin();
 		bSkin.add("background", manager.get("SemiTransparentBG.png"));
 		cbStyle.font = font;
@@ -222,7 +223,6 @@ class ScreenOptions extends ScreenAdapter {
 			table.add(checkbox).width(Gdx.graphics.getWidth()/4).height(Gdx.graphics.getHeight()/4);
 			table.add(label);
 			options.add(checkbox);
-			bSkin.dispose();
 		}
 	}
 	
