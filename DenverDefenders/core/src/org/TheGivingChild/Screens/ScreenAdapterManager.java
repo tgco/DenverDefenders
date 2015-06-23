@@ -1,30 +1,16 @@
 package org.TheGivingChild.Screens;
 
-import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.XML.Level;
+
+import sun.security.jca.GetInstance.Instance;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.math.MathUtils;
 /**
  * 
  * The {@link ScreenAdapterManager} follows the Singleton pattern.
@@ -51,17 +37,11 @@ public final class ScreenAdapterManager {
 	public TGC_Engine game;
 	/**Map of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} built from {@link ScreenAdapterEnums}.*/
 	private IntMap<ScreenAdapter> screens;
-	/**Reference to the {@link AssetManager} in {@link org.TheGivingChild.Engine.TGC_Engine TGC_Engine}.*/
-	private AssetManager manager;
 	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Batch batch;
 	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
 	public TextureRegion backgroundRegion;
-	private Table minigameTable;
-	private Table mazeTable;
-	private Table overallTable;
-	private Label minigame;
-	private Label maze;
+
 	/**
 	 * Allows access to {@link #instance} from outside the class.
 	 * If the {@link #instance} is null, construct it.
@@ -128,10 +108,7 @@ public final class ScreenAdapterManager {
 	 */
 	public void initialize(TGC_Engine game) {
 		this.game = game;
-		manager = game.getAssetManager();
-		backgroundRegion = new TextureRegion(manager.get("ColdMountain.png", Texture.class));
-		createLabels(MathUtils.random(100));
-		overallTable = new Table();
+		backgroundRegion = new TextureRegion(game.getAssetManager().get("ColdMountain.png", Texture.class));
 	}
 	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
 	public void backgroundImage() {
@@ -139,31 +116,7 @@ public final class ScreenAdapterManager {
 		batch.draw(backgroundRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
 	}
-	/**
-	 * ScreenTransition is the static representation of the curtains covering the entire screen
-	 * 
-	 */
-	public void screenTransition(){
-		Gdx.app.log("Manager", "Transition called");
-	}
-	/**
-	 * <p>Moves the curtains from outside the rendered screen to the middle, closing in on a level</p>
-	 * <p>Starts on the outside, moves curtains inward to cover the current level</p>
-	 * @return true if coverage is complete. Used for knowing when to call screenTransitionOut().
-	 */
-	public boolean screenTransitionIn(){
-		Gdx.app.log("Manager", "Transition IN");
-		return false;
-	}
-	/**
-	 * <p>Moves the curtains from covering the screen to out of the rendered view</p>
-	 * <p>Starts in the middle and then move curtains toward the outside to uncover the new level</p>
-	 * @return Returns true when transition is complete.
-	 */
-	public boolean screenTransitionOut(){
-		Gdx.app.log("Manager", "Transition OUT");
-		return false;
-	}
+
 	/**
 	 * <p>The show method used to switch to other screenAdapters</p>
 	 * <p>Show the screen in the argument, hide the current.</p>
@@ -180,161 +133,6 @@ public final class ScreenAdapterManager {
 			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
 		} 
 		
-		minigameTable.remove();
-		mazeTable.remove();
-		
-		createLabels(MathUtils.random(100));
-
-		if ((screenEnum.equals(ScreenAdapterEnums.MAZE) && game.getFromGame()) || getInstance().game.getCurrentLevel() != null) {
-			overallTable.add(minigameTable.align(Align.center));			
-			game.setFromGame(false);
-		}
-
-		if (screenEnum.equals(ScreenAdapterEnums.MAIN) && game.getMazeCompleted()) {
-			overallTable.add(mazeTable.align(Align.center));
-			game.setMazeCompleted(false);
-		}
-		
-		overallTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		overallTable.align(Align.center);
-		
 		game.setScreen(screens.get(screenEnum.ordinal()));
 	}
-	
-	public void createLabels(int r) {
-		minigame = null;
-		minigameTable = new Table();
-		LabelStyle ls = new LabelStyle();
-		ls.font = new BitmapFont();
-		if (game.getFromGame() && game.levelWin()) {
-			minigame = new Label("You WON!", ls);
-			minigame.setColor(1, 1, 1, 1);
-			minigame.setWrap(true);
-			//win message
-			switch(Gdx.app.getType()){
-			case Android:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*2.5f));
-				break;
-			case iOS:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
-			minigame.setAlignment(Align.center, Align.center);
-			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		else if (game.getFromGame() && !game.levelWin()){
-			minigame = new Label("You lost", ls);
-			minigame.setColor(1, 1, 1, 1);
-			minigame.setWrap(true);
-			//lose message
-			switch(Gdx.app.getType()){
-			case Android:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*2.5f));
-				break;
-			case iOS:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
-			minigame.setAlignment(Align.center, Align.center);
-			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		else if(game.getCurrentLevel() != null && !game.getFromGame()) {
-			Level current = getInstance().game.getCurrentLevel();
-			minigame = new Label(current.getDescription(), ls);
-			minigame.setColor(1, 1, 1, 1);
-			minigame.setWrap(true);
-			//game description
-			switch(Gdx.app.getType()){
-			case Android:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*2.5f));
-				break;
-			case iOS:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				minigame.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
-			minigame.setAlignment(Align.center, Align.center);
-			minigameTable.add(minigame).width(Gdx.graphics.getWidth()/2);
-			minigameTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		else {
-			minigame = null;
-		}
-		
-		mazeTable = new Table();
-		if (game.getMazeCompleted() && game.getAllSaved()) {
-			maze = new Label("You Saved All the Kids! Congratulations!", ls);
-			maze.setColor(1, 1, 1, 1);
-			maze.setWrap(true);
-			//win maze message
-			switch(Gdx.app.getType()){
-			case Android:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*2.5f));
-				break;
-			case iOS:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
-			maze.setAlignment(Align.center, Align.center);
-			mazeTable.add(maze).width(Gdx.graphics.getWidth()/2);
-			mazeTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		else if (game.getMazeCompleted() && !game.getAllSaved()) {
-			maze = new Label("You Ran Out of Lives! Try Again!", ls);
-			maze.setColor(1, 1, 1, 1);
-			maze.setWrap(true);
-			//maze lose message
-			switch(Gdx.app.getType()){
-			case Android:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*2.5f));
-				break;
-			case iOS:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				maze.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
-			maze.setAlignment(Align.center, Align.center);
-			mazeTable.add(maze).width(Gdx.graphics.getWidth()/2);
-			mazeTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		}
-		else {
-			maze = null;
-		}
-	}
-
 }

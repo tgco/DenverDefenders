@@ -7,8 +7,6 @@ import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -22,10 +20,14 @@ public class ScreenLevel extends ScreenAdapter{
 	private Level currentLevel;
 	private SpriteBatch batch;
 	private TGC_Engine game;
+	private boolean logicPaused;
 	
 	public ScreenLevel() {
 		batch = new SpriteBatch();
 		game = ScreenAdapterManager.getInstance().game;
+		currentLevel = null;
+		// No logic until show
+		logicPaused = true;
 	}
 	
 	/**
@@ -34,28 +36,31 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void hide() {
-		currentLevel = null;
+		// Reset for next play
+		for(GameObject gameObject : currentLevel.getGameObjects()){
+			gameObject.resetObject();
+		}
+		//currentLevel = null;
+		logicPaused = true;
 	}
 	
 	/**
-	 * Called when the ScreenLevel is supposed to be shown. It initializes the level with the given level
-	 * and sets its {@link com.badlogic.gdx.assets.AssetManager AssetManager} to the game's. 
+	 * Called when the ScreenLevel is supposed to be shown. It initializes with the given level. 
 	 * It resets all objects in the level and loads them.
 	 */
 	@Override
 	public void show() {
-		// UNNECESSARY COUPLING TO THE MAIN CLASS, SHOULD CONSTRUCT WITH A LEVEL
-		currentLevel = ScreenAdapterManager.getInstance().game.getCurrentLevel();
 		// VAGUE METHOD CALL THAT ACTUALLY MODIFIES THE MAIN CLASS STAGE
 		currentLevel.loadObjectsToStage();
-		for(GameObject gameObject: currentLevel.getGameObjects()){
-			gameObject.resetObject();
-		}
+		logicPaused = false;
+	}
+	
+	public void setCurrentLevel (Level level) {
+		currentLevel = level;
 	}
 	
 	/**
-	 * Calls a screen transition effect first.
-	 * Once completed, it goes through all of the {@link org.TheGivingChild.Engine.XML.GameObject GameObjects} 
+	 * Goes through all of the {@link org.TheGivingChild.Engine.XML.GameObject GameObjects} 
 	 * that the game contains and draws them. If the GameObjects are supposed to be destroyed they are ignored. 
 	 * After drawing the level is updated. 
 	 * @param delta Amount of time passed between each render call. In seconds
@@ -74,12 +79,23 @@ public class ScreenLevel extends ScreenAdapter{
 			currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
 		}
 		batch.end();
-		currentLevel.update();
-		if (currentLevel.getCompleted()) {
-			// COUPLED TO BOOLEANS IN THE MAIN CLASS
-			ScreenAdapterManager.getInstance().game.levelCompleted(currentLevel.getWon());
-			ScreenAdapterManager.getInstance().game.setFromGame(true);
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAZE);
+		if (!logicPaused) {
+			currentLevel.update();
+			if (currentLevel.getCompleted()) {
+				String text = buildResponseText(currentLevel.getWon());
+				// Alert maze that the minigame was won so the child will follow
+				((ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.MAZE)).setLevelWon(currentLevel.getWon());
+				ScreenTransition levelToMaze = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
+				game.setScreen(levelToMaze);
+			}
 		}
+	}
+	
+	// Returns the string that tells the player if they won or lost
+	public String buildResponseText(boolean won) {
+		if (won)
+			return "You won!";
+		else
+			return "You lost";
 	}
 }

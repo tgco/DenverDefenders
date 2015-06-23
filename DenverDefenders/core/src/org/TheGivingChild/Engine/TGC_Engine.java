@@ -12,7 +12,6 @@ import org.TheGivingChild.Screens.ScreenAdapterManager;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -92,8 +91,6 @@ public class TGC_Engine extends Game {
 	private XML_Reader reader;
 	/**{@link #writer} allows minigames to be written in the editor.*/
 	private XML_Writer writer;
-	/**{@link #mapCamera} controls the maps camera.*/
-	private OrthographicCamera mapCamera;
 	/**{@link #camera} controls the normal render camera.*/
 	private OrthographicCamera camera;
 	/**
@@ -116,16 +113,8 @@ public class TGC_Engine extends Game {
 	private Viewport viewport;
 	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
-	/**{@link #levelWinOrLose} is true if the minigame was just won, false if the minigame was lost.*/
-	private boolean levelWinOrLose;
-	/**{@link #currentMazeCompleted} is true if the maze has been completed.*/
-	private boolean currentMazeCompleted = false;
-	/**{@link #fromGame} is true if the screen transitioned from a minigame.*/
-	private boolean fromGame = false;
 	/**{@link #backgroundSounds} is an {@link com.badlogic.gdx.utils.Array Array} of {@link com.badlogic.gdx.audio.Music Music} to play in the background.*/
 	private Array<Music> backgroundSounds;
-	/**{@link #allSaved} is true if all the kids in the maze have been saved.*/
-	private boolean allSaved = false;
 	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
 	private Music backgroundSoundToPlay;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
@@ -177,48 +166,6 @@ public class TGC_Engine extends Game {
 		int newLevelIndex = (rand.nextInt(possibleLevels.size));
 		currentLevel = possibleLevels.get(newLevelIndex);
 		currentLevel.resetLevel();
-	}
-	/**{@link #levelCompleted(boolean)} sets the {@link #levelWinOrLose} to winOrLose.
-	 * @param winOrLose {@link #levelWinOrLose} is set to this.*/
-	public void levelCompleted(boolean winOrLose) {
-		levelWinOrLose = winOrLose;
-	}
-	/**{@link #levelWin()} returns {@link #levelWinOrLose}.*/
-	public boolean levelWin() {
-		return levelWinOrLose;
-	}
-	/**{@link #setMazeCompleted(boolean)} sets the {@link #currentMazeCompleted} to state.
-	 * @param state {@link #currentMazeCompleted} is set to this. */
-	public void setMazeCompleted(boolean state) {
-		currentMazeCompleted = state;
-	}
-	/**{@link #getMazeCompleted()} returns {@link #currentMazeCompleted}. */
-	public boolean getMazeCompleted() {
-		return currentMazeCompleted;
-	}
-	/**{@link #getAllSaved()} returns {@link #allSaved} */
-	public boolean getAllSaved() {
-		return allSaved;
-	}
-	/**{@link #getAllSaved()} sets {@link #allSaved} to state.
-	 * @param state {@link #allSaved} is set to this.*/
-	public void setAllSaved(boolean state) {
-		allSaved = state;
-	}
-	/**
-	 * {@link #setFromGame(boolean)} sets {@link #fromGame} state.
-	 * @param state {@link #fromGame} is set to this.
-	 */
-	public void setFromGame(boolean state) {
-		fromGame = state;
-	}
-	/**{@link #nullCurrentLevel()} sets {@link #currentLevel} to null.*/
-	public void nullCurrentLevel() {
-		currentLevel = null;
-	}
-	/**{@link #getFromGame()} returns {@link #fromGame}: whether a screen transition came from a minigame.*/
-	public boolean getFromGame() {
-		return fromGame;
 	}
 
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
@@ -336,16 +283,11 @@ public class TGC_Engine extends Game {
 		stage = new TGC_Stage();
 
 		//Game input processor
-		InputMultiplexer mp = new InputMultiplexer();
-		mp.addProcessor(stage);
-		Gdx.input.setInputProcessor(mp);
+		Gdx.input.setInputProcessor(stage);
 		
 		//set the height and width to the Gdx graphics dimensions
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		//Map stuff
-		mapCamera = new OrthographicCamera();
-		mapCamera.setToOrtho(false, width, height);
 
 		camera = new OrthographicCamera();
 		viewport = new StretchViewport(16, 9, camera);

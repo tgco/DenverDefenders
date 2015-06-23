@@ -47,6 +47,7 @@ public class ScreenTransition extends ScreenAdapter {
 			  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 	private Table factTable;
 	
+	// Constructor that builds a transition with a random fact
 	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
 		this.screenOut = screenOut;
 		this.screenIn = screenIn;
@@ -59,7 +60,23 @@ public class ScreenTransition extends ScreenAdapter {
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
-		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager());
+		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), FACTS[rand.nextInt(FACTS.length)]);
+	}
+	
+	// Constructor that builds a transition with given text
+	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, String text) {
+		this.screenOut = screenOut;
+		this.screenIn = screenIn;
+		transitionTextures = new Array<TextureRegion>();
+		batch = new SpriteBatch();
+		// Init the position of the transition textures to 0
+		transitionTextureX = 0;
+		state = TransitionState.CLOSING;
+		transitionTime = 0.3f;
+		rand = new Random();
+		// Get references to the transition textures from an asset manager
+		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
+		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), text);
 	}
 	
 	public void fillTransitionTextures(Array<TextureRegion> transitionTextures, AssetManager manager) {
@@ -71,7 +88,7 @@ public class ScreenTransition extends ScreenAdapter {
 	}
 	
 	// Builds a table for the fact label shown on closed transition
-	public Table buildFactTable(AssetManager manager) {
+	public Table buildFactTable(AssetManager manager, String text) {
 		// Overall container
 		final Table container = new Table();
 		container.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -100,29 +117,28 @@ public class ScreenTransition extends ScreenAdapter {
 		Table factContainer = new Table();
 		LabelStyle ls = new LabelStyle();
 		ls.font = new BitmapFont();
-		int fNum = Math.abs(rand.nextInt()) % FACTS.length;
-		Label fact = new Label(FACTS[fNum], ls);
-		fact.setColor(1, 1, 1, 1);
+		Label textLabel = new Label(text, ls);
+		textLabel.setColor(1, 1, 1, 1);
 		// Font scale set
 		switch(Gdx.app.getType()) {
 		case Android:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
+			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
 			break;
 			//if using the desktop set the width and height to a 16:9 resolution.
 		case Desktop:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
+			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
 			break;
 		case iOS:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
+			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
 			break;
 		default:
-			fact.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
 			break;
 		}
-		fact.setWrap(true);
-		fact.setAlignment(Align.center, Align.center);
+		textLabel.setWrap(true);
+		textLabel.setAlignment(Align.center, Align.center);
 		factContainer.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		factContainer.add(fact).width(Gdx.graphics.getWidth()/2);
+		factContainer.add(textLabel).width(Gdx.graphics.getWidth()/2);
 		
 		// Add to container
 		container.row();

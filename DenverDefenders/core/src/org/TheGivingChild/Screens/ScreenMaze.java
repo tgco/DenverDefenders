@@ -5,12 +5,9 @@ import java.util.Random;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -51,8 +48,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private float xMove, yMove;
 	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
-	private int mapTilesX, mapTilesY;
-	private float mazeWidth, mazeHeight;
 	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
 	/** Array of rectangle to store the location of miniGame triggers */
@@ -76,6 +71,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private TextureRegion healthTextureRegion;
 	private int playerHealth = 3;
 	
+	//True if game progression logic is paused
+	private boolean logicPaused;
+	// True if won the minigame returned from
+	private boolean levelWon;
+	// True if all the children were found and the maze has been won
+	private boolean mazeWon;
+	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -83,20 +85,21 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	 * @param spriteFile The name of the sprite texture file in the assets folder
 	 */
 
-	public ScreenMaze(){	
+	public ScreenMaze(){
+		logicPaused = false;
+		levelWon = false;
+		mazeWon = false;
 		map = new TmxMapLoader().load("mapAssets/UrbanMaze1.tmx");
 		camera = new OrthographicCamera();
 		//Setup map properties
 		properties = map.getProperties();
 
-		mapTilesX = properties.get("width", Integer.class);
-		mapTilesY = properties.get("height", Integer.class);
+		int mapTilesX = properties.get("width", Integer.class);
+		int mapTilesY = properties.get("height", Integer.class);
 		//width and height of tiles in pixels
 		int pixWidth = properties.get("tilewidth", Integer.class);
 		int pixHeight = properties.get("tileheight", Integer.class);
 
-		mazeWidth = mapTilesX * pixWidth;
-		mazeHeight = mapTilesY * pixHeight;
 		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
 		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
@@ -305,107 +308,178 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	public void render(float delta) {
 		//update the camera
 		camera.update();
-		//set the map to be rendered by this camera
+		// link camera to render objects
 		mapRenderer.setView(camera);
+		spriteBatch.setProjectionMatrix(camera.combined);
+		
+		//background
 		spriteBatch.begin();
-		//draw the background texture
 		spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
-		//Make the sprite not move when the map is scrolled
-		spriteBatch.setProjectionMatrix(camera.combined);
 		
-		//move the sprite left, right, up, or down
-		//Calculate where the sprite is going to move
-		float spriteMoveX = playerCharacter.getX() + xMove*Gdx.graphics.getDeltaTime();
-		float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
-		//If the sprite is not going off the maze allow it to move
-		//Check for a collision as well
-		boolean collision = false;
-		
-		if(spriteMoveX >= 0 && (spriteMoveX+playerCharacter.getWidth()) <= mazeWidth) {
-			if(spriteMoveY >= 0 && (spriteMoveY+playerCharacter.getHeight()) <= mazeHeight) {
-				Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
-				
-				for(Rectangle r : collisionRects) {
-					if(r.overlaps(spriteRec)) {
-						collision = true;
-					}
-				}
-
-				for(MinigameRectangle m : minigameRects) {
-					if(m.overlaps(spriteRec) && m.isOccupied()) {
-						lastRec = m;
-						playerCharacter.setPosition(m.getX(), m.getY());
-						game.selectLevel();
-						ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.LEVEL);
-					}
-				}
-
-				if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
-					for (ChildSprite child: followers) {
-						child.setSaved(true);
-						followers.removeValue(child, false);
-						playerCharacter.clearPositionQueue();
-					}
-				}
-
-				if(!collision) {
-					playerCharacter.setPosition(spriteMoveX, spriteMoveY);
-					if(followers.size > 0) {
-						followers.get(0).followSprite(playerCharacter);
-
-						for(int i = 1; i <followers.size; i++) {
-							followers.get(i).followSprite(followers.get(i-1));
-						}
-					}
-				}
-			}	
-		}
-		
-		if(currentWalkSequence.size > 0 && collision == false) {
-			Texture next = currentWalkSequence.get(0);
-			currentWalkSequence.removeIndex(0);
-			currentWalkSequence.add(next);
-			playerCharacter.setTexture(next);
-		}
+		//character, children and hearts
 		spriteBatch.begin();
-		//draw the main character sprite to the map
 		playerCharacter.draw(spriteBatch);
-		//Draw the children following
+		//following children
 		if(followers.size != 0) {
 			for(Sprite f: followers) {
 				f.draw(spriteBatch);
 			}
 		}
-
-		//draw the children on the maze
+		//children in maze
 		for(Sprite s : mazeChildren) {
 			s.draw(spriteBatch);
 		}
-		//update the camera to be above the character
+		// player hearts
 		for (int i=0; i<playerHealth; i++) {
 			float xPos = camera.position.x - camera.viewportWidth/2;
 			float heartSize = camera.viewportHeight/10;
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
 			spriteBatch.draw(healthTextureRegion, xPos + (heartSize*i), yPos, heartSize, heartSize);
 		}
-		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
-		//end the batch that sprites have drawn to
 		spriteBatch.end();
-			
-		if (allSaved()) {
-			game.setMazeCompleted(true);
-			game.setAllSaved(true);
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		
+		if (!logicPaused) {
+			// Update logic
+			ScreenAdapterEnums screenSwitch = updateLogic();
+			// Init screen transition if necessary
+			if (screenSwitch != null) {
+				String text = buildResponseText(screenSwitch);
+				ScreenTransition mazeToOther = new ScreenTransition(ScreenAdapterEnums.MAZE, screenSwitch, text);
+				game.setScreen(mazeToOther);
+			}
+		}
+	}
+	
+	// Logic for character collisions and screen changes on each frame
+	public ScreenAdapterEnums updateLogic() {
+		// cam position update
+		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
+
+		//Calculate new coordinates
+		float spriteMoveX = playerCharacter.getX() + xMove*Gdx.graphics.getDeltaTime();
+		float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
+		//rectangle around player sprite for collision check
+		Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
+		
+		// drop off at base if collision
+		if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
+			for (ChildSprite child: followers) {
+				child.setSaved(true);
+				followers.removeValue(child, false);
+				playerCharacter.clearPositionQueue();
+			}
 		}
 		
-		if (playerHealth <= 0) {
-			game.setMazeCompleted(true);
-			game.setAllSaved(false);
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+		// Updates if no wall collisions
+		if ( !wallCollisionCheck(spriteRec, collisionRects) ) {
+			//update player position
+			playerCharacter.setPosition(spriteMoveX, spriteMoveY);
+			//update follower positions
+			if(followers.size > 0) {
+				followers.get(0).followSprite(playerCharacter);
+
+				for(int i = 1; i <followers.size; i++) {
+					followers.get(i).followSprite(followers.get(i-1));
+				}
+			}
+
+			// Animation update
+			if (currentWalkSequence.size > 0) {
+				Texture next = currentWalkSequence.get(0);
+				currentWalkSequence.removeIndex(0);
+				currentWalkSequence.add(next);
+				playerCharacter.setTexture(next);
+			}
 		}
+		
+		/*
+		 * Possible screen changes
+		 */
+		
+		// Minigame check
+		if (minigameCollisionCheck(spriteRec, minigameRects)) {
+			return ScreenAdapterEnums.LEVEL;
+		}
+
+		// Check if won the maze (all are saved) and set state appropriately if true
+		if ( winMazeCheck(mazeChildren) ) {
+			return ScreenAdapterEnums.MAIN;
+		}
+
+		// Check if lost the maze (no hearts left) and set state appropriately
+		if ( loseMazeCheck(playerHealth) ) {
+			return ScreenAdapterEnums.MAIN;
+		}
+		
+		return null;
+	}
+	
+	// True if the passed rectangle collides with a rectangle in the collision layer
+	public boolean wallCollisionCheck(Rectangle player, Array<Rectangle> collideRects) {
+		//check for collision with walls
+		for(Rectangle collideWith : collideRects) {
+			if(player.overlaps(collideWith)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// True if collide with minigame that is occupied, and sets state variables appropriately
+	public boolean minigameCollisionCheck(Rectangle player, Array<MinigameRectangle> gameRects) {
+		for(MinigameRectangle m : gameRects) {
+			if (m.isOccupied() && player.overlaps(m)) {
+				// Keep track of the rectangle for returning to the maze screen
+				lastRec = m;
+				// put character into the minigame rect
+				// playerCharacter.setPosition(m.getX(), m.getY());
+				// select a random level
+				game.selectLevel();
+				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
+				levelScreen.setCurrentLevel(game.getCurrentLevel());
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// True if the game is won (all kids saved), also sets game state appropriately
+	public boolean winMazeCheck(Array<ChildSprite> children) {
+		if (allSaved(children)) {
+			mazeWon = true;
+			return true;
+		}
+		return false;
+	}
+	
+	// True if out of hearts and sets state appropriately
+	public boolean loseMazeCheck(int health) {
+		if (health <= 0) {
+			mazeWon = false;
+			return true;
+		}
+		return false;
+	}
+	
+	// Returns minigame description, win or lose text
+	public String buildResponseText(ScreenAdapterEnums toScreen) {
+		String text;
+		switch (toScreen) {
+		case MAIN:
+			if (mazeWon) text = "You saved all the kids! Congratulations!";
+			else text = "You ran out of hearts, try again!";
+			break;
+		case LEVEL:
+			text = game.getCurrentLevel().getDescription();
+			break;
+		default:
+			text = "";
+			break;
+		}
+		return text;
 	}
 
 	@Override
@@ -416,7 +490,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	@Override
 	public boolean keyTyped(char character) {
 		if (character == 'e') {
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
+			game.setScreen(mazeToMain);
 		}
 		return true;
 	}
@@ -495,26 +570,27 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 	@Override
 	public void show(){
+		logicPaused = false;
 		Gdx.input.setInputProcessor(this);
-		// SOUND ASSET LEAKING EVERY CALL
-		Sound click = Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
-		if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
-			click.play(ScreenAdapterManager.getInstance().game.volume);
-		}
 
 		xMove = 0;
 		yMove = 0;
 
-		if(allSaved() || playerHealth <= 0) {
+		if(allSaved(mazeChildren) || playerHealth <= 0) {
 			reset();
 		}
-
 		else {
-			if (game.levelWin()) {
+			/* BUG: RETURNING FROM MAIN TO A PAUSED GAME LOSES A HEART */
+			// Returned from level screen (assuming no back button presses or backgrounded)
+			if (levelWon) {
+				// won the minigame
 				//add the follower from this minigame panel
 				followers.add(lastRec.getOccupant());
+				levelWon = false;
 			} 
 			else if (lastRec.isOccupied()){
+				//lost the minigame
+				//find unoccupied minigame squares
 				Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
 				for (MinigameRectangle rect: minigameRects) {
 					if (!rect.isOccupied()) {
@@ -523,8 +599,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 				}
 
 				if (unoccupied.size > 0) {
+					// a space is available
 					Random rand = new Random();
-					int newPositionIndex = rand.nextInt(1000) % unoccupied.size;
+					int newPositionIndex = rand.nextInt(unoccupied.size);
 					unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
 					ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
 					child.moveTo(unoccupied.get(newPositionIndex));
@@ -533,15 +610,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			}
 
 			lastRec.empty();
-			game.levelCompleted(false);
-			game.nullCurrentLevel();
 		}
-		for(MapLayer layer: map.getLayers()) {
+		
+		for(MapLayer layer : map.getLayers()) {
 			layer.setVisible(true);
 		}
+		
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
-		for(int i = 0; i <collisionObjects.getCount(); i++) {
+		for(int i = 0; i < collisionObjects.getCount(); i++) {
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
@@ -564,16 +641,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 		playerHealth = 3;
 		playerCharacter.setPosition(heroHQ.x,heroHQ.y);
-		game.setAllSaved(false);
-		game.setMazeCompleted(false);
+		mazeWon = false;
 		populate();
 	}
 
 	/**
 	 * Returns true if all children in the maze have been saved
 	 */
-	public boolean allSaved() {
-		for (ChildSprite child : mazeChildren) {
+	public boolean allSaved(Array<ChildSprite> children) {
+		for (ChildSprite child : children) {
 			if (!child.getSaved()) {
 				return false;
 			}
@@ -587,9 +663,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	 */
 	@Override
 	public void hide() {
-		for(MapLayer layer: map.getLayers()){
-			layer.setVisible(false);
-		}
+		// Pause logic for transition drawing
+		logicPaused = true;
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
 		collisionRects.clear();
 	}
@@ -614,9 +689,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	@Override
 	public boolean keyDown(int keyCode) {
 		if(keyCode == Keys.BACK){
-			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
+			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
+			game.setScreen(mazeToMain);
 	    }
 		return true;
+	}
+	
+	public void setLevelWon (boolean levelWon) {
+		this.levelWon = levelWon;
 	}
 
 }

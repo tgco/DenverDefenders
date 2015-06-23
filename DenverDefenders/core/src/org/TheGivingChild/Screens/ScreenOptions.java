@@ -3,13 +3,8 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
-
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
