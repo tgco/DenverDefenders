@@ -12,7 +12,6 @@ import org.TheGivingChild.Engine.XML.WinEnum;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -125,10 +124,8 @@ class ScreenEditor extends ScreenAdapter{
 	 */
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 1, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if(mainGame.getHeight() - Gdx.input.getY() <= 75 || 
-				(editorTable.isVisible() && mainGame.getHeight() - Gdx.input.getY() < 150))
+		if(Gdx.graphics.getHeight() - Gdx.input.getY() <= 75 || 
+				(editorTable.isVisible() && Gdx.graphics.getHeight() - Gdx.input.getY() < 150))
 			enableButtons();
 		else
 			disableButtons();

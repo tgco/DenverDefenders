@@ -58,7 +58,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 		//variable to help with table positioning
 		int widthDivider = buttonAtlasNamesArray.length;
 		//iterates over button names, allows for more buttons to be added
-		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += game.getButtonStates()) {
+		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += 2) {
 			TextButtonStyle tbs = new TextButtonStyle();
 			tbs.font = font;
 			tbs.down = skin.getDrawable(buttonAtlasNamesArray[i]);

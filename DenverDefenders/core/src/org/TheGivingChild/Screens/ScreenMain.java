@@ -28,6 +28,15 @@ class ScreenMain extends ScreenAdapter {
 	private Table mainScreenTable, labelTable;
 	private Skin skin;
 	private TGC_Engine game;
+	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
+												"Button_MainScreen_Play", 
+												"ButtonPressed_MainScreen_HowToPlay", 
+												"Button_MainScreen_HowToPlay", 
+												"ButtonPressed_MainScreen_Editor", 
+												"Button_MainScreen_Editor", 
+												"ButtonPressed_MainScreen_Options", 
+												"Button_MainScreen_Options"
+												};
 	
 	public ScreenMain() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -44,16 +53,16 @@ class ScreenMain extends ScreenAdapter {
 		//adds the proper textures to skin from the asset manager
 		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		//variable to keep track of button height for table positioning
-		int widthDivider = (game.getButtonAtlasNamesArray().length/2);
+		int widthDivider = (buttonAtlasNamesArray.length/2);
 		//iterate over button pack names in order to check
-		for(int i = 0; i < game.getButtonAtlasNamesArray().length-1; i+=game.getButtonStates()){
+		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += 2 ){
 			TextButtonStyle bs = new TextButtonStyle();
 			bs.font = bitmapFontButton;
-			bs.down = skin.getDrawable(game.getButtonAtlasNamesArray()[i]);
-			bs.up = skin.getDrawable(game.getButtonAtlasNamesArray()[i+1]);
+			bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
+			bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			TextButton b = new TextButton("", bs);
 			b.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
-			table.add(b).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(game.getButtonAtlasNamesArray().length/2));
+			table.add(b).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			buttonHeight = b.getHeight();
 			final int j = i;
 			//button to transition to different screens.

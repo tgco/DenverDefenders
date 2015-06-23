@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
@@ -84,17 +85,17 @@ class ScreenOptions extends ScreenAdapter {
 		for(CheckBox c : options) {
 			if(c.isChecked()) {
 				if(c.equals(options.get(0))){
-					game.musicEnabled = true;
+					AudioManager.getInstance().setMusicEnabled(true);
 				}
 				else if(c.equals(options.get(1))){
-					game.soundEnabled = true;
+					AudioManager.getInstance().setSoundEnabled(true);
 				}
 			}
 			else if(c.equals(options.get(0))){
-				game.musicEnabled = false;
+				AudioManager.getInstance().setMusicEnabled(false);
 			}
 			else if(c.equals(options.get(1))){
-				game.soundEnabled = false;
+				AudioManager.getInstance().setSoundEnabled(false);
 			}
 		}
 	}
@@ -260,26 +261,26 @@ class ScreenOptions extends ScreenAdapter {
 					 volume = slider.getValue();
 				 if(mute.isChecked()) {
 					 slider.setValue(0);
-					 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
+					 AudioManager.getInstance().setVolume(slider.getValue()/100f);
 					 slider.setDisabled(true);
-					 game.muteAll = true;
+					 AudioManager.getInstance().setMuteAll(true);
 				 }
 				 else {
 					 slider.setValue(volume);
 					 slider.setDisabled(false);
-					 game.muteAll = false;
+					 AudioManager.getInstance().setMuteAll(false);
 				 }
 			 }
 		 });
 		 slider = new Slider(0, 100, 1, false, ss);
 		 slider.setValue(75);
 		 slider.setDisabled(false);
-		 ScreenAdapterManager.getInstance().game.volume = slider.getValue()/100f;
+		 AudioManager.getInstance().setVolume(slider.getValue()/100f);
 		 slider.addListener(new MyChangeListener() {
 			 @Override
 			 public void changed(ChangeEvent event, Actor actor) {
 				 float value = ((Slider) actor).getValue();
-				 ScreenAdapterManager.getInstance().game.volume = value/100f;
+				 AudioManager.getInstance().setVolume(value/100f);
 			 }
 		 });
 		 sliderName = new Label("Volume  ", ls);switch(Gdx.app.getType()){

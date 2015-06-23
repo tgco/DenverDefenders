@@ -2,8 +2,6 @@ package org.TheGivingChild.Engine;
 
 import com.badlogic.gdx.Gdx;
 
-//GameClock for determining various timing things
-//GameClock measured in nanoseconds
 /**
  * Serves as the gameclock for the minigames
  * Static clock is only created once.

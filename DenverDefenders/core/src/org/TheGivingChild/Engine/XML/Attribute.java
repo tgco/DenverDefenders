@@ -1,10 +1,9 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MinigameClock;
-import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -86,7 +85,7 @@ public enum Attribute {
 		static final float MAX_VELOCITY = 400;
 		static final float COLLISION_CONSTANT = 5;
 		static final float COLLISION_OFFSET = 1;
-		public void update(GameObject myObject,Array<GameObject> allObjects){
+		public void update(GameObject myObject,Array<GameObject> allObjects) {
 			Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 			for(int i =0; i < allObjects.size;i++){
 				if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(COLLIDESWITHOBJECTSID).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
@@ -124,11 +123,8 @@ public enum Attribute {
 							r2.setPosition(allObjects.get(i).getX(),allObjects.get(i).getY());
 						}
 						
-						// SOUND ASSET LEAK
-						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.wav"));
-						if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
-							mp3Sound.play(ScreenAdapterManager.getInstance().game.volume);
-						}
+						// Play a bounce noise
+						AudioManager.getInstance().play("sounds/bounce.wav");
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 					if(myObject.getVelocity()[0] > MAX_VELOCITY)
@@ -469,10 +465,7 @@ public enum Attribute {
 							r1.setPosition(myObject.getX(),myObject.getY());
 						}
 						
-						Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("sounds/bounce.wav"));
-						if(ScreenAdapterManager.getInstance().game.soundEnabled && !ScreenAdapterManager.getInstance().game.muteAll){
-							mp3Sound.play(ScreenAdapterManager.getInstance().game.volume);
-						}
+						AudioManager.getInstance().play("sounds/bounce.wav");
 						
 						//MAX VELOCITY WORKAROUND SO OBJECTS DONT GO WARP SPEED
 					if(myObject.getVelocity()[0] > MAX_VELOCITY)

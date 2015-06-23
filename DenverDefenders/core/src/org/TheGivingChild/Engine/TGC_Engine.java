@@ -15,6 +15,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,7 +25,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -43,36 +43,14 @@ public class TGC_Engine extends Game {
 	private final static int DESKTOP_WIDTH = 1024;
 	/**{@link #DESKTOP_HEIGHT} is our Height in pixels for desktop testing.*/
 	private final static int DESKTOP_HEIGHT = 576;
-	/**{@link #BUTTON_STATES} is the number of changed states that each button contains in Buttons.pack.*/
-	private final static int BUTTON_STATES = 2;
 	/**The stage to place actors to.*/
 	private TGC_Stage stage;
-	/**{@link #buttonAtlasNamesArray} holds reference to the names of elements within Buttons.pack for different buttons and their corresponding states. */
-	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", "Button_MainScreen_Play", "ButtonPressed_MainScreen_HowToPlay", "Button_MainScreen_HowToPlay", "ButtonPressed_MainScreen_Editor", "Button_MainScreen_Editor", "ButtonPressed_MainScreen_Options", "Button_MainScreen_Options"};
-	/**{@link #skin} is the {@link com.badlogic.gdx.scenes.scene2d.ui.Skin Skin} created from the Buttons.pack {@link com.badlogic.gdx.scenes.scene2d.ui.Skin TextureAtlas}.*/
-	private Skin skin = new Skin();
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
 	private BitmapFont bitmapFontButton; 
     /**{@link #levelPackets} is the container for levels to be played during a maze.*/
 	private Array<LevelPacket> levelPackets;
 	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
-	/**{@link #width} is set equal to Gdx.graphics.getWidth().*/
-	private float width;
-	/**{@link #height} is set equal to Gdx.graphics.getHeight().*/
-	private float height;
-	/**{@link #volume} keeps track of the current volume for sounds and music.*/
-	public float volume;
-	/**{@link #soundEnabled} is used for checking whether to play sounds.*/
-	public boolean soundEnabled;
-	/**{@link #musicEnabled} is used for checking whether to play music.*/
-	public boolean musicEnabled;
-	/**{@link #muteAll} will keep sounds and music from playing when set to true.*/
-	public boolean muteAll;
-	/**{@link #SCREEN_TRANSITION_TIMER} is the initial screen splash length.*/
-	private final static float SCREEN_TRANSITION_TIMER = 1.0f;
-	/**{@link #screenTransitionTimeLeft} only keeps track of the current state of the initial {@link #SCREEN_TRANSITION_TIMER}.*/
-	private float screenTransitionTimeLeft;
 	/**
 	 * This is the asset manager that will store all of the textures, packs, and sounds.
 	 * It is accessed throughout all of the game and can be loaded and accessed at any point.
@@ -113,10 +91,6 @@ public class TGC_Engine extends Game {
 	private Viewport viewport;
 	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
-	/**{@link #backgroundSounds} is an {@link com.badlogic.gdx.utils.Array Array} of {@link com.badlogic.gdx.audio.Music Music} to play in the background.*/
-	private Array<Music> backgroundSounds;
-	/**{@link #backgroundSoundToPlay} is the current {@link com.badlogic.gdx.audio.Music Music} object to be played.*/
-	private Music backgroundSoundToPlay;
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
 	/*
 	 * 	MOVE LEVEL PACKET LOADING TO BE A RESPONSIBILITY OF WHOEVER LOADS THE MAZE
@@ -187,8 +161,6 @@ public class TGC_Engine extends Game {
 		
 		manager = new AssetManager();
 		
-		//Timer for loading screen delay before transition to main screen
-		screenTransitionTimeLeft = SCREEN_TRANSITION_TIMER;
 		//Main UI background assets, loaded since screen manager uses on initialize
 		manager.load("ColdMountain.png", Texture.class);
 		manager.load("SemiTransparentBG.png", Texture.class);
@@ -218,6 +190,9 @@ public class TGC_Engine extends Game {
 		manager.load("sounds/backgroundMusic/08_Ascending.wav", Music.class);
 		manager.load("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class);
 		manager.load("sounds/backgroundMusic/10_Arpanauts.wav", Music.class);
+		manager.load("sounds/click.wav", Sound.class);
+		manager.load("sounds/bounce.wav", Sound.class);
+		
 		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
 
 		manager.load("ObjectImages/Banana1.png", Texture.class);
@@ -261,17 +236,9 @@ public class TGC_Engine extends Game {
 		// Set initial screen to splash
 		setScreen(ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.SPLASH));
 		
-		backgroundSounds = new Array<Music>();
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/04_All_of_Us.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/06_Searching.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/08_Ascending.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(manager.get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
+		// Initialize audio management
+		AudioManager.getInstance().initialize(this);
+		AudioManager.getInstance().playBackgroundMusic();
 
 		// READER/WRITER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
@@ -284,10 +251,6 @@ public class TGC_Engine extends Game {
 
 		//Game input processor
 		Gdx.input.setInputProcessor(stage);
-		
-		//set the height and width to the Gdx graphics dimensions
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
 
 		camera = new OrthographicCamera();
 		viewport = new StretchViewport(16, 9, camera);
@@ -298,19 +261,6 @@ public class TGC_Engine extends Game {
 		
 		//LOAD NOT NECESSARY YET
 		loadLevelPackets();
-		
-		soundEnabled = true;
-		musicEnabled = true;
-		muteAll = false;
-		volume = .75f;
-		backgroundSoundToPlay = backgroundSounds.random();
-		if(musicEnabled && !muteAll){
-			backgroundSoundToPlay.setVolume(volume);
-		}
-		else{
-			backgroundSoundToPlay.setVolume(0f);
-		}
-		backgroundSoundToPlay.play();
 	}
 
 	/**{@link #dispose()} handles the resource disposal when {@link TGC_Engine} exits.*/
@@ -320,38 +270,17 @@ public class TGC_Engine extends Game {
 		//dispose the screen manager, and in doing so all screens
 		ScreenAdapterManager.getInstance().dispose();
 		batch.dispose();
-		for (Music m : backgroundSounds) {
-			m.dispose();
-		}
+		bitmapFontButton.dispose();
+		AudioManager.getInstance().dispose();
 	};
 	/**{@link #getBitmapFontButton()} returns {@link #bitmapFontButton}.*/
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
-	/**{@link #getButtonAtlasNamesArray()} returns {@link #buttonAtlasNamesArray}. */
-	public String[] getButtonAtlasNamesArray() {
-		return buttonAtlasNamesArray;
-	}
-	/**{@link #getButtonAtlasSkin()} returns {@link #skin}. */
-	public Skin getButtonAtlasSkin(){
-		return skin;
-	}
-	/**{@link #getButtonStates()} returns {@link #BUTTON_STATES}. */
-	public int getButtonStates(){
-		return BUTTON_STATES;
-	}
-	/**{@link #getHeight()} returns {@link #height}. */
-	public float getHeight(){
-		return height;
-	}
 	/**{@link #getStage()} returns {@link #stage}. */
 	public Stage getStage() {
 		return stage;
 	}	
-	/**{@link #getWidth()} returns {@link #width}. */
-	public float getWidth(){
-		return width;
-	}
 	/**{@link #getAssetManager()} returns {@link #manager}. */
 	public AssetManager getAssetManager() {
 		return manager;
@@ -380,30 +309,7 @@ public class TGC_Engine extends Game {
 		camera.update();
 		
 		if(manager.update()) {
-			//timer to determine whether to continue displaying loading screen
-			//or to switch to displaying the main screen
-			if(screenTransitionTimeLeft <= 0){
-				if(musicEnabled && !muteAll){
-					backgroundSoundToPlay.setVolume(volume);
-				}
-				else{
-					backgroundSoundToPlay.setVolume(0f);
-				}
-				if(!backgroundSoundToPlay.isPlaying() && !muteAll){
-					backgroundSoundToPlay = backgroundSounds.random();
-					backgroundSoundToPlay.play();
-				}
-				if(manager.isLoaded("Packs/Buttons.pack")) {
-					skin.addRegions((TextureAtlas)(manager.get("Packs/Buttons.pack")));
-				}
-				if(manager.isLoaded("Packs/ButtonsEditor.pack")) {
-					skin.addRegions((TextureAtlas) manager.get("Packs/ButtonsEditor.pack"));
-				}
-			}
-		}
-		//decrements transition time
-		if(screenTransitionTimeLeft >= 0){
-			screenTransitionTimeLeft -= Gdx.graphics.getDeltaTime();
+			//done loading
 		}
 		
 		stage.act();

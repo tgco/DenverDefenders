@@ -63,7 +63,7 @@ class ScreenLevelPackets extends ScreenAdapter {
 		//Table to store the packets in a row
 		Table packetsRow = new Table();
 		//padding width between the packets
-		float padWidth = game.getWidth()/24;
+		float padWidth = Gdx.graphics.getWidth()/24;
 		
 		//add regions from the asset manager to skin
 		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
@@ -97,7 +97,7 @@ class ScreenLevelPackets extends ScreenAdapter {
 			//increment the packets index
 			i++;
 			//add the button to the row, with padding
-			packetsRow.add(textButton).width(game.getWidth()/3 - padWidth).height(game.getHeight()/2).padLeft(padWidth).padRight(padWidth);
+			packetsRow.add(textButton).width(Gdx.graphics.getWidth()/3 - padWidth).height(Gdx.graphics.getHeight()/2).padLeft(padWidth).padRight(padWidth);
 		}
 		//ScrollPane to scroll through packets
 		ScrollPaneStyle sps = new ScrollPaneStyle();
