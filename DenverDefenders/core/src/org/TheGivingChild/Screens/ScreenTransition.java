@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.sun.tools.javac.util.Pair;
 
 // This class takes a reference to two screens and transfers between them.  It displays a fact, and also loads any required assets for the incoming screen.
 public class ScreenTransition extends ScreenAdapter {
@@ -129,21 +128,7 @@ public class ScreenTransition extends ScreenAdapter {
 		Label textLabel = new Label(text, ls);
 		textLabel.setColor(1, 1, 1, 1);
 		// Font scale set
-		switch(Gdx.app.getType()) {
-		case Android:
-			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
-			break;
-			//if using the desktop set the width and height to a 16:9 resolution.
-		case Desktop:
-			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
-			break;
-		case iOS:
-			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-			break;
-		default:
-			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-			break;
-		}
+		textLabel.setFontScale(ScreenAdapterManager.getInstance().game.getGlobalFontScale());
 		textLabel.setWrap(true);
 		textLabel.setAlignment(Align.center, Align.center);
 		factContainer.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

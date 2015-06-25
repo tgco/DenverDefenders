@@ -35,23 +35,14 @@ public class AudioManager {
 		soundEnabled = true;
 		musicEnabled = true;
 		muteAll = false;
-		volume = .75f;
+		volume = 1.0f;
 	}
 	
 	// Sets up sound references
 	public void initialize(TGC_Engine game) {
 		this.game = game;
-		
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class));
+	
 		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/04_All_of_Us.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/06_Searching.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/08_Ascending.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
 		
 		addAvailableSound("sounds/click.wav");
 	}
@@ -68,6 +59,7 @@ public class AudioManager {
 	public void playBackgroundMusic() {
 		backgroundSoundToPlay = backgroundSounds.random();
 		backgroundSoundToPlay.setVolume(volume);
+		backgroundSoundToPlay.setLooping(true);
 		backgroundSoundToPlay.play();
 	}
 	

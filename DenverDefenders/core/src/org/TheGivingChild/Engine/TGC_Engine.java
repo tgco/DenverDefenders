@@ -41,14 +41,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  *
  */
 public class TGC_Engine extends Game {
-	/**{@link #DESKTOP_WIDTH} is our width in pixels for desktop testing.*/
-	private final static int DESKTOP_WIDTH = 1024;
-	/**{@link #DESKTOP_HEIGHT} is our Height in pixels for desktop testing.*/
-	private final static int DESKTOP_HEIGHT = 576;
 	// Global game time clock.  Used primarily for animations
 	private float globalClock;
 	// Random generator
 	private Random rand;
+	// Scale that fonts should be drawn at
+	private float globalFontScale;
 	/**The stage to place actors to.*/
 	private TGC_Stage stage;
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
@@ -151,23 +149,13 @@ public class TGC_Engine extends Game {
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
 	@Override
 	public void create () {
-		switch(Gdx.app.getType()){
-		case Android:
-			Gdx.input.setCatchBackKey(true);
-			break;
-			//if using the desktop set the width and height to a 16:9 resolution.
-		case Desktop:
-			Gdx.graphics.setDisplayMode(DESKTOP_WIDTH, DESKTOP_HEIGHT, false);
-			break;
-		case iOS:
-			break;
-		default:
-			break;
-		}
+		Gdx.input.setCatchBackKey(true);
 		
 		// Init global clock
 		globalClock = 0;
 		rand = new Random();
+		// Calculate font scale
+		globalFontScale = Gdx.graphics.getWidth()/Gdx.graphics.getPpiX() * 0.25f;
 		
 		// Init asset manager and load assets for the splash screen (the first screen), and the screen manager
 		manager = new AssetManager();
@@ -185,16 +173,7 @@ public class TGC_Engine extends Game {
 		// Needed for screen transition
 		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
 		// Game audio
-		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class);
-		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class);
 		manager.load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
-		manager.load("sounds/backgroundMusic/04_All_of_Us.wav", Music.class);
-		manager.load("sounds/backgroundMusic/05_Come_and_Find_Me.wav", Music.class);
-		manager.load("sounds/backgroundMusic/06_Searching.wav", Music.class);
-		manager.load("sounds/backgroundMusic/07_We_39_re_the_Resistors.wav", Music.class);
-		manager.load("sounds/backgroundMusic/08_Ascending.wav", Music.class);
-		manager.load("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class);
-		manager.load("sounds/backgroundMusic/10_Arpanauts.wav", Music.class);
 		
 		// Initialize screen management
 		ScreenAdapterManager.getInstance().initialize(this);
@@ -264,6 +243,11 @@ public class TGC_Engine extends Game {
 	// Returns the global game clock time in seconds
 	public float getGlobalClock() {
 		return globalClock;
+	}
+	
+	// Returns the scale that fonts should be drawn at
+	public float getGlobalFontScale() {
+		return globalFontScale;
 	}
 	
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/

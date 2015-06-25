@@ -27,7 +27,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.sun.tools.javac.util.Pair;
 /**
  *Maze screen that the user will navigate around.
  *Player will be able to trigger a miniGame by finding a child in the maze.

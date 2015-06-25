@@ -11,12 +11,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 /**
  * This class creates the main screen that is first seen when the game is started. It allows
@@ -61,11 +61,10 @@ class ScreenMain extends ScreenAdapter {
 		int widthDivider = (buttonAtlasNamesArray.length/2);
 		//iterate over button pack names in order to check
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += 2 ){
-			TextButtonStyle bs = new TextButtonStyle();
-			bs.font = bitmapFontButton;
+			ButtonStyle bs = new ButtonStyle();
 			bs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
 			bs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
-			TextButton b = new TextButton("", bs);
+			Button b = new Button(bs);
 			b.setSize(Gdx.graphics.getWidth()/widthDivider, Gdx.graphics.getHeight()/3);
 			table.add(b).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
 			buttonHeight = b.getHeight();
@@ -92,21 +91,7 @@ class ScreenMain extends ScreenAdapter {
 		ls.font = game.getBitmapFontButton();
 		ls.background = skin.getDrawable("labelBack");
 		Label gameName = new Label("Denver Defenders", ls);
-		switch(Gdx.app.getType()){
-		case Android:
-			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-			break;
-			//if using the desktop set the width and height to a 16:9 resolution.
-		case Desktop:
-			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*3));
-			break;
-		case iOS:
-			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-			break;
-		default:
-			gameName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-			break;
-		}
+		gameName.setFontScale(game.getGlobalFontScale()*3f);
 		gameName.setColor(Color.WHITE);
 		table.add(gameName).top();
 		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

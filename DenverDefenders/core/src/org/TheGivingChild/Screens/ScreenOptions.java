@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,8 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -41,7 +41,7 @@ class ScreenOptions extends ScreenAdapter {
 	private Table sliderTable;
 	private Table overallTable;
 	private BitmapFont font;
-	private TextButtonStyle style;
+	private ButtonStyle style;
 	private CheckBoxStyle cbStyle;
 	private CheckBoxStyle muteStyle;
 	private CheckBox mute;
@@ -63,10 +63,6 @@ class ScreenOptions extends ScreenAdapter {
 		batch = new SpriteBatch();
 		optionsTable = createOptionsTable();
 		overallTable = createOverallTable();
-		//set the inital state of sound to be on
-		for(CheckBox c : options){
-			c.setChecked(true);
-		}
 	}
 	
 	/**
@@ -174,23 +170,10 @@ class ScreenOptions extends ScreenAdapter {
 			ls.font = font;
 			ls.background = bSkin.getDrawable("background");
 			Label label = new Label(optionsArray[i], ls);
-			switch(Gdx.app.getType()){
-			case Android:
-				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			case iOS:
-				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				label.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
+			label.setFontScale(game.getGlobalFontScale());
 			checkbox.setSize(0.2f*Gdx.graphics.getWidth(), 0.2f*Gdx.graphics.getHeight());
 			checkbox.setScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
+			checkbox.setChecked(true);
 			checkbox.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
@@ -206,15 +189,13 @@ class ScreenOptions extends ScreenAdapter {
 	/**
 	 * Creates the back button to return to the main screen and it's listener.
 	 */
-	private TextButton createButton() {
-		font = new BitmapFont();
+	private Button createButton() {
 		skin = new Skin();
 		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
-		style = new TextButtonStyle();
-		style.font = font; 
+		style = new ButtonStyle();
 		style.up = skin.getDrawable("Button_MainScreen");
 		style.down = skin.getDrawable("ButtonPressed_MainScreen");
-		TextButton backButton = new TextButton("", style);
+		Button backButton = new Button(style);
 
 		/**
 		 * Creates the listener for the back button.
@@ -228,7 +209,7 @@ class ScreenOptions extends ScreenAdapter {
 				game.setScreen(optionsToMain);
 			}
 		});
-		backButton.setSize(150,300);
+		backButton.setSize(Gdx.graphics.getWidth()/10f,Gdx.graphics.getHeight()/10f);
 		return backButton;
 	}
 	
@@ -284,23 +265,10 @@ class ScreenOptions extends ScreenAdapter {
 				 AudioManager.getInstance().setVolume(value/100f);
 			 }
 		 });
-		 sliderName = new Label("Volume  ", ls);switch(Gdx.app.getType()){
-			case Android:
-				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-				//if using the desktop set the width and height to a 16:9 resolution.
-			case Desktop:
-				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			case iOS:
-				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()));
-				break;
-			default:
-				sliderName.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*5));
-				break;
-			}
+		 sliderName = new Label("Volume  ", ls);
+		 sliderName.setFontScale(game.getGlobalFontScale());
 		 table.add(sliderName).height(Gdx.graphics.getHeight()/3);
-		 table.add(slider).width(600).height(Gdx.graphics.getHeight()/3);
+		 table.add(slider).width(2/3f * Gdx.graphics.getWidth()).height(Gdx.graphics.getHeight()/3);
 		 table.add(mute).height(Gdx.graphics.getHeight()/3);
 		 return table;
 	 }
