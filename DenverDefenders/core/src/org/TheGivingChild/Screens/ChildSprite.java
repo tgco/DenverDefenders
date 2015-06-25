@@ -158,7 +158,6 @@ public class ChildSprite extends Sprite {
 					setY(getY() + moveSpeed*deltaTime);
 				}
 			}
-			//System.out.println("Current position: (" + getX() + ", " +getY() + "), Needed position: (" + nextPosition[0] + ", " +nextPosition[1] + ").");
 		}
 	}
 	/**

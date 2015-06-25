@@ -12,6 +12,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,10 +43,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private TiledMapRenderer mapRenderer;
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
-	private Texture spriteTextureD,spriteTextureU,spriteTextureR,spriteTextureL;
-	private Array<Texture> arrayWalkD, arrayWalkR, arrayWalkU, arrayWalkL;
-	private Array<Texture> currentWalkSequence;
-	
+	private Animation walkD, walkR, walkU, walkL;
+	private Animation currentWalkSequence;
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove;
@@ -62,16 +61,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private Array<ChildSprite> mazeChildren;
 	private Array<ChildSprite> followers;
 	private MinigameRectangle miniRec;
-
 	
 	private Texture backdropTexture;
-	private TextureRegion backdropTextureRegion;
 	
 	private MinigameRectangle lastRec;
 	private Rectangle heroHQ;
 	
 	private Texture heartTexture;
-	private TextureRegion healthTextureRegion;
 	private int playerHealth = 3;
 	
 	//True if game progression logic is paused
@@ -89,11 +85,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	 */
 
 	public ScreenMaze(){
-		logicPaused = false;
+		logicPaused = true;
 		levelWon = false;
 		mazeWon = false;
-		map = new TmxMapLoader().load("mapAssets/UrbanMaze1.tmx");
-		camera = new OrthographicCamera();
+		game = ScreenAdapterManager.getInstance().game;
+		map = game.getAssetManager().get("mapAssets/UrbanMaze1.tmx", TiledMap.class);
+		
 		//Setup map properties
 		properties = map.getProperties();
 
@@ -103,120 +100,13 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		int pixWidth = properties.get("tilewidth", Integer.class);
 		int pixHeight = properties.get("tileheight", Integer.class);
 
-		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
-		camera.update();
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
-				
-		arrayWalkD = new Array<Texture>();
-		arrayWalkR = new Array<Texture>();
-		arrayWalkL = new Array<Texture>();
-		arrayWalkU = new Array<Texture>();
-		
-		currentWalkSequence = new Array<Texture>();
 
 		spriteBatch = new SpriteBatch();
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_1.png"));
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_1.png"));
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_1.png"));
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_1.png"));
-
-		//REFACTOR ASSET LOADING HERE
-		//get an array for walking down
-
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_2.png"));
-		
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_3.png"));
-	
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_4.png"));
-	
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_5.png"));
-	
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_6.png"));
-		
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_7.png"));
-		
-		arrayWalkD.add(spriteTextureD);
-		spriteTextureD = new Texture(Gdx.files.internal("ObjectImages/temp_hero_D_8.png"));
-	
-		arrayWalkD.add(spriteTextureD);
-
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_2.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_3.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_4.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_5.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_6.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_7.png"));
-
-		arrayWalkU.add(spriteTextureU);
-		spriteTextureU = new Texture(Gdx.files.internal("ObjectImages/temp_hero_U_8.png"));
-		
-		arrayWalkU.add(spriteTextureU);
-		
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_2.png"));
-	
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_3.png"));
-		
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_4.png"));
-		
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_5.png"));
-	
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_6.png"));
-	
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_7.png"));
-	
-		arrayWalkR.add(spriteTextureR);
-		spriteTextureR = new Texture(Gdx.files.internal("ObjectImages/temp_hero_R_8.png"));
-		
-		arrayWalkR.add(spriteTextureR);
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_2.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_3.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_4.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_5.png"));
-
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_6.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_7.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		spriteTextureL = new Texture(Gdx.files.internal("ObjectImages/temp_hero_L_8.png"));
-		
-		arrayWalkL.add(spriteTextureL);
-		
-		
-		playerCharacter = new ChildSprite(spriteTextureD);
+		// Setup animations (textures were loaded during screen transition)
+		buildAnimations(game.getAssetManager(), 0.1f);
+		currentWalkSequence = walkD;
+		playerCharacter = new ChildSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
 		playerCharacter.setSpeed(4*pixHeight);
 		playerCharacter.setScale(.75f,.75f);
 
@@ -226,6 +116,12 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		playerCharacter.setPosition(heroHQ.x, heroHQ.y);
 		//mark it as the hero for following purposes
 		playerCharacter.setHero();
+		
+		// move camera to player
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
+		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
+		camera.update();
 
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
@@ -252,14 +148,10 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 
 		populate();
-
-		game = ScreenAdapterManager.getInstance().game;
 		
 		backdropTexture = game.getAssetManager().get("mapAssets/UrbanMaze1Backdrop.png");
-		backdropTextureRegion = new TextureRegion(backdropTexture);
 		
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
-		healthTextureRegion = new TextureRegion(heartTexture);
 	}
 
 
@@ -278,10 +170,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			MinigameRectangle toFill = minigameRects.random();
 			//if the rectangle is not occupied, then fill it
 			if(!toFill.isOccupied()){
-				//Get the texture for the child to occupy this spot
-				Texture childTexture = new Texture(Gdx.files.internal("mapAssets/somefreesprites/Character Pink Girl.png"));
 				//create a new child with the texture
-				ChildSprite child = new ChildSprite(childTexture);
+				ChildSprite child = new ChildSprite(game.getAssetManager().get("mapAssets/somefreesprites/Character Pink Girl.png",Texture.class));
 				//Scale down the child
 				child.setScale(.5f);
 				//reset the bounds, as suggested after scaling
@@ -317,7 +207,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		
 		//background
 		spriteBatch.begin();
-		spriteBatch.draw(backdropTextureRegion, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		spriteBatch.draw(backdropTexture, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
@@ -340,7 +230,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			float xPos = camera.position.x - camera.viewportWidth/2;
 			float heartSize = camera.viewportHeight/10;
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
-			spriteBatch.draw(healthTextureRegion, xPos + (heartSize*i), yPos, heartSize, heartSize);
+			spriteBatch.draw(heartTexture, xPos + (heartSize*i), yPos, heartSize, heartSize);
 		}
 		spriteBatch.end();
 		
@@ -390,12 +280,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			}
 
 			// Animation update
-			if (currentWalkSequence.size > 0) {
-				Texture next = currentWalkSequence.get(0);
-				currentWalkSequence.removeIndex(0);
-				currentWalkSequence.add(next);
-				playerCharacter.setTexture(next);
-			}
+			TextureRegion next = currentWalkSequence.getKeyFrame(game.getGlobalClock(), true);
+			playerCharacter.setTexture(next.getTexture());
 		}
 		
 		/*
@@ -437,8 +323,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			if (m.isOccupied() && player.overlaps(m)) {
 				// Keep track of the rectangle for returning to the maze screen
 				lastRec = m;
-				// put character into the minigame rect
-				// playerCharacter.setPosition(m.getX(), m.getY());
 				// select a random level
 				game.selectLevel();
 				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
@@ -537,13 +421,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			//if the change was positive, move right, else move left
 			if(delta.x > 0)  {
 				xMove =  playerCharacter.getSpeed();
-				playerCharacter.setTexture(spriteTextureR);
-				currentWalkSequence = arrayWalkR;
+				currentWalkSequence = walkR;
 			}
 			if(delta.x <= 0) {
 				xMove = -playerCharacter.getSpeed();
-				playerCharacter.setTexture(spriteTextureL);
-				currentWalkSequence = arrayWalkL;
+				currentWalkSequence = walkL;
 			}
 			//no vertical movement
 			yMove = 0;
@@ -553,11 +435,11 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			//move down if the change was positive, else move up
 			if(delta.y > 0)	{
 				yMove = -playerCharacter.getSpeed();
-				currentWalkSequence = arrayWalkD;
+				currentWalkSequence = walkD;
 			}
 			if(delta.y <= 0) {
 				yMove = playerCharacter.getSpeed();
-				currentWalkSequence = arrayWalkU;
+				currentWalkSequence = walkU;
 			}
 			//no horizontal movement
 			xMove = 0;
@@ -575,7 +457,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	public void show(){
 		logicPaused = false;
 		Gdx.input.setInputProcessor(this);
-
+		
 		xMove = 0;
 		yMove = 0;
 
@@ -701,8 +583,77 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	public void setLevelWon (boolean levelWon) {
 		this.levelWon = levelWon;
 	}
+	
+	// Builds animation sequences from the asset manager
+	public void buildAnimations(AssetManager manager, float animationSpeed) {
+		// Build walk down animation
+		Array<TextureRegion> downWalk = new Array<TextureRegion>();
+		String format;
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
+			downWalk.add(new TextureRegion(manager.get(format,Texture.class)));
+		}
+		walkD = new Animation(animationSpeed, downWalk);
+		
+		// Build walk up animation
+		Array<TextureRegion> upWalk = new Array<TextureRegion>();
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
+			upWalk.add(new TextureRegion(manager.get(format,Texture.class)));
+		}
+		walkU = new Animation(animationSpeed, upWalk);
+		
+		// Buld walk right animation
+		Array<TextureRegion> rightWalk = new Array<TextureRegion>();
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
+			rightWalk.add(new TextureRegion(manager.get(format, Texture.class)));
+		}
+		walkR = new Animation(animationSpeed, rightWalk);
+		
+		// Build walk left animation
+		Array<TextureRegion> leftWalk = new Array<TextureRegion>();
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
+			leftWalk.add(new TextureRegion(manager.get(format, Texture.class)));
+		}
+		walkL = new Animation(animationSpeed, leftWalk);
+		
+	}
 
 	public static void requestAssets(AssetManager manager) {
+		String format;
+		// Down anim
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
+			manager.load(format,Texture.class);
+		}
+	
+		// Up anim
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
+			manager.load(format,Texture.class);
+		}
+		
+		// Right anim
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
+			manager.load(format, Texture.class);
+		}
+		
+		// Left anim
+		for (int i = 1; i <= 8; i++) {
+			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
+			manager.load(format, Texture.class);
+		}
+		
+		// Child sprite
+		manager.load("mapAssets/somefreesprites/Character Pink Girl.png", Texture.class);
+		
+		// Tiled map
+		manager.load("mapAssets/UrbanMaze1.tmx", TiledMap.class);
+		
+		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
 		// Minigame assets, load on maze select and levels constructed (into maze screen)
@@ -735,7 +686,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		manager.load("ObjectImages/bowl.png", Texture.class);
 		manager.load("ObjectImages/basket_new.png", Texture.class);
 		
-		// Audio assets
+		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 	}
 

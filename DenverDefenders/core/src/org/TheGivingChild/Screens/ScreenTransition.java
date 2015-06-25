@@ -212,6 +212,7 @@ public class ScreenTransition extends ScreenAdapter {
 		game.getStage().addActor(factTable);
 	}
 	
+	// Opens transition textures.  True if done.
 	public boolean open(float delta) {
 		transitionTextureX -= Gdx.graphics.getWidth()/2 * delta/transitionTime;
 		if (transitionTextureX < 0) return true;

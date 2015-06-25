@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -43,6 +45,10 @@ public class TGC_Engine extends Game {
 	private final static int DESKTOP_WIDTH = 1024;
 	/**{@link #DESKTOP_HEIGHT} is our Height in pixels for desktop testing.*/
 	private final static int DESKTOP_HEIGHT = 576;
+	// Global game time clock.  Used primarily for animations
+	private float globalClock;
+	// Random generator
+	private Random rand;
 	/**The stage to place actors to.*/
 	private TGC_Stage stage;
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
@@ -105,8 +111,10 @@ public class TGC_Engine extends Game {
 			dirHandle = Gdx.files.internal("./bin/Levels");
 		}
 		for (FileHandle entry: dirHandle.list()) {
+			if (!entry.isDirectory()) continue; // Stupid Mac .DS_Store issue
 			LevelPacket packet = new LevelPacket(entry.name());
 			for (FileHandle levelFile: entry.list()) {
+				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
 				reader.setupNewFile(levelFile);
 				Level level = reader.compileLevel();
 				packet.addLevel(level);
@@ -135,8 +143,7 @@ public class TGC_Engine extends Game {
 				}
 			}
 		}
-		Random rand = new Random();
-		int newLevelIndex = (rand.nextInt(possibleLevels.size));
+		int newLevelIndex = rand.nextInt(possibleLevels.size);
 		currentLevel = possibleLevels.get(newLevelIndex);
 		currentLevel.resetLevel();
 	}
@@ -158,8 +165,14 @@ public class TGC_Engine extends Game {
 			break;
 		}
 		
+		// Init global clock
+		globalClock = 0;
+		rand = new Random();
+		
 		// Init asset manager and load assets for the splash screen (the first screen), and the screen manager
 		manager = new AssetManager();
+		// Set custom loader for tiled maps
+		manager.setLoader(TiledMap.class, new TmxMapLoader());
 		manager.load("MainScreen_Splash.png", Texture.class); // splash background
 		manager.load("ColdMountain.png", Texture.class); // main ui background is drawn from the screen manager (refactor this)
 		
@@ -248,6 +261,11 @@ public class TGC_Engine extends Game {
 		return currentLevel;
 	}
 	
+	// Returns the global game clock time in seconds
+	public float getGlobalClock() {
+		return globalClock;
+	}
+	
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
 	public void render() {
@@ -257,6 +275,7 @@ public class TGC_Engine extends Game {
 		super.render();
 		
 		camera.update();
+		globalClock += Gdx.graphics.getDeltaTime();
 		
 		stage.act();
 		stage.draw();
