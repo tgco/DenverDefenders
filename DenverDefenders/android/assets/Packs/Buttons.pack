@@ -129,15 +129,3 @@ BlankSpace
   orig: 181, 138
   offset: 0, 0
   index: -1
-
-Buttons2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-SliderBackground
-  rotate: false
-  xy: 1, 1
-  size: 1600, 45
-  orig: 1600, 45
-  offset: 0, 0
-  index: -1

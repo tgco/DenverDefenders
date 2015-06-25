@@ -19,6 +19,7 @@ public class Level {
 	private boolean won;
 	private String description;
 	
+	// Move into asset manager
 	private BitmapFont clockFont;
 	private int levelTime = 0;
 	

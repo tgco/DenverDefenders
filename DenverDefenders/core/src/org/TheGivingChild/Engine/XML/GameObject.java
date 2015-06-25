@@ -47,30 +47,18 @@ public class GameObject extends Actor implements Disposable{
 		//set the id from the xml
 		ID = newID;
 		//set the imagefilename from the xml
-		imageFilename = "ObjectImages/"+img;
+		imageFilename = "LevelImages/"+img;
 		position = newPosition;
 		
 		//initialize a velocity of 0
 		velocity = new float[] {0,0};
 		//get the reference to the game
 		game = ScreenAdapterManager.getInstance().game;
-		//get the manager in game
+		//load the required texture for this object
 		manager = game.getAssetManager();
-		//check if the Texture has been loaded for this object
-		if(!manager.isLoaded(imageFilename)) {
-			//the texture has not been loaded, so load it
-			manager.load(imageFilename, Texture.class);
-			//update the manager
-			manager.update();
-		}
-		//set the Texture from the manager
-		if(manager.isLoaded(imageFilename)){
-			texture = manager.get(imageFilename);
-		}
-		else{
-			manager.finishLoadingAsset(imageFilename);
-			texture = manager.get(imageFilename);
-		}
+		manager.load(imageFilename, Texture.class);
+		manager.finishLoadingAsset(imageFilename);
+		texture = manager.get(imageFilename, Texture.class);
 		//scale the object to the width of the new screen
 		objectScaleX = Gdx.graphics.getWidth()/1024f;
 		//scale the object to the height of the new screen

@@ -131,7 +131,7 @@ public class ScreenTransition extends ScreenAdapter {
 		// Font scale set
 		switch(Gdx.app.getType()) {
 		case Android:
-			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*1.5f));
+			textLabel.setFontScale(Gdx.graphics.getWidth()/(Gdx.graphics.getPpiX()*6.5f));
 			break;
 			//if using the desktop set the width and height to a 16:9 resolution.
 		case Desktop:

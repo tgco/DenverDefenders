@@ -660,31 +660,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		manager.load("Backgrounds/black.png", Texture.class);
 		manager.load("Backgrounds/Table.png", Texture.class);
 		manager.load("Backgrounds/Window.png", Texture.class);
-		manager.load("ObjectImages/Dirt1.png", Texture.class);
-		manager.load("ObjectImages/Dirt2.png", Texture.class);
-		manager.load("ObjectImages/Dirt3.png", Texture.class);
-		manager.load("ObjectImages/Sponge_REPLACEME.png", Texture.class);
-		manager.load("ObjectImages/Grape.png", Texture.class);
-		manager.load("ObjectImages/Candy1.png", Texture.class);
-		manager.load("ObjectImages/Candy2.png", Texture.class);
-		manager.load("ObjectImages/Kiwi.png", Texture.class);
-		manager.load("ObjectImages/Lollipop1.png", Texture.class);
-		manager.load("ObjectImages/Lollipop2.png", Texture.class);
-		manager.load("ObjectImages/Lollipop3.png", Texture.class);
-		manager.load("ObjectImages/Sundae1.png", Texture.class);
-		manager.load("ObjectImages/Sundae2.png", Texture.class);
-		manager.load("ObjectImages/Banana1.png", Texture.class);
-		manager.load("ObjectImages/Cherries1.png", Texture.class);
-		manager.load("ObjectImages/Cherries2.png", Texture.class);
-		manager.load("ObjectImages/Apple1.png", Texture.class);
-		manager.load("ObjectImages/Grapes_dark.png", Texture.class);
-		manager.load("ObjectImages/Grapes_light.png", Texture.class);
-		manager.load("ObjectImages/Watermellon1.png", Texture.class);
-		manager.load("ObjectImages/Icecream1.png", Texture.class);
-		manager.load("ObjectImages/Cherry.png", Texture.class);
-		manager.load("ObjectImages/basket.png", Texture.class);
-		manager.load("ObjectImages/bowl.png", Texture.class);
-		manager.load("ObjectImages/basket_new.png", Texture.class);
 		
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
