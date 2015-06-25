@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
-//GameObject is essentially a storage container for all the information associated with each object on the screen
 /**
  * Used to store all information on each object within the game<br>
  * extends Actor

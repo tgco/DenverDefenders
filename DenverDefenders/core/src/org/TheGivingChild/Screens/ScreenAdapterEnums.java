@@ -1,6 +1,7 @@
 package org.TheGivingChild.Screens;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 /**
  * Enumerations to return ScreenAdapters for the ScreenAdapterManager
  * 
@@ -19,6 +20,10 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevelPackets();
 		}
+		@Override
+		protected void requestAssets(AssetManager manager) {
+
+		}
 	},*/
 	/**
 	 * The maze 'level' screen, returns a new ScreenMaze
@@ -26,7 +31,12 @@ public enum ScreenAdapterEnums {
 	MAZE{
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-			return  new ScreenMaze();
+			return new ScreenMaze();
+		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenMaze.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
 		}
 	},
 	/**
@@ -37,6 +47,11 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenHowToPlay();
 		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenHowToPlay.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
 	}, 
 	/**
 	 * The editor screen, returns a new ScreenEditor
@@ -45,6 +60,11 @@ public enum ScreenAdapterEnums {
 		@Override
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenEditor();
+		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenEditor.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
 		}
 	},
 	/**
@@ -55,6 +75,11 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenOptions();
 		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenOptions.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
 	},
 	/**
 	 * The character creator screen, returns a new ScreenCharacterCreator
@@ -64,6 +89,12 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
             return new ScreenCharacterCreator();
         }
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			//currently unreachable screen
+			//ScreenCharacterCreator.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
 	},
 	/**
 	 * The main screen, returns a new ScreenMain
@@ -74,6 +105,11 @@ public enum ScreenAdapterEnums {
 
 			return new ScreenMain();
 		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenMain.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
 	},
 	/**
 	 * The minigame level screen, returns a new ScreenLevel
@@ -83,11 +119,21 @@ public enum ScreenAdapterEnums {
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenLevel();
 		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			// Level assets should be loaded by encompassing maze
+		}
 	},
 	SPLASH {
 		@Override
 		protected ScreenAdapter getScreenInstance() {
 			return new ScreenSplash();
+		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			// Splash screen assets are loaded before shown since it is the first screen
 		}
 	};
 	
@@ -95,4 +141,8 @@ public enum ScreenAdapterEnums {
 	 * Abstract protected function that the manager uses to return a ScreenAdapter 
 	 */
 	protected abstract ScreenAdapter getScreenInstance();
+	
+	// Returns the load request defined for each screen
+	// Included in the enum as a workaround to adding the method to the base class of all screens
+	protected abstract void requestAssets(AssetManager manager);
 }

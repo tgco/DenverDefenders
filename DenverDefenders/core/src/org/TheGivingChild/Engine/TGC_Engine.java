@@ -107,7 +107,6 @@ public class TGC_Engine extends Game {
 		for (FileHandle entry: dirHandle.list()) {
 			LevelPacket packet = new LevelPacket(entry.name());
 			for (FileHandle levelFile: entry.list()) {
-				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
 				reader.setupNewFile(levelFile);
 				Level level = reader.compileLevel();
 				packet.addLevel(level);
@@ -159,27 +158,20 @@ public class TGC_Engine extends Game {
 			break;
 		}
 		
+		// Init asset manager and load assets for the splash screen (the first screen), and the screen manager
 		manager = new AssetManager();
+		manager.load("MainScreen_Splash.png", Texture.class); // splash background
+		manager.load("ColdMountain.png", Texture.class); // main ui background is drawn from the screen manager (refactor this)
 		
-		//Main UI background assets, loaded since screen manager uses on initialize
-		manager.load("ColdMountain.png", Texture.class);
+		manager.finishLoading();
+		
+		/* These assets will load during the splash screen */
+		// UI materials
 		manager.load("SemiTransparentBG.png", Texture.class);
-		manager.finishLoadingAsset("SemiTransparentBG.png");
-		
-		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
-		manager.finishLoadingAsset("Packs/ScreenTransitions.pack");
-
-		//initial update so that the loading screen is loaded before everything
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
-		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
-		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
-		manager.load("ObjectImages/ball.png", Texture.class);
-		manager.load("ObjectImages/ballSelected.png", Texture.class);
-		manager.load("ObjectImages/Box.png", Texture.class);
-		manager.load("ObjectImages/BoxHalf.png", Texture.class);
-		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
-		manager.load("ObjectImages/Grid.png", Texture.class);
-		manager.load("Packs/Slider.pack", TextureAtlas.class);
+		// Needed for screen transition
+		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
+		// Game audio
 		manager.load("sounds/backgroundMusic/01_A_Night_Of_Dizzy_Spells.wav", Music.class);
 		manager.load("sounds/backgroundMusic/02_Underclocked_underunderclocked_mix_.wav", Music.class);
 		manager.load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
@@ -190,55 +182,11 @@ public class TGC_Engine extends Game {
 		manager.load("sounds/backgroundMusic/08_Ascending.wav", Music.class);
 		manager.load("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class);
 		manager.load("sounds/backgroundMusic/10_Arpanauts.wav", Music.class);
-		manager.load("sounds/click.wav", Sound.class);
-		manager.load("sounds/bounce.wav", Sound.class);
-		
-		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
-
-		manager.load("ObjectImages/Banana1.png", Texture.class);
-		manager.load("ObjectImages/Cherries1.png", Texture.class);
-		manager.load("ObjectImages/Cherries2.png", Texture.class);
-		manager.load("ObjectImages/Apple1.png", Texture.class);
-		manager.load("ObjectImages/Grapes_dark.png", Texture.class);
-		manager.load("ObjectImages/Grapes_light.png", Texture.class);
-		manager.load("ObjectImages/Watermellon1.png", Texture.class);
-		manager.load("ObjectImages/Icecream1.png", Texture.class);
-		manager.load("ObjectImages/Cherry.png", Texture.class);
-		manager.load("ObjectImages/basket.png", Texture.class);
-		manager.load("ObjectImages/bowl.png", Texture.class);
-		manager.load("ObjectImages/basket_new.png", Texture.class);
-		manager.load("ObjectImages/Grape.png", Texture.class);
-		manager.load("ObjectImages/Candy1.png", Texture.class);
-		manager.load("ObjectImages/Candy2.png", Texture.class);
-		manager.load("ObjectImages/Kiwi.png", Texture.class);
-		manager.load("ObjectImages/Lollipop1.png", Texture.class);
-		manager.load("ObjectImages/Lollipop2.png", Texture.class);
-		manager.load("ObjectImages/Lollipop3.png", Texture.class);
-		manager.load("ObjectImages/Sundae1.png", Texture.class);
-		manager.load("ObjectImages/Sundae2.png", Texture.class);
-		manager.load("ObjectImages/heart.png", Texture.class);
-		manager.load("ObjectImages/Dirt1.png", Texture.class);
-		manager.load("ObjectImages/Dirt2.png", Texture.class);
-		manager.load("ObjectImages/Dirt3.png", Texture.class);
-		manager.load("ObjectImages/Sponge_REPLACEME.png", Texture.class);
-		manager.load("titleOptionScreen.png", Texture.class);
-		manager.load("titleHowToPlayScreen.png", Texture.class);
-		
-		manager.load("Backgrounds/black.png", Texture.class);
-		manager.load("Backgrounds/Table.png", Texture.class);
-		manager.load("Backgrounds/Window.png", Texture.class);
-		
-		// SORT OF DEFEATS THE PURPOSE OF USING A MANAGER IF WE JUST LOAD ALL IN ONE FRAME HERE
-		manager.finishLoading();
 		
 		// Initialize screen management
 		ScreenAdapterManager.getInstance().initialize(this);
 		// Set initial screen to splash
 		setScreen(ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.SPLASH));
-		
-		// Initialize audio management
-		AudioManager.getInstance().initialize(this);
-		AudioManager.getInstance().playBackgroundMusic();
 
 		// READER/WRITER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
@@ -271,7 +219,9 @@ public class TGC_Engine extends Game {
 		ScreenAdapterManager.getInstance().dispose();
 		batch.dispose();
 		bitmapFontButton.dispose();
+		// may double dispose audio, but runs on app quit.
 		AudioManager.getInstance().dispose();
+		manager.dispose();
 	};
 	/**{@link #getBitmapFontButton()} returns {@link #bitmapFontButton}.*/
 	public BitmapFont getBitmapFontButton(){
@@ -307,10 +257,6 @@ public class TGC_Engine extends Game {
 		super.render();
 		
 		camera.update();
-		
-		if(manager.update()) {
-			//done loading
-		}
 		
 		stage.act();
 		stage.draw();

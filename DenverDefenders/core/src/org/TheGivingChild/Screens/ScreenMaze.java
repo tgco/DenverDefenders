@@ -2,12 +2,14 @@ package org.TheGivingChild.Screens;
 
 import java.util.Random;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +26,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.sun.tools.javac.util.Pair;
 /**
  *Maze screen that the user will navigate around.
  *Player will be able to trigger a miniGame by finding a child in the maze.
@@ -697,6 +700,43 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	
 	public void setLevelWon (boolean levelWon) {
 		this.levelWon = levelWon;
+	}
+
+	public static void requestAssets(AssetManager manager) {
+		manager.load("ObjectImages/heart.png", Texture.class);
+		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
+		// Minigame assets, load on maze select and levels constructed (into maze screen)
+		manager.load("Backgrounds/black.png", Texture.class);
+		manager.load("Backgrounds/Table.png", Texture.class);
+		manager.load("Backgrounds/Window.png", Texture.class);
+		manager.load("ObjectImages/Dirt1.png", Texture.class);
+		manager.load("ObjectImages/Dirt2.png", Texture.class);
+		manager.load("ObjectImages/Dirt3.png", Texture.class);
+		manager.load("ObjectImages/Sponge_REPLACEME.png", Texture.class);
+		manager.load("ObjectImages/Grape.png", Texture.class);
+		manager.load("ObjectImages/Candy1.png", Texture.class);
+		manager.load("ObjectImages/Candy2.png", Texture.class);
+		manager.load("ObjectImages/Kiwi.png", Texture.class);
+		manager.load("ObjectImages/Lollipop1.png", Texture.class);
+		manager.load("ObjectImages/Lollipop2.png", Texture.class);
+		manager.load("ObjectImages/Lollipop3.png", Texture.class);
+		manager.load("ObjectImages/Sundae1.png", Texture.class);
+		manager.load("ObjectImages/Sundae2.png", Texture.class);
+		manager.load("ObjectImages/Banana1.png", Texture.class);
+		manager.load("ObjectImages/Cherries1.png", Texture.class);
+		manager.load("ObjectImages/Cherries2.png", Texture.class);
+		manager.load("ObjectImages/Apple1.png", Texture.class);
+		manager.load("ObjectImages/Grapes_dark.png", Texture.class);
+		manager.load("ObjectImages/Grapes_light.png", Texture.class);
+		manager.load("ObjectImages/Watermellon1.png", Texture.class);
+		manager.load("ObjectImages/Icecream1.png", Texture.class);
+		manager.load("ObjectImages/Cherry.png", Texture.class);
+		manager.load("ObjectImages/basket.png", Texture.class);
+		manager.load("ObjectImages/bowl.png", Texture.class);
+		manager.load("ObjectImages/basket_new.png", Texture.class);
+		
+		// Audio assets
+		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 	}
 
 }

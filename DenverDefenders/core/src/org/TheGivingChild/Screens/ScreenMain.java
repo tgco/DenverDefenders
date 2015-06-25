@@ -1,10 +1,12 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -43,6 +45,9 @@ class ScreenMain extends ScreenAdapter {
 		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
 		labelTable = createLabel();
+		
+		// Start background music
+		AudioManager.getInstance().playBackgroundMusic();
 	}
 
 	private Table createMainScreenTable() {
@@ -132,5 +137,9 @@ class ScreenMain extends ScreenAdapter {
 	public void dispose() {
 		skin.dispose();
 		return;
+	}
+
+	public static void requestAssets(AssetManager manager) {
+		
 	}
 }

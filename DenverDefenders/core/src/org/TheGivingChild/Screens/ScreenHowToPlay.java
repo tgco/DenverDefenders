@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -155,6 +156,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 	@Override
 	public void dispose() {
 		skin.dispose();
+	}
+
+	public static void requestAssets(AssetManager manager) {
+		manager.load("titleHowToPlayScreen.png", Texture.class);
 	}
 	
 }

@@ -12,6 +12,7 @@ import org.TheGivingChild.Engine.XML.WinEnum;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,7 +37,7 @@ import com.badlogic.gdx.utils.ObjectMap;
  * @author Nathaniel Jacobi
  *
  */
-class ScreenEditor extends ScreenAdapter{
+class ScreenEditor extends ScreenAdapter {	
 	private String levelName = "Base";
 	//Style for the button
 	private TextButtonStyle textButtonStyleBack;
@@ -553,5 +554,14 @@ class ScreenEditor extends ScreenAdapter{
 				selectedListeners.add(button.getName());
 		}
 		return selectedListeners;
+	}
+
+	public static void requestAssets(AssetManager manager) {
+		manager.load("ObjectImages/ball.png", Texture.class);
+		manager.load("ObjectImages/ballSelected.png", Texture.class);
+		manager.load("ObjectImages/Box.png", Texture.class);
+		manager.load("ObjectImages/BoxHalf.png", Texture.class);
+		manager.load("ObjectImages/BoxHalfSelected.png", Texture.class);
+		manager.load("ObjectImages/Grid.png", Texture.class);
 	}
 }

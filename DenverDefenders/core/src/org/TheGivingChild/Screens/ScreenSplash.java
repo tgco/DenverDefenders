@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
@@ -18,10 +19,6 @@ public class ScreenSplash extends ScreenAdapter {
 
 	public ScreenSplash() {
 		game = ScreenAdapterManager.getInstance().game;
-		// Request load of the splash image
-		game.getAssetManager().load("MainScreen_Splash.png", Texture.class);
-		game.getAssetManager().finishLoadingAsset("MainScreen_Splash.png");
-		
 		batch = new SpriteBatch();
 		// Init time to show splash screen in seconds
 		splashScreenTimer = 1.0f;
@@ -36,19 +33,15 @@ public class ScreenSplash extends ScreenAdapter {
 		
 		// Decrement timer
 		splashScreenTimer -= delta;
-		if (splashScreenTimer < 0 && game.getAssetManager().update() && !transitionInit) {
+		// call update first so short circuiting doesn't prevent asset loading
+		if (game.getAssetManager().update() && splashScreenTimer < 0 && !transitionInit) {
+			// Initialize audio management since audio is loaded during splash
+			AudioManager.getInstance().initialize(game);
 			transitionInit = true;
 			// Transition to main screen when splash and loading done
 			ScreenTransition splashToMain = new ScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN);
 			game.setScreen(splashToMain);
 		}
-	}
-	
-	// Draws all important images without any logic updating
-	public void drawComponents() {
-		batch.begin();
-		batch.draw(game.getAssetManager().get("MainScreen_Splash.png", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
 	}
 	
 	@Override

@@ -53,8 +53,15 @@ public class AudioManager {
 		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/09_Come_and_Find_Me.wav", Music.class));
 		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/10_Arpanauts.wav", Music.class));
 		
-		soundMap.put("sounds/click.wav", game.getAssetManager().get("sounds/click.wav", Sound.class));
-		soundMap.put("sounds/bounce.wav", game.getAssetManager().get("sounds/bounce.wav", Sound.class));
+		addAvailableSound("sounds/click.wav");
+	}
+	
+	// Adds the sound name to the map
+	public void addAvailableSound(String soundFile) {
+		//Load sound, this should be refactored
+		game.getAssetManager().load(soundFile, Sound.class);
+		game.getAssetManager().finishLoadingAsset(soundFile);
+		soundMap.put(soundFile, game.getAssetManager().get(soundFile, Sound.class));
 	}
 	
 	// Selects a random background song and plays it

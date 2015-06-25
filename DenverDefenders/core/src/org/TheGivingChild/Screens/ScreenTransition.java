@@ -11,17 +11,19 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.sun.tools.javac.util.Pair;
 
 // This class takes a reference to two screens and transfers between them.  It displays a fact, and also loads any required assets for the incoming screen.
 public class ScreenTransition extends ScreenAdapter {
@@ -29,6 +31,8 @@ public class ScreenTransition extends ScreenAdapter {
 	private ScreenAdapterEnums screenOut;
 	// The screen to transition into
 	private ScreenAdapterEnums screenIn;
+	// Reference to manager to progress loading
+	private AssetManager manager;
 	// Two curtain textures to close/open
 	private Array<TextureRegion> transitionTextures;
 	// The coordinate of the transition textures
@@ -46,11 +50,14 @@ public class ScreenTransition extends ScreenAdapter {
 			  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
 			  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 	private Table factTable;
+	private Button nextButton;
 	
 	// Constructor that builds a transition with a random fact
 	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
 		this.screenOut = screenOut;
 		this.screenIn = screenIn;
+		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+		screenIn.requestAssets(manager);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
@@ -67,6 +74,8 @@ public class ScreenTransition extends ScreenAdapter {
 	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, String text) {
 		this.screenOut = screenOut;
 		this.screenIn = screenIn;
+		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+		screenIn.requestAssets(manager);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
@@ -101,8 +110,8 @@ public class ScreenTransition extends ScreenAdapter {
 		TextButtonStyle style = new TextButtonStyle();
 		style.up = skin.getDrawable("Button_Next");
 		style.down = skin.getDrawable("ButtonPressed_Next");
-		Button next = new Button(style);
-		next.addListener(new MyChangeListener() {
+		nextButton = new Button(style);
+		nextButton.addListener(new MyChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
@@ -110,7 +119,7 @@ public class ScreenTransition extends ScreenAdapter {
 				container.remove();
 			}
 		});
-		buttonContainer.add(next).center().bottom();
+		buttonContainer.add(nextButton).center().bottom();
 		buttonContainer.setPosition(Gdx.graphics.getWidth()/2, buttonContainer.getHeight());
 		
 		// Build the fact table
@@ -146,6 +155,9 @@ public class ScreenTransition extends ScreenAdapter {
 		container.row();
 		container.add(factContainer).align(Align.center);
 		
+		// Disable next button, enabled when load is done
+		nextButton.setTouchable(Touchable.disabled);
+		
 		return container;
 	}
 	
@@ -169,7 +181,7 @@ public class ScreenTransition extends ScreenAdapter {
 			state = TransitionState.CLOSED;
 			break;
 		case CLOSED:
-			processLoad();
+			if (manager.update()) nextButton.setTouchable(Touchable.enabled);
 			break;
 		case OPENING:
 			ScreenAdapterManager.getInstance().getScreenFromEnum(screenIn).render(delta);
@@ -198,11 +210,6 @@ public class ScreenTransition extends ScreenAdapter {
 	// Adds a fact table and button to game stage
 	public void addTables(TGC_Engine game) {
 		game.getStage().addActor(factTable);
-	}
-	
-	// Runs continuously while fact is displayed.  Use for loading assets, set button to active when done
-	public void processLoad() {
-		
 	}
 	
 	public boolean open(float delta) {

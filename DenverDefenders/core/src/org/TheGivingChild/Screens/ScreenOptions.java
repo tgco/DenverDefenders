@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -352,4 +353,11 @@ class ScreenOptions extends ScreenAdapter {
 	 public float getVolume() {
 		 return slider.getValue();
 	 }
+
+	public static void requestAssets(AssetManager manager) {
+		manager.load("titleOptionScreen.png", Texture.class);
+		manager.load("Packs/Slider.pack", TextureAtlas.class);
+		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
+		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
+	}
 }
