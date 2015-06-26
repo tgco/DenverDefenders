@@ -19,7 +19,7 @@ public class DestroysObjectsOfIDOnCollisionAttribute extends Attribute {
 		Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getTextureWidth(),myObject.getTextureHeight());
 		for(int i = 0; i<allObjects.size;i++){
 			GameObject currentObject = allObjects.get(i);
-			if(data.contains(currentObject.getID()+"", false)){
+			if(data.contains(String.valueOf(currentObject.getID()), false)){
 				Rectangle r2 = new Rectangle(currentObject.getX(),currentObject.getY(),currentObject.getTextureWidth(),currentObject.getTextureHeight());
 				if(r1.overlaps(r2)){
 					allObjects.get(i).dispose();

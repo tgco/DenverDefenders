@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -51,8 +50,6 @@ class ScreenMain extends ScreenAdapter {
 	}
 
 	private Table createMainScreenTable() {
-		//font for the buttons
-		BitmapFont bitmapFontButton = game.getBitmapFontButton();
 		//create a table for the buttons
 		Table table = new Table();
 		//adds the proper textures to skin from the asset manager
