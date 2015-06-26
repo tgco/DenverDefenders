@@ -31,12 +31,6 @@ public class SpawnObjectOnTimerAttribute extends Attribute {
 	}
 
 	@Override
-	public Array<String> getValues(GameObject myObject) {
-		Array<String> values = myObject.getAttributeData().get(this);
-		return values;
-	}
-
-	@Override
 	public Array<String> getVariableNames() {
 		Array<String> varNames = new Array<String>();
 		varNames.add("Seconds Till is Spawns");

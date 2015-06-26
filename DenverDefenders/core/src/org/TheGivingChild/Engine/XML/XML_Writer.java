@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 
+// BROKEN, SEE LINE 43
+
 public class XML_Writer {
 	private Level currentLevel;
 	/**
@@ -28,17 +30,18 @@ public class XML_Writer {
 			writer.attribute("levelName", currentLevel.getLevelName());
 			writer.attribute("levelImage",currentLevel.getLevelImage());
 			writer.attribute("description",currentLevel.getDescription());
-			for(GameObject currentGameObject:currentLevel.getGameObjects()){//writing game object information
+			for(GameObject currentGameObject : currentLevel.getGameObjects()){//writing game object information
 				writer.element("GameObject");//writing game object and it's required attributes
 				writer.attribute("ID",currentGameObject.getID());
 				writer.attribute("attributes",compileAttributeList(currentGameObject));//writing list of attributes
 				writer.attribute("imageFilename", currentGameObject.getImageFilename());
 				writer.attribute("initialLocation", currentGameObject.getX() + "," + currentGameObject.getY());//position
 				writer.attribute("listeners", compileListenerList(currentGameObject));
-				for(AttributeEnum currentAttribute : currentGameObject.getAttributes()){//for each attribute, make an element of it and get its values
+				for(AttributeEnum currentAttribute : currentGameObject.getActiveEnumList()){//for each attribute, make an element of it and get its values
 					writer.element(currentAttribute.getXMLName());
 					int count = 1;
-					for(String currentValue : currentAttribute.construct().getValues(currentGameObject)){//writing the values associated with each attribute
+					// Broken since constructs a new instance
+					for(String currentValue : currentAttribute.construct().getAttributeData()){//writing the values associated with each attribute
 						writer.attribute("value" + count, currentValue);
 						count++;
 					}
@@ -86,7 +89,7 @@ public class XML_Writer {
 	*/
 	private String compileAttributeList(GameObject obj){		
 		String temp = "";
-		for(AttributeEnum currentAttribute: obj.getAttributes())
+		for(AttributeEnum currentAttribute: obj.getActiveEnumList())
 			temp += currentAttribute.getXMLName() + ",";
 		//remove last character
 		String temp2="";

@@ -74,10 +74,6 @@ public class CollidesWithObjectsID extends Attribute {
 			myObject.getAttributeData().get(this).add(newValues[i]);
 	}
 	
-	public Array<String> getValues(GameObject myObject){
-		return myObject.getAttributeData().get(this);
-	}
-	
 	public Array<String> getVariableNames(){
 		Array<String> variableNames = new Array<String>();
 		variableNames.add("Elasticity constant");

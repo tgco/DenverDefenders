@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine.Attributes;
 
-import org.TheGivingChild.Engine.XML.AttributeEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 
 import com.badlogic.gdx.Gdx;
@@ -13,13 +12,7 @@ public class MovesAttribute extends Attribute {
 	}
 	
 	public void setup(GameObject myObject){
-		myObject.setVelocity(new float[] {Float.parseFloat(myObject.getAttributeData().get(this).get(0)),Float.parseFloat(myObject.getAttributeData().get(this).get(1))});
-	}
-	public Array<String> getValues(GameObject myObject){
-		Array<String> temp = new Array<String>();
-		temp.add(myObject.getAttributeData().get(this).get(0));
-		temp.add(myObject.getAttributeData().get(this).get(1));
-		return temp;
+		myObject.setVelocity(new float[] {Float.parseFloat(data.get(0)),Float.parseFloat(data.get(1))});
 	}
 	
 	public Array<String> getVariableNames(){

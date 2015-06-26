@@ -21,8 +21,4 @@ public class BounceOffTopAndBottomAttribute extends Attribute {
 		return new Array<String>();
 	}
 	public void setup(GameObject myObject){}//doesnt need to setup anything		
-	public Array<String> getValues(GameObject myObject){
-		return myObject.getAttributeData().get(this);
-	}
-	
 }

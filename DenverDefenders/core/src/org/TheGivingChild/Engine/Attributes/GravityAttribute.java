@@ -10,13 +10,8 @@ public class GravityAttribute extends Attribute {
 
 	@Override
 	public void update(GameObject myObject, Array<GameObject> allObjects) {
-		float rate = Float.parseFloat(myObject.getAttributeData().get(this).get(0));
+		float rate = Float.parseFloat(data.get(0));
 		myObject.setVelocity(new float[] {myObject.getVelocity()[0],myObject.getVelocity()[1]-rate});
-	}
-
-	@Override
-	public Array<String> getValues(GameObject myObject){
-		return myObject.getAttributeData().get(this);
 	}
 
 	@Override

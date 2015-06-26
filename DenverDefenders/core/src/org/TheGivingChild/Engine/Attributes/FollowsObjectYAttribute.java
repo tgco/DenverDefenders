@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.Array;
 public class FollowsObjectYAttribute extends Attribute {
 	@Override
 	public void update(GameObject myObject, Array<GameObject> allObjects) {
-		int ID = Integer.parseInt(myObject.getAttributeData().get(this).get(0));
-		float velocity = Float.parseFloat(myObject.getAttributeData().get(this).get(1));
+		int ID = Integer.parseInt(data.get(0));
+		float velocity = Float.parseFloat(data.get(1));
 		//find the object we want to follow
 		for(int i = 0; i<allObjects.size;i++){
 			if(allObjects.get(i).getID() == ID){
@@ -20,11 +20,6 @@ public class FollowsObjectYAttribute extends Attribute {
 			}
 		}
 		
-	}
-
-	@Override
-	public Array<String> getValues(GameObject myObject) {
-		return myObject.getAttributeData().get(this);
 	}
 
 	@Override

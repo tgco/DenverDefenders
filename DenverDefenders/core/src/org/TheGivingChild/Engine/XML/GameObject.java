@@ -38,9 +38,9 @@ public class GameObject extends Actor implements Disposable{
 	/** list of the names of the listeners associated with this object*/
 	private Array<String> listenerNames;
 	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
-	private ObjectMap<Attribute,Array<String>> attributeData;
+	private Array<Attribute> attributes;
 	// List of active attributes for reference by xml write utilities
-	private Array<AttributeEnum> attributesList;
+	private Array<AttributeEnum> activeEnumList;
 
 	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<AttributeEnum,Array<String>> newAttributeData){
 		listenerNames = new Array<String>();
@@ -65,7 +65,7 @@ public class GameObject extends Actor implements Disposable{
 		//scale the object to the width of the new screen
 		objectScaleX = Gdx.graphics.getWidth()/1024f;
 		//scale the object to the height of the new screen
-		objectScaleY = Gdx.graphics.getHeight()/576f;
+		objectScaleY = Gdx.graphics.getHeight()/600f;
 		//scale small objects an additional 50%
 		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
 			objectScaleX *= 2;
@@ -76,7 +76,7 @@ public class GameObject extends Actor implements Disposable{
 		//set the bounds to be as large as the textures size
 		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
 		//iterate over attributes
-		for(String listener: listenerNames){
+		for(String listener : listenerNames){
 			//get the name, uppercase it
 			String name = listener.toUpperCase(Locale.ENGLISH);
 			//iterate over the listeners
@@ -89,18 +89,19 @@ public class GameObject extends Actor implements Disposable{
 				}
 			}
 		}
-		attributeData = new ObjectMap<Attribute, Array<String> >();
-		attributesList = new Array<AttributeEnum>();
+		attributes = new Array<Attribute>();
+		activeEnumList = new Array<AttributeEnum>();
 		//the the initial position from xml
 		setPosition(position[0],position[1]);
 		initialPosition = position;
 		//THIS NEEDS TO BE LAST
 		for(AttributeEnum currentAttribute : newAttributeData.keys().toArray()) {
-			// construct attributes
+			// construct attribute and set its data
 			Attribute toAdd = currentAttribute.construct();
-			attributeData.put(toAdd, newAttributeData.get(currentAttribute));
+			toAdd.setAttributeData(newAttributeData.get(currentAttribute));
 			// push to list
-			attributesList.add(currentAttribute);
+			attributes.add(toAdd);
+			activeEnumList.add(currentAttribute);
 			toAdd.setup(this);
 		}
 		initialVelocity = new float[] {velocity[0],velocity[1]};
@@ -108,12 +109,12 @@ public class GameObject extends Actor implements Disposable{
 	}
 
 	public void update(Array<GameObject> allObjects){
-		for(Attribute currentAttribute : attributeData.keys().toArray())
-			currentAttribute.update(this, allObjects);
+		for (int i = 0; i < attributes.size; i++)
+			attributes.get(i).update(this, allObjects);
 	}
 
-	public Array<AttributeEnum> getAttributes(){
-		return attributesList;
+	public Array<AttributeEnum> getActiveEnumList(){
+		return activeEnumList;
 	}
 
 	public int getID() {
@@ -150,7 +151,11 @@ public class GameObject extends Actor implements Disposable{
 		return texture;
 	}
 	public ObjectMap<Attribute,Array<String>> getAttributeData(){
-		return attributeData;
+		ObjectMap<Attribute,Array<String>> allAttributes = new ObjectMap<Attribute,Array<String>>();
+		for (Attribute att : attributes) {
+			allAttributes.put(att, att.getAttributeData());
+		}
+		return allAttributes;
 	}
 	public float getTextureWidth(){
 		return texture.getWidth()*objectScaleX;

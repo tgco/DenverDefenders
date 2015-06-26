@@ -13,7 +13,7 @@ public class CollidesWithObjectsIDSelfAttribute extends Attribute{
 	public void update(GameObject myObject,Array<GameObject> allObjects){
 		Rectangle r1 = new Rectangle(myObject.getX(),myObject.getY(),myObject.getWidth(),myObject.getHeight());
 		for(int i =0; i < allObjects.size;i++){
-			if(myObject.getID() != allObjects.get(i).getID() && myObject.getAttributeData().get(this).contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
+			if(myObject.getID() != allObjects.get(i).getID() && data.contains(allObjects.get(i).getID()+"", false)){//if myObject collides with current object AND they are actually colliding
 				Rectangle r2 = new Rectangle(allObjects.get(i).getX(),allObjects.get(i).getY(),allObjects.get(i).getWidth(),allObjects.get(i).getHeight());
 				if(r1.overlaps(r2)){
 					//collision has been detected, getting needed information for the collision equation(using momentum)
@@ -51,14 +51,10 @@ public class CollidesWithObjectsIDSelfAttribute extends Attribute{
 	}
 
 	public void setup(GameObject myObject){
-		String[] newValues = myObject.getAttributeData().get(this).get(0).split(",");
-		myObject.getAttributeData().get(this).set(0, newValues[0]);
+		String[] newValues = data.get(0).split(",");
+		data.set(0, newValues[0]);
 		for(int i = 1; i < newValues.length;i++)
-			myObject.getAttributeData().get(this).add(newValues[i]);
-	}
-	
-	public Array<String> getValues(GameObject myObject){
-		return myObject.getAttributeData().get(this);
+			data.add(newValues[i]);
 	}
 	
 	public Array<String> getVariableNames(){

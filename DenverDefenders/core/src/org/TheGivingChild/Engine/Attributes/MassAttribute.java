@@ -13,11 +13,6 @@ public class MassAttribute extends Attribute {
 	}
 
 	@Override
-	public Array<String> getValues(GameObject myObject) {
-		return myObject.getAttributeData().get(this);
-	}
-
-	@Override
 	public void update(GameObject myObject, Array<GameObject> allObjects) {}
 	@Override
 	public void setup(GameObject myObject) {}
