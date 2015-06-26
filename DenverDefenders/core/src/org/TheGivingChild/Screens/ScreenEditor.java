@@ -3,7 +3,8 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Engine.XML.Attribute;
+import org.TheGivingChild.Engine.Attributes.Attribute;
+import org.TheGivingChild.Engine.XML.AttributeEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LoseEnum;
@@ -75,7 +76,7 @@ class ScreenEditor extends ScreenAdapter {
 	private Dialog window;
 
 	private Array<String> inputListeners;
-	private ObjectMap<Attribute,Array<String>> attributes;
+	private ObjectMap<AttributeEnum,Array<String>> attributes;
 	private Array<CheckBox> attributeCheckBoxes;
 	private Array<CheckBox> listenerCheckBoxes;
 
@@ -103,7 +104,7 @@ class ScreenEditor extends ScreenAdapter {
 		gridSize = gridImage.getHeight();
 		fillGrid();		
 		inputListeners = new Array<String>();
-		attributes = new ObjectMap<Attribute,Array<String>>();
+		attributes = new ObjectMap<AttributeEnum,Array<String>>();
 	}
 
 	/**
@@ -251,7 +252,6 @@ class ScreenEditor extends ScreenAdapter {
 							added = true;
 						}
 					}
-					System.out.println(obj.getAttributes());
 					if (!added)
 						gameObjects.add(obj);
 					break; //Break out of the loop since the position is found.
@@ -445,7 +445,7 @@ class ScreenEditor extends ScreenAdapter {
 		cancelStyle.down = okCancelSkin.getDrawable("Button_Editor_CancelPressed");
 		TextButton cancelButton = new TextButton("", cancelStyle);
 
-		for (final Attribute enums: Attribute.values()) {
+		for (final AttributeEnum enums: AttributeEnum.values()) {
 			CheckBoxStyle attributeStyle = new CheckBoxStyle();
 			attributeStyle.font = font;
 			attributeStyle.checkboxOff = checkBoxSkin.getDrawable("CheckBox");
@@ -504,7 +504,7 @@ class ScreenEditor extends ScreenAdapter {
 
 	/**
 	 * Resets all of the {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} used to 
-	 * see what {@link org.TheGivingChild.Engine.XML.Attribute Attribute} and 
+	 * see what {@link org.TheGivingChild.Engine.XML.AttributeEnum Attribute} and 
 	 * {@link org.TheGivingChild.Engine.Attributes.InputListenersEnums InputListeners} are wanted.
 	 */
 	private void resetCheckBoxes() {
@@ -515,7 +515,7 @@ class ScreenEditor extends ScreenAdapter {
 	}
 
 	/**
-	 * Goes through all of the {@link org.TheGivingChild.Engine.XML.Attribute Attribute} 
+	 * Goes through all of the {@link org.TheGivingChild.Engine.XML.AttributeEnum Attribute} 
 	 * {@link com.badlogic.gdx.scenes.scene2d.ui.CheckBox CheckBoxes} and if they are checked, it adds the 
 	 * Attribute and it's needed values to a temporary data structure that is returned and used to initialize a 
 	 * {@link org.TheGivingChild.Engine.XML.GameObject GameObject}.
@@ -523,17 +523,17 @@ class ScreenEditor extends ScreenAdapter {
 	 * @return Returns an ObjectMap with Attribute keys and an Array of Strings for it's values
 	 * of all of the attributes that were selected.
 	 */
-	private ObjectMap<Attribute,Array<String>> attributesSelected() {
-		ObjectMap<Attribute,Array<String>> selectedAttributes = new ObjectMap<Attribute, Array<String>>();
+	private ObjectMap<AttributeEnum,Array<String>> attributesSelected() {
+		ObjectMap<AttributeEnum,Array<String>> selectedAttributes = new ObjectMap<AttributeEnum, Array<String>>();
 		Array<String> attributeValues = new Array<String>();
 
 		for (CheckBox button: attributeCheckBoxes) {
 			if (button.isChecked()) {
-				Attribute enums = Attribute.newType(button.getName());
+				Attribute enums = AttributeEnum.valueOf(button.getName().toUpperCase()).construct();
 				for (int i=0; i < enums.getVariableNames().size; i++) {
 					attributeValues.add("0.0");
 				}
-				selectedAttributes.put(enums, attributeValues);
+				selectedAttributes.put(AttributeEnum.valueOf(button.getName().toUpperCase()), attributeValues);
 			}
 		}
 		return selectedAttributes;

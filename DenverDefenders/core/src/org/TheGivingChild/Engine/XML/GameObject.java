@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Attributes.Attribute;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Gdx;
@@ -38,8 +39,10 @@ public class GameObject extends Actor implements Disposable{
 	private Array<String> listenerNames;
 	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
 	private ObjectMap<Attribute,Array<String>> attributeData;
+	// List of active attributes for reference by xml write utilities
+	private Array<AttributeEnum> attributesList;
 
-	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<Attribute,Array<String>> newAttributeData){
+	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<AttributeEnum,Array<String>> newAttributeData){
 		listenerNames = new Array<String>();
 		manager = new AssetManager();
 		disposed = false;
@@ -86,24 +89,31 @@ public class GameObject extends Actor implements Disposable{
 				}
 			}
 		}
-		attributeData = newAttributeData;//shallow copy, should work but might cause problems later on.
+		attributeData = new ObjectMap<Attribute, Array<String> >();
+		attributesList = new Array<AttributeEnum>();
 		//the the initial position from xml
 		setPosition(position[0],position[1]);
 		initialPosition = position;
 		//THIS NEEDS TO BE LAST
-		for(Attribute currentAttribute:attributeData.keys().toArray())
-			currentAttribute.setup(this);
+		for(AttributeEnum currentAttribute : newAttributeData.keys().toArray()) {
+			// construct attributes
+			Attribute toAdd = currentAttribute.construct();
+			attributeData.put(toAdd, newAttributeData.get(currentAttribute));
+			// push to list
+			attributesList.add(currentAttribute);
+			toAdd.setup(this);
+		}
 		initialVelocity = new float[] {velocity[0],velocity[1]};
 		velocity = initialVelocity;
 	}
 
 	public void update(Array<GameObject> allObjects){
-		for(Attribute currentAttribute:attributeData.keys().toArray())
+		for(Attribute currentAttribute : attributeData.keys().toArray())
 			currentAttribute.update(this, allObjects);
 	}
 
-	public Array<Attribute> getAttributes(){
-		return attributeData.keys().toArray();
+	public Array<AttributeEnum> getAttributes(){
+		return attributesList;
 	}
 
 	public int getID() {
