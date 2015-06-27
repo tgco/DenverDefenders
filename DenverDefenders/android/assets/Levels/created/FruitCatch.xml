@@ -1,35 +1,89 @@
-<Level packageName="PLACEHOLDER1" levelName="Fruit Catch" levelImage="Backgrounds/Table.png" description="Catch all the food!">
-	<!--Fruit! -->
-	<GameObject ID="0" attributes="moves" imageFilename="Apple1.png" initialLocation="100.0,1000.0" listeners="">
-		<moves value1="0" value2="-440.0"/>
-	</GameObject>
-	<GameObject ID="1" attributes="moves" imageFilename="Banana1.png" initialLocation="200.0,1000.0" listeners="">
-		<moves value1="0" value2="-325.0"/>
-	</GameObject>
-	<GameObject ID="2" attributes="moves" imageFilename="Cherries1.png" initialLocation="300.0,1100.0" listeners="">
-		<moves value1="0" value2="-250.0"/>
-	</GameObject>
-	<GameObject ID="3" attributes="moves" imageFilename="Cherries2.png" initialLocation="400.0,1200.0" listeners="">
-		<moves value1="0" value2="-340.0"/>
-	</GameObject>1
-	<GameObject ID="4" attributes="moves" imageFilename="Grapes_light.png" initialLocation="100.0,1000.0" listeners="">
-		<moves value1="0" value2="-390.0"/>
-	</GameObject>
-	<GameObject ID="5" attributes="moves" imageFilename="Icecream1.png" initialLocation="500.0,1500.0" listeners="">
-		<moves value1="0" value2="-310.0"/>
-	</GameObject>
-	<GameObject ID="6" attributes="moves" imageFilename="Icecream1.png" initialLocation="700.0,1500.0" listeners="">
-		<moves value1="0" value2="-330.0"/>
-	</GameObject>
-	
-	<!--basket! -->
-	<GameObject ID="11" attributes="moves,destroysObjectsOfIDOnCollision" imageFilename="basket_new.png" initialLocation="500.0,50.0" listeners="drag_object_X">
-		<moves value1="0.0" value2="0.0"/>
-		<destroysObjectsOfIDOnCollision value1="0,1,2,3,4,5,6"/>
-	</GameObject>
-	
-	<LevelGoals win="objects_of_ID_destroyed_win" lose="below_screen_lose_ID">
-		<objects_of_ID_destroyed_win value1="0,1,2,3,4,5,6"/>
-		<below_screen_lose_ID value1="0,1,2,3,4,5,6"/>
-	</LevelGoals>
-</Level>
+<level name="Fruit Catch" background="Table.png" description="Catch all the food!">
+	<!-- Fruit -->
+	<object id="0" image="Apple1.png" x="100" y="1000">
+		<continuous>
+			<att type="moves" vx="0" vy="-440" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_0" throws="destroy0" />
+		</triggered>
+	</object>
+	<object id="1" image="Banana1.png" x="200" y="1000">
+		<continuous>
+			<att type="moves" vx="0" vy="-325" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_1" throws="destroy1" />
+		</triggered>
+	</object>
+	<object id="2" image="Cherries1.png" x="300" y="1100">
+		<continuous>
+			<att type="moves" vx="0" vy="-250" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_2" throws="destroy2" />
+		</triggered>
+	</object>
+	<object id="3" image="Cherries2.png" x="400" y="1200">
+		<continuous>
+			<att type="moves" vx="0" vy="-345" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_3" throws="destroy3" />
+		</triggered>
+	</object>
+	<object id="4" image="Grapes_light.png" x="100" y="1000">
+		<continuous>
+			<att type="moves" vx="0" vy="-390" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_4"  throws="destroy4" />
+		</triggered>
+	</object>
+	<object id="5" image="Icecream1.png" x="500" y="1500">
+		<continuous>
+			<att type="moves" vx="0" vy="-310" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_5" throws="destroy5" />
+		</triggered>
+	</object>
+	<object id="6" image="Icecream1.png" x="700" y="1500">
+		<continuous>
+			<att type="moves" vx="0" vy="-330" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_6" throws="destroy6" />
+		</triggered>
+	</object>
+
+	<!-- basket -->
+	<object id="11" image="basket_new.png" x="500" y="50">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5,6" />
+		</continuous>
+		<input type="draggable" x="true" y="false" />
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="lose" />
+	</lose>
+</level>

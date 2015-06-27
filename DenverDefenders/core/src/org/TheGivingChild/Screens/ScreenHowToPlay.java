@@ -35,8 +35,6 @@ class ScreenHowToPlay extends ScreenAdapter{
 	private Table messageTable;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
 											  "Button_MainScreen_Play", 
-											  "ButtonPressed_MainScreen_Editor", 
-											  "Button_MainScreen_Editor", 
 											  "ButtonPressed_MainScreen_Options", 
 											  "Button_MainScreen_Options"};
 	private Skin skin;
@@ -61,26 +59,22 @@ class ScreenHowToPlay extends ScreenAdapter{
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += 2) {
 			ButtonStyle tbs = new TextButtonStyle();
 			tbs.down = skin.getDrawable(buttonAtlasNamesArray[i]);
-			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]); // i+1 HERE ELIMINATES THE USEFULNESS OF += BUTTONSTATES IN THE FOR POSTOP
+			tbs.up = skin.getDrawable(buttonAtlasNamesArray[i+1]);
 			Button tb = new Button(tbs);
 			tb.setSize(Gdx.graphics.getWidth()/widthDivider*2, Gdx.graphics.getHeight()/3);
 			t.add(tb).size(Gdx.graphics.getWidth()/widthDivider/2, Gdx.graphics.getHeight()/3/2).pad((Gdx.graphics.getWidth()/200)*(buttonAtlasNamesArray.length/2));
-			final int j = i/2;
+			// Pick inScreen for button
+			int j = i/2;
+			ScreenAdapterEnums choice = null;
+			if (j == 0) choice = ScreenAdapterEnums.MAZE;
+			else if (j == 1) choice = ScreenAdapterEnums.OPTIONS;
+			// Wrap in final for the listener 'closure'
+			final ScreenAdapterEnums inScreen = choice;
 			//listener to change screens on button press
-			//CONFUSING USE OF J, CHANGE THIS
 			tb.addListener(new MyChangeListener(){
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
-					ScreenAdapterEnums inScreen;
-					if(j == 0)
-						inScreen = ScreenAdapterEnums.MAZE;
-					else if(j == 1)
-						inScreen = ScreenAdapterEnums.EDITOR;
-					else if(j == 2)
-						inScreen = ScreenAdapterEnums.OPTIONS;
-					else
-						inScreen = ScreenAdapterEnums.MAIN;
 					ScreenTransition htpToOther = new ScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen);
 					game.setScreen(htpToOther);
 				}

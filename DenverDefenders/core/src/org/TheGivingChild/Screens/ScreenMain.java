@@ -32,9 +32,7 @@ class ScreenMain extends ScreenAdapter {
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
 												"Button_MainScreen_Play", 
 												"ButtonPressed_MainScreen_HowToPlay", 
-												"Button_MainScreen_HowToPlay", 
-												"ButtonPressed_MainScreen_Editor", 
-												"Button_MainScreen_Editor", 
+												"Button_MainScreen_HowToPlay",
 												"ButtonPressed_MainScreen_Options", 
 												"Button_MainScreen_Options"
 												};
@@ -72,7 +70,7 @@ class ScreenMain extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
 					// Create a transition
-					ScreenTransition mainToOther = new ScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]);
+					ScreenTransition mainToOther = new ScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]); // INTRODUCES DEPENDENCY ON ORDER OF THE ENUM
 					game.setScreen(mainToOther);
 				}
 			});

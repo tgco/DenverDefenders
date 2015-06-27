@@ -655,9 +655,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
 		// Minigame assets, load on maze select and levels constructed (into maze screen)
-		manager.load("Backgrounds/black.png", Texture.class);
-		manager.load("Backgrounds/Table.png", Texture.class);
-		manager.load("Backgrounds/Window.png", Texture.class);
+		manager.load("black.png", Texture.class);
+		manager.load("Table.png", Texture.class);
+		manager.load("Window.png", Texture.class);
 		
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");

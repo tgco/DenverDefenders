@@ -1,17 +1,24 @@
 package org.TheGivingChild.Engine.Attributes;
 
 import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class FollowsObjectYAttribute extends Attribute {
+	public FollowsObjectYAttribute(ObjectMap<String, String> args) {
+		super(args);
+	}
+
 	@Override
-	public void update(GameObject myObject, Array<GameObject> allObjects) {
-		int ID = Integer.parseInt(data.get(0));
-		float velocity = Float.parseFloat(data.get(1));
+	public void update(Level level) {
+		int id = Integer.parseInt(args.get("id"));
+		float velocity = Float.parseFloat(args.get("v"));
 		//find the object we want to follow
-		for(int i = 0; i<allObjects.size;i++){
-			if(allObjects.get(i).getID() == ID){
+		Array<GameObject> allObjects = level.getGameObjects();
+		for(int i = 0; i< allObjects.size;i++){
+			if(allObjects.get(i).getID() == id){
 				//object found, now decide which way to go
 				if(allObjects.get(i).getY()+(allObjects.get(i).getTextureHeight()/2) > myObject.getY() + (myObject.getTextureHeight()/2))
 					myObject.setVelocity(new float[] {myObject.getVelocity()[0],velocity});
@@ -21,15 +28,4 @@ public class FollowsObjectYAttribute extends Attribute {
 		}
 		
 	}
-
-	@Override
-	public Array<String> getVariableNames() {
-		Array<String> vals = new Array<String>();
-		vals.add("ID of object to follow");
-		vals.add("speed at which to follow object");
-		return vals;
-	}
-	
-	@Override
-	public void setup(GameObject myObject){}
 }

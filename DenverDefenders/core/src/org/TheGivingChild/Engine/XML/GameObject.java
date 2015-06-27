@@ -1,8 +1,5 @@
 package org.TheGivingChild.Engine.XML;
 
-import java.util.Locale;
-
-import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.Attribute;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
@@ -11,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -23,7 +19,7 @@ import com.badlogic.gdx.utils.ObjectMap;
  */
 public class GameObject extends Actor implements Disposable{
 	/** Unique ID assigned to each GameObject*/
-	private int ID;
+	private int id;
 	private String imageFilename;
 	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
@@ -35,26 +31,23 @@ public class GameObject extends Actor implements Disposable{
 	private boolean disposed;
 	private Texture texture;
 	private float objectScaleX, objectScaleY;
-	/** list of the names of the listeners associated with this object*/
-	private Array<String> listenerNames;
-	/** A map which contains the Attributes associated with this object, as well as the information mapped to the given attribute */
-	private Array<Attribute> attributes;
-	// List of active attributes for reference by xml write utilities
-	private Array<AttributeEnum> activeEnumList;
+	// Attributes which run every frame
+	private Array<Attribute> continuousAttributes;
+	// Attributes which update on a triggered condition
+	private Array<Attribute> triggeredAttributes;
 
-	public GameObject(int newID, String img,float[] newPosition, Array<String> newListenerNames,ObjectMap<AttributeEnum,Array<String>> newAttributeData){
-		listenerNames = new Array<String>();
-		manager = new AssetManager();
+	public GameObject(ObjectMap<String, String> args, Array<Attribute> continuousAttributes, Array<Attribute> triggeredAttributes){
 		disposed = false;
-		listenerNames.addAll(newListenerNames);
-		//set the id from the xml
-		ID = newID;
-		//set the imagefilename from the xml
-		imageFilename = "LevelImages/"+img;
-		position = newPosition;
+		//set values from args
+		id = Integer.parseInt(args.get("id"));
+		imageFilename = "LevelImages/" + args.get("image");
+		position = new float[] { Float.parseFloat(args.get("x")), Float.parseFloat(args.get("y")) };
+		
+		this.continuousAttributes = continuousAttributes;
+		this.triggeredAttributes = triggeredAttributes;
 		
 		//initialize a velocity of 0
-		velocity = new float[] {0,0};
+		velocity = new float[] { 0, 0 };
 		//get the reference to the game
 		game = ScreenAdapterManager.getInstance().game;
 		//load the required texture for this object
@@ -72,53 +65,39 @@ public class GameObject extends Actor implements Disposable{
 			objectScaleY *= 2;
 		}
 		
-		
 		//set the bounds to be as large as the textures size
 		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
-		//iterate over attributes
-		for(String listener : listenerNames){
-			//get the name, uppercase it
-			String name = listener.toUpperCase(Locale.ENGLISH);
-			//iterate over the listeners
-			for(InputListenerEnums ILE: InputListenerEnums.values()){
-				//if the names of the attribute and listener are equal, add the listener
-				if(ILE.name().equals(name)){
-					InputListener listen = InputListenerEnums.valueOf(name).getInputListener(this);
-					//add the listener
-					addListener(listen);
-				}
-			}
-		}
-		attributes = new Array<Attribute>();
-		activeEnumList = new Array<AttributeEnum>();
-		//the the initial position from xml
-		setPosition(position[0],position[1]);
+		
+		setPosition( position[0], position[1]);
 		initialPosition = position;
-		//THIS NEEDS TO BE LAST
-		for(AttributeEnum currentAttribute : newAttributeData.keys().toArray()) {
-			// construct attribute and set its data
-			Attribute toAdd = currentAttribute.construct();
-			toAdd.setAttributeData(newAttributeData.get(currentAttribute));
-			// push to list
-			attributes.add(toAdd);
-			activeEnumList.add(currentAttribute);
-			toAdd.setup(this);
+		// Run any setup necessary for attributes
+		for(Attribute att : continuousAttributes) {
+			att.setup(this);
 		}
+		for (Attribute att : triggeredAttributes) {
+			att.setup(this);
+		}
+		
 		initialVelocity = new float[] {velocity[0],velocity[1]};
-		velocity = initialVelocity;
 	}
 
-	public void update(Array<GameObject> allObjects){
-		for (int i = 0; i < attributes.size; i++)
-			attributes.get(i).update(this, allObjects);
+	public void update(Level level){
+		for (Attribute att : continuousAttributes)
+			att.update(level);
 	}
-
-	public Array<AttributeEnum> getActiveEnumList(){
-		return activeEnumList;
+	
+	// Registers the triggered attributes under the condition in the map.  Adds the condition if it is not set yet.
+	public void register(ObjectMap<String, Array<Attribute> > observerMap) {
+		for (Attribute att : triggeredAttributes) {
+			String trigger = att.getTrigger();
+			if (!observerMap.containsKey(trigger))
+				observerMap.put(trigger, new Array<Attribute>());
+			observerMap.get(trigger).add(att);
+		}
 	}
 
 	public int getID() {
-		return ID;
+		return id;
 	}
 
 	public String getImageFilename() {
@@ -144,18 +123,8 @@ public class GameObject extends Actor implements Disposable{
 		velocity[0] = newVelocity[0];
 		velocity[1] = newVelocity[1];
 	}
-	public Array<String> getListenerNames(){
-		return listenerNames;
-	}
 	public Texture getTexture(){
 		return texture;
-	}
-	public ObjectMap<Attribute,Array<String>> getAttributeData(){
-		ObjectMap<Attribute,Array<String>> allAttributes = new ObjectMap<Attribute,Array<String>>();
-		for (Attribute att : attributes) {
-			allAttributes.put(att, att.getAttributeData());
-		}
-		return allAttributes;
 	}
 	public float getTextureWidth(){
 		return texture.getWidth()*objectScaleX;

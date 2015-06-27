@@ -5,7 +5,6 @@ import java.util.Random;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
-import org.TheGivingChild.Engine.XML.XML_Writer;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -15,7 +14,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -71,8 +69,6 @@ public class TGC_Engine extends Game {
 	private AssetManager manager;
 	/**{@link #reader} allows minigames to be read in.*/
 	private XML_Reader reader;
-	/**{@link #writer} allows minigames to be written in the editor.*/
-	private XML_Writer writer;
 	/**{@link #camera} controls the normal render camera.*/
 	private OrthographicCamera camera;
 	/**
@@ -180,9 +176,9 @@ public class TGC_Engine extends Game {
 		// Set initial screen to splash
 		setScreen(ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.SPLASH));
 
-		// READER/WRITER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
+		// READER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
-		writer = new XML_Writer();
+
 
 		//button stuff
 		bitmapFontButton = new BitmapFont();
@@ -226,10 +222,6 @@ public class TGC_Engine extends Game {
 	/**{@link #getAssetManager()} returns {@link #manager}. */
 	public AssetManager getAssetManager() {
 		return manager;
-	}
-	/**{@link #getXML_Writer()} returns {@link #writer}. */
-	public XML_Writer getXML_Writer() {
-		return writer;
 	}
 	/**{@link #getLevelPackets()} returns {@link #levelPackets}. */
 	public Array<LevelPacket> getLevelPackets() {

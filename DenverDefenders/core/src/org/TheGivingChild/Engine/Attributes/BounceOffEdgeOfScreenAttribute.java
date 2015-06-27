@@ -1,19 +1,23 @@
 package org.TheGivingChild.Engine.Attributes;
 
-import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 
 // Bounces the object off the edge of the screen
 public class BounceOffEdgeOfScreenAttribute extends Attribute {
 	
-	public void update(GameObject myObject,Array<GameObject> allObjects){
+	public BounceOffEdgeOfScreenAttribute(ObjectMap<String, String> args) {
+		super(args);
+	}
+
+	public void update(Level level){
 		if(myObject.getX() <= 0){//left
 			float[] temp = myObject.getVelocity();
 			temp[0] = Math.abs(temp[0]);
 			myObject.setVelocity(temp);
-		}if(myObject.getX() +myObject.getTextureWidth() >= Gdx.graphics.getWidth()){//right
+		}if(myObject.getX() + myObject.getTextureWidth() >= Gdx.graphics.getWidth()) {//right
 			float[] temp = myObject.getVelocity();
 			temp[0] = -Math.abs(temp[0]);
 			myObject.setVelocity(temp);
@@ -28,9 +32,4 @@ public class BounceOffEdgeOfScreenAttribute extends Attribute {
 		}
 	}
 	
-	public Array<String> getVariableNames(){
-		return new Array<String>();
-	}
-	
-	public void setup(GameObject myObject){}//doesnt need to setup anything			
 }

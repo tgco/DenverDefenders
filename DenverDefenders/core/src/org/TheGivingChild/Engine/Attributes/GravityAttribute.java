@@ -1,24 +1,18 @@
 package org.TheGivingChild.Engine.Attributes;
 
-import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.Level;
 
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class GravityAttribute extends Attribute {
-	@Override
-	public void setup(GameObject myObject){}
+
+	public GravityAttribute(ObjectMap<String, String> args) {
+		super(args);
+	}
 
 	@Override
-	public void update(GameObject myObject, Array<GameObject> allObjects) {
-		float rate = Float.parseFloat(data.get(0));
+	public void update(Level level) {
+		float rate = Float.parseFloat(args.get("ay"));
 		myObject.setVelocity(new float[] {myObject.getVelocity()[0],myObject.getVelocity()[1]-rate});
 	}
-
-	@Override
-	public Array<String> getVariableNames(){
-		Array<String> val = new Array<String>();
-		val.add("Rate at which object falls");
-		return val;
-	}
-	
 }

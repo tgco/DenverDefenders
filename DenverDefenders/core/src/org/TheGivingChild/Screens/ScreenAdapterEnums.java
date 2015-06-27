@@ -13,19 +13,6 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 public enum ScreenAdapterEnums {
 	/**
-	 * The level packet screen, returns a new ScreenLevelPackets
-	 *//*
-	LEVEL_PACKETS{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-			return new ScreenLevelPackets();
-		}
-		@Override
-		protected void requestAssets(AssetManager manager) {
-
-		}
-	},*/
-	/**
 	 * The maze 'level' screen, returns a new ScreenMaze
 	 */
 	MAZE{
@@ -54,20 +41,6 @@ public enum ScreenAdapterEnums {
 		}
 	}, 
 	/**
-	 * The editor screen, returns a new ScreenEditor
-	 */
-	EDITOR{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-			return new ScreenEditor();
-		}
-		
-		@Override
-		protected void requestAssets(AssetManager manager) {
-			ScreenEditor.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
-		}
-	},
-	/**
 	 * The options screen, returns a new ScreenOptions
 	 */
 	OPTIONS{
@@ -79,21 +52,6 @@ public enum ScreenAdapterEnums {
 		@Override
 		protected void requestAssets(AssetManager manager) {
 			ScreenOptions.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
-		}
-	},
-	/**
-	 * The character creator screen, returns a new ScreenCharacterCreator
-	 */
-	CHARACTER_CREATOR{
-		@Override
-		protected ScreenAdapter getScreenInstance() {
-            return new ScreenCharacterCreator();
-        }
-		
-		@Override
-		protected void requestAssets(AssetManager manager) {
-			//currently unreachable screen
-			//ScreenCharacterCreator.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
 		}
 	},
 	/**

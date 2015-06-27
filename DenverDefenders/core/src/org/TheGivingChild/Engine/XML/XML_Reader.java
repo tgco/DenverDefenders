@@ -1,11 +1,14 @@
 package org.TheGivingChild.Engine.XML;
 
-import com.badlogic.gdx.Gdx;
+import org.TheGivingChild.Engine.InputListenerEnums;
+import org.TheGivingChild.Engine.Attributes.Attribute;
+
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import com.badlogic.gdx.utils.Array;
 /**
  * Used to read in an .xml file and compile a Level object from it<br>
  * Call setupNewFile to setup the given level, and compileLevel to get the actual Level object
@@ -36,9 +39,8 @@ public class XML_Reader {
 	 * @see		compileLevel
 	 */
 	public Level compileLevel() {
-		return new Level(root.getAttribute("levelName"),
-				root.getAttribute("packageName"),
-				root.getAttribute("levelImage"),
+		return new Level(root.getAttribute("name"),
+				root.getAttribute("background"),
 				root.getAttribute("description"),
 				compileWinConditions(),
 				compileLoseConditions(),
@@ -49,92 +51,65 @@ public class XML_Reader {
 	 * @return	A libGDX Array object of GameObjects
 	 * @see compileGameObjects
 	 */
-	public Array<GameObject> compileGameObjects(){//will parse through xml_file and get all game objects and their attributes
+	public Array<GameObject> compileGameObjects(){
 		Array<GameObject> listOfObjects = new Array<GameObject>();
-		for(Element currentObject : root.getChildrenByName("GameObject")){//iterate through game objects
-			Array<String> listenersToAdd = compileListenerNames(currentObject.getAttribute("listeners"));
-			ObjectMap<AttributeEnum,Array<String>> attributeData = new ObjectMap<AttributeEnum,Array<String>>();
-				for(String currentAttribute : currentObject.getAttribute("attributes").split(",")){//iterate through each GameObject's attributes
-					if(!currentObject.getAttribute("attributes").isEmpty()){//look up the object of name currentAttribute and add it to currentObject's list of Attributes
-						Array<String> valuesToAdd = new Array<String>();
-						if(currentObject.getChildByName(currentAttribute).getAttributes() != null){//check if the attribute even has values
-							for(int i = 0; i< currentObject.getChildByName(currentAttribute).getAttributes().size;i++){
-								valuesToAdd.add(currentObject.getChildByName(currentAttribute).getAttribute("value" + (i+1)));
-								attributeData.put(AttributeEnum.valueOf(currentAttribute.toUpperCase()), valuesToAdd);
-							}
-						}
-						// REDUNDANT?
-						attributeData.put(AttributeEnum.valueOf(currentAttribute.toUpperCase()), valuesToAdd);
-					}
+		// Iterate over object definitions
+		for(Element objectElement : root.getChildrenByName("object")){
+			// Store arguments such as id="1"
+			ObjectMap<String, String> objectArgs = objectElement.getAttributes();
+			// Create continuous attributes (updated every frame)
+			Array<Attribute> continuousAttributes = new Array<Attribute>();
+			if (objectElement.getChildByName("continuous") != null) {
+				for (Element att : objectElement.getChildByName("continuous").getChildrenByName("att")) {
+					String type = att.getAttribute("type");
+					continuousAttributes.add( AttributeEnum.valueOf(type.toUpperCase()).construct(att.getAttributes()) );
 				}
-				GameObject temp = new GameObject(currentObject.getIntAttribute("ID"),currentObject.getAttribute("imageFilename"),stringToPoint(currentObject.getAttribute("initialLocation")), listenersToAdd, attributeData);//hardcoded values which must always be written down in the .xml file
-			listOfObjects.add(temp);
+			}
+			// Create triggered attributes (notified to run on condition)
+			Array<Attribute> triggeredAttributes = new Array<Attribute>();
+			if (objectElement.getChildByName("triggered") != null) {
+				for (Element att : objectElement.getChildByName("triggered").getChildrenByName("att")) {
+					String type = att.getAttribute("type");
+					triggeredAttributes.add( AttributeEnum.valueOf(type.toUpperCase()).construct(att.getAttributes()) );
+				}
+			}
+			// Construct object
+			GameObject ob = new GameObject(objectArgs, continuousAttributes, triggeredAttributes);
+			// Construct input listeners
+			for (Element input : objectElement.getChildrenByName("input")) {
+				String type = input.getAttribute("type");
+				InputListener listen = InputListenerEnums.valueOf(type.toUpperCase()).construct(ob, input.getAttributes());
+				ob.addListener(listen);
+			}
+			listOfObjects.add(ob);
 		}
+
 		return listOfObjects;
 	}
 	
 	/**	
-	*	Compiles the win conditions into a map containing the list of win conditions for the level and the data for each win condition
+	*	Compiles the win conditions into a map of condition to true/false
 	*/
-	public ObjectMap<WinEnum, Array<String>> compileWinConditions(){
-		ObjectMap<WinEnum,Array<String>> winData = new ObjectMap<WinEnum,Array<String>>();
-		String temp[] = root.getChildByName("LevelGoals").getAttribute("win").split(",");
-		if(temp.length > 0){//in case of empty list, for whatever reason
-			for(String currentWinCondition : temp){//each element in win="stuff,things,morestuff"
-				WinEnum tempEnum = WinEnum.newType(currentWinCondition);//yo dawg i herd u liek temps
-				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentWinCondition).getAttributes();//saves lookup time if there are multiple conditions
-				Array<String> tempValues = new Array<String>();
-				if(tempMap != null){
-					for(int i = 0; i < tempMap.size; i++){
-						tempValues.add(tempMap.get("value"+(i+1)));
-					}
-				}
-				winData.put(tempEnum,tempValues);
-			}
+	public ObjectMap<String, Boolean> compileWinConditions() {
+		ObjectMap<String, Boolean> winConditions = new ObjectMap<String, Boolean>();
+		// Iterate over and add conditions, initialized to false
+		for (Element cond : root.getChildByName("win").getChildrenByName("cond")) {
+			winConditions.put(cond.getAttribute("val"), false);
 		}
-		return winData;
+
+		return winConditions;
 	}
 	
 	/**	
 	*	Compiles the lose conditions into a map containing the list of lose conditions for the level and the data for each lose condition
 	*/	
-	public ObjectMap<LoseEnum, Array<String>> compileLoseConditions(){
-		ObjectMap<LoseEnum,Array<String>> loseData = new ObjectMap<LoseEnum,Array<String>>();
-		String temp[] = root.getChildByName("LevelGoals").getAttribute("lose").split(",");
-		if(temp.length > 0){//in case of empty list, for whatever reason
-			for(String currentLoseCondition : temp){//each element in lose="stuff,things,morestuff"
-				LoseEnum tempEnum = LoseEnum.newType(currentLoseCondition);//yo dawg i herd u liek temps
-				ObjectMap<String,String> tempMap = root.getChildByName("LevelGoals").getChildByName(currentLoseCondition).getAttributes();//saves lookup time if there are multiple conditions
-				Array<String> tempValues = new Array<String>();
-				if(tempMap != null){
-					for(int i = 0; i < tempMap.size;i++){
-						tempValues.add(tempMap.get("value"+(i+1)));
-					}
-				}
-				loseData.put(tempEnum,tempValues);
-			}
+	public ObjectMap<String, Boolean> compileLoseConditions(){
+		ObjectMap<String, Boolean> loseConditions = new ObjectMap<String, Boolean>();
+		// Iterate over and add conditions, initialized to false
+		for (Element cond : root.getChildByName("lose").getChildrenByName("cond")) {
+			loseConditions.put(cond.getAttribute("val"), false);
 		}
-		return loseData;
-	}
-	/**
-	*	converts in a string of form "1.0,1.0" and returns a 2 element array of floats
-	*/
-	private static float[] stringToPoint(String toPoint){
-		float temp[] = {Float.parseFloat(toPoint.substring(0, toPoint.indexOf(","))),Float.parseFloat(toPoint.substring(toPoint.indexOf(",")+1,toPoint.length()-1))};
-		temp[0] = temp[0]/1024f * Gdx.graphics.getWidth();
-		temp[1] = temp[1]/576f * Gdx.graphics.getHeight();
-		return temp;
-	}
-	/**
-	*	Converts list of list of attributes delimited by commas into an Array of strings, each containing the name of a listener
-	*/
-	private Array<String> compileListenerNames(String input){
-		Array<String> listeners = new Array<String>();
-		if(input.isEmpty())
-			return listeners;
-		String[] temp = input.split(",");
-		for(String currentListenerName : temp)
-			listeners.add(currentListenerName);
-		return listeners;
+
+		return loseConditions;
 	}
 }
