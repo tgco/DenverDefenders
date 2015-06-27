@@ -24,7 +24,8 @@ public class Level {
 	
 	// Move into asset manager
 	private BitmapFont clockFont;
-	private int levelTime = 0;
+	// Length for a level in seconds
+	private int levelTime = 4;
 	
 	
 	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
@@ -50,8 +51,9 @@ public class Level {
 	}
 	
 	public void update(){
-		// update the state of the actors and clock
-		MinigameClock.getInstance().render();
+		// update clock state, check for out of time
+		MinigameClock.getInstance().progress();
+		if (MinigameClock.getInstance().outOfTime()) throwCondition("timeout");
 		
 		// CHECK FOR CONCURRENT MODIFICATION ERRORS
 		for (int i = 0; i < objects.size; i++) {
@@ -156,9 +158,6 @@ public class Level {
 	}
 	public BitmapFont getClockFont() {
 		return clockFont;
-	}
-	public int getLevelTime() {
-		return levelTime;
 	}
 	public String getDescription(){
 		return description;

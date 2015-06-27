@@ -41,7 +41,10 @@ public class GameObject extends Actor implements Disposable{
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = "LevelImages/" + args.get("image");
-		position = new float[] { Float.parseFloat(args.get("x")), Float.parseFloat(args.get("y")) };
+		// Set position based on screen pixels, xml is defined based on 1024x600 screen
+		float adjustedX = Float.parseFloat(args.get("x"))/1024f * Gdx.graphics.getWidth();
+		float adjustedY = Float.parseFloat(args.get("y"))/600f * Gdx.graphics.getHeight();
+		position = new float[] { adjustedX, adjustedY };
 		
 		this.continuousAttributes = continuousAttributes;
 		this.triggeredAttributes = triggeredAttributes;

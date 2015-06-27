@@ -44,7 +44,7 @@ public final class  MinigameClock {
 	 * Decrements the level time remaining by time since the last frame.
 	 * Checks if level is out of time and raises a flag if it is.
 	 */
-	public void render() {
+	public void progress() {
 		levelLength = (long) (levelLength - Gdx.graphics.getDeltaTime()*1000000000);
 				
 		if(levelLength <= 0) {

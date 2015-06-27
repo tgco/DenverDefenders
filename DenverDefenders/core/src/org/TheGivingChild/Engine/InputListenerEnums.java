@@ -40,7 +40,7 @@ public enum InputListenerEnums{
 		public InputListener construct(final GameObject object, ObjectMap<String, String> args) {
 			// Set directions to drag of
 			final boolean dragX = Boolean.parseBoolean(args.get("x"));
-			final boolean dragY = Boolean.parseBoolean(args.get("false"));
+			final boolean dragY = Boolean.parseBoolean(args.get("y"));
 			//return a new input listener, overriding needed interactions
 			return(new DragListener() {
 				//drag moves the object to the new location that drag returns every update
