@@ -68,7 +68,7 @@ public class ScreenLevel extends ScreenAdapter{
 	@Override
 	public void render(float delta) {
 		batch.begin();
-		batch.draw((Texture) game.getAssetManager().get(currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw((Texture) game.getAssetManager().get("LevelBackgrounds/" + currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		for (GameObject g : currentLevel.getGameObjects()) {
 			if(!g.isDisposed()){
 				batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());

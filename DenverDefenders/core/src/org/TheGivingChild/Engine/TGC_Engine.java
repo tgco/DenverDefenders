@@ -49,8 +49,8 @@ public class TGC_Engine extends Game {
 	private TGC_Stage stage;
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
 	private BitmapFont bitmapFontButton; 
-    /**{@link #levelPackets} is the container for levels to be played during a maze.*/
-	private Array<LevelPacket> levelPackets;
+    /**{@link #levelSet} is the container for levels to be played during a maze.*/
+	private Array<Level> levelSet;
 	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
 	/**
@@ -96,49 +96,29 @@ public class TGC_Engine extends Game {
 	 * 	MOVE LEVEL PACKET LOADING TO BE A RESPONSIBILITY OF WHOEVER LOADS THE MAZE
 	 */
 	public void loadLevelPackets() {
-		levelPackets = new Array<LevelPacket>();
+		// Array of possible levels to play
+		levelSet = new Array<Level>();
 		FileHandle dirHandle;
 		if (Gdx.app.getType() == ApplicationType.Android) {
-			dirHandle = Gdx.files.internal("Levels");
+			dirHandle = Gdx.files.internal("MazeAssets/UrbanMaze1");
 		} else {
 			// ApplicationType.Desktop ..
-			dirHandle = Gdx.files.internal("./bin/Levels");
+			dirHandle = Gdx.files.internal("./bin/MazeAssets/UrbanMaze1");
 		}
-		for (FileHandle entry: dirHandle.list()) {
-			if (!entry.isDirectory()) continue; // Stupid Mac .DS_Store issue
-			LevelPacket packet = new LevelPacket(entry.name());
-			for (FileHandle levelFile: entry.list()) {
-				levelFile = Gdx.files.internal("Levels/" + entry.name() + "/" + levelFile.name());
-				reader.setupNewFile(levelFile);
-				Level level = reader.compileLevel();
-				packet.addLevel(level);
-			}
-			levelPackets.add(packet);
+		// Grab the tiled map file
+		FileHandle mapFile = dirHandle.child(dirHandle.name() + ".tmx");
+		// Load level objects
+		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
+			reader.setupNewFile(levelFile);
+			Level level = reader.compileLevel();
+			levelSet.add(level);
 		}
+		System.out.println(levelSet.size);
 	}
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
-	/*
-	 * LOADS ONLY FROM FIRST PACKET
-	 * 
-	 */
 	public void selectLevel() {
-		Array<Level> possibleLevels = new Array<Level>();
-		for (Level newLevel: levelPackets.get(0).getLevels()) {
-			if (!newLevel.getCompleted()) {
-				possibleLevels.add(newLevel);
-			}
-		}
-
-		if (possibleLevels.size == 0) {
-			loadLevelPackets(); //REDUNDANT LOADING
-			for (Level newLevel: levelPackets.get(0).getLevels()) {
-				if (!newLevel.getCompleted()) {
-					possibleLevels.add(newLevel);
-				}
-			}
-		}
-		int newLevelIndex = rand.nextInt(possibleLevels.size);
-		currentLevel = possibleLevels.get(newLevelIndex);
+		// Pick a random level and reset it for play
+		currentLevel = levelSet.random();
 		currentLevel.resetLevel();
 	}
 
@@ -222,10 +202,6 @@ public class TGC_Engine extends Game {
 	/**{@link #getAssetManager()} returns {@link #manager}. */
 	public AssetManager getAssetManager() {
 		return manager;
-	}
-	/**{@link #getLevelPackets()} returns {@link #levelPackets}. */
-	public Array<LevelPacket> getLevelPackets() {
-		return levelPackets;
 	}
 	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
 	public Level getCurrentLevel() {

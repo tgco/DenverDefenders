@@ -109,6 +109,7 @@ public class Level {
 		for (String cond : loseConditions.keys()) {
 			loseConditions.put(cond, false);
 		}
+		completed = won = false;
 	}
 	
 	//add the objects to the stage, allowing them to be drawn and have the listeners work

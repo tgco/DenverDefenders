@@ -87,7 +87,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		levelWon = false;
 		mazeWon = false;
 		game = ScreenAdapterManager.getInstance().game;
-		map = game.getAssetManager().get("mapAssets/UrbanMaze1.tmx", TiledMap.class);
+		map = game.getAssetManager().get("MazeAssets/UrbanMaze1/UrbanMaze1.tmx", TiledMap.class);
 		
 		//Setup map properties
 		properties = map.getProperties();
@@ -147,7 +147,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 		populate();
 		
-		backdropTexture = game.getAssetManager().get("mapAssets/UrbanMaze1Backdrop.png");
+		backdropTexture = game.getAssetManager().get("MazeAssets/UrbanMaze1/backdrop.png");
 		
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 	}
@@ -169,7 +169,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			//if the rectangle is not occupied, then fill it
 			if(!toFill.isOccupied()){
 				//create a new child with the texture
-				ChildSprite child = new ChildSprite(game.getAssetManager().get("mapAssets/somefreesprites/Character Pink Girl.png",Texture.class));
+				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/UrbanMaze1/Character Pink Girl.png",Texture.class));
 				//Scale down the child
 				child.setScale(.5f);
 				//reset the bounds, as suggested after scaling
@@ -646,18 +646,18 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 		
 		// Child sprite
-		manager.load("mapAssets/somefreesprites/Character Pink Girl.png", Texture.class);
+		manager.load("MazeAssets/UrbanMaze1/Character Pink Girl.png", Texture.class);
 		
 		// Tiled map
-		manager.load("mapAssets/UrbanMaze1.tmx", TiledMap.class);
+		manager.load("MazeAssets/UrbanMaze1/UrbanMaze1.tmx", TiledMap.class);
 		
 		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
-		manager.load("mapAssets/UrbanMaze1Backdrop.png", Texture.class);
+		manager.load("MazeAssets/UrbanMaze1/backdrop.png", Texture.class);
 		// Minigame assets, load on maze select and levels constructed (into maze screen)
-		manager.load("black.png", Texture.class);
-		manager.load("Table.png", Texture.class);
-		manager.load("Window.png", Texture.class);
+		manager.load("LevelBackgrounds/black.png", Texture.class);
+		manager.load("LevelBackgrounds/Table.png", Texture.class);
+		manager.load("LevelBackgrounds/Window.png", Texture.class);
 		
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
