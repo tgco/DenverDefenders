@@ -642,15 +642,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	public static void loadLevelSet(TGC_Engine game) {
 		FileHandle dirHandle;
 		if (Gdx.app.getType() == ApplicationType.Android) {
-			dirHandle = Gdx.files.internal("MazeAssets/UrbanMaze1");
+			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze);
 		} else {
 			// ApplicationType.Desktop ..
-			dirHandle = Gdx.files.internal("./bin/MazeAssets/UrbanMaze1");
+			dirHandle = Gdx.files.internal("./bin/MazeAssets/" + activeMaze);
 		}
-		// Grab the tiled map file
-		FileHandle mapFile = dirHandle.child(dirHandle.name() + ".tmx");
 		// Load level objects
 		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
+			if (levelFile.name().equals(".DS_Store")) continue; // Dumb OSX issue
 			game.getReader().setupNewFile(levelFile);
 			Level level = game.getReader().compileLevel();
 			levelSet.add(level);

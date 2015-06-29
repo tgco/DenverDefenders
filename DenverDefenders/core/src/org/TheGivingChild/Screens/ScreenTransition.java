@@ -38,7 +38,7 @@ public class ScreenTransition extends ScreenAdapter {
 	private float transitionTextureX;
 	private SpriteBatch batch;
 	// State to determine how to move curtains
-	private enum TransitionState { CLOSING, DONE, CLOSED, OPENING; }
+	private enum TransitionState { CLOSING, DONE, ASSETREQUEST, CLOSED, OPENING; }
 	private TransitionState state;
 	// Time for curtains to open/close
 	private float transitionTime;
@@ -56,7 +56,6 @@ public class ScreenTransition extends ScreenAdapter {
 		this.screenOut = screenOut;
 		this.screenIn = screenIn;
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-		screenIn.requestAssets(manager);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
@@ -74,7 +73,6 @@ public class ScreenTransition extends ScreenAdapter {
 		this.screenOut = screenOut;
 		this.screenIn = screenIn;
 		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
-		screenIn.requestAssets(manager);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
@@ -163,8 +161,11 @@ public class ScreenTransition extends ScreenAdapter {
 			break;
 		case DONE:
 			addTables(ScreenAdapterManager.getInstance().game);
-			state = TransitionState.CLOSED;
+			state = TransitionState.ASSETREQUEST;
 			break;
+		case ASSETREQUEST:
+			requestAssets();
+			state = TransitionState.CLOSED;
 		case CLOSED:
 			if (manager.update()) nextButton.setTouchable(Touchable.enabled);
 			break;
@@ -195,6 +196,11 @@ public class ScreenTransition extends ScreenAdapter {
 	// Adds a fact table and button to game stage
 	public void addTables(TGC_Engine game) {
 		game.getStage().addActor(factTable);
+	}
+	
+	// Requests asset loading from manager
+	public void requestAssets() {
+		screenIn.requestAssets(manager);
 	}
 	
 	// Opens transition textures.  True if done.
