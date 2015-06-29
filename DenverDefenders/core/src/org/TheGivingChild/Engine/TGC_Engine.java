@@ -3,7 +3,6 @@ package org.TheGivingChild.Engine;
 import java.util.Random;
 
 import org.TheGivingChild.Engine.XML.Level;
-import org.TheGivingChild.Engine.XML.LevelPacket;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
@@ -113,7 +112,6 @@ public class TGC_Engine extends Game {
 			Level level = reader.compileLevel();
 			levelSet.add(level);
 		}
-		System.out.println(levelSet.size);
 	}
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
 	public void selectLevel() {
