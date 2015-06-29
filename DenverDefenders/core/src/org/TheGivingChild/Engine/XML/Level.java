@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.Attribute;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
@@ -91,6 +92,13 @@ public class Level {
 		}
 		if (winConditions.containsKey(condition)) winConditions.put(condition, true);
 		if (loseConditions.containsKey(condition)) loseConditions.put(condition, true);
+	}
+	
+	// Sets the texture for each object from the asset manager
+	public void setObjectTextures(AssetManager manager) {
+		for (GameObject ob : objects) {
+			ob.retrieveTexture(manager);
+		}
 	}
 	
 	public void resetLevel(){

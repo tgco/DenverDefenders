@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Gdx;
@@ -337,6 +338,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 				selectLevel();
 				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
 				levelScreen.setCurrentLevel(currentLevel);
+				currentLevel.setObjectTextures(game.getAssetManager());
 				return true;
 			}
 		}
@@ -691,16 +693,23 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
 		manager.load("MazeAssets/" + activeMaze + "/backdrop.png", Texture.class);
-		// Minigame assets, load on maze select and levels constructed (into maze screen)
-		manager.load("LevelBackgrounds/black.png", Texture.class);
-		manager.load("LevelBackgrounds/Table.png", Texture.class);
-		manager.load("LevelBackgrounds/Window.png", Texture.class);
-		
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 		
 		// Load levels
 		loadLevelSet(ScreenAdapterManager.getInstance().game);
+		
+		// Minigame assets
+		for (Level l : levelSet) {
+			// Background assets
+			String background = l.getLevelImage();
+			manager.load("LevelBackgrounds/" + background, Texture.class);
+			// Object assets
+			for (GameObject ob : l.getGameObjects()) {
+				manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
+			}
+		}
+		
 	}
 
 }

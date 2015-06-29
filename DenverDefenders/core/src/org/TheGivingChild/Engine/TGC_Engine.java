@@ -1,19 +1,14 @@
 package org.TheGivingChild.Engine;
 
-import java.util.Random;
-
-import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +19,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -40,8 +34,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class TGC_Engine extends Game {
 	// Global game time clock.  Used primarily for animations
 	private float globalClock;
-	// Random generator
-	private Random rand;
 	// Scale that fonts should be drawn at
 	private float globalFontScale;
 	/**The stage to place actors to.*/
@@ -94,7 +86,6 @@ public class TGC_Engine extends Game {
 		
 		// Init global clock
 		globalClock = 0;
-		rand = new Random();
 		// Calculate font scale
 		globalFontScale = Gdx.graphics.getWidth()/Gdx.graphics.getPpiX() * 0.25f;
 		

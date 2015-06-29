@@ -1,8 +1,6 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Attributes.Attribute;
-import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -26,8 +24,6 @@ public class GameObject extends Actor implements Disposable{
 	private float[] initialVelocity;
 	private float[] position;
 	private float[] initialPosition;
-	private TGC_Engine game;
-	private AssetManager manager;
 	private boolean disposed;
 	private Texture texture;
 	private float objectScaleX, objectScaleY;
@@ -40,7 +36,7 @@ public class GameObject extends Actor implements Disposable{
 		disposed = false;
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
-		imageFilename = "LevelImages/" + args.get("image");
+		imageFilename = args.get("image");
 		// Set position based on screen pixels, xml is defined based on 1024x600 screen
 		float adjustedX = Float.parseFloat(args.get("x"))/1024f * Gdx.graphics.getWidth();
 		float adjustedY = Float.parseFloat(args.get("y"))/600f * Gdx.graphics.getHeight();
@@ -51,25 +47,6 @@ public class GameObject extends Actor implements Disposable{
 		
 		//initialize a velocity of 0
 		velocity = new float[] { 0, 0 };
-		//get the reference to the game
-		game = ScreenAdapterManager.getInstance().game;
-		//load the required texture for this object
-		manager = game.getAssetManager();
-		manager.load(imageFilename, Texture.class);
-		manager.finishLoadingAsset(imageFilename);
-		texture = manager.get(imageFilename, Texture.class);
-		//scale the object to the width of the new screen
-		objectScaleX = Gdx.graphics.getWidth()/1024f;
-		//scale the object to the height of the new screen
-		objectScaleY = Gdx.graphics.getHeight()/600f;
-		//scale small objects an additional 50%
-		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
-			objectScaleX *= 2;
-			objectScaleY *= 2;
-		}
-		
-		//set the bounds to be as large as the textures size
-		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
 		
 		setPosition( position[0], position[1]);
 		initialPosition = position;
@@ -82,6 +59,24 @@ public class GameObject extends Actor implements Disposable{
 		}
 		
 		initialVelocity = new float[] {velocity[0],velocity[1]};
+	}
+	
+	// Retrieves the texture from the asset manager and sets scale
+	public void retrieveTexture(AssetManager manager) {
+		texture = manager.get("LevelImages/" + imageFilename, Texture.class);
+		//scale the object to the width of the new screen
+		objectScaleX = Gdx.graphics.getWidth()/1024f;
+		//scale the object to the height of the new screen
+		objectScaleY = Gdx.graphics.getHeight()/600f;
+		//scale small objects an additional 100%
+		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
+			objectScaleX *= 2;
+			objectScaleY *= 2;
+		}
+		
+		//set the bounds to be as large as the textures size
+		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
+		
 	}
 
 	public void update(Level level){

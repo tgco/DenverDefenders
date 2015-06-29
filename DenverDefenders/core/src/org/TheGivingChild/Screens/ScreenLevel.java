@@ -50,7 +50,7 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void show() {
-		// VAGUE METHOD CALL THAT ACTUALLY MODIFIES THE MAIN CLASS STAGE
+		// Load objects to game's stage
 		currentLevel.loadObjectsToStage();
 		logicPaused = false;
 	}
