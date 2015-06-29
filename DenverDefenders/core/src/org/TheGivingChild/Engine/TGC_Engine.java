@@ -48,10 +48,6 @@ public class TGC_Engine extends Game {
 	private TGC_Stage stage;
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
 	private BitmapFont bitmapFontButton; 
-    /**{@link #levelSet} is the container for levels to be played during a maze.*/
-	private Array<Level> levelSet;
-	/**{@link #currentLevel} keeps track of the current level being played.*/
-	private Level currentLevel;
 	/**
 	 * This is the asset manager that will store all of the textures, packs, and sounds.
 	 * It is accessed throughout all of the game and can be loaded and accessed at any point.
@@ -90,35 +86,6 @@ public class TGC_Engine extends Game {
 	private Viewport viewport;
 	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
-	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
-	/*
-	 * 	MOVE LEVEL PACKET LOADING TO BE A RESPONSIBILITY OF WHOEVER LOADS THE MAZE
-	 */
-	public void loadLevelPackets() {
-		// Array of possible levels to play
-		levelSet = new Array<Level>();
-		FileHandle dirHandle;
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			dirHandle = Gdx.files.internal("MazeAssets/UrbanMaze1");
-		} else {
-			// ApplicationType.Desktop ..
-			dirHandle = Gdx.files.internal("./bin/MazeAssets/UrbanMaze1");
-		}
-		// Grab the tiled map file
-		FileHandle mapFile = dirHandle.child(dirHandle.name() + ".tmx");
-		// Load level objects
-		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
-			reader.setupNewFile(levelFile);
-			Level level = reader.compileLevel();
-			levelSet.add(level);
-		}
-	}
-	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
-	public void selectLevel() {
-		// Pick a random level and reset it for play
-		currentLevel = levelSet.random();
-		currentLevel.resetLevel();
-	}
 
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
 	@Override
@@ -172,9 +139,6 @@ public class TGC_Engine extends Game {
 		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0);
 
 		batch = new SpriteBatch();
-		
-		//LOAD NOT NECESSARY YET
-		loadLevelPackets();
 	}
 
 	/**{@link #dispose()} handles the resource disposal when {@link TGC_Engine} exits.*/
@@ -201,9 +165,9 @@ public class TGC_Engine extends Game {
 	public AssetManager getAssetManager() {
 		return manager;
 	}
-	/**{@link #getCurrentLevel()} returns {@link #currentLevel}.*/
-	public Level getCurrentLevel() {
-		return currentLevel;
+	
+	public XML_Reader getReader() {
+		return reader;
 	}
 	
 	// Returns the global game clock time in seconds

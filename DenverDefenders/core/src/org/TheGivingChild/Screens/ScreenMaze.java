@@ -4,12 +4,15 @@ import java.util.Random;
 
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -75,6 +78,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	// True if all the children were found and the maze has been won
 	private boolean mazeWon;
 	
+	// The name of the maze which corresponds to the assets directory to look into
+	public static String activeMaze = "UrbanMaze1";
+	
+    /**{@link #levelSet} is the container for levels to be played during a maze.*/
+	private static Array<Level> levelSet = new Array<Level>();
+	/**{@link #currentLevel} keeps track of the current level being played.*/
+	private Level currentLevel;
+	
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
 	 * Sets up map properties such as dimensions and collision areas
@@ -86,8 +97,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		logicPaused = true;
 		levelWon = false;
 		mazeWon = false;
+		currentLevel = null;
 		game = ScreenAdapterManager.getInstance().game;
-		map = game.getAssetManager().get("MazeAssets/UrbanMaze1/UrbanMaze1.tmx", TiledMap.class);
+		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
 		
 		//Setup map properties
 		properties = map.getProperties();
@@ -147,7 +159,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 
 		populate();
 		
-		backdropTexture = game.getAssetManager().get("MazeAssets/UrbanMaze1/backdrop.png");
+		backdropTexture = game.getAssetManager().get("MazeAssets/" + activeMaze + "/backdrop.png");
 		
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 	}
@@ -169,7 +181,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			//if the rectangle is not occupied, then fill it
 			if(!toFill.isOccupied()){
 				//create a new child with the texture
-				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/UrbanMaze1/Character Pink Girl.png",Texture.class));
+				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/Character Pink Girl.png",Texture.class));
 				//Scale down the child
 				child.setScale(.5f);
 				//reset the bounds, as suggested after scaling
@@ -322,9 +334,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 				// Keep track of the rectangle for returning to the maze screen
 				lastRec = m;
 				// select a random level
-				game.selectLevel();
+				selectLevel();
 				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
-				levelScreen.setCurrentLevel(game.getCurrentLevel());
+				levelScreen.setCurrentLevel(currentLevel);
 				return true;
 			}
 		}
@@ -358,7 +370,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 			else text = "You ran out of hearts, try again!";
 			break;
 		case LEVEL:
-			text = game.getCurrentLevel().getDescription();
+			text = currentLevel.getDescription();
 			break;
 		default:
 			text = "";
@@ -618,6 +630,32 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		walkL = new Animation(animationSpeed, leftWalk);
 		
 	}
+	
+	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
+	public void selectLevel() {
+		// Pick a random level and reset it for play
+		currentLevel = levelSet.random();
+		currentLevel.resetLevel();
+	}
+	
+	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
+	public static void loadLevelSet(TGC_Engine game) {
+		FileHandle dirHandle;
+		if (Gdx.app.getType() == ApplicationType.Android) {
+			dirHandle = Gdx.files.internal("MazeAssets/UrbanMaze1");
+		} else {
+			// ApplicationType.Desktop ..
+			dirHandle = Gdx.files.internal("./bin/MazeAssets/UrbanMaze1");
+		}
+		// Grab the tiled map file
+		FileHandle mapFile = dirHandle.child(dirHandle.name() + ".tmx");
+		// Load level objects
+		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
+			game.getReader().setupNewFile(levelFile);
+			Level level = game.getReader().compileLevel();
+			levelSet.add(level);
+		}
+	}
 
 	public static void requestAssets(AssetManager manager) {
 		String format;
@@ -646,14 +684,14 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 		
 		// Child sprite
-		manager.load("MazeAssets/UrbanMaze1/Character Pink Girl.png", Texture.class);
+		manager.load("MazeAssets/" + activeMaze + "/Character Pink Girl.png", Texture.class);
 		
 		// Tiled map
-		manager.load("MazeAssets/UrbanMaze1/UrbanMaze1.tmx", TiledMap.class);
+		manager.load("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
 		
 		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
-		manager.load("MazeAssets/UrbanMaze1/backdrop.png", Texture.class);
+		manager.load("MazeAssets/" + activeMaze + "/backdrop.png", Texture.class);
 		// Minigame assets, load on maze select and levels constructed (into maze screen)
 		manager.load("LevelBackgrounds/black.png", Texture.class);
 		manager.load("LevelBackgrounds/Table.png", Texture.class);
@@ -661,6 +699,9 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
+		
+		// Load levels
+		loadLevelSet(ScreenAdapterManager.getInstance().game);
 	}
 
 }
