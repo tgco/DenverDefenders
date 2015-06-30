@@ -1,0 +1,55 @@
+<level name="Window" background="Window.png" description="Clean the dirt off the screen with the sponge!">
+	<!-- Rag -->
+	<object id="0" image="Sponge_REPLACEME.png" x="500" y="275">
+		<continuous>
+			<att type="collides" with="1,2,3,4,5,6" />
+		</continuous>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- Dirt -->
+	<object id="1" image="Dirt1.png" x="100" y="100">
+		<triggered>
+			<att type="destroy" on="collide_0_1" throws="destroy1" />
+		</triggered>
+	</object>
+	<object id="2" image="Dirt2.png" x="800" y="500">
+		<triggered>
+			<att type="destroy" on="collide_0_2" throws="destroy2" />
+		</triggered>
+	</object>
+	<object id="3" image="Dirt3.png" x="332" y="223">
+		<triggered>
+			<att type="destroy" on="collide_0_3" throws="destroy3" />
+		</triggered>
+	</object>
+	<object id="4" image="Dirt1.png" x="678" y="456">
+		<triggered>
+			<att type="destroy" on="collide_0_4" throws="destroy4" />
+		</triggered>
+	</object>
+	<object id="5" image="Dirt2.png" x="500" y="123">
+		<triggered>
+			<att type="destroy" on="collide_0_5" throws="destroy5" />
+		</triggered>
+	</object>
+	<object id="6" image="Dirt3.png" x="300" y="275">
+		<triggered>
+			<att type="destroy" on="collide_0_6" throws="destroy6" />
+		</triggered>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+		<cond val="destroy6" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

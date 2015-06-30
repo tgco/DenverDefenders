@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" nextobjectid="29">
+ <tileset firstgid="1" name="CitySet" tilewidth="32" tileheight="32">
+  <image source="TileE-1.png" width="512" height="512"/>
+  <tile id="169">
+   <objectgroup draworder="index">
+    <object id="0" x="6" y="11.3333" width="10.6667" height="12.6667"/>
+    <object id="0" x="16.6667" y="24.6667" width="14.6667"/>
+    <object id="0" x="19.3333" y="2" width="8" height="13.3333"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6D6FzVtF3JIWDVVVVXfPQFRnBc=
+  </data>
+ </layer>
+ <layer name="Road" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzFVztOAzEQ9ZXgBrAoFKn4KCjdSqBwlfC5AJ+CAgo+JRSAEBRQkAI4Q7gBewHGwo88jWa8C0ngSU/2Trx++8becTaE/8Ew8X3CzMxbVsIP6UdWE6Y37/BLs4R+9N6iPHj9cQE91u3Q717/p1gRrtK15bdHv3v9e+FLAz6k8evCDbrf8hvRCqO86jbizvDUN/oY18RvRCeM8qpbzNcWXgtvHO1C7ELX81sp3V4Y5VW3rPssHCjNvhqX85vepTI0BHRzaOJX5xmYEc7+Urcd7H3g6XJO5oTzjq5+rm5GdzERQJ6HlGfOyZJwOaPLz5XTXUsE4JN12e+uxA6FF2oNMB+eq1uju5nY1O+OxA6E50LUglvhm5EDC16e69Z3W2L7wjPyG+eSvRrf23KQ4gW1hRobofNs1Q32uyWxPeGpMZfUjFLe3zJXM5EXnWerbrBf7NdC5S5eY02t2qDrhLefK2d9sV+1LsC6fJ+uE95+9uoG9qvWbavriIUQjiJ1P8Lbz965DxQUZ12uhbk8a9Sd+wzEPb+5PGvUnfvsHXHoYs+9hmZn/7HwJOOXz3z2rvNs1e6C1jRdf6/DpfAq45fP/J7xDLpGpvlLq+Xxj8KnjF8+81kPsbq8erWD4f3PYfSs4JiwzqO/AJ1HU/lO8b5boDWt7xTvuwVanzMGhzw=
+  </data>
+ </layer>
+ <objectgroup name="Minigame" visible="0">
+  <object id="1" x="382" y="445" width="32" height="32"/>
+  <object id="3" x="385" y="160" width="32" height="32"/>
+  <object id="4" x="603" y="158" width="32" height="32"/>
+  <object id="5" x="702" y="508" width="32" height="32"/>
+  <object id="6" x="537" y="510" width="32" height="32"/>
+  <object id="7" x="618" y="703" width="32" height="32"/>
+  <object id="8" x="734" y="704" width="32" height="32"/>
+  <object id="9" x="678" y="799" width="32" height="32"/>
+  <object id="10" x="465" y="800" width="32" height="32"/>
+  <object id="11" x="351" y="694" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup color="#a4070b" name="Collision" visible="0">
+  <object id="12" x="417" y="193" width="284" height="317"/>
+  <object id="15" x="383" y="521" width="97" height="278"/>
+  <object id="16" x="379" y="480" width="34" height="34"/>
+  <object id="17" x="485" y="734" width="251" height="65"/>
+  <object id="18" x="508" y="542" width="258" height="160"/>
+  <object id="19" x="357" y="829" width="406" height="47"/>
+  <object id="20" x="276" y="480" width="77" height="353"/>
+  <object id="21" x="765" y="644" width="29" height="228"/>
+  <object id="24" x="737" y="151" width="101" height="388"/>
+  <object id="25" x="367" y="75" width="369" height="82"/>
+  <object id="26" x="288" y="159" width="95" height="285"/>
+  <object id="28" x="239" y="435" width="43" height="41"/>
+ </objectgroup>
+ <objectgroup name="HeroHeadquarters" visible="0">
+  <object id="27" x="289" y="447" width="30" height="30"/>
+ </objectgroup>
+</map>

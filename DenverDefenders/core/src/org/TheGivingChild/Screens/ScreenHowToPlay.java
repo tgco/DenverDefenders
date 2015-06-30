@@ -66,7 +66,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 			// Pick inScreen for button
 			int j = i/2;
 			ScreenAdapterEnums choice = null;
-			if (j == 0) choice = ScreenAdapterEnums.MAZE;
+			if (j == 0) choice = ScreenAdapterEnums.MAZE_SELECT;
 			else if (j == 1) choice = ScreenAdapterEnums.OPTIONS;
 			// Wrap in final for the listener 'closure'
 			final ScreenAdapterEnums inScreen = choice;

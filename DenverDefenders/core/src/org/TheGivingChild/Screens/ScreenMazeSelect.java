@@ -21,9 +21,9 @@ import com.badlogic.gdx.utils.Align;
 public class ScreenMazeSelect extends ScreenAdapter {
 	private TGC_Engine game;
 	// List of maze names for the super tots levels
-	private static String[] superTotsLevels = { "UrbanTots", "UrbanTots", "UrbanTots", "UrbanTots"};
+	private static String[] superTotsLevels = { "UrbanTots1", "UrbanTots2", "UrbanTots3" };
 	// List of maze names for the regular levels
-	private static String[] regularLevels = { "UrbanMaze1", "UrbanMaze1", "UrbanMaze1", "UrbanMaze1", "UrbanMaze1", "UrbanMaze1" };
+	private static String[] regularLevels = { "UrbanMaze1", "UrbanMaze2" };
 	// Array of created buttons for picking tots levels
 	private Table superTotsButtons;
 	// Array of created buttons for regularLevels
