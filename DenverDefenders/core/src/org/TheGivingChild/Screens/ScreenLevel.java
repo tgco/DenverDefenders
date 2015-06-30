@@ -36,11 +36,6 @@ public class ScreenLevel extends ScreenAdapter{
 	 */
 	@Override
 	public void hide() {
-		// Reset for next play
-		for(GameObject gameObject : currentLevel.getGameObjects()){
-			gameObject.resetObject();
-		}
-		//currentLevel = null;
 		logicPaused = true;
 	}
 	

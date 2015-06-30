@@ -55,9 +55,9 @@ public class ScreenMaze extends ScreenAdapter {
 	/** Map properties to get dimensions of maze */
 	private MapProperties properties;
 	/** Array of rectangles to store locations of collisions */
-	private Array<Rectangle> collisionRects = new Array<Rectangle>();
+	private Array<Rectangle> collisionRects;
 	/** Array of rectangle to store the location of miniGame triggers */
-	private Array<MinigameRectangle> minigameRects = new Array<MinigameRectangle>();
+	private Array<MinigameRectangle> minigameRects;
 	// The input processor that allows player movement on drag
 	private InputProcessor mazeInput;
 
@@ -72,7 +72,7 @@ public class ScreenMaze extends ScreenAdapter {
 	private Rectangle heroHQ;
 	
 	private Texture heartTexture;
-	private int playerHealth = 3;
+	private int playerHealth;
 	
 	//True if game progression logic is paused
 	private boolean logicPaused;
@@ -97,14 +97,27 @@ public class ScreenMaze extends ScreenAdapter {
 	 */
 
 	public ScreenMaze(){
+		game = ScreenAdapterManager.getInstance().game;
+		mazeInput = new MazeInputProcessor(this, this.game);
+		minigameRects = new Array<MinigameRectangle>();
+		collisionRects = new Array<Rectangle>();
+		mazeChildren = new Array<ChildSprite>();
+		followers = new Array<ChildSprite>();
+		spriteBatch = new SpriteBatch();
+		camera = new OrthographicCamera();
+		camera.update();
+	}
+	
+	// Must run before starting a new maze, sets state appropriately
+	public void init() {
 		logicPaused = true;
 		levelWon = false;
 		mazeWon = false;
 		currentLevel = null;
-		game = ScreenAdapterManager.getInstance().game;
-		mazeInput = new MazeInputProcessor(this, this.game);
+		playerHealth = 3;
+
 		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
-		
+
 		//Setup map properties
 		properties = map.getProperties();
 
@@ -114,30 +127,31 @@ public class ScreenMaze extends ScreenAdapter {
 
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-		spriteBatch = new SpriteBatch();
 		// Setup animations (textures were loaded during screen transition)
 		buildAnimations(game.getAssetManager(), 0.1f);
-		currentWalkSequence = walkD;
 		playerCharacter = new ChildSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
 		playerCharacter.setSpeed(4*pixHeight);
 		playerCharacter.setScale(.75f,.75f);
+		//mark it as the hero for following purposes
+		playerCharacter.setHero();
+
+		currentWalkSequence = walkD;
 
 		//Get the rect for the heros headquarters
 		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
 		heroHQ = startingRectangle.getRectangle();
 		playerCharacter.setPosition(heroHQ.x, heroHQ.y);
-		//mark it as the hero for following purposes
-		playerCharacter.setHero();
-		
-		// move camera to player
-		camera = new OrthographicCamera();
+
 		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
 		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 		camera.update();
+		
+		mazeChildren.clear();
+		followers.clear();
 
-		mazeChildren = new Array<ChildSprite>();
-		followers = new Array<ChildSprite>();
-
+		collisionRects.clear();
+		minigameRects.clear();
+		
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
 		for(int i = 0; i <collisionObjects.getCount(); i++) {
@@ -160,9 +174,8 @@ public class ScreenMaze extends ScreenAdapter {
 		}
 
 		populate();
-		
+
 		backdropTexture = game.getAssetManager().get("MazeAssets/" + activeMaze + "/backdrop.png");
-		
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 	}
 
@@ -173,7 +186,7 @@ public class ScreenMaze extends ScreenAdapter {
 		//chose a percentage to try and fill
 		float percentageToFill = .75f;
 		//make a variable to store the amount to fill, and fill as closely as possible. Clamp to low and high bounds
-		int chosenAmount = (int) Math.max(1f, Math.min(maxAmount, percentageToFill*maxAmount));
+		int chosenAmount = (int) Math.max(1f, percentageToFill*maxAmount);
 		//placeholder to see how many spots need filled still
 		int currentAmount = 0;
 		
@@ -183,7 +196,7 @@ public class ScreenMaze extends ScreenAdapter {
 			//if the rectangle is not occupied, then fill it
 			if(!toFill.isOccupied()){
 				//create a new child with the texture
-				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/Character Pink Girl.png",Texture.class));
+				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class));
 				//Scale down the child
 				child.setScale(.5f);
 				//reset the bounds, as suggested after scaling
@@ -558,6 +571,8 @@ public class ScreenMaze extends ScreenAdapter {
 	
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
 	public static void loadLevelSet(TGC_Engine game) {
+		// Clear old levels
+		levelSet.clear();
 		FileHandle dirHandle;
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze);
@@ -601,7 +616,7 @@ public class ScreenMaze extends ScreenAdapter {
 		}
 		
 		// Child sprite
-		manager.load("MazeAssets/" + activeMaze + "/Character Pink Girl.png", Texture.class);
+		manager.load("MazeAssets/" + activeMaze + "/childSprite.png", Texture.class);
 		
 		// Tiled map
 		manager.load("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);

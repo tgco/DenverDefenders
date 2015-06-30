@@ -51,6 +51,9 @@ public class ScreenTransition extends ScreenAdapter {
 	private Table factTable;
 	private Button nextButton;
 	
+	// If true, calls init on the screen about to be shown
+	private boolean initCall;
+	
 	// Constructor that builds a transition with a random fact
 	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
 		this.screenOut = screenOut;
@@ -66,6 +69,7 @@ public class ScreenTransition extends ScreenAdapter {
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
 		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), FACTS[rand.nextInt(FACTS.length)]);
+		initCall = false;
 	}
 	
 	// Constructor that builds a transition with given text
@@ -83,6 +87,25 @@ public class ScreenTransition extends ScreenAdapter {
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
 		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), text);
+		initCall = false;
+	}
+	
+	// Constructor that builds a transition with a random fact and calls init on screenIn
+	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, boolean initCall) {
+		this.screenOut = screenOut;
+		this.screenIn = screenIn;
+		this.initCall = initCall;
+		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+		transitionTextures = new Array<TextureRegion>();
+		batch = new SpriteBatch();
+		// Init the position of the transition textures to 0
+		transitionTextureX = 0;
+		state = TransitionState.CLOSING;
+		transitionTime = 0.3f;
+		rand = new Random();
+		// Get references to the transition textures from an asset manager
+		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
+		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), FACTS[rand.nextInt(FACTS.length)]);
 	}
 	
 	public void fillTransitionTextures(Array<TextureRegion> transitionTextures, AssetManager manager) {
@@ -167,7 +190,7 @@ public class ScreenTransition extends ScreenAdapter {
 			requestAssets();
 			state = TransitionState.CLOSED;
 		case CLOSED:
-			if (manager.update()) nextButton.setTouchable(Touchable.enabled);
+			processRequests();
 			break;
 		case OPENING:
 			ScreenAdapterManager.getInstance().getScreenFromEnum(screenIn).render(delta);
@@ -191,6 +214,18 @@ public class ScreenTransition extends ScreenAdapter {
 			return true;
 		}
 		return false;
+	}
+	
+	// Runs while the curtains are closed and the button is disabled
+	public void processRequests() {
+		if (manager.update()) {
+			nextButton.setTouchable(Touchable.enabled);
+			// Run init once if requested, assets are done loading by now
+			if (initCall) {
+				initCall = false;
+				( (ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(screenIn) ).init();
+			}
+		}
 	}
 	
 	// Adds a fact table and button to game stage

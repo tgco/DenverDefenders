@@ -110,6 +110,11 @@ public class Level {
 			gameObject.remove();
 		}
 		
+		// Reset for next play
+		for(GameObject gameObject : objects){
+			gameObject.resetObject();
+		}
+		
 		// Reset conditions
 		for (String cond : winConditions.keys()) {
 			winConditions.put(cond, false);

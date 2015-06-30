@@ -74,8 +74,8 @@ public class ScreenMazeSelect extends ScreenAdapter {
 					super.changed(event, actor);
 					// Set the active maze
 					ScreenMaze.activeMaze = levelNames[j];
-					// Create a transition
-					ScreenTransition selectToMaze = new ScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE);
+					// Create a transition with a requested maze init call
+					ScreenTransition selectToMaze = new ScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE, true);
 					game.setScreen(selectToMaze);
 				}
 			});
