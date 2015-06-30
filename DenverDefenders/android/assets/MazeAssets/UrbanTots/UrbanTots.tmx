@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" nextobjectid="18">
+ <tileset firstgid="1" name="CitySet" tilewidth="32" tileheight="32">
+  <image source="TileE-1.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Ground" width="25" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKHrH+qzLcdAwVVTVfXVAyhvz+4=
+  </data>
+ </layer>
+ <layer name="Road" width="25" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBiZYD8Qn8ODD1DBjr0Uyo/aMWrHqB3EAVz5+AwV7SDXjFE7Ru0YtYO2dpxnwF+fX6CCHYMVAACohC9U
+  </data>
+ </layer>
+ <layer name="Buildings" width="25" height="25">
+  <data encoding="base64" compression="zlib">
+   eJytlDlOBDEQRX0ACECChEUCCXK4AfQ0xCA1aMgmaIiRgBMAapZ0ApYLsEQQQQgRBMTNcoBhOQEQ8Fvyl6pLdrdHoqQne6waf39XtXNjzDPI7egjd8z1SOZADK7ANeiAdzH66Djmvv8ugQTcgXur99+xClLhIxE6jcA9IjBkYRTztsqjj9TqdKORWZ1Irev/00dsdZgzBaZFXh/oV/uFatBHonJmwKxYGwPjar8NsGnnTbBS4yMVa0XOAlhUuT2gV/zeBjs2n/u2K3zEprrmxfmHwYhaa5iyhvSmfSTGXXNXHRiZHeU90ZvLR2rKNWewDq6QPmSP6PPIvtoD++AAHHr29WnIHqnqqyNwDE7AKXiq0ciEhuyRqr46A+fgAlx24UN/13V9pd8t1lz3rdSQeVU+ElPuLeay5uzbUaVxA25Fnuwx7SMVNIUG99RvCzUewKM6l/Yxb+E9bXk09NtCjUycnaPWWLbwnnaVBueut8X3HmqNNQvvKVb5dTU3plwD11syAAbFXnU1l5Gp3ALXWzIBJsVe+v2tisiUa0D090IfL+AVvAXOQ4K9SB8f4BN8Bc5bAbAX6eMb/IDfwPl6AOxF+vgDZDWv0g==
+  </data>
+ </layer>
+ <objectgroup color="#3ba430" name="Minigame">
+  <object id="1" x="385" y="66" width="32" height="32"/>
+  <object id="3" x="382" y="223" width="32" height="32"/>
+  <object id="4" x="636" y="66" width="32" height="32"/>
+  <object id="5" x="640" y="356" width="32" height="32"/>
+  <object id="6" x="635" y="701" width="32" height="32"/>
+  <object id="7" x="385" y="698" width="32" height="32"/>
+  <object id="8" x="381" y="526" width="32" height="32"/>
+  <object id="9" x="383" y="384" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup color="#a43232" name="Collision">
+  <object id="10" x="73" y="67" width="308" height="310"/>
+  <object id="11" x="73" y="418" width="308" height="311"/>
+  <object id="12" x="419" y="99" width="217" height="607"/>
+  <object id="13" x="669" y="59" width="113" height="671"/>
+  <object id="14" x="376" y="6" width="291.5" height="57.5"/>
+  <object id="15" x="377.25" y="732.25" width="317.75" height="57.5"/>
+  <object id="16" x="48" y="384" width="94" height="36"/>
+ </objectgroup>
+ <objectgroup name="HeroHeadquarters">
+  <object id="17" x="157" y="381" width="32" height="32"/>
+ </objectgroup>
+</map>
