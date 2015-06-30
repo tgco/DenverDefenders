@@ -31,7 +31,7 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	// Table to hold the switch buttons
 	private Table switchTable;
 	// Size of the select level buttons
-	private static final float SELECT_BUTTON_SIZE = 1/3f * Gdx.graphics.getHeight();
+	private static final float SELECT_BUTTON_SIZE = 1/2f * Gdx.graphics.getHeight();
 	// Size of the switch buttons
 	private static final float SWITCH_BUTTON_WIDTH = Gdx.graphics.getWidth()/8f;
 	private static final float SWITCH_BUTTON_HEIGHT = Gdx.graphics.getHeight()/8f;
