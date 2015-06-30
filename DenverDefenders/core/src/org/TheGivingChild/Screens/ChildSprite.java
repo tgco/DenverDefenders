@@ -118,7 +118,6 @@ public class ChildSprite extends Sprite {
 			Float xDifference = Math.abs(nextPosition[0] - getX());
 			Float yDifference = Math.abs(nextPosition[1] - getY());
 			if(xDifference <= 2.5f && yDifference <= 2.5f){
-				//System.out.println("Polled new position");
 				nextPosition = leader.positionQueue.pollFirst();
 			}
 		}

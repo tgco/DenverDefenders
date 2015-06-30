@@ -3,13 +3,13 @@ package org.TheGivingChild.Screens;
 import java.util.Random;
 
 import org.TheGivingChild.Engine.AudioManager;
+import org.TheGivingChild.Engine.MazeInputProcessor;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,7 +28,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 /**
  *Maze screen that the user will navigate around.
@@ -36,13 +35,16 @@ import com.badlogic.gdx.utils.Array;
  *@author mtzimour
  */
 
-public class ScreenMaze extends ScreenAdapter implements InputProcessor {
+public class ScreenMaze extends ScreenAdapter {
 	/** Map to be displayed */
 	private TiledMap map;
 	/** Orthographic Camera to look at map from top down */
 	private OrthographicCamera camera;
 	/** Tiled map renderer to display the map */
 	private TiledMapRenderer mapRenderer;
+	// The width and height of tiles in pixels
+	private int pixHeight;
+	private int pixWidth;
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Animation walkD, walkR, walkU, walkL;
@@ -56,8 +58,8 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	private Array<Rectangle> collisionRects = new Array<Rectangle>();
 	/** Array of rectangle to store the location of miniGame triggers */
 	private Array<MinigameRectangle> minigameRects = new Array<MinigameRectangle>();
-	/** Vector to store the last touch of the user */
-	private Vector2 lastTouch = new Vector2();
+	// The input processor that allows player movement on drag
+	private InputProcessor mazeInput;
 
 	private TGC_Engine game;
 	private Array<ChildSprite> mazeChildren;
@@ -100,16 +102,15 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		mazeWon = false;
 		currentLevel = null;
 		game = ScreenAdapterManager.getInstance().game;
+		mazeInput = new MazeInputProcessor(this, this.game);
 		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
 		
 		//Setup map properties
 		properties = map.getProperties();
 
-		int mapTilesX = properties.get("width", Integer.class);
-		int mapTilesY = properties.get("height", Integer.class);
 		//width and height of tiles in pixels
-		int pixWidth = properties.get("tilewidth", Integer.class);
-		int pixHeight = properties.get("tileheight", Integer.class);
+		pixWidth = properties.get("tilewidth", Integer.class);
+		pixHeight = properties.get("tileheight", Integer.class);
 
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -142,7 +143,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		for(int i = 0; i <collisionObjects.getCount(); i++) {
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
-			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
+			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
 		}
 
 		//Setup array of minigame rectangles
@@ -381,84 +382,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		return text;
 	}
 
-	@Override
-	public boolean keyUp(int keycode) {
-		return true;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		if (character == 'e') {
-			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
-			game.setScreen(mazeToMain);
-		}
-		return true;
-	}
-
-	/**
-	 * Gets where a user first touched down on their device and 
-	 * saves its position as a vector.
-	 * @param screenX x coordinate of users down touch
-	 * @param screenY y coordinate of users down touch
-	 * @param pointer not used
-	 * @param button not used
-	 */
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		//Get vector of touch down to calculate change in movement during swipe
-		lastTouch = new Vector2(screenX, screenY);
-		return true;
-	}
-
-	/**
-	 * Gets where a user touches up from their device and saves
-	 * its position as a vector. Uses the touch up and the previous recorded
-	 * touch to determine what direction the swipe was in and sets the
-	 * players movement to the corresponding direction.
-	 * @param screenX x coordinate of users up touch
-	 * @param screenY y coordinate of users up touch
-	 * @param pointer not used
-	 * @param button not used
-	 */
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		//vectors contain the new position where the swipe ended
-		Vector2 newTouch = new Vector2(screenX, screenY);
-		//calculate the difference between the begin and end point
-		Vector2 delta = newTouch.cpy().sub(lastTouch);
-		//if the magnitude of x is greater than the y, then move the sprite in the horizontal direction
-		if (Math.abs(delta.x) > Math.abs(delta.y)) {
-			//if the change was positive, move right, else move left
-			if(delta.x > 0)  {
-				xMove =  playerCharacter.getSpeed();
-				currentWalkSequence = walkR;
-			}
-			if(delta.x <= 0) {
-				xMove = -playerCharacter.getSpeed();
-				currentWalkSequence = walkL;
-			}
-			//no vertical movement
-			yMove = 0;
-		}
-		//otherwise y>=x so move vertically 
-		else {
-			//move down if the change was positive, else move up
-			if(delta.y > 0)	{
-				yMove = -playerCharacter.getSpeed();
-				currentWalkSequence = walkD;
-			}
-			if(delta.y <= 0) {
-				yMove = playerCharacter.getSpeed();
-				currentWalkSequence = walkU;
-			}
-			//no horizontal movement
-			xMove = 0;
-		}
-		return true;
-	}
-
 	/**
 	 * Sets the maze to be shown, makes sure the player is not moving initially.
 	 * Sets all layers of the maze to visible. 
@@ -468,7 +391,7 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 	@Override
 	public void show(){
 		logicPaused = false;
-		Gdx.input.setInputProcessor(this);
+		Gdx.input.setInputProcessor(mazeInput);
 		
 		xMove = 0;
 		yMove = 0;
@@ -565,32 +488,6 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
 		collisionRects.clear();
 	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	/**Override the back button to show the main menu for Android*/
-	@Override
-	public boolean keyDown(int keyCode) {
-		if(keyCode == Keys.BACK){
-			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
-			game.setScreen(mazeToMain);
-	    }
-		return true;
-	}
 	
 	public void setLevelWon (boolean levelWon) {
 		this.levelWon = levelWon;
@@ -631,6 +528,25 @@ public class ScreenMaze extends ScreenAdapter implements InputProcessor {
 		}
 		walkL = new Animation(animationSpeed, leftWalk);
 		
+	}
+	
+	public ChildSprite getPlayerCharacter() {
+		return playerCharacter;
+	}
+	
+	// Sets move speed vars and animation
+	public void setPlayerMovement(float x, float y) {
+		this.xMove = x;
+		this.yMove = y;
+		
+		if (x != 0) {
+			if (x > 0) currentWalkSequence = walkR;
+			else currentWalkSequence = walkL;
+		}
+		else if (y != 0) {
+			if (y > 0) currentWalkSequence = walkU;
+			else currentWalkSequence = walkD;
+		}
 	}
 	
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
