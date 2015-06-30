@@ -13,17 +13,17 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 public enum ScreenAdapterEnums {
 	/**
-	 * The maze 'level' screen, returns a new ScreenMaze
+	 * Maze selction screen
 	 */
-	MAZE{
+	MAZE_SELECT {
 		@Override
 		protected ScreenAdapter getScreenInstance() {
-			return new ScreenMaze();
+			return new ScreenMazeSelect();
 		}
 		
 		@Override
 		protected void requestAssets(AssetManager manager) {
-			ScreenMaze.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+			ScreenMazeSelect.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
 		}
 	},
 	/**
@@ -67,6 +67,20 @@ public enum ScreenAdapterEnums {
 		@Override
 		protected void requestAssets(AssetManager manager) {
 			ScreenMain.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
+	},
+	/**
+	 * The maze 'level' screen, returns a new ScreenMaze
+	 */
+	MAZE{
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenMaze();
+		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenMaze.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
 		}
 	},
 	/**
