@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine.XML;
 
+import java.util.Random;
+
 import org.TheGivingChild.Engine.Attributes.Attribute;
 
 import com.badlogic.gdx.Gdx;
@@ -37,9 +39,28 @@ public class GameObject extends Actor implements Disposable{
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = args.get("image");
+		
 		// Set position based on screen pixels, xml is defined based on 1024x600 screen
-		float adjustedX = Float.parseFloat(args.get("x"))/1024f * Gdx.graphics.getWidth();
-		float adjustedY = Float.parseFloat(args.get("y"))/600f * Gdx.graphics.getHeight();
+		float x, y;
+		// Random check
+		Random rand = new Random();
+		if (args.get("x").matches("rand_\\d+_\\d+")) {
+			String[] split = args.get("x").split("_");
+			int lower = Integer.parseInt(split[1]);
+			int upper = Integer.parseInt(split[2]);
+			x = rand.nextInt(upper - lower) + lower;
+		} 
+		else x = Float.parseFloat(args.get("x"));
+		if (args.get("y").matches("rand_\\d+_\\d+")) {
+			String[] split = args.get("y").split("_");
+			int lower = Integer.parseInt(split[1]);
+			int upper = Integer.parseInt(split[2]);
+			y = rand.nextInt(upper - lower) + lower;
+		} 
+		else y = Float.parseFloat(args.get("y"));
+		
+		float adjustedX = x/1024f * Gdx.graphics.getWidth();
+		float adjustedY = y/600f * Gdx.graphics.getHeight();
 		position = new float[] { adjustedX, adjustedY };
 		
 		this.continuousAttributes = continuousAttributes;

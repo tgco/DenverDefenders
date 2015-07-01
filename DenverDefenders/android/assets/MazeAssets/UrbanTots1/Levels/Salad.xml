@@ -1,36 +1,36 @@
 <level name="Salad" background="Table.png" description="Move the healthy foods to the bowl!">
 	<!-- Good food -->
-	<object id="0" image="Watermellon1.png" x="100" y="100">
+	<object id="0" image="Watermellon1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_0" throws="destroy0" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="1" image="Cherry.png" x="500" y="300">
+	<object id="1" image="Cherry.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_1" throws="destroy1" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="2" image="Apple1.png" x="300" y="400">
+	<object id="2" image="Apple1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_2" throws="destroy2" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="3" image="Banana1.png" x="550" y="100">
+	<object id="3" image="Banana1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_3" throws="destroy3" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="4" image="Grape.png" x="410" y="344">
+	<object id="4" image="Grape.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_4" throws="destroy4" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="5" image="Kiwi.png" x="466" y="333">
+	<object id="5" image="Kiwi.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_10_5" throws="destroy5" />
 		</triggered>
@@ -38,19 +38,19 @@
 	</object>
 
 	<!-- Bad food -->
-	<object id="6" image="Sundae1.png" x="222" y="222">
+	<object id="6" image="Sundae1.png" x="rand_100_900" y="rand_110_500">
 		<triggered>
 			<att type="destroy" on="collide_10_6" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="7" image="Lollipop2.png" x="123" y="271">
+	<object id="7" image="Lollipop2.png" x="rand_100_900" y="rand_110_500">
 		<triggered>
 			<att type="destroy" on="collide_10_7" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="8" image="Candy2.png" x="654" y="356">
+	<object id="8" image="Candy2.png" x="rand_100_900" y="rand_110_500">
 		<triggered>
 			<att type="destroy" on="collide_10_8" throws="lose" />
 		</triggered>

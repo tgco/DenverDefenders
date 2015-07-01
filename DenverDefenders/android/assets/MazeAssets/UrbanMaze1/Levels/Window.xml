@@ -8,32 +8,32 @@
 	</object>
 
 	<!-- Dirt -->
-	<object id="1" image="Dirt1.png" x="100" y="100">
+	<object id="1" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_1" throws="destroy1" />
 		</triggered>
 	</object>
-	<object id="2" image="Dirt2.png" x="800" y="500">
+	<object id="2" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_2" throws="destroy2" />
 		</triggered>
 	</object>
-	<object id="3" image="Dirt3.png" x="332" y="223">
+	<object id="3" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_3" throws="destroy3" />
 		</triggered>
 	</object>
-	<object id="4" image="Dirt1.png" x="678" y="456">
+	<object id="4" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_4" throws="destroy4" />
 		</triggered>
 	</object>
-	<object id="5" image="Dirt2.png" x="500" y="123">
+	<object id="5" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_5" throws="destroy5" />
 		</triggered>
 	</object>
-	<object id="6" image="Dirt3.png" x="300" y="275">
+	<object id="6" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
 		<triggered>
 			<att type="destroy" on="collide_0_6" throws="destroy6" />
 		</triggered>
