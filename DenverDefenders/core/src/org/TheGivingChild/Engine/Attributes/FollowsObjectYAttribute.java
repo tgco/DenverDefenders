@@ -21,9 +21,9 @@ public class FollowsObjectYAttribute extends Attribute {
 			if(allObjects.get(i).getID() == id){
 				//object found, now decide which way to go
 				if(allObjects.get(i).getY()+(allObjects.get(i).getTextureHeight()/2) > myObject.getY() + (myObject.getTextureHeight()/2))
-					myObject.setVelocity(new float[] {myObject.getVelocity()[0],velocity});
+					myObject.setVelocity(myObject.getVelocity()[0], velocity);
 				else
-					myObject.setVelocity(new float[] {myObject.getVelocity()[0],-velocity});
+					myObject.setVelocity(myObject.getVelocity()[0], -velocity);
 			}
 		}
 		

@@ -2,7 +2,7 @@
 	<!-- Fruit -->
 	<object id="0" image="Apple1.png" x="rand_100_900" y="900">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -11,7 +11,7 @@
 	</object>
 	<object id="1" image="Banana1.png" x="rand_100_900" y="1000">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -20,7 +20,7 @@
 	</object>
 	<object id="2" image="Cherries1.png" x="rand_100_900" y="1100">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -29,7 +29,7 @@
 	</object>
 	<object id="3" image="Cherries2.png" x="rand_100_900" y="1200">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -38,7 +38,7 @@
 	</object>
 	<object id="4" image="Grapes_light.png" x="rand_100_900" y="1300">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -47,7 +47,7 @@
 	</object>
 	<object id="5" image="Icecream1.png" x="rand_100_900" y="1400">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>
@@ -56,7 +56,7 @@
 	</object>
 	<object id="6" image="Icecream1.png" x="rand_100_900" y="1500">
 		<continuous>
-			<att type="moves" vx="0" vy="-350" />
+			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
 		</continuous>
 		<triggered>

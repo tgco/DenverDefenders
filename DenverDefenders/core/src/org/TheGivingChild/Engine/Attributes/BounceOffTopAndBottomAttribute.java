@@ -15,11 +15,11 @@ public class BounceOffTopAndBottomAttribute extends Attribute {
 		if(myObject.getY() <= 0){//bottom
 			float[] temp = myObject.getVelocity();
 			temp[1] = Math.abs(temp[1]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}if(myObject.getY() + myObject.getTextureHeight() >= Gdx.graphics.getHeight()){//top
 			float[] temp = myObject.getVelocity();
 			temp[1] = -Math.abs(temp[1]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}
 	}
 }

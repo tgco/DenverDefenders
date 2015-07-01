@@ -16,19 +16,19 @@ public class BounceOffEdgeOfScreenAttribute extends Attribute {
 		if(myObject.getX() <= 0){//left
 			float[] temp = myObject.getVelocity();
 			temp[0] = Math.abs(temp[0]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}if(myObject.getX() + myObject.getTextureWidth() >= Gdx.graphics.getWidth()) {//right
 			float[] temp = myObject.getVelocity();
 			temp[0] = -Math.abs(temp[0]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}if(myObject.getY() <= 0){//bottom
 			float[] temp = myObject.getVelocity();
 			temp[1] = Math.abs(temp[1]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}if(myObject.getY() + myObject.getTextureHeight() >= Gdx.graphics.getHeight()){//top
 			float[] temp = myObject.getVelocity();
 			temp[1] = -Math.abs(temp[1]);
-			myObject.setVelocity(temp);
+			myObject.setVelocity(temp[0], temp[1]);
 		}
 	}
 	

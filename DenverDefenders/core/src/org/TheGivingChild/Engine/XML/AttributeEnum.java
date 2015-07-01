@@ -6,9 +6,7 @@ import org.TheGivingChild.Engine.Attributes.BounceOffTopAndBottomAttribute;
 import org.TheGivingChild.Engine.Attributes.CollidesAttribute;
 import org.TheGivingChild.Engine.Attributes.DestroyAttribute;
 import org.TheGivingChild.Engine.Attributes.FollowsObjectYAttribute;
-import org.TheGivingChild.Engine.Attributes.GravityAttribute;
 import org.TheGivingChild.Engine.Attributes.MovesAttribute;
-import org.TheGivingChild.Engine.Attributes.MovesOnSetPathAttribute;
 import org.TheGivingChild.Engine.Attributes.ScreenCheckAttribute;
 
 import com.badlogic.gdx.utils.ObjectMap;
@@ -58,25 +56,6 @@ public enum AttributeEnum {
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
 			return new BounceOffEdgeOfScreenAttribute(args);
-		}
-	},
-	/**
-	 * The attached object will move on a set path with the same speed as it's initial velocity
-	 */
-	MOVESONSETPATH {
-		@Override
-		public Attribute construct(ObjectMap<String, String> args) {
-			return new MovesOnSetPathAttribute(args);
-		}
-
-	},
-	/**
-	 * The attached object will have a constant downward acceleration
-	 */
-	GRAVITY{
-		@Override
-		public Attribute construct(ObjectMap<String, String> args) {
-			return new GravityAttribute(args);
 		}
 	},
 	/**

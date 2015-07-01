@@ -13,11 +13,20 @@ public class MovesAttribute extends Attribute {
 	}
 
 	public void update(Level level){
-		myObject.setPosition((myObject.getX() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[0]), (myObject.getY() + Gdx.graphics.getDeltaTime()*myObject.getVelocity()[1]));
+		// Update velocity
+		float vx = myObject.getVelocity()[0] + Gdx.graphics.getDeltaTime()*myObject.getAcceleration()[0];
+		float vy = myObject.getVelocity()[1] + Gdx.graphics.getDeltaTime()*myObject.getAcceleration()[1];
+		myObject.setVelocity(vx, vy);
+		
+		// Update position
+		float x = myObject.getX() + Gdx.graphics.getDeltaTime()*vx;
+		float y = myObject.getY() + Gdx.graphics.getDeltaTime()*vy;
+		myObject.setPosition(x, y);
 	}
 	
 	public void setup(GameObject myObject){
 		super.setup(myObject);
-		myObject.setVelocity(new float[] {Float.parseFloat(args.get("vx")),Float.parseFloat(args.get("vy"))});
+		myObject.setVelocity(Float.parseFloat(args.get("vx")), Float.parseFloat(args.get("vy")));
+		myObject.setAcceleration(Float.parseFloat(args.get("ax")), Float.parseFloat(args.get("ay")));
 	}
 }

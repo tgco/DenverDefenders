@@ -24,6 +24,7 @@ public class GameObject extends Actor implements Disposable{
 	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
 	private float[] initialVelocity;
+	private float[] acceleration;
 	private float[] position;
 	private float[] initialPosition;
 	private boolean disposed;
@@ -68,6 +69,7 @@ public class GameObject extends Actor implements Disposable{
 		
 		//initialize a velocity of 0
 		velocity = new float[] { 0, 0 };
+		acceleration = new float[] { 0, 0 };
 		
 		setPosition( position[0], position[1]);
 		initialPosition = position;
@@ -128,7 +130,7 @@ public class GameObject extends Actor implements Disposable{
 		disposed = true;
 	}
 	public void resetObject(){
-		setVelocity(initialVelocity);
+		setVelocity(initialVelocity[0], initialVelocity[1]);
 		setPosition(initialPosition[0], initialPosition[1]);
 		disposed = false;
 	}
@@ -138,9 +140,16 @@ public class GameObject extends Actor implements Disposable{
 	public float[] getVelocity() {
 		return velocity;
 	}
-	public void setVelocity(float[] newVelocity) {
-		velocity[0] = newVelocity[0];
-		velocity[1] = newVelocity[1];
+	public float[] getAcceleration() {
+		return acceleration;
+	}
+	public void setVelocity(float vx, float vy) {
+		velocity[0] = vx;
+		velocity[1] = vy;
+	}
+	public void setAcceleration(float ax, float ay) {
+		acceleration[0] = ax;
+		acceleration[1] = ay;
 	}
 	public Texture getTexture(){
 		return texture;
