@@ -5,9 +5,11 @@ import org.TheGivingChild.Engine.Attributes.BounceOffEdgeOfScreenAttribute;
 import org.TheGivingChild.Engine.Attributes.BounceOffTopAndBottomAttribute;
 import org.TheGivingChild.Engine.Attributes.CollidesAttribute;
 import org.TheGivingChild.Engine.Attributes.DestroyAttribute;
+import org.TheGivingChild.Engine.Attributes.FloorAttribute;
 import org.TheGivingChild.Engine.Attributes.FollowsObjectYAttribute;
 import org.TheGivingChild.Engine.Attributes.MovesAttribute;
 import org.TheGivingChild.Engine.Attributes.ScreenCheckAttribute;
+import org.TheGivingChild.Engine.Attributes.StopAttribute;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -83,6 +85,18 @@ public enum AttributeEnum {
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
 			return new ScreenCheckAttribute(args);
+		}
+	},
+	STOP {
+		@Override
+		public Attribute construct(ObjectMap<String, String> args) {
+			return new StopAttribute(args);
+		}
+	},
+	FLOOR {
+		@Override
+		public Attribute construct(ObjectMap<String, String> args) {
+			return new FloorAttribute(args);
 		}
 	};
 	

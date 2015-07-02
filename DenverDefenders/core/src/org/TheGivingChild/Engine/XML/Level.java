@@ -26,7 +26,7 @@ public class Level {
 	// Move into asset manager
 	private BitmapFont clockFont;
 	// Length for a level in seconds
-	private int levelTime = 4;
+	private int levelTime = 5;
 	
 	
 	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
