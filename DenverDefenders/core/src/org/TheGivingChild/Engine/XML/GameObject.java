@@ -9,7 +9,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 
 /**
@@ -17,7 +16,7 @@ import com.badlogic.gdx.utils.ObjectMap;
  * extends Actor
  * @author Mostly Kevin D
  */
-public class GameObject extends Actor implements Disposable{
+public class GameObject extends Actor {
 	/** Unique ID assigned to each GameObject*/
 	private int id;
 	private String imageFilename;
@@ -124,8 +123,6 @@ public class GameObject extends Actor implements Disposable{
 	public String getImageFilename() {
 		return imageFilename;
 	}
-
-	@Override
 	public void dispose(){
 		disposed = true;
 	}

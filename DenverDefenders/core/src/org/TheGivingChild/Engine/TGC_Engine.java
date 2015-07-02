@@ -82,7 +82,7 @@ public class TGC_Engine extends Game {
 	private Batch batch;
 	
 	// True if debugging features should be used
-	public boolean debug = true;
+	public boolean debug = false;
 
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
 	@Override
