@@ -1,0 +1,68 @@
+<level name="AvoidBricks" background="Table.png" description="Drag the hero to avoid the bricks!">
+	<!-- Hero -->
+	<object id="0" image="heroFlyRight.png" x="100" y="300">
+		<continuous>
+			<att type="collides" with="1,2,3,4,5,6" />
+		</continuous>
+		<input type="draggable" x="false" y="true" />
+	</object>
+
+	<!-- Bricks -->
+	<object id="1" image="brick.png" x="1000" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_1" throws="lose" />
+		</triggered>
+	</object>
+	<object id="2" image="brick.png" x="1300" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_2" throws="lose" />
+		</triggered>
+	</object>
+	<object id="3" image="brick.png" x="1600" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_3" throws="lose" />
+		</triggered>
+	</object>
+	<object id="4" image="brick.png" x="1900" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_4" throws="lose" />
+		</triggered>
+	</object>
+	<object id="5" image="brick.png" x="2200" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_5" throws="lose" />
+		</triggered>
+	</object>
+	<object id="6" image="brick.png" x="2500" y="rand_0_500">
+		<continuous>
+			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_6" throws="lose" />
+		</triggered>
+	</object>
+
+	<!-- win and lose -->
+	<win>
+		<cond val="timeout" />
+	</win>
+
+	<lose>
+		<cond val="lose" />
+	</lose>
+</level>
