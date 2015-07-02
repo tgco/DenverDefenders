@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class Level {
 	private String name;
-	private String packageName;
 	private String background;
 	private Array<GameObject> objects;
 	private ObjectMap<String, Boolean> winConditions;
@@ -31,7 +30,6 @@ public class Level {
 	
 	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
 		this.name = name;
-		packageName = null; // set on directory structure
 		this.objects = objects;
 		// Have objects register their triggered attributes in the map as observers
 		triggeredObservers = new ObjectMap<String, Array<Attribute> >();
@@ -128,7 +126,6 @@ public class Level {
 	//add the objects to the stage, allowing them to be drawn and have the listeners work
 	public void loadObjectsToStage() {
 		for(GameObject gameObject: objects){
-			// COUPLED TO THE MAIN CLASS STAGE, CHANGE THIS
 			ScreenAdapterManager.getInstance().game.getStage().addActor(gameObject);
 		}
 	}
@@ -150,10 +147,6 @@ public class Level {
 	
 	public String getLevelName(){
 		return name;
-	}
-
-	public String getPackageName(){
-		return packageName;
 	}
 	
 	public String getLevelImage(){

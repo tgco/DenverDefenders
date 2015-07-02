@@ -2,6 +2,7 @@ package org.TheGivingChild.Engine;
 
 import org.TheGivingChild.Engine.XML.GameObject;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -20,12 +21,12 @@ public enum InputListenerEnums{
 			//return a new input listener, overriding needed interactions
 			return(new InputListener(){
 				@Override
-				public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 					return true;
 				}
 				//touch up disposes the game object when it is clicked.
 				@Override
-				public void touchUp(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					object.dispose();
 				}
 			});
@@ -40,12 +41,12 @@ public enum InputListenerEnums{
 			final float vy = Float.parseFloat(args.get("vy"));
 			return(new InputListener() {
 				@Override
-				public boolean touchDown(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 					return true;
 				}
-				//touch up disposes the game object when it is clicked.
+				
 				@Override
-				public void touchUp(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer, int button) {
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					object.setVelocity(vx, vy);
 				}
 			});
@@ -62,7 +63,7 @@ public enum InputListenerEnums{
 			return(new DragListener() {
 				//drag moves the object to the new location that drag returns every update
 				@Override
-				public void drag(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y, int pointer) {
+				public void drag(InputEvent event, float x, float y, int pointer) {
 					float moveX = 0;
 					float moveY = 0;
 					if (dragX) moveX = x-object.getWidth()/2;
@@ -70,6 +71,28 @@ public enum InputListenerEnums{
 						
 					object.moveBy(moveX, moveY);
 				};
+			});
+		}
+	},
+	/** Allows the object to be flung **/
+	FLINGABLE {
+		@Override
+		public InputListener construct(final GameObject object, ObjectMap<String, String> args) {
+			final float sensitivity = Float.parseFloat(args.get("sensitivity"));
+			return(new InputListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					return true;
+				}
+				
+				@Override
+				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					// Find distance from center of object
+					float deltaX = x - object.getWidth()/2;
+					float deltaY = y - object.getHeight()/2;
+					// Set a velocity
+					object.setVelocity(sensitivity*deltaX, sensitivity*deltaY);
+				}
 			});
 		}
 	};
