@@ -13,6 +13,7 @@ public class BounceOffEdgeOfScreenAttribute extends Attribute {
 	}
 
 	public void update(Level level){
+		super.update(level);
 		if(myObject.getX() <= 0){//left
 			float[] temp = myObject.getVelocity();
 			temp[0] = Math.abs(temp[0]);

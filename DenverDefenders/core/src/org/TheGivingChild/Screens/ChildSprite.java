@@ -13,11 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
  * @author Jack Wesley Nelson
  */
 public class ChildSprite extends Sprite {
-	/**{@link #follow} is a boolean to keep track of whether the sprite is following something*/
-	private boolean follow;
 	/**{@link #saved} is a boolean to keep track of whether the sprite has been saved.*/
 	private boolean saved;
-	private Rectangle position;
 	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
 	private float moveSpeed;
 	/**{@link #positionQueue} is a Deque which contains previously visited positions for followers to reference.*/
@@ -31,9 +28,7 @@ public class ChildSprite extends Sprite {
 	 * @param childTexture The texture that the sprite will draw.
 	 */
 	public ChildSprite(Texture childTexture) {
-		super(childTexture);
-		position = new Rectangle();
-		follow = false;
+		super(childTexture);;
 		saved = false;
 		moveSpeed = 0;
 		positionQueue = new LinkedList<Float[]>();
@@ -41,36 +36,11 @@ public class ChildSprite extends Sprite {
 		isHero = false;
 	}
 	/**
-	 * Sets {@link #position} to the {@link Rectangle} passed.
-	 * @param pos {@link #position} will be set to this.
-	 */
-	public void setRectangle(Rectangle pos)
-	{
-		position = pos;
-	}
-	/**
-	 * Returns true if {@link #position} overlaps the passed in {@link Rectangle}.
-	 * @param test is checked against {@link #position} to see if they overlap.
-	 * @return
-	 */
-	public boolean mySpot(Rectangle test)
-	{
-		return (position.overlaps(test));
-	}
-	/**
 	 * Moves the {@link ChildSprite} to the position of the {@link MinigameRectangle} passed in.
 	 * @param rect contains the new position coordinates.
 	 */
 	public void moveTo(MinigameRectangle rect) {
 		this.setPosition(rect.getX(), rect.getY());
-	}
-	/**
-	 * Returns whether the {@link ChildSprite} is following someone.
-	 * @return
-	 */
-	public boolean getFollow()
-	{
-		return follow;
 	}
 	/**
 	 * {@link #followSprite(ChildSprite)} takes in a {@link ChildSprite} as someone to follow.
@@ -189,7 +159,6 @@ public class ChildSprite extends Sprite {
 	 */
 	public void setSaved(boolean isSaved) {
 		saved = isSaved;
-		follow = false;
 	}
 	/**
 	 * returns the scaled width.

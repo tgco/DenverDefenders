@@ -34,7 +34,10 @@ public abstract class Attribute {
 	 * @param	myObject	the GameObject that currently holds the given attribute
 	 * @param	allObjects	all of the gameObjects within the given level
 	 */
-	public abstract void update(Level level);
+	public void update(Level level) {
+		// Throw condition if there is one
+		if (throwCondition != null) level.throwCondition(throwCondition);
+	};
 	
 	public String getTrigger() { return trigger; }
 }

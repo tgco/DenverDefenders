@@ -20,8 +20,6 @@ public class MinigameRectangle extends Rectangle {
 	 */
 	public MinigameRectangle(float x, float y, float width, float height) {
 		super(x,y,width,height);
-		this.x = x;
-		this.y = y;
 	}
 	/**
 	 * @returns true if {@link #occupied} == True

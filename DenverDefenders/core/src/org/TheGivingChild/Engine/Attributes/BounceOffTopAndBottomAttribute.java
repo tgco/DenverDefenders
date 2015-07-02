@@ -12,6 +12,7 @@ public class BounceOffTopAndBottomAttribute extends Attribute {
 	}
 	
 	public void update(Level level){
+		super.update(level);
 		if(myObject.getY() <= 0){//bottom
 			float[] temp = myObject.getVelocity();
 			temp[1] = Math.abs(temp[1]);

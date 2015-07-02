@@ -16,8 +16,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -78,6 +80,9 @@ public class TGC_Engine extends Game {
 	private Viewport viewport;
 	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
 	private Batch batch;
+	
+	// True if debugging features should be used
+	public boolean debug = true;
 
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
 	@Override
@@ -114,7 +119,6 @@ public class TGC_Engine extends Game {
 
 		// READER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
-
 
 		//button stuff
 		bitmapFontButton = new BitmapFont();
@@ -184,6 +188,16 @@ public class TGC_Engine extends Game {
 		
 		stage.act();
 		stage.draw();
+		// DEBUG BOUNDS DRAWING
+		if (debug) {
+			ShapeRenderer debug = new ShapeRenderer();
+			debug.setAutoShapeType(true);
+			debug.begin();
+			for (Actor a : stage.getActors() ) {
+				debug.rect(a.getX(), a.getY(), a.getWidth(), a.getHeight());
+			}
+			debug.end();
+		}
 	}
 
 	/**

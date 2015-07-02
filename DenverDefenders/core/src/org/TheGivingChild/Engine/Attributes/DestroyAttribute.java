@@ -13,9 +13,8 @@ public class DestroyAttribute extends Attribute {
 
 	@Override
 	public void update(Level level) {
+		super.update(level);
 		myObject.dispose();
-		// Notify of this object destroy event
-		level.throwCondition(throwCondition);
 	}
 
 }

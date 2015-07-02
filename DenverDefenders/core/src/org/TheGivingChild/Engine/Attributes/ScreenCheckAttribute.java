@@ -32,7 +32,7 @@ public class ScreenCheckAttribute extends Attribute {
 		
 		// Throw condition
 		if (offScreen) {
-			level.throwCondition(throwCondition);
+			super.update(level);
 		}
 	}
 

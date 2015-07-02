@@ -13,6 +13,7 @@ public class MovesAttribute extends Attribute {
 	}
 
 	public void update(Level level){
+		super.update(level);
 		// Update velocity
 		float vx = myObject.getVelocity()[0] + Gdx.graphics.getDeltaTime()*myObject.getAcceleration()[0];
 		float vy = myObject.getVelocity()[1] + Gdx.graphics.getDeltaTime()*myObject.getAcceleration()[1];

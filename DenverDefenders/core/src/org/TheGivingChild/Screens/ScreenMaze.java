@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -130,6 +131,7 @@ public class ScreenMaze extends ScreenAdapter {
 		// Setup animations (textures were loaded during screen transition)
 		buildAnimations(game.getAssetManager(), 0.1f);
 		playerCharacter = new ChildSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
+		playerCharacter.setOrigin(0, 0);
 		playerCharacter.setSpeed(4*pixHeight);
 		playerCharacter.setScale(.75f,.75f);
 		//mark it as the hero for following purposes
@@ -197,13 +199,12 @@ public class ScreenMaze extends ScreenAdapter {
 			if(!toFill.isOccupied()){
 				//create a new child with the texture
 				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class));
-				//Scale down the child
+				child.setOrigin(0, 0);
 				child.setScale(.5f);
 				//reset the bounds, as suggested after scaling
 				child.setBounds(child.getX(), child.getY(), child.getWidth(), child.getHeight());
-				//set the position to the rectangle to fill
+				//set the position to the minigame rect
 				child.setPosition(toFill.x, toFill.y);
-				//Add the child to the array of mazeChildren
 				mazeChildren.add(child);
 				//Occupy the rectangle
 				toFill.setOccupied(child);
@@ -236,6 +237,18 @@ public class ScreenMaze extends ScreenAdapter {
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
+		
+		// Minigame rect debug
+		if (game.debug) {
+			ShapeRenderer debug = new ShapeRenderer();
+			debug.setAutoShapeType(true);
+			debug.setProjectionMatrix(camera.combined);
+			debug.begin();
+			for (MinigameRectangle m : minigameRects) {
+				debug.rect(m.getX(), m.getY(), m.getWidth(), m.getHeight());
+			}
+			debug.end();
+		}
 		
 		//character, children and hearts
 		spriteBatch.begin();

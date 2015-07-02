@@ -16,9 +16,9 @@ public class FloorAttribute extends Attribute {
 	@Override
 	public void update(Level level) {
 		if (myObject.getY() <= floorY) {
+			super.update(level);
 			myObject.setVelocity(0, 0);
 			myObject.setPosition(myObject.getX(), floorY + 1);
-			level.throwCondition(throwCondition);
 		}
 	}
 

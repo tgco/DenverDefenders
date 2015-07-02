@@ -23,6 +23,7 @@ public class CollidesAttribute extends Attribute {
 
 	@Override
 	public void update(Level level) {
+		super.update(level);
 		// Check collisions using bounding rectangle
 		Rectangle myRect = new Rectangle(myObject.getX(), myObject.getY(), myObject.getWidth(), myObject.getHeight());
 		for (int i = 0; i < collideIDs.size; i++) {

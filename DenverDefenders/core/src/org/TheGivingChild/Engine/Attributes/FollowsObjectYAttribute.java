@@ -13,6 +13,7 @@ public class FollowsObjectYAttribute extends Attribute {
 
 	@Override
 	public void update(Level level) {
+		super.update(level);
 		int id = Integer.parseInt(args.get("id"));
 		float velocity = Float.parseFloat(args.get("v"));
 		//find the object we want to follow
