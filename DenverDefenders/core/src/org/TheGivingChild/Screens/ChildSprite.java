@@ -3,6 +3,8 @@ package org.TheGivingChild.Screens;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.TheGivingChild.Engine.Maze.Vertex;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,6 +17,8 @@ import com.badlogic.gdx.math.Rectangle;
 public class ChildSprite extends Sprite {
 	/**{@link #saved} is a boolean to keep track of whether the sprite has been saved.*/
 	private boolean saved;
+	// True if this child has begun following
+	private boolean follow;
 	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
 	private float moveSpeed;
 	/**{@link #positionQueue} is a Deque which contains previously visited positions for followers to reference.*/
@@ -34,13 +38,14 @@ public class ChildSprite extends Sprite {
 		positionQueue = new LinkedList<Float[]>();
 		nextPosition = null;
 		isHero = false;
+		follow = false;
 	}
 	/**
 	 * Moves the {@link ChildSprite} to the position of the {@link MinigameRectangle} passed in.
 	 * @param rect contains the new position coordinates.
 	 */
-	public void moveTo(MinigameRectangle rect) {
-		this.setPosition(rect.getX(), rect.getY());
+	public void moveTo(Vertex tile) {
+		this.setPosition(tile.getX(), tile.getY());
 	}
 	/**
 	 * {@link #followSprite(ChildSprite)} takes in a {@link ChildSprite} as someone to follow.
@@ -159,6 +164,13 @@ public class ChildSprite extends Sprite {
 	 */
 	public void setSaved(boolean isSaved) {
 		saved = isSaved;
+	}
+	
+	public void setFollow(boolean b) {
+		this.follow = b;
+	}
+	public boolean getFollow() {
+		return this.follow;
 	}
 	/**
 	 * returns the scaled width.

@@ -5,6 +5,8 @@ import java.util.Random;
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MazeInputProcessor;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Maze.Maze;
+import org.TheGivingChild.Engine.Maze.Vertex;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
@@ -20,10 +22,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -43,9 +42,6 @@ public class ScreenMaze extends ScreenAdapter {
 	private OrthographicCamera camera;
 	/** Tiled map renderer to display the map */
 	private TiledMapRenderer mapRenderer;
-	// The width and height of tiles in pixels
-	private int pixHeight;
-	private int pixWidth;
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
 	private Animation walkD, walkR, walkU, walkL;
@@ -53,24 +49,18 @@ public class ScreenMaze extends ScreenAdapter {
 	private ChildSprite playerCharacter;
 	/** Values to store which direction the sprite is moving */
 	private float xMove, yMove;
-	/** Map properties to get dimensions of maze */
-	private MapProperties properties;
 	/** Array of rectangles to store locations of collisions */
 	private Array<Rectangle> collisionRects;
-	/** Array of rectangle to store the location of miniGame triggers */
-	private Array<MinigameRectangle> minigameRects;
 	// The input processor that allows player movement on drag
 	private InputProcessor mazeInput;
 
 	private TGC_Engine game;
 	private Array<ChildSprite> mazeChildren;
 	private Array<ChildSprite> followers;
-	private MinigameRectangle miniRec;
 	
 	private Texture backdropTexture;
 	
-	private MinigameRectangle lastRec;
-	private Rectangle heroHQ;
+	private ChildSprite lastChild;
 	
 	private Texture heartTexture;
 	private int playerHealth;
@@ -84,6 +74,8 @@ public class ScreenMaze extends ScreenAdapter {
 	
 	// The name of the maze which corresponds to the assets directory to look into
 	public static String activeMaze = "UrbanMaze1";
+	// The maze object that manages allowed movement
+	private Maze maze;
 	
     /**{@link #levelSet} is the container for levels to be played during a maze.*/
 	private static Array<Level> levelSet = new Array<Level>();
@@ -100,7 +92,6 @@ public class ScreenMaze extends ScreenAdapter {
 	public ScreenMaze(){
 		game = ScreenAdapterManager.getInstance().game;
 		mazeInput = new MazeInputProcessor(this, this.game);
-		minigameRects = new Array<MinigameRectangle>();
 		collisionRects = new Array<Rectangle>();
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
@@ -116,15 +107,12 @@ public class ScreenMaze extends ScreenAdapter {
 		mazeWon = false;
 		currentLevel = null;
 		playerHealth = 3;
+		lastChild = null;
 
 		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
 
-		//Setup map properties
-		properties = map.getProperties();
-
-		//width and height of tiles in pixels
-		pixWidth = properties.get("tilewidth", Integer.class);
-		pixHeight = properties.get("tileheight", Integer.class);
+		// Generate maze structure
+		maze = new Maze(map);
 
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -132,7 +120,7 @@ public class ScreenMaze extends ScreenAdapter {
 		buildAnimations(game.getAssetManager(), 0.1f);
 		playerCharacter = new ChildSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
 		playerCharacter.setOrigin(0, 0);
-		playerCharacter.setSpeed(4*pixHeight);
+		playerCharacter.setSpeed(4*maze.getPixHeight());
 		playerCharacter.setScale(.75f,.75f);
 		//mark it as the hero for following purposes
 		playerCharacter.setHero();
@@ -140,11 +128,10 @@ public class ScreenMaze extends ScreenAdapter {
 		currentWalkSequence = walkD;
 
 		//Get the rect for the heros headquarters
-		RectangleMapObject startingRectangle = (RectangleMapObject)map.getLayers().get("HeroHeadquarters").getObjects().get(0);
-		heroHQ = startingRectangle.getRectangle();
-		playerCharacter.setPosition(heroHQ.x, heroHQ.y);
+		Vertex heroHQVertex = maze.getHeroHQTile();
+		playerCharacter.setPosition(heroHQVertex.getX(), heroHQVertex.getY());
 
-		camera.setToOrtho(false,12*pixWidth,7.5f*pixHeight);
+		camera.setToOrtho(false,12*maze.getPixWidth(),7.5f*maze.getPixHeight());
 		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 		camera.update();
 		
@@ -152,7 +139,6 @@ public class ScreenMaze extends ScreenAdapter {
 		followers.clear();
 
 		collisionRects.clear();
-		minigameRects.clear();
 		
 		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
 
@@ -160,19 +146,6 @@ public class ScreenMaze extends ScreenAdapter {
 			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
 			Rectangle rect = obj.getRectangle();
 			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
-		}
-
-		//Setup array of minigame rectangles
-		MapObjects miniGameObjects = map.getLayers().get("Minigame").getObjects();
-		for(int i = 0; i <miniGameObjects.getCount(); i++) {
-			RectangleMapObject obj = (RectangleMapObject) miniGameObjects.get(i);
-			Rectangle rect = obj.getRectangle();
-
-			miniRec = new MinigameRectangle(rect.x, rect.y-pixHeight/2, rect.width, rect.height);
-			lastRec = new MinigameRectangle(rect.x, rect.y-pixHeight/2, rect.width, rect.height);
-
-			//Add spots that can trigger minigames
-			minigameRects.add(miniRec);
 		}
 
 		populate();
@@ -184,37 +157,38 @@ public class ScreenMaze extends ScreenAdapter {
 
 	public void populate() {
 		//get the amount of spots possible to fill
-		int maxAmount = minigameRects.size;
+		int maxAmount = maze.getMinigameTiles().size;
 		//chose a percentage to try and fill
 		float percentageToFill = .75f;
 		//make a variable to store the amount to fill, and fill as closely as possible. Clamp to low and high bounds
 		int chosenAmount = (int) Math.max(1f, percentageToFill*maxAmount);
-		//placeholder to see how many spots need filled still
-		int currentAmount = 0;
 		
-		while (currentAmount < chosenAmount) {
-			//chose a random rectangle
-			MinigameRectangle toFill = minigameRects.random();
-			//if the rectangle is not occupied, then fill it
-			if(!toFill.isOccupied()){
-				//create a new child with the texture
-				ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class));
-				child.setOrigin(0, 0);
-				child.setScale(.5f);
-				//reset the bounds, as suggested after scaling
-				child.setBounds(child.getX(), child.getY(), child.getWidth(), child.getHeight());
-				//set the position to the minigame rect
-				child.setPosition(toFill.x, toFill.y);
-				mazeChildren.add(child);
-				//Occupy the rectangle
-				toFill.setOccupied(child);
-				//increment the spots that have been filled
-				currentAmount++;
+		// Pick random tiles to fill
+		int currentAmount = 0;
+		Array<Vertex> fillThese = new Array<Vertex>();
+		while(currentAmount < chosenAmount) {
+			Vertex attempt = maze.getMinigameTiles().random();
+			if (!fillThese.contains(attempt, false)) {
+				fillThese.add(attempt);
+				currentAmount += 1;
 			}
 		}
+		
+		// Fill them
+		for (Vertex toFill : fillThese) {
+			//create a new child with the texture
+			ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class));
+			child.setOrigin(0, 0);
+			child.setScale(.5f);
+			//reset the bounds, as suggested after scaling
+			child.setBounds(child.getX(), child.getY(), child.getWidth(), child.getHeight());
+			//set the position to the minigame rect
+			child.setPosition(toFill.getX(), toFill.getY());
+			mazeChildren.add(child);
+			// Mark vertex
+			toFill.setOccupied(true);
+		}
 	}
-
-
 
 	/**
 	 * Draws the maze on the screen
@@ -237,18 +211,6 @@ public class ScreenMaze extends ScreenAdapter {
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
-		
-		// Minigame rect debug
-		if (game.debug) {
-			ShapeRenderer debug = new ShapeRenderer();
-			debug.setAutoShapeType(true);
-			debug.setProjectionMatrix(camera.combined);
-			debug.begin();
-			for (MinigameRectangle m : minigameRects) {
-				debug.rect(m.getX(), m.getY(), m.getWidth(), m.getHeight());
-			}
-			debug.end();
-		}
 		
 		//character, children and hearts
 		spriteBatch.begin();
@@ -294,10 +256,12 @@ public class ScreenMaze extends ScreenAdapter {
 		float spriteMoveY = playerCharacter.getY() + yMove*Gdx.graphics.getDeltaTime();
 		//rectangle around player sprite for collision check
 		Rectangle spriteRec = new Rectangle(spriteMoveX, spriteMoveY, playerCharacter.getWidth(), playerCharacter.getHeight());
+		// Hero hq collision rect
+		Rectangle heroHQ = new Rectangle(maze.getHeroHQTile().getX(), maze.getHeroHQTile().getY(), maze.getPixWidth(), maze.getPixHeight());
 		
 		// drop off at base if collision
 		if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
-			for (ChildSprite child: followers) {
+			for (ChildSprite child : followers) {
 				child.setSaved(true);
 				followers.removeValue(child, false);
 				playerCharacter.clearPositionQueue();
@@ -327,7 +291,7 @@ public class ScreenMaze extends ScreenAdapter {
 		 */
 		
 		// Minigame check
-		if (minigameCollisionCheck(spriteRec, minigameRects)) {
+		if (minigameCollisionCheck(spriteRec, mazeChildren)) {
 			return ScreenAdapterEnums.LEVEL;
 		}
 
@@ -356,11 +320,11 @@ public class ScreenMaze extends ScreenAdapter {
 	}
 	
 	// True if collide with minigame that is occupied, and sets state variables appropriately
-	public boolean minigameCollisionCheck(Rectangle player, Array<MinigameRectangle> gameRects) {
-		for(MinigameRectangle m : gameRects) {
-			if (m.isOccupied() && player.overlaps(m)) {
-				// Keep track of the rectangle for returning to the maze screen
-				lastRec = m;
+	public boolean minigameCollisionCheck(Rectangle player, Array<ChildSprite> children) {
+		for(ChildSprite child : children) {
+			if (!child.getFollow() && player.overlaps(child.getBoundingRectangle())) {
+				// Keep track of the child for returning to the maze screen
+				lastChild = child;
 				// select a random level
 				selectLevel();
 				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
@@ -421,74 +385,33 @@ public class ScreenMaze extends ScreenAdapter {
 		
 		xMove = 0;
 		yMove = 0;
-
-		if(allSaved(mazeChildren) || playerHealth <= 0) {
-			reset();
-		}
-		else {
-			/* BUG: RETURNING FROM MAIN TO A PAUSED GAME LOSES A HEART */
-			// Returned from level screen (assuming no back button presses or backgrounded)
-			if (levelWon) {
-				// won the minigame
-				//add the follower from this minigame panel
-				followers.add(lastRec.getOccupant());
-				levelWon = false;
-			} 
-			else if (lastRec.isOccupied()){
-				//lost the minigame
-				//find unoccupied minigame squares
-				Array<MinigameRectangle> unoccupied = new Array<MinigameRectangle>();
-				for (MinigameRectangle rect: minigameRects) {
-					if (!rect.isOccupied()) {
-						unoccupied.add(rect);
-					}
+		// Returned from level screen (assuming no back button presses or backgrounded)
+		if (levelWon) {
+			// won the minigame
+			//add the follower from this minigame panel
+			followers.add(lastChild);
+			lastChild.setFollow(true);
+			maze.getTileAt(lastChild.getX(), lastChild.getY()).setOccupied(false);
+		} 
+		else if (lastChild != null){
+			//lost the minigame
+			//find unoccupied minigame squares
+			Array<Vertex> unoccupied = new Array<Vertex>();
+			for (Vertex tile: maze.getMinigameTiles()) {
+				if (!tile.isOccupied()) {
+					unoccupied.add(tile);
 				}
-
-				if (unoccupied.size > 0) {
-					// a space is available
-					Random rand = new Random();
-					int newPositionIndex = rand.nextInt(unoccupied.size);
-					unoccupied.get(newPositionIndex).setOccupied(lastRec.getOccupant());
-					ChildSprite child = unoccupied.get(newPositionIndex).getOccupant();
-					child.moveTo(unoccupied.get(newPositionIndex));
-				}
-				playerHealth--;
 			}
 
-			lastRec.empty();
+			if (unoccupied.size > 0) {
+				// a space is available
+				Random rand = new Random();
+				int newPositionIndex = rand.nextInt(unoccupied.size);
+				unoccupied.get(newPositionIndex).setOccupied(true);
+				lastChild.moveTo(unoccupied.get(newPositionIndex));
+			}
+			playerHealth--;
 		}
-		
-		for(MapLayer layer : map.getLayers()) {
-			layer.setVisible(true);
-		}
-		
-		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
-
-		for(int i = 0; i < collisionObjects.getCount(); i++) {
-			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
-			Rectangle rect = obj.getRectangle();
-			collisionRects.add(new Rectangle(rect.x-2, rect.y, rect.width, rect.height));
-		}
-	}
-
-	public void reset() {
-		mazeChildren.clear();
-		//empty any positional queue information the followers are holding.
-		for(ChildSprite f: followers){
-			f.clearPositionQueue();
-		}
-		//empty they pc's positional queue
-		playerCharacter.clearPositionQueue();
-		//empty the array of followers.
-		followers.clear();
-		//clear the minigames
-		for (MinigameRectangle rect: minigameRects) {
-			rect.empty();
-		}
-		playerHealth = 3;
-		playerCharacter.setPosition(heroHQ.x,heroHQ.y);
-		mazeWon = false;
-		populate();
 	}
 
 	/**
@@ -512,7 +435,6 @@ public class ScreenMaze extends ScreenAdapter {
 		// Pause logic for transition drawing
 		logicPaused = true;
 		Gdx.input.setInputProcessor(ScreenAdapterManager.getInstance().game.getStage());
-		collisionRects.clear();
 	}
 	
 	public void setLevelWon (boolean levelWon) {

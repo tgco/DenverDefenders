@@ -2,6 +2,16 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="43">
  <tileset firstgid="1" name="CitySet" tilewidth="32" tileheight="32">
   <image source="TileE-1.png" width="512" height="512"/>
+  <tile id="169">
+   <properties>
+    <property name="heroHQ" value=""/>
+   </properties>
+  </tile>
+  <tile id="205">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Ground" width="40" height="40">
   <data encoding="base64" compression="zlib">
@@ -10,27 +20,14 @@
  </layer>
  <layer name="Road" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJztl0kOwjAMRXN9hgswXIDhBoBgDwKOhNlVVe3Y8dAK/KS/qJT+/jqDnFKSJEliuIKeQp2Y424G+S6O77R4Sz2G6vs28rbw0HzjH/K9Cr32uXM5hEU+T88x881Ac9ACtFR6SeB6rkBr0Aa0VXpJ4HruQHvQAXRUekmQeHrufQvP7ljNOS6hNZ9Hrb70//te+L3AIyCfZg1F1G/q+WpQeyBifmtQNeo+n0tcz4qdEVS+yJ6V6z1WPszjV/Nhe4pD7dy1yEd5tNBSP623hUfm49G/M2H9EjaOkkfPlSTJNPgAcdKYEA==
+   eJztWO0OwiAM5FF5tP32FXSR/y5zj+SMMDsy2sIKLrOXNHFrOc7jU41RKBSKNrjP0RvTvWM0xoXPWFyZbZyAvpknm4bbps8lLugr+At9mpjcc5uutr49HrTw79f6nh8e68fP+rlvQ3DHspa+DU4nyCWOf9InsX5jnMm/C80ljhx9sH+/j1uptY/06TJqi9rlIP7ej+gZ7odjlBsa6NtzfsBcjbXqeS2W5+qr5R8FbA20GF8KmEcwdzPfO+tW+LkrdWddeKf1+xU9nHMt76wIt4uekzmEQ0JH6r1L1R1dH7a/jCCGVFG6z2XuhkhxCPnHqiM4WNwlY9VSX8mZcXT/qPOKg/Cbibov+Tryf4TUfqpQKM6FFxW11bs=
   </data>
  </layer>
  <layer name="Buildings" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJzVV7uOUzEQ9QdkS6iADnr4A9go1DwUtLtNJFDoWWgoWZBSs0rPNyw/sII/4NEAFU8JqKADCo6FRzqazIztJKDlSEczvvZ15o7PWJODlNKBwceOjeit4T0837NPHD51bERvDe/h+Z79ltKjt+AzMB0hSP6+I6534PMjFl+UvwG4QWsHZAc0FmykRehn1poIUf5OgCfBUzQWK9wqTLR2i8jvJ2NcQ5S/Tfh/i63x/c/6G8L3+BHzn8o69jF3eBb2nPFbo8KMi4WMY+DxjvhmAT3k+M7DXjDmxoUZ1woZp8EzHfFF+cvzI9qH/Uvg5eJvgzvFnxZm3CxkrDt/Y9pH/Ltqf46Pzxc1MsnktVH+lqmPqeFH8fH5rqo/fNtha5wRvPNdVX8SH9eiV5ct8c3VWa6qP4mPa5H9bcWdVAd/X6v+vPtZ4uNaZJ/RGh9/3zr1N1LWw7yiWf6+Vv1J/qL4xsq+AF8atge9+vPON2Oq7Hvwg2EZrLWhkdfe+2/d/TNrTeLTNdVSWy39S6v+GKw1K3+CWnwt+WP9WXeg9C/cxzByfMtq9h64lxbzx++z/nRv0pLTHF+LZi08BPfTYv74fY5V34GS21fga/BNGdfuGgtXwKvKl/xF90v0rZLbz+AX8KuxZhb0Y8M/85PsXwdvlOfie/nz+gNdK2J/gD/BX2XMOpX4rH6M47Pg6Y/j0z2SZeU/nKxjnUp8kus5+Ryfdb5e/ry613c194Bz8lmnM7oT9HcwrPP18udB16uMdX0wZpU9N4O5QH8TIWspn6d13l59SO3rvlrAe/fUL4O1NFVzMtb1Iajdc7x3VL/R+bKWvP+9LbC05/WUAi9/rT2ngPXQ8VoVnv5WxW3wTofvoUV/y+A++KDD99B7//1rWPffLsa3KtRrdg1f29oe1vuSP4mTbUS9Zs/wa/vVnrOVONlG1Gv2Db+2X+0529+gOh4P
+   eJzVV7uOUzEQ9QdkS6iADnr4A9go1DwUtEsTCRR6FhpKFqTwqFil4FHQIqiWH1jBH/BogIqnBFTQAQXHwiMdTWbGvsmCliMdzTie68wdn3GczZTSpsHHjo3oxfAanu/ZJw6fOjaiF8NreL5nv6V0/y34DEw7CFK/78jrHfh8h+UX1a8HLlFsj2yPxoKlNAv9mRUTIarfHnAvuI/GYoUrhYliV4j8fDLGNUT1W4b/t9ia3/+svz58jx8x/6nEsY+5rYOwh4zvGhRmHC1k7AJ3d8hvEtBDzu8w7BFjbliYcaqQsR880CG/qH55fkDrsH8MPF78VfB08ceFGecKGdtdvyGtI/4ltT7nx/uLHhllcmxUv3n6Y2z4UX68v4vqD++21ZpnBG9/F9Wf5Me96PVlS35TtZeL6k/y415kf1VRanQNvA7eAG+q7+L3a9Wfdz5LftyL7DM4v9vgHfAueE/F8fttp/4GynrAHm49KP5D8JGa5/dr1Z/UL8pvqOwL8KVhu6Cr/rz9zRgr+x78YFgGa61vnAVdz7/tvj+z1iQ/3VO6tyy03F9a9cdgrVn1E9Tya6kf6886A+X+wvcYRs5vXs1eBtfTbP34edafvpu01DTn16JZC7fAjTRbP36ec9VnoNT2FfgafFPG0zl+H0+AJ5Uv9YvOl+hdpbafwS/gVyNmEtzH+n/mR9k/A54tn4vv1c+7H+heEfsD/An+KmPWqeRn3cc4Pwue/jg/fUeyrPyHkzjWqeQntZ6Sz/lZ++vVz+t7fVbzHXBKPut0QmeCfg+Gtb9e/TzofpWx7g/GpLLmcjAX6G8kZC3l/bT22+sP6X19rxbw2l36l8FaGqs5Gev+ENTOOV476t9of1lL3v/eFlja8+6UAq9+td9FDdZDh8eq8PS3KC6AFzv4Hlr0Nw+ugFc7+B66nn//Gtb5t4bx+Qp1zJrha1tbw3pe6id5so2oY9YNv7Ze7XO2kifbiDpmw/Br69U+Z/sbaYEkow==
   </data>
  </layer>
- <objectgroup name="Minigame">
-  <object id="1" x="606.667" y="638.667" width="32" height="32"/>
-  <object id="2" x="476" y="1054.67" width="32" height="32"/>
-  <object id="3" x="278.667" y="798.667" width="32" height="32"/>
-  <object id="4" x="129.333" y="708" width="32" height="32"/>
-  <object id="5" x="196" y="928" width="32" height="32"/>
-  <object id="6" x="930.667" y="896" width="32" height="32"/>
-  <object id="7" x="704" y="929.333" width="32" height="32"/>
-  <object id="8" x="858.667" y="225.333" width="32" height="32"/>
-  <object id="9" x="540" y="284" width="32" height="32"/>
-  <object id="10" x="130.667" y="228" width="32" height="32"/>
-  <object id="11" x="253.333" y="386.667" width="32" height="32"/>
- </objectgroup>
  <objectgroup color="#a4291d" name="Collision">
   <object id="12" x="89.3333" y="164" width="833.333" height="61.3333"/>
   <object id="13" x="157.333" y="290.667" width="229.333" height="94.6667"/>
@@ -62,8 +59,5 @@
   <object id="39" x="509.333" y="764" width="101.333" height="317.333"/>
   <object id="40" x="593.333" y="1084" width="465.333" height="36"/>
   <object id="41" x="1052" y="774.667" width="85.3333" height="313.333"/>
- </objectgroup>
- <objectgroup color="#13a417" name="HeroHeadquarters">
-  <object id="42" x="612" y="545.333" width="30" height="30"/>
  </objectgroup>
 </map>
