@@ -28,16 +28,4 @@
    eJzNl79PFEEUx6fDVhPEVhLp8T8Az1hchcnFAI2N8R+AhhoSRVoKfhTbEii10OoKKKD0pEGqPWiA6q4TC7+T7MjXdzOz89hN1m/yyZvZebf3vX1vZnO5MSYH/Qh5Qk4V3L0HBcMIKTlVGNzFDL6y78A0JK2XBbD4n3ipw89D8MgzbqJGT8GkZ6zxwr/BNw9pGjxPyNN44d/gm4c0A2Zr8PKyoEzj4DHN+VnMgdee6yleuDc7BVYvsObDrj0DU3Tf0LOIPaMyL+8KCi8jwrWuG6/QdfcsPoJ18AlsmH+fkew3OkcznL9ZT3jhGlkvS2CZInvxaQtsgx2wK9ZkvylrZFbBGsUyL3tF3AcHscSAF1731WiT1p0Xrk+qQjVK2UexfnH7SMb5iJeUGnG+qNFbH3bN7SMZY16kNDWqU/I8Yi+8j0Kf/wq+UbRqFzF09vjOIit5HrGXlHfAMTihiB7uOi8fRG7ZvIXvaYnvqvqebpeneBWrkcYL72npRZ6FLkpVrZHVGHgQ8PLKjJ6FLkppasTvZh5PgCcBL29o/Bl8oTn3u5WmRh3K6Ziw2Mt7Gh+CI5q7fnfS1IjPFB7HalQm7jNfjXLz93/PSL/4+i5WI41CNQp5CfWd1A9wCs7AT3Auxm7dRatYjXznru+/h6yR1QW4BFfgGtyIsVt3MaSq+4j1C9yC32Kcqqr7qE5p91ETXpqQr3fhx8TolazfF+clV9BX5mvvPVAwVOZr7/0HvxXa+A==
   </data>
  </layer>
- <objectgroup color="#a41027" name="Collision">
-  <object id="9" x="288" y="290.667" width="190.667" height="218.667"/>
-  <object id="11" x="509.333" y="544" width="322.667" height="253.333"/>
-  <object id="12" x="510.667" y="258.667" width="224" height="253.333"/>
-  <object id="13" x="768" y="384" width="98.6667" height="126.667"/>
-  <object id="14" x="864" y="449.333" width="82.6667" height="385.333"/>
-  <object id="15" x="737.333" y="350.667" width="32" height="30.6667"/>
-  <object id="16" x="206.667" y="150.667" width="360" height="102.667"/>
-  <object id="17" x="148" y="257.333" width="110.667" height="294.667"/>
-  <object id="18" x="261.333" y="545.333" width="214.667" height="301.333"/>
-  <object id="19" x="469.333" y="830.667" width="394.667" height="129.333"/>
- </objectgroup>
 </map>

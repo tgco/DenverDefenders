@@ -33,18 +33,4 @@
    eJy1V9tRw0AMvJagA0gFPH6SL89ACTwaILwbAPLhXwaKSC12B3EDrMcWiB2d7mzHO7NjR5Jvo9Od7KtCCBVYK1bKZl053mLsebBowB3uWzaK2mZdOd5i7Pmq02xZ4r6EKSzBVZgXKt9/ukJPPycmBivfIeMuDeb8D09Xxp1jzlO6HhYdS4fblC5qXNakewaeJ3QF1rxoXfZzvgewHfa+C/BSxd6At6Sr4wViy8lXdI9gO+59nO89+AA+Kl0dLxCbp8v76AS2097H+fJctbo6XiC2Iflq35D6RvyjdCXfV/g34Dc4Rtdac1a/Eki+L/B/gF+OLq+5XF1rH0m+z/C/kybr8ppL6ebU9wn+N/DTyBcsHE7Kdw54fcNbz4u/61b/zgWvK90HvHw9XZlXq5cJOF/dBzjfa8St+xpbulddzK+u1ctYN6e+GLe4c3ThC2sVb/UyQc7+tbCv+qby9d47Y5Dbn733jkDqqxHr0bn19d47Aq5vju6Y75wp2Jeu/pZc0b2na81zrt6U72c57zDrhJ3PQdYZyht7F2GTsPM5yDpDeWP/AAX8YtE=
   </data>
  </layer>
- <objectgroup color="#a4070b" name="Collision">
-  <object id="12" x="417" y="193" width="284" height="317"/>
-  <object id="15" x="383" y="521" width="97" height="278"/>
-  <object id="16" x="379" y="480" width="34" height="34"/>
-  <object id="17" x="485" y="734" width="251" height="65"/>
-  <object id="18" x="508" y="542" width="258" height="160"/>
-  <object id="19" x="357" y="829" width="406" height="47"/>
-  <object id="20" x="276" y="480" width="77" height="353"/>
-  <object id="21" x="765" y="644" width="29" height="228"/>
-  <object id="24" x="737" y="151" width="101" height="388"/>
-  <object id="25" x="367" y="75" width="369" height="82"/>
-  <object id="26" x="288" y="159" width="95" height="285"/>
-  <object id="28" x="239" y="435" width="43" height="41"/>
- </objectgroup>
 </map>

@@ -28,36 +28,4 @@
    eJzVV7uOUzEQ9QdkS6iADnr4A9go1DwUtEsTCRR6FhpKFqTwqFil4FHQIqiWH1jBH/BogIqnBFTQAQXHwiMdTWbGvsmCliMdzTie68wdn3GczZTSpsHHjo3oxfAanu/ZJw6fOjaiF8NreL5nv6V0/y34DEw7CFK/78jrHfh8h+UX1a8HLlFsj2yPxoKlNAv9mRUTIarfHnAvuI/GYoUrhYliV4j8fDLGNUT1W4b/t9ia3/+svz58jx8x/6nEsY+5rYOwh4zvGhRmHC1k7AJ3d8hvEtBDzu8w7BFjbliYcaqQsR880CG/qH55fkDrsH8MPF78VfB08ceFGecKGdtdvyGtI/4ltT7nx/uLHhllcmxUv3n6Y2z4UX68v4vqD++21ZpnBG9/F9Wf5Me96PVlS35TtZeL6k/y415kf1VRanQNvA7eAG+q7+L3a9Wfdz5LftyL7DM4v9vgHfAueE/F8fttp/4GynrAHm49KP5D8JGa5/dr1Z/UL8pvqOwL8KVhu6Cr/rz9zRgr+x78YFgGa61vnAVdz7/tvj+z1iQ/3VO6tyy03F9a9cdgrVn1E9Tya6kf6886A+X+wvcYRs5vXs1eBtfTbP34edafvpu01DTn16JZC7fAjTRbP36ec9VnoNT2FfgafFPG0zl+H0+AJ5Uv9YvOl+hdpbafwS/gVyNmEtzH+n/mR9k/A54tn4vv1c+7H+heEfsD/An+KmPWqeRn3cc4Pwue/jg/fUeyrPyHkzjWqeQntZ6Sz/lZ++vVz+t7fVbzHXBKPut0QmeCfg+Gtb9e/TzofpWx7g/GpLLmcjAX6G8kZC3l/bT22+sP6X19rxbw2l36l8FaGqs5Gev+ENTOOV476t9of1lL3v/eFlja8+6UAq9+td9FDdZDh8eq8PS3KC6AFzv4Hlr0Nw+ugFc7+B66nn//Gtb5t4bx+Qp1zJrha1tbw3pe6id5so2oY9YNv7Ze7XO2kifbiDpmw/Br69U+Z/sbaYEkow==
   </data>
  </layer>
- <objectgroup color="#a4291d" name="Collision">
-  <object id="12" x="89.3333" y="164" width="833.333" height="61.3333"/>
-  <object id="13" x="157.333" y="290.667" width="229.333" height="94.6667"/>
-  <object id="14" x="157.333" y="253.333" width="385.333" height="34.6667"/>
-  <object id="15" x="612" y="252" width="250.667" height="284"/>
-  <object id="16" x="572" y="252" width="36" height="386.667"/>
-  <object id="17" x="414.667" y="317.333" width="152" height="321.333"/>
-  <object id="18" x="285.333" y="413.333" width="125.333" height="225.333"/>
-  <object id="19" x="109.333" y="413.333" width="145.333" height="228"/>
-  <object id="20" x="80" y="228" width="49.3333" height="186.667"/>
-  <object id="21" x="637.333" y="537.333" width="225.333" height="42.6667"/>
-  <object id="22" x="637.333" y="582.667" width="64" height="476"/>
-  <object id="23" x="892" y="229.333" width="89.3333" height="373.333"/>
-  <object id="24" x="732" y="604" width="402.667" height="166.667"/>
-  <object id="25" x="484" y="668" width="126.667" height="73.3333"/>
-  <object id="26" x="414.667" y="668" width="68" height="388"/>
-  <object id="27" x="316" y="829.333" width="93.3333" height="229.333"/>
-  <object id="28" x="284" y="830" width="54.6667" height="30"/>
-  <object id="29" x="124" y="802.667" width="164" height="126.667"/>
-  <object id="30" x="158.667" y="666.667" width="228" height="130.667"/>
-  <object id="31" x="732" y="798.667" width="197.333" height="260"/>
-  <object id="32" x="932" y="797.333" width="96" height="101.333"/>
-  <object id="33" x="933.333" y="926" width="93.3333" height="132.667"/>
-  <object id="34" x="704" y="966.667" width="66.6667" height="90.6667"/>
-  <object id="35" x="118.667" y="744" width="38.6667" height="36"/>
-  <object id="36" x="98.6667" y="646.667" width="32" height="332"/>
-  <object id="37" x="130.667" y="957.333" width="158.667" height="142.667"/>
-  <object id="38" x="294.667" y="1084" width="213.333" height="57.3333"/>
-  <object id="39" x="509.333" y="764" width="101.333" height="317.333"/>
-  <object id="40" x="593.333" y="1084" width="465.333" height="36"/>
-  <object id="41" x="1052" y="774.667" width="85.3333" height="313.333"/>
- </objectgroup>
 </map>

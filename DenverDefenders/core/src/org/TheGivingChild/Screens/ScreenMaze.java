@@ -54,8 +54,6 @@ public class ScreenMaze extends ScreenAdapter {
 	private Direction targetDirection;
 	// The target tile the character is moving to
 	private Vertex target;
-	/** Array of rectangles to store locations of collisions */
-	private Array<Rectangle> collisionRects;
 	// The input processor that allows player movement on drag
 	private InputProcessor mazeInput;
 
@@ -97,7 +95,6 @@ public class ScreenMaze extends ScreenAdapter {
 	public ScreenMaze(){
 		game = ScreenAdapterManager.getInstance().game;
 		mazeInput = new MazeInputProcessor(this, this.game);
-		collisionRects = new Array<Rectangle>();
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 		spriteBatch = new SpriteBatch();
@@ -146,16 +143,6 @@ public class ScreenMaze extends ScreenAdapter {
 
 		mazeChildren.clear();
 		followers.clear();
-
-		collisionRects.clear();
-
-		MapObjects collisionObjects = map.getLayers().get("Collision").getObjects();
-
-		for(int i = 0; i <collisionObjects.getCount(); i++) {
-			RectangleMapObject obj = (RectangleMapObject) collisionObjects.get(i);
-			Rectangle rect = obj.getRectangle();
-			collisionRects.add(new Rectangle(rect.x, rect.y, rect.width, rect.height));
-		}
 
 		populate();
 
@@ -221,20 +208,22 @@ public class ScreenMaze extends ScreenAdapter {
 		//render the map
 		mapRenderer.render();
 
-		//character, children and hearts
+		// character, children and hearts
 		spriteBatch.begin();
 
-		//following children
+		// following children
 		if(followers.size != 0) {
-			for(Sprite f: followers) {
-				f.draw(spriteBatch);
+			for(ChildSprite f: followers) {
+				spriteDrawWithOffset(f, spriteBatch);
 			}
 		}
 
-		playerCharacter.draw(spriteBatch);
+		// Player draw in center of tile
+		spriteDrawWithOffset(playerCharacter, spriteBatch);
+
 		//children in maze
-		for(Sprite s : mazeChildren) {
-			s.draw(spriteBatch);
+		for(ChildSprite s : mazeChildren) {
+			spriteDrawWithOffset(s, spriteBatch);
 		}
 
 		// player hearts
@@ -257,6 +246,18 @@ public class ScreenMaze extends ScreenAdapter {
 				game.setScreen(mazeToOther);
 			}
 		}
+	}
+	
+	// Draws the player in the center of its tile
+	public void spriteDrawWithOffset(ChildSprite sprite, SpriteBatch batch) {
+		float oldX = sprite.getX();
+		float oldY = sprite.getY();
+		// Find offset
+		float offsetX = (maze.getPixWidth() - sprite.getWidth())/2f;
+		float offsetY = (maze.getPixHeight() - sprite.getHeight())/2f;
+		sprite.setPosition(oldX + offsetX, oldY + offsetY);
+		sprite.draw(batch);
+		sprite.setPosition(oldX, oldY);
 	}
 
 	// Logic for character collisions and screen changes on each frame
