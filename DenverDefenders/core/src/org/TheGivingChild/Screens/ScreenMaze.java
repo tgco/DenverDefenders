@@ -20,12 +20,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -278,6 +274,13 @@ public class ScreenMaze extends ScreenAdapter {
 				playerCharacter.clearPositionQueue();
 			}
 		}
+		
+		// Search test for no infinite loop
+		/*
+		Vertex plV = maze.getTileAt(playerCharacter.getX(), playerCharacter.getY());
+		Vertex chV = maze.getTileAt(mazeChildren.get(0).getX(), mazeChildren.get(0).getY());
+		maze.bfSearch(plV, chV);
+		*/
 		
 		// true if player moved without wall collisions
 		if (moveUpdate()) {

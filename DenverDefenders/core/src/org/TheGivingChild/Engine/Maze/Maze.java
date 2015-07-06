@@ -1,5 +1,8 @@
 package org.TheGivingChild.Engine.Maze;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -77,6 +80,65 @@ public class Maze {
 			return mazeArray[(mazeArray.length) - 1 - row][col];
 		}
 		return null;
+	}
+	
+	// UNTESTED
+	// Uses a Breadth First graph search to construct a BFS Tree with the parent pointers in each Vertex
+	// Begins at the source and continues until the destination is found
+	public void bfSearch(Vertex source, Vertex destination) {
+		// Reinit discovered fields
+		for (int i = 0; i < mazeArray.length; i++) {
+			for (int j = 0; j < mazeArray[0].length; j++) {
+				if (mazeArray[i][j] != null)
+					mazeArray[i][j].setDiscovered(false);
+			}
+		}
+		// BFS queue
+		Queue<Vertex> queue = new LinkedList<Vertex>();
+		queue.add(source);
+		while (!queue.isEmpty()) {
+			Vertex v = queue.poll();
+			v.setDiscovered(true);
+			// End if found destination
+			if (v == destination) break;
+			// Find cell coordinates
+			int col = (int) (v.getX()/pixWidth);
+			int row = (int) (v.getY()/pixWidth);
+			// Flip y axis
+			row = mazeArray.length - 1 - row;
+			// Check four possible edges
+			if (row - 1 > 0) {
+				if (mazeArray[row - 1][col] != null && !mazeArray[row - 1][col].isDiscovered()) {
+					// found a tile up
+					mazeArray[row - 1][col].setParent(Direction.DOWN);
+					queue.add(mazeArray[row - 1][col]);
+				}
+			}
+			if (row + 1 < mazeArray.length) {
+				if (mazeArray[row + 1][col] != null && !mazeArray[row + 1][col].isDiscovered()) {
+					// found a tile down
+					mazeArray[row + 1][col].setParent(Direction.UP);
+					queue.add(mazeArray[row + 1][col]);
+				}
+			}
+			if (col - 1 > 0) {
+				if (mazeArray[row][col - 1] != null && !mazeArray[row][col - 1].isDiscovered()) {
+					// Found a tile left
+					mazeArray[row][col - 1].setParent(Direction.RIGHT);
+					queue.add(mazeArray[row][col - 1]);
+				}
+			}
+			if (col + 1 < mazeArray[0].length) {
+				if (mazeArray[row][col + 1] != null && !mazeArray[row][col + 1].isDiscovered()) {
+					// found a tile right
+					mazeArray[row][col + 1].setParent(Direction.LEFT);
+					queue.add(mazeArray[row][col + 1]);
+				}
+			}
+		}
+		
+		// Destination found or entire maze searched
+		return;
 	}
 	
 	public int getPixWidth() {
