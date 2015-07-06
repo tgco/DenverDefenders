@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine;
 
+import org.TheGivingChild.Engine.Maze.Direction;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenMaze;
 import org.TheGivingChild.Screens.ScreenTransition;
@@ -74,9 +75,9 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		//vectors contain the new position where the swipe ended
-		Vector2 newTouch = new Vector2(screenX, screenY);
+		Vector2 delta = new Vector2(screenX, screenY);
 		//calculate the difference between the begin and end point
-		Vector2 delta = newTouch.cpy().sub(lastTouch);
+		delta.sub(lastTouch);
 		// Ignore if the drag was short
 		if (delta.len() < DRAG_TOLERANCE) return false;
 		
@@ -84,21 +85,21 @@ public class MazeInputProcessor implements InputProcessor {
 		if (Math.abs(delta.x) > Math.abs(delta.y)) {
 			//if the change was positive, move right, else move left
 			if(delta.x > 0)  {
-				mazeScreen.setPlayerMovement(mazeScreen.getPlayerCharacter().getSpeed(), 0);
+				mazeScreen.setTargetDirection(Direction.RIGHT);
 			}
-			if(delta.x <= 0) {
-				mazeScreen.setPlayerMovement(-mazeScreen.getPlayerCharacter().getSpeed(), 0);
+			if(delta.x < 0) {
+				mazeScreen.setTargetDirection(Direction.LEFT);
 			}
 
 		}
 		//otherwise y>=x so move vertically 
 		else {
-			//move down if the change was positive, else move up
+			// Y screen axis points down
 			if(delta.y > 0)	{
-				mazeScreen.setPlayerMovement(0, -mazeScreen.getPlayerCharacter().getSpeed());
+				mazeScreen.setTargetDirection(Direction.DOWN);
 			}
-			if(delta.y <= 0) {
-				mazeScreen.setPlayerMovement(0, mazeScreen.getPlayerCharacter().getSpeed());
+			if(delta.y < 0) {
+				mazeScreen.setTargetDirection(Direction.UP);
 			}
 		}
 		return true;

@@ -52,6 +52,33 @@ public class Maze {
 		return mazeArray[(mazeArray.length) - 1 - row][col];
 	}
 	
+	// Returns the tile in the given direction from the passed tile
+	public Vertex getTileRelativeTo(Vertex v, Direction d) {
+		// find indices
+		int col = (int) (v.getX()/pixWidth);
+		int row = (int) (v.getY()/pixWidth);
+		// Shift indices
+		switch(d) {
+		case UP:
+			++row;
+			break;
+		case DOWN:
+			--row;
+			break;
+		case RIGHT:
+			++col;
+			break;
+		case LEFT:
+			--col;
+			break;
+		}
+		// Check bounds and return
+		if (row < mazeArray.length && col < mazeArray[0].length) {
+			return mazeArray[(mazeArray.length) - 1 - row][col];
+		}
+		return null;
+	}
+	
 	public int getPixWidth() {
 		return pixWidth;
 	}
