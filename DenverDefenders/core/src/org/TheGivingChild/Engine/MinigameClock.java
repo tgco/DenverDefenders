@@ -12,8 +12,8 @@ import com.badlogic.gdx.Gdx;
  */
 
 public final class  MinigameClock {
-	/**Time remaining in level in ns */
-	private long levelLength;
+	/**Time remaining in level s */
+	private double levelLength;
 	/**Boolean to keep track of whether time remains*/
 	private boolean outOfTime = false;
 	
@@ -35,8 +35,8 @@ public final class  MinigameClock {
 	 * Sets the length of time allowed to complete a minigame.
 	 * @param time Level time allowed in seconds.
 	 */
-	public void setLevelLength(long time) {
-		levelLength = time * 1000000000;
+	public void setLevelLength(double time) {
+		levelLength = time;
 		outOfTime = false;
 	}
 		
@@ -45,7 +45,7 @@ public final class  MinigameClock {
 	 * Checks if level is out of time and raises a flag if it is.
 	 */
 	public void progress() {
-		levelLength = (long) (levelLength - Gdx.graphics.getDeltaTime()*1000000000);
+		levelLength -= Gdx.graphics.getDeltaTime();
 				
 		if(levelLength <= 0) {
 			outOfTime = true;
@@ -55,9 +55,9 @@ public final class  MinigameClock {
 		
 	/**
 	 * Gets the time remaining in the level.
-	 * @return total Level time remaining in nanoseconds.
+	 * @return total Level time remaining in seconds.
 	 */
-	public long getLevelTime() {
+	public double getLevelTime() {
 		return levelLength;
 	}
 	
@@ -68,21 +68,14 @@ public final class  MinigameClock {
 	public boolean outOfTime() {
 		return outOfTime;
 	}
-	/**
-	 * Gets the time remaining in the level.
-	 * @return total Level time remaining in seconds.
-	 */
-	public long getLevelTimeInSeconds() {
-		return levelLength/1000000000;
-	}
+
 	/**
 	 * Gets the time remaining in the level.
 	 * @return total Level time remaining in milliseconds.
 	 */
 	public String toString() {
-		// CONFUSING USE OF MODULO, CHANGE
-		String millis = String.format("%2d", (levelLength % 1000000000)).substring(0, 2);
-		return getLevelTimeInSeconds() + "." + millis + " seconds remaining.";
+		String time = String.format("%.2f", getLevelTime());
+		return time + " seconds remaining.";
 	}
 
 }

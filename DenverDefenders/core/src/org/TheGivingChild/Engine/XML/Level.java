@@ -138,6 +138,14 @@ public class Level {
 		won = state;
 	}
 	
+	public ObjectMap<String, Boolean> getWinConditions() {
+		return winConditions;
+	}
+	
+	public ObjectMap<String, Boolean> getLoseConditions() {
+		return loseConditions;
+	}
+	
 	public String toString(){
 		String levelString="Name: " + name + "\n";
 		for(GameObject curObj:objects)
