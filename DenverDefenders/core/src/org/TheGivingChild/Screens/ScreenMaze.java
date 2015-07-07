@@ -120,8 +120,6 @@ public class ScreenMaze extends ScreenAdapter {
 		playerCharacter.setOrigin(0, 0);
 		playerCharacter.setSpeed(4*maze.getPixHeight());
 		playerCharacter.setScale(.75f,.75f);
-		//mark it as the hero for following purposes
-		playerCharacter.setHero();
 
 		//Get the rect for the heros headquarters
 		Vertex heroHQVertex = maze.getHeroHQTile();
@@ -204,23 +202,16 @@ public class ScreenMaze extends ScreenAdapter {
 		//render the map
 		mapRenderer.render();
 
-		// character, children and hearts
+		// character, children and hearts batch
 		spriteBatch.begin();
-
-		// following children
-		if(followers.size != 0) {
-			for(ChildSprite f: followers) {
-				spriteDrawWithOffset(f, spriteBatch);
-			}
-		}
-
-		// Player draw in center of tile
-		spriteDrawWithOffset(playerCharacter, spriteBatch);
 
 		//children in maze
 		for(ChildSprite s : mazeChildren) {
 			spriteDrawWithOffset(s, spriteBatch);
 		}
+		
+		// Player draw in center of tile
+		spriteDrawWithOffset(playerCharacter, spriteBatch);
 
 		// player hearts
 		for (int i=0; i<playerHealth; i++) {
@@ -270,26 +261,19 @@ public class ScreenMaze extends ScreenAdapter {
 		if (playerCharacter.getBoundingRectangle().overlaps(heroHQ)) {
 			for (ChildSprite child : followers) {
 				child.setSaved(true);
+				child.moveTo(maze.getHeroHQTile());
 				followers.removeValue(child, false);
-				playerCharacter.clearPositionQueue();
 			}
 		}
-		
-		// Search test for no infinite loop
-		/*
-		Vertex plV = maze.getTileAt(playerCharacter.getX(), playerCharacter.getY());
-		Vertex chV = maze.getTileAt(mazeChildren.get(0).getX(), mazeChildren.get(0).getY());
-		maze.bfSearch(plV, chV);
-		*/
 		
 		// true if player moved without wall collisions
 		if (moveUpdate()) {
 			//update follower positions
 			if(followers.size > 0) {
-				followers.get(0).followSprite(playerCharacter);
+				followers.get(0).followSprite(playerCharacter, maze);
 
 				for(int i = 1; i <followers.size; i++) {
-					followers.get(i).followSprite(followers.get(i-1));
+					followers.get(i).followSprite(followers.get(i-1), maze);
 				}
 			}
 

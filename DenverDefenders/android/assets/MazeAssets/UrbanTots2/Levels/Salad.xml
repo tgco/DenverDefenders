@@ -38,19 +38,19 @@
 	</object>
 
 	<!-- Bad food -->
-	<object id="6" image="Sundae1.png" x="rand_100_900" y="rand_110_500">
+	<object id="6" image="Sundae1.png" x="rand_100_900" y="rand_200_500">
 		<triggered>
 			<att type="destroy" on="collide_10_6" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="7" image="Lollipop2.png" x="rand_100_900" y="rand_110_500">
+	<object id="7" image="Lollipop2.png" x="rand_100_900" y="rand_200_500">
 		<triggered>
 			<att type="destroy" on="collide_10_7" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="8" image="Candy2.png" x="rand_100_900" y="rand_110_500">
+	<object id="8" image="Candy2.png" x="rand_100_900" y="rand_200_500">
 		<triggered>
 			<att type="destroy" on="collide_10_8" throws="lose" />
 		</triggered>

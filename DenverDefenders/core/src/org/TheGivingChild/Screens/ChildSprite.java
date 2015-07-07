@@ -3,12 +3,14 @@ package org.TheGivingChild.Screens;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.TheGivingChild.Engine.Maze.Maze;
 import org.TheGivingChild.Engine.Maze.Vertex;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 /**
  * {@link ChildSprite} controls the behavior for the children within the maze.
  * The main player sprite within the maze is also a ChildSprite, but never utilizes the followSprite method, and has it's own logic for movement within {@link org.TheGivingChild.Screens.ScreenMaze ScreenMaze}
@@ -21,12 +23,6 @@ public class ChildSprite extends Sprite {
 	private boolean follow;
 	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
 	private float moveSpeed;
-	/**{@link #positionQueue} is a Deque which contains previously visited positions for followers to reference.*/
-	private Deque<Float[]> positionQueue;
-	/**{@link #nextPosition} is a Float[] that keeps track of where to move to.*/
-	Float[] nextPosition;
-	/**{@link #isHero} keeps track of whether the sprite is the playerCharacter.*/
-	private boolean isHero;
 	/**
 	 * {@link #ChildSprite(Texture)} is the constructor for {@link ChildSprite}.
 	 * @param childTexture The texture that the sprite will draw.
@@ -35,9 +31,6 @@ public class ChildSprite extends Sprite {
 		super(childTexture);;
 		saved = false;
 		moveSpeed = 0;
-		positionQueue = new LinkedList<Float[]>();
-		nextPosition = null;
-		isHero = false;
 		follow = false;
 	}
 	/**
@@ -47,92 +40,48 @@ public class ChildSprite extends Sprite {
 	public void moveTo(Vertex tile) {
 		this.setPosition(tile.getX(), tile.getY());
 	}
-	/**
-	 * {@link #followSprite(ChildSprite)} takes in a {@link ChildSprite} as someone to follow.
-	 * The leader will then add positions to a deque, and the current {@link ChildSprite} will then move to the location.
-	 * If the position is too far away, such as when a child is initially picked up, the movement speed is increased to allow the sprite to catch up.
-	 * The bufferDistance is meant to scale to the size of the screen.
-	 * @param leader contains the {@link #positionQueue} of positions to follow.
-	 */
-	public void followSprite(ChildSprite leader){
-		//make sure that the queue doesn't get too larger
-		if(leader.positionQueue.size() >= 20){
-			leader.positionQueue.clear();
-		}
-		//Set a buffer distance dependent on who is being followed.
-		float bufferDistance;
-		if(leader.isHero){
-			bufferDistance = Gdx.graphics.getHeight()*8/576;
-		}
-		else{
-			bufferDistance = Gdx.graphics.getHeight()*16/576;
-		}
-		//If your leader is far enough away from it's follower
-		if((Math.abs(leader.getX() - getX()) > bufferDistance || Math.abs(leader.getY() - getY()) > bufferDistance)){
-			//The hero has different sizes, and therefore needs to have different offsets.
-			if(leader.isHero){
-				leader.positionQueue.add(new Float[]{
-						leader.getX()-leader.getWidth()-leader.getHeight()/2,
-						leader.getY()-leader.getHeight()+leader.getHeight()/4
-				});
-			}
-			else{
-				leader.positionQueue.add(new Float[]{
-						leader.getX(),
-						leader.getY()
-				});
-			}
-		}
-		//If nextPosition is null, then get the nextPosition
-		if(nextPosition == null){
-			//get the next position out of the queue
-			nextPosition = leader.positionQueue.pollFirst();
-		}
-		//If next position is not null, check if we are within the area we need to be.
-		if(nextPosition != null){
-			Float xDifference = Math.abs(nextPosition[0] - getX());
-			Float yDifference = Math.abs(nextPosition[1] - getY());
-			if(xDifference <= 2.5f && yDifference <= 2.5f){
-				nextPosition = leader.positionQueue.pollFirst();
-			}
-		}
-		//If your have a position to move to, then move to it.
-		if(nextPosition != null){
-			//Set childSprite's speed equal to it's leader.
-			moveSpeed = leader.moveSpeed;
-			//Get the change in time since the last frame.
-			Float deltaTime = Gdx.graphics.getDeltaTime();
-			//get the distance horizontally and vertically.
-			Float xDifference = Math.abs(nextPosition[0] - getX());
-			Float yDifference = Math.abs(nextPosition[1] - getY());
 
-			if(yDifference >= bufferDistance*2 || xDifference >= bufferDistance*2){
-				moveSpeed = 5*moveSpeed;
-			}
-			
-			//If childSprite is not close enough to target move closer horizontally.
-			if(xDifference >= 2.5f){
-				//If childSprite is to the right, move left.
-				if(getX() > nextPosition[0]){
-					setX(getX() - moveSpeed*deltaTime);
-				}
-				//If childSprite is to the left, move right.
-				else if(getX() <= nextPosition[0]){
-					setX(getX() + moveSpeed*deltaTime);
-				}
-			}
-			//If childSprite is not close enough to target move closer vertically
-			if(yDifference >= 2.5f){
-				//If childSprite is above, move down.
-				if(getY() > nextPosition[1]){
-					setY(getY() - moveSpeed*deltaTime);
-				}
-				//If childSprite is to the below, move up.
-				else if(getY() <= nextPosition[1]){
-					setY(getY() + moveSpeed*deltaTime);
-				}
-			}
+	// Sets this sprite one tile away from the passed sprite
+	public void followSprite(ChildSprite followMe, Maze maze){
+		// BFS to find the sprite
+		Vertex dest = maze.getTileAt(followMe.getX(), followMe.getY());
+		Vertex src = maze.getTileAt(this.getX(), this.getY());
+		// Same tile check
+		if (dest == src) return;
+		
+		maze.bfSearch(src, dest);
+		// count distance to dest
+		int count = 1;
+		Vertex at = dest;
+		while (maze.getTileRelativeTo(at, at.getParent()) != src) {
+			at = maze.getTileRelativeTo(at, at.getParent());
+			count++;
 		}
+		
+		// place one tile away in the direction of the discovery with same offset from corner as the sprite to follow
+		Vertex placeAt = maze.getTileRelativeTo(dest, dest.getParent());
+		float offsetX = 0;
+		float offsetY = 0;
+		switch(dest.getParent()) {
+		case UP:
+			offsetY = followMe.getY() - dest.getY();
+			break;
+		case DOWN:
+			offsetY = followMe.getY() - dest.getY();
+			break;
+		case RIGHT:
+			offsetX = followMe.getX() - dest.getX();
+			break;
+		case LEFT:
+			offsetX = followMe.getX() - dest.getX();
+			break;
+		}
+		
+		// Linearly interpolate to the position
+		//Vector2 pos = new Vector2(this.getX(), this.getY());
+		//pos.lerp(new Vector2(placeAt.getX() + offsetX, placeAt.getY() + offsetY), Gdx.graphics.getDeltaTime());
+		this.setX(placeAt.getX() + offsetX);
+		this.setY(placeAt.getY() + offsetY);
 	}
 	/**
 	 * Sets the {@link #moveSpeed}.
@@ -185,17 +134,5 @@ public class ChildSprite extends Sprite {
 	@Override
 	public float getHeight() {
 		return super.getHeight()*getScaleY();
-	}
-	/**
-	 * set {@link #isHero} to true.
-	 */
-	public void setHero(){
-		isHero = true;
-	}
-	/**
-	 * clears the {@link #positionQueue}.
-	 */
-	public void clearPositionQueue(){
-		positionQueue.clear();
 	}
 }
