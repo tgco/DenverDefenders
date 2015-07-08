@@ -38,21 +38,21 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	
 	public ScreenMazeSelect() {
 		game = ScreenAdapterManager.getInstance().game;
-		// Construct game buttons
-		superTotsButtons = constructButtons(superTotsLevels);
-		regularButtons = constructButtons(regularLevels);
 		// Construct the level selection switch buttons
 		switchTable = constructSwitchButtons();
 	}
 	
 	// Creates buttons for each of the passed level names wrapped in a horizontal scroll pane
-	public Table constructButtons(final String[] levelNames) {
+	public Table constructButtons(final String[] levelNames, final String unlockDataName) {
 		Table row = new Table();
 		// Get the directory handle to get preview images
 		FileHandle dir;
 		if (Gdx.app.getType() == ApplicationType.Android) {
 			dir = Gdx.files.internal("MazeAssets/");
 		} else dir = Gdx.files.internal("./bin/MazeAssets/");
+		
+		// Get the number of buttons that should be enabled
+		int unlocked = game.data.getNumberLevelsUnlocked(unlockDataName);
 		
 		for (int i = 0; i < levelNames.length; i++) {
 			// Get the preview texture
@@ -62,10 +62,13 @@ public class ScreenMazeSelect extends ScreenAdapter {
 			ButtonStyle bs = new ButtonStyle();
 			bs.up = new TextureRegionDrawable(new TextureRegion(tex));
 			bs.down = new TextureRegionDrawable(new TextureRegion(tex));
+			bs.disabled = new TextureRegionDrawable(new TextureRegion(game.getAssetManager().get("locked.png", Texture.class)));
 			bs.pressedOffsetX = 10;
 			bs.pressedOffsetY = -10;
 			Button toAdd = new Button(bs);
 			toAdd.setSize(SELECT_BUTTON_SIZE, SELECT_BUTTON_SIZE);
+			// Set disabled if not unlocked
+			if (i >= unlocked) toAdd.setDisabled(true);
 			// Set listener
 			final int j = i;
 			toAdd.addListener(new MyChangeListener() {
@@ -74,6 +77,9 @@ public class ScreenMazeSelect extends ScreenAdapter {
 					super.changed(event, actor);
 					// Set the active maze
 					ScreenMaze.activeMaze = levelNames[j];
+					// Set the mazeNumber and type
+					ScreenMaze.mazeNumber = j + 1;
+					ScreenMaze.mazeType = unlockDataName;
 					// Create a transition with a requested maze init call
 					ScreenTransition selectToMaze = new ScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE, true);
 					game.setScreen(selectToMaze);
@@ -146,6 +152,9 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	
 	@Override
 	public void show() {
+		// Construct game buttons
+		superTotsButtons = constructButtons(superTotsLevels, "tots");
+		regularButtons = constructButtons(regularLevels, "kids");
 		// Show the buttons groups
 		game.getStage().addActor(regularButtons);
 		game.getStage().addActor(switchTable);
@@ -187,5 +196,7 @@ public class ScreenMazeSelect extends ScreenAdapter {
 		// Load switch buttons
 		manager.load("totsSwitchButton.png", Texture.class);
 		manager.load("kidsSwitchButton.png", Texture.class);
+		// Load locked image
+		manager.load("locked.png", Texture.class);
 	}
 }

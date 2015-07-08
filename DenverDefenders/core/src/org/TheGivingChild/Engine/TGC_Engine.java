@@ -34,6 +34,8 @@ public class TGC_Engine extends Game {
 	private float globalClock;
 	// Scale that fonts should be drawn at
 	private float globalFontScale;
+	// Progression data used to determine what is unlocked
+	public ProgressionData data;
 	/**The stage to place actors to.*/
 	private TGC_Stage stage;
 	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
@@ -52,6 +54,9 @@ public class TGC_Engine extends Game {
 	@Override
 	public void create () {
 		Gdx.input.setCatchBackKey(true);
+		
+		// Init progression data
+		data = new ProgressionData();
 		
 		// Init global clock
 		globalClock = 0;

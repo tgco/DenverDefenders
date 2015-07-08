@@ -78,6 +78,10 @@ public class ScreenMaze extends ScreenAdapter {
 
 	/**{@link #levelSet} is the container for levels to be played during a maze.*/
 	private static Array<Level> levelSet = new Array<Level>();
+	// The number of this maze.  Used to determine if another maze is unlocked on winning
+	public static int mazeNumber;
+	// Type of the maze, kids or tots
+	public static String mazeType;
 	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
 	// The boss level for this maze
@@ -296,12 +300,15 @@ public class ScreenMaze extends ScreenAdapter {
 		// Check if won the maze (all are saved) and set state appropriately if true
 		if ( winMazeCheck(mazeChildren) ) {
 			mazeWon = true;
+			// Unlock the next level if not unlocked
+			game.data.unlockLevelCheck(mazeNumber, mazeType);
 			// go to the boss game
 			return ScreenAdapterEnums.LEVEL;
 		}
 
 		// Check if lost the maze (no hearts left) and set state appropriately
 		if ( loseMazeCheck(playerHealth) ) {
+			mazeWon = false;
 			return ScreenAdapterEnums.MAIN;
 		}
 
@@ -429,7 +436,6 @@ public class ScreenMaze extends ScreenAdapter {
 	// True if out of hearts and sets state appropriately
 	public boolean loseMazeCheck(int health) {
 		if (health <= 0) {
-			mazeWon = false;
 			return true;
 		}
 		return false;
@@ -667,6 +673,14 @@ public class ScreenMaze extends ScreenAdapter {
 			for (GameObject ob : l.getGameObjects()) {
 				manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
 			}
+		}
+		// Boss game
+		// Background assets
+		String background = bossLevel.getLevelImage();
+		manager.load("LevelBackgrounds/" + background, Texture.class);
+		// Object assets
+		for (GameObject ob : bossLevel.getGameObjects()) {
+			manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
 		}
 
 	}

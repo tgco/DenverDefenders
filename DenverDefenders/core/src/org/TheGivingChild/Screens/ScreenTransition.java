@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -162,7 +161,7 @@ public class ScreenTransition extends ScreenAdapter {
 		container.add(factContainer).align(Align.center);
 		
 		// Disable next button, enabled when load is done
-		nextButton.setTouchable(Touchable.disabled);
+		nextButton.setDisabled(true);
 		
 		return container;
 	}
@@ -219,7 +218,7 @@ public class ScreenTransition extends ScreenAdapter {
 	// Runs while the curtains are closed and the button is disabled
 	public void processRequests() {
 		if (manager.update()) {
-			nextButton.setTouchable(Touchable.enabled);
+			nextButton.setDisabled(false);
 			// Run init once if requested, assets are done loading by now
 			if (initCall) {
 				initCall = false;
