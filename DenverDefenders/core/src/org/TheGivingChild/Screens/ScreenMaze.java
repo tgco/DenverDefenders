@@ -80,6 +80,8 @@ public class ScreenMaze extends ScreenAdapter {
 	private static Array<Level> levelSet = new Array<Level>();
 	/**{@link #currentLevel} keeps track of the current level being played.*/
 	private Level currentLevel;
+	// The boss level for this maze
+	private static Level bossLevel;
 
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -293,7 +295,9 @@ public class ScreenMaze extends ScreenAdapter {
 
 		// Check if won the maze (all are saved) and set state appropriately if true
 		if ( winMazeCheck(mazeChildren) ) {
-			return ScreenAdapterEnums.MAIN;
+			mazeWon = true;
+			// go to the boss game
+			return ScreenAdapterEnums.LEVEL;
 		}
 
 		// Check if lost the maze (no hearts left) and set state appropriately
@@ -398,7 +402,7 @@ public class ScreenMaze extends ScreenAdapter {
 				// Keep track of the child for returning to the maze screen
 				lastChild = child;
 				// select a random level
-				selectLevel();
+				currentLevel = selectLevel();
 				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
 				levelScreen.setCurrentLevel(currentLevel);
 				currentLevel.setObjectTextures(game.getAssetManager());
@@ -411,7 +415,12 @@ public class ScreenMaze extends ScreenAdapter {
 	// True if the game is won (all kids saved), also sets game state appropriately
 	public boolean winMazeCheck(Array<ChildSprite> children) {
 		if (allSaved(children)) {
-			mazeWon = true;
+			// Play the boss minigame
+			ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
+			currentLevel = bossLevel;
+			currentLevel.resetLevel();
+			levelScreen.setCurrentLevel(currentLevel);
+			currentLevel.setObjectTextures(game.getAssetManager());
 			return true;
 		}
 		return false;
@@ -575,10 +584,11 @@ public class ScreenMaze extends ScreenAdapter {
 	}
 
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
-	public void selectLevel() {
+	public Level selectLevel() {
 		// Pick a random level and reset it for play
-		currentLevel = levelSet.random();
-		currentLevel.resetLevel();
+		Level l = levelSet.random();
+		l.resetLevel();
+		return l;
 	}
 
 	/**{@link #loadLevelPackets()} loads the minigames into their corresponding packets. Packets are created based on folders in Assets/Levels, and the .xml files within these folders create the games for those packets.*/
@@ -597,7 +607,13 @@ public class ScreenMaze extends ScreenAdapter {
 			if (levelFile.name().equals(".DS_Store")) continue; // Dumb OSX issue
 			game.getReader().setupNewFile(levelFile);
 			Level level = game.getReader().compileLevel();
-			levelSet.add(level);
+			// Mark the boss level
+			if (levelFile.name().equals("Boss.xml")) {
+				level.setBossGame(true);
+				bossLevel = level;
+			} 
+			else
+				levelSet.add(level);
 		}
 	}
 

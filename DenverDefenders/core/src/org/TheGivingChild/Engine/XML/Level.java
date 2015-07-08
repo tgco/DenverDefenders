@@ -27,6 +27,9 @@ public class Level {
 	// Length for a level in seconds
 	private int levelTime = 5;
 	
+	// True if this level is a boss game at the end of a maze
+	private boolean bossGame;
+	
 	
 	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
 		this.name = name;
@@ -47,6 +50,8 @@ public class Level {
 		clockFont.setColor(Color.BLACK);
 		
 		this.description = description;
+		
+		bossGame = false;
 	}
 	
 	public void update(){
@@ -128,6 +133,14 @@ public class Level {
 		for(GameObject gameObject: objects){
 			ScreenAdapterManager.getInstance().game.getStage().addActor(gameObject);
 		}
+	}
+	
+	public void setBossGame(boolean b) {
+		bossGame = true;
+	}
+	
+	public boolean isBossGame() {
+		return bossGame;
 	}
 	
 	public void setCompleted(boolean state) {

@@ -81,15 +81,23 @@ public class ScreenLevel extends ScreenAdapter{
 				String text = buildResponseText(currentLevel.getWon());
 				// Alert maze that the minigame was won so the child will follow
 				((ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.MAZE)).setLevelWon(currentLevel.getWon());
-				ScreenTransition levelToMaze = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
-				game.setScreen(levelToMaze);
+				ScreenTransition levelToOther;
+				if (currentLevel.isBossGame())
+					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
+				else
+					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
+				game.setScreen(levelToOther);
 			}
 		}
 	}
 	
 	// Returns the string that tells the player if they won or lost
 	public String buildResponseText(boolean won) {
-		if (won)
+		// Check if level was a boss level
+		if (currentLevel.isBossGame()) {
+			return "You beat the maze!";
+		}
+		else if (won)
 			return "You won!";
 		else
 			return "You lost";
