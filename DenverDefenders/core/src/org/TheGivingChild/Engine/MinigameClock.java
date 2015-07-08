@@ -1,6 +1,10 @@
 package org.TheGivingChild.Engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Serves as the gameclock for the minigames
@@ -12,10 +16,14 @@ import com.badlogic.gdx.Gdx;
  */
 
 public final class  MinigameClock {
-	/**Time remaining in level s */
+	// Initial length of the level
 	private double levelLength;
+	// Time remaining in s
+	private double remaining;
 	/**Boolean to keep track of whether time remains*/
 	private boolean outOfTime = false;
+	
+	private static final float CLOCK_SIZE = Gdx.graphics.getHeight()/5f;
 	
 	private static MinigameClock clock;
 	
@@ -31,12 +39,26 @@ public final class  MinigameClock {
 		return clock;
 	}
 	
+	// Draws the clock image from the asset manager
+	public void draw(SpriteBatch batch, AssetManager manager) {
+		Texture clockface = manager.get("clock.png", Texture.class);
+		Texture clockhand = manager.get("clockHand.png", Texture.class);
+		// Draw clock face in upper left corner
+		batch.draw(clockface, 0, Gdx.graphics.getHeight() - CLOCK_SIZE, CLOCK_SIZE, CLOCK_SIZE);
+		// Draw hand, rotated to match the time elapsed
+		float rotation = (float) (1f - remaining/levelLength) * 360f;
+		// Sprite image is drawn as 45deg, adjust
+		rotation += 45;
+		batch.draw(new TextureRegion(clockhand), CLOCK_SIZE/2f, Gdx.graphics.getHeight() - CLOCK_SIZE/2f, 0, 0, CLOCK_SIZE/3f, CLOCK_SIZE/3f, 1, 1, rotation);
+	}
+	
 	/**
 	 * Sets the length of time allowed to complete a minigame.
 	 * @param time Level time allowed in seconds.
 	 */
 	public void setLevelLength(double time) {
 		levelLength = time;
+		remaining = time;
 		outOfTime = false;
 	}
 		
@@ -45,20 +67,16 @@ public final class  MinigameClock {
 	 * Checks if level is out of time and raises a flag if it is.
 	 */
 	public void progress() {
-		levelLength -= Gdx.graphics.getDeltaTime();
+		remaining -= Gdx.graphics.getDeltaTime();
 				
-		if(levelLength <= 0) {
+		if(remaining <= 0) {
 			outOfTime = true;
 		}
 		
 	}
-		
-	/**
-	 * Gets the time remaining in the level.
-	 * @return total Level time remaining in seconds.
-	 */
-	public double getLevelTime() {
-		return levelLength;
+
+	public double getRemainingTime() {
+		return remaining;
 	}
 	
 	/**
@@ -74,7 +92,7 @@ public final class  MinigameClock {
 	 * @return total Level time remaining in milliseconds.
 	 */
 	public String toString() {
-		String time = String.format("%.2f", getLevelTime());
+		String time = String.format("%.2f", getRemainingTime());
 		return time + " seconds remaining.";
 	}
 

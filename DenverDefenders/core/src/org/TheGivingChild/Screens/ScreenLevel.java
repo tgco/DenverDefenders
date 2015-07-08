@@ -71,7 +71,7 @@ public class ScreenLevel extends ScreenAdapter{
 		}
 		//only draw if level depends on time and there is time remaining on the clock
 		if ( (currentLevel.getLoseConditions().containsKey("timeout") || currentLevel.getWinConditions().containsKey("timeout")) && !MinigameClock.getInstance().outOfTime()) {
-			currentLevel.getClockFont().draw(batch, MinigameClock.getInstance().toString(), Gdx.graphics.getWidth() / 3,Gdx.graphics.getHeight() - 10);
+			MinigameClock.getInstance().draw(batch, game.getAssetManager());
 		}
 		
 		batch.end();

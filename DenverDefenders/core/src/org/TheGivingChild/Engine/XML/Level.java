@@ -21,9 +21,7 @@ public class Level {
 	private boolean completed;
 	private boolean won;
 	private String description;
-	
-	// Move into asset manager
-	private BitmapFont clockFont;
+
 	// Length for a level in seconds
 	private int levelTime = 5;
 	
@@ -45,10 +43,6 @@ public class Level {
 		this.background = background;
 		
 		completed = false;
-		// SHOULD SET FROM ASSET MANAGER
-		clockFont = new BitmapFont();
-		clockFont.setColor(Color.BLACK);
-		
 		this.description = description;
 		
 		bossGame = false;
@@ -184,9 +178,7 @@ public class Level {
 	public boolean getWon() {
 		return won;
 	}
-	public BitmapFont getClockFont() {
-		return clockFont;
-	}
+
 	public String getDescription(){
 		return description;
 	}

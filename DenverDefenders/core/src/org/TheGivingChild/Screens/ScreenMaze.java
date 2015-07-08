@@ -682,7 +682,10 @@ public class ScreenMaze extends ScreenAdapter {
 		for (GameObject ob : bossLevel.getGameObjects()) {
 			manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
 		}
-
+		
+		// Load clock for time based minigames
+		manager.load("clock.png", Texture.class);
+		manager.load("clockHand.png", Texture.class);
 	}
 
 }
