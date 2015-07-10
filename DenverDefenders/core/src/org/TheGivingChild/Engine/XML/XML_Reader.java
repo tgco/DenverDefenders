@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.InputListenerEnums;
 import org.TheGivingChild.Engine.Attributes.Attribute;
 
 import com.badlogic.gdx.files.FileHandle;

@@ -1,4 +1,4 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.XML;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

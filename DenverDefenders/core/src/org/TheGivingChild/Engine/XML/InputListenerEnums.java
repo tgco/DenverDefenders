@@ -1,6 +1,4 @@
-package org.TheGivingChild.Engine;
-
-import org.TheGivingChild.Engine.XML.GameObject;
+package org.TheGivingChild.Engine.XML;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;

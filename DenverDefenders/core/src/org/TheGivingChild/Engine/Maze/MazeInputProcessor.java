@@ -1,6 +1,6 @@
-package org.TheGivingChild.Engine;
+package org.TheGivingChild.Engine.Maze;
 
-import org.TheGivingChild.Engine.Maze.Direction;
+import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenMaze;
 import org.TheGivingChild.Screens.ScreenTransition;

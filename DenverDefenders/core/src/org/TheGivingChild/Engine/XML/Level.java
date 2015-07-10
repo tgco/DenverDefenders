@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine.XML;
 
-import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.Attributes.Attribute;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 

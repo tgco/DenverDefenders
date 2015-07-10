@@ -1,9 +1,9 @@
 package org.TheGivingChild.Screens;
 
-import org.TheGivingChild.Engine.MinigameClock;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.MinigameClock;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;

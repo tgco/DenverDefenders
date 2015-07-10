@@ -3,16 +3,21 @@ package org.TheGivingChild.Screens;
 import java.util.Random;
 
 import org.TheGivingChild.Engine.AudioManager;
-import org.TheGivingChild.Engine.MazeInputProcessor;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Engine.Maze.ChildSprite;
 import org.TheGivingChild.Engine.Maze.Direction;
 import org.TheGivingChild.Engine.Maze.Maze;
+import org.TheGivingChild.Engine.Maze.MazeInputProcessor;
+import org.TheGivingChild.Engine.Maze.PowerUpStage;
 import org.TheGivingChild.Engine.Maze.Vertex;
+import org.TheGivingChild.Engine.PowerUps.PowerUp;
+import org.TheGivingChild.Engine.PowerUps.PowerUpEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -75,6 +80,10 @@ public class ScreenMaze extends ScreenAdapter {
 	public static String activeMaze = "UrbanMaze1";
 	// The maze object that manages allowed movement
 	private Maze maze;
+	// Stage which contains the powerup buttons
+	private PowerUpStage powerUpStage;
+	// Array of currently active powerups
+	private Array<PowerUp> activePowerUps;
 
 	/**{@link #levelSet} is the container for levels to be played during a maze.*/
 	private static Array<Level> levelSet = new Array<Level>();
@@ -99,6 +108,7 @@ public class ScreenMaze extends ScreenAdapter {
 		mazeInput = new MazeInputProcessor(this, this.game);
 		mazeChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
+		activePowerUps = new Array<PowerUp>();
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.update();
@@ -114,11 +124,13 @@ public class ScreenMaze extends ScreenAdapter {
 		lastChild = null;
 
 		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
+		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
 		// Generate maze structure
 		maze = new Maze(map);
-
-		mapRenderer = new OrthogonalTiledMapRenderer(map);
+		
+		// Construct the powerup stage
+		powerUpStage = new PowerUpStage(game, this);
 
 		// Setup animations (textures were loaded during screen transition)
 		buildAnimations(game.getAssetManager(), 0.1f);
@@ -143,6 +155,7 @@ public class ScreenMaze extends ScreenAdapter {
 
 		mazeChildren.clear();
 		followers.clear();
+		activePowerUps.clear();
 
 		populate();
 
@@ -185,6 +198,11 @@ public class ScreenMaze extends ScreenAdapter {
 			toFill.setOccupied(true);
 		}
 	}
+	
+	// Adds a power up to the active set so it may run
+	public void addPowerUp(PowerUp p) {
+		this.activePowerUps.add(p);
+	}
 
 	/**
 	 * Draws the maze on the screen
@@ -207,6 +225,8 @@ public class ScreenMaze extends ScreenAdapter {
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
+		// render the powerup stage
+		powerUpStage.draw();
 
 		// character, children and hearts batch
 		spriteBatch.begin();
@@ -225,6 +245,14 @@ public class ScreenMaze extends ScreenAdapter {
 			float heartSize = camera.viewportHeight/10;
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
 			spriteBatch.draw(heartTexture, xPos + (heartSize*i), yPos, heartSize, heartSize);
+		}
+		// Update powerups with the batch active to allow drawing
+		if (!logicPaused) {
+			for (PowerUp p : activePowerUps) {
+				// remove if done
+				if (p.update(this, spriteBatch))
+					activePowerUps.removeValue(p, false);
+			}
 		}
 
 		spriteBatch.end();
@@ -257,7 +285,9 @@ public class ScreenMaze extends ScreenAdapter {
 	public ScreenAdapterEnums updateLogic() {
 		// cam position update
 		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
-
+		// Catch button presses on stage
+		powerUpStage.act();
+		
 		//rectangle around player sprite for collision check
 		Rectangle spriteRec = new Rectangle(playerCharacter.getX(), playerCharacter.getY(), playerCharacter.getWidth(), playerCharacter.getHeight());
 		// Hero hq collision rect
@@ -301,6 +331,8 @@ public class ScreenMaze extends ScreenAdapter {
 		if ( winMazeCheck(mazeChildren) ) {
 			mazeWon = true;
 			// Unlock the next level if not unlocked
+			// Returns true if a powerup was unlocked
+			// SET AN UNLOCK SCREEN AFTER THE BOSS LEVEL
 			game.data.unlockLevelCheck(mazeNumber, mazeType);
 			// go to the boss game
 			return ScreenAdapterEnums.LEVEL;
@@ -468,7 +500,11 @@ public class ScreenMaze extends ScreenAdapter {
 	@Override
 	public void show(){
 		logicPaused = false;
-		Gdx.input.setInputProcessor(mazeInput);
+		// Set input to the mazeInput and powerUpStage
+		InputMultiplexer mult = new InputMultiplexer();
+		mult.addProcessor(powerUpStage);
+		mult.addProcessor(mazeInput);
+		Gdx.input.setInputProcessor(mult);
 		// Returned from level screen (assuming no back button presses or backgrounded)
 		if (levelWon) {
 			// won the minigame
@@ -686,6 +722,12 @@ public class ScreenMaze extends ScreenAdapter {
 		// Load clock for time based minigames
 		manager.load("clock.png", Texture.class);
 		manager.load("clockHand.png", Texture.class);
+		
+		// Load the assets for powerups that have been unlocked
+		Array<String> unlocked = ScreenAdapterManager.getInstance().game.data.getUnlockedPowerUps(mazeType);
+		for (String s : unlocked) {
+			PowerUpEnum.valueOf(s.toUpperCase()).requestAssets(manager);
+		}
 	}
 
 }

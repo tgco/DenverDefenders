@@ -1,10 +1,9 @@
-package org.TheGivingChild.Screens;
+package org.TheGivingChild.Engine.Maze;
 
 import java.util.Deque;
 import java.util.LinkedList;
 
-import org.TheGivingChild.Engine.Maze.Maze;
-import org.TheGivingChild.Engine.Maze.Vertex;
+import org.TheGivingChild.Screens.ScreenMaze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
