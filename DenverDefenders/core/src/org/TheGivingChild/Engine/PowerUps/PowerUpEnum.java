@@ -15,6 +15,7 @@ public enum PowerUpEnum {
 		public void requestAssets(AssetManager manager) {
 			manager.load("PowerUps/mask/button.png", Texture.class);
 			manager.load("PowerUps/mask/buttonUsed.png", Texture.class);
+			manager.load("PowerUps/mask/arrow.png", Texture.class);
 		}
 	};
 	

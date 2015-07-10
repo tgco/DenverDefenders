@@ -601,6 +601,18 @@ public class ScreenMaze extends ScreenAdapter {
 	public ChildSprite getPlayerCharacter() {
 		return playerCharacter;
 	}
+	
+	public Array<ChildSprite> getMazeChildren() {
+		return mazeChildren;
+	}
+	
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+	
+	public Maze getMaze() {
+		return maze;
+	}
 
 	// Sets move speed vars and animation
 	public void setPlayerAnim(Direction d) {
