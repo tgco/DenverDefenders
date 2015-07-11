@@ -17,9 +17,16 @@ public enum PowerUpEnum {
 			manager.load("PowerUps/mask/buttonUsed.png", Texture.class);
 			manager.load("PowerUps/mask/arrow.png", Texture.class);
 		}
+		
+		@Override
+		public String description() {
+			return "The mask will show you the direction to the closest kid in the maze!";
+		}
 	};
 	
 	public abstract PowerUp construct();
 	// Request the assets needed to draw the powerup and the button
 	public abstract void requestAssets(AssetManager manager);
+	// Return the description of the power for an unlock screen
+	public abstract String description();
 }

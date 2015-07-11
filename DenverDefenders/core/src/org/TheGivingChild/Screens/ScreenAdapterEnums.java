@@ -107,6 +107,17 @@ public enum ScreenAdapterEnums {
 		protected void requestAssets(AssetManager manager) {
 			// Splash screen assets are loaded before shown since it is the first screen
 		}
+	},
+	UNLOCK {
+		@Override
+		protected ScreenAdapter getScreenInstance() {
+			return new ScreenUnlock();
+		}
+		
+		@Override
+		protected void requestAssets(AssetManager manager) {
+			ScreenUnlock.requestAssets(ScreenAdapterManager.getInstance().game.getAssetManager());
+		}
 	};
 	
 	/**

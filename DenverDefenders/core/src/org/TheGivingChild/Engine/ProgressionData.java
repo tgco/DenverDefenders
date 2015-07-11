@@ -32,10 +32,6 @@ public class ProgressionData {
 		// Array of unlocked powers
 		kidsUnlockedPowerUps = new Array<String>();
 		totsUnlockedPowerUps = new Array<String>();
-		
-		// DEBUG, place unlocked powers
-		kidsUnlockedPowerUps.add("mask");
-		totsUnlockedPowerUps.add("mask");
 	}
 	
 	public int getNumberLevelsUnlocked(String totsOrKids) {

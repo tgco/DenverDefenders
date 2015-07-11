@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Takes a given {@link org.TheGivingChild.Engine.XML.Level Level} and allows the user to play it.
@@ -82,8 +83,18 @@ public class ScreenLevel extends ScreenAdapter{
 				// Alert maze that the minigame was won so the child will follow
 				((ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.MAZE)).setLevelWon(currentLevel.getWon());
 				ScreenTransition levelToOther;
-				if (currentLevel.isBossGame())
-					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
+				if (currentLevel.isBossGame()) {
+					// Check for unlock
+					if (game.data.unlockLevelCheck(ScreenMaze.mazeNumber, ScreenMaze.mazeType)) {
+						// Go to unlock screen
+						Array<String> powers = game.data.getUnlockedPowerUps(ScreenMaze.mazeType);
+						String newPower = powers.get(powers.size - 1);
+						ScreenUnlock.powerUpName = newPower;
+						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.UNLOCK, text);
+					} else
+						// go to main
+						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
+				}
 				else
 					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
 				game.setScreen(levelToOther);

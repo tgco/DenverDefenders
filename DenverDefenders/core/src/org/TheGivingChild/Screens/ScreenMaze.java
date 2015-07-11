@@ -330,10 +330,6 @@ public class ScreenMaze extends ScreenAdapter {
 		// Check if won the maze (all are saved) and set state appropriately if true
 		if ( winMazeCheck(mazeChildren) ) {
 			mazeWon = true;
-			// Unlock the next level if not unlocked
-			// Returns true if a powerup was unlocked
-			// SET AN UNLOCK SCREEN AFTER THE BOSS LEVEL
-			game.data.unlockLevelCheck(mazeNumber, mazeType);
 			// go to the boss game
 			return ScreenAdapterEnums.LEVEL;
 		}
