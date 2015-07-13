@@ -646,11 +646,11 @@ public class ScreenMaze extends ScreenAdapter {
 		// Clear old levels
 		levelSet.clear();
 		FileHandle dirHandle;
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze);
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
+			dirHandle = Gdx.files.internal("./bin/MazeAssets/" + activeMaze);
 		} else {
 			// ApplicationType.Desktop ..
-			dirHandle = Gdx.files.internal("./bin/MazeAssets/" + activeMaze);
+			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze);
 		}
 		// Load level objects
 		for (FileHandle levelFile : dirHandle.child("Levels").list()) {

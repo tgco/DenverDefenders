@@ -1,15 +1,7 @@
 package org.TheGivingChild.Engine.Maze;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
-import org.TheGivingChild.Screens.ScreenMaze;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 /**
  * {@link ChildSprite} controls the behavior for the children within the maze.
  * The main player sprite within the maze is also a ChildSprite, but never utilizes the followSprite method, and has it's own logic for movement within {@link org.TheGivingChild.Screens.ScreenMaze ScreenMaze}
@@ -49,7 +41,7 @@ public class ChildSprite extends Sprite {
 		if (dest == src) return;
 		
 		maze.bfSearch(src, dest);
-		// count distance to dest
+		// count distance to dest (idea for fixing corner issues)
 		int count = 1;
 		Vertex at = dest;
 		while (maze.getTileRelativeTo(at, at.getParent()) != src) {

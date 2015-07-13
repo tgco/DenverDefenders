@@ -47,9 +47,9 @@ public class ScreenMazeSelect extends ScreenAdapter {
 		Table row = new Table();
 		// Get the directory handle to get preview images
 		FileHandle dir;
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			dir = Gdx.files.internal("MazeAssets/");
-		} else dir = Gdx.files.internal("./bin/MazeAssets/");
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
+			dir = Gdx.files.internal("./bin/MazeAssets/");
+		} else dir = Gdx.files.internal("MazeAssets/");
 		
 		// Get the number of buttons that should be enabled
 		int unlocked = game.data.getNumberLevelsUnlocked(unlockDataName);
@@ -177,9 +177,9 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	public static void requestAssets(AssetManager manager) {
 		// Load all button previews
 		FileHandle dir;
-		if (Gdx.app.getType() == ApplicationType.Android) {
-			dir = Gdx.files.internal("MazeAssets/");
-		} else dir = Gdx.files.internal("./bin/MazeAssets/");
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
+			dir = Gdx.files.internal("./bin/MazeAssets/");
+		} else dir = Gdx.files.internal("MazeAssets/");
 		// Regular
 		for (int i = 0; i < regularLevels.length; i++) {
 			// Get the preview texture

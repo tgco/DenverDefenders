@@ -33,7 +33,7 @@ public class MazeInputProcessor implements InputProcessor {
 	/**Override the back button to show the main menu for Android*/
 	@Override
 	public boolean keyDown(int keyCode) {
-		if(keyCode == Keys.BACK || keyCode == Keys.E){
+		if(keyCode == Keys.BACK || keyCode == Keys.B){
 			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
 			game.setScreen(mazeToMain);
 	    }

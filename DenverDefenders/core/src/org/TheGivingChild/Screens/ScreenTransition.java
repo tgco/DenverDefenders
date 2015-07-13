@@ -243,4 +243,9 @@ public class ScreenTransition extends ScreenAdapter {
 		if (transitionTextureX < 0) return true;
 		return false;
 	}
+	
+	@Override
+	public void hide() {
+		factTable.remove();
+	}
 }

@@ -19,8 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -34,25 +32,19 @@ import com.badlogic.gdx.utils.Array;
 class ScreenOptions extends ScreenAdapter {
 	private Skin skin;
 	private Skin buttonSkin;
-	private Skin sliderSkin;
 	private Table optionsTable;
 	private Array<CheckBox> options;
 	private Table choicesTable;
-	private Table sliderTable;
 	private Table overallTable;
 	private BitmapFont font;
 	private ButtonStyle style;
 	private CheckBoxStyle cbStyle;
-	private CheckBoxStyle muteStyle;
 	private CheckBox mute;
 	private TGC_Engine game;
 	private SpriteBatch batch;
 	private Texture title;
 	private String[] optionsArray = {"   Music   ", 
 			  						 "   Sound   "};
-	private Slider slider;
-	private Label sliderName;
-	private float volume;
 
 	/**
 	 * Instantiates the sprite batch and loads the assets it needs and initially creates the tables.
@@ -121,7 +113,6 @@ class ScreenOptions extends ScreenAdapter {
 	public void dispose() {
 		skin.dispose();
 		buttonSkin.dispose();
-		sliderSkin.dispose();
 		batch.dispose();
 	}
 	
@@ -212,66 +203,6 @@ class ScreenOptions extends ScreenAdapter {
 		backButton.setSize(Gdx.graphics.getWidth()/10f,Gdx.graphics.getHeight()/10f);
 		return backButton;
 	}
-	
-	/**
-	 * Creates the slider for the volume so the level can be controlled.
-	 * <p>
-	 * Also creates a check box for the mute button
-	 */
-	 private Table createSlider() {
-		 Table table = new Table();
-		 sliderSkin = new Skin();
-		 muteStyle = new CheckBoxStyle();
-		 font = game.getBitmapFontButton();
-		 sliderSkin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Slider.pack"));
-		 SliderStyle ss = new SliderStyle();
-		 ss.background = sliderSkin.getDrawable("Slider_After");
-		 ss.knobBefore = sliderSkin.getDrawable("Slider_Before");
-		 ss.knobAfter = sliderSkin.getDrawable("Slider_After");
-		 ss.knob = sliderSkin.getDrawable("Knob");
-		 LabelStyle ls = new LabelStyle();
-		 ls.font = font;
-		 muteStyle.font = font;
-		 muteStyle.checkboxOff = sliderSkin.getDrawable("Volume_On");
-		 muteStyle.checkboxOn = sliderSkin.getDrawable("Mute");
-		 mute = new CheckBox(" ", muteStyle);
-		 mute.addListener(new MyChangeListener() {
-			 @Override
-			 public void changed(ChangeEvent event, Actor actor) {
-				 super.changed(event, actor);
-				 if(slider.getValue() != 0)
-					 volume = slider.getValue();
-				 if(mute.isChecked()) {
-					 slider.setValue(0);
-					 AudioManager.getInstance().setVolume(slider.getValue()/100f);
-					 slider.setDisabled(true);
-					 AudioManager.getInstance().setMuteAll(true);
-				 }
-				 else {
-					 slider.setValue(volume);
-					 slider.setDisabled(false);
-					 AudioManager.getInstance().setMuteAll(false);
-				 }
-			 }
-		 });
-		 slider = new Slider(0, 100, 1, false, ss);
-		 slider.setValue(75);
-		 slider.setDisabled(false);
-		 AudioManager.getInstance().setVolume(slider.getValue()/100f);
-		 slider.addListener(new MyChangeListener() {
-			 @Override
-			 public void changed(ChangeEvent event, Actor actor) {
-				 float value = ((Slider) actor).getValue();
-				 AudioManager.getInstance().setVolume(value/100f);
-			 }
-		 });
-		 sliderName = new Label("Volume  ", ls);
-		 sliderName.setFontScale(game.getGlobalFontScale());
-		 table.add(sliderName).height(Gdx.graphics.getHeight()/3);
-		 table.add(slider).width(2/3f * Gdx.graphics.getWidth()).height(Gdx.graphics.getHeight()/3);
-		 table.add(mute).height(Gdx.graphics.getHeight()/3);
-		 return table;
-	 }
 	 
 	 /**
 	  * Creates the table that will hold the sound and music table and the volume
@@ -280,10 +211,8 @@ class ScreenOptions extends ScreenAdapter {
 	 private Table createOverallTable() {
 		 Table table = new Table();
 		 choicesTable = createChoices();
-		 sliderTable = createSlider();
 		 table.add(choicesTable);
 		 table.row();
-		 table.add(sliderTable);
 		 table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		 table.align(Align.center);
 		 
@@ -313,18 +242,9 @@ class ScreenOptions extends ScreenAdapter {
 	 public boolean getMute() {
 		 return mute.isChecked();
 	 }
-	 
-	 /**
-	  * Getter for the volume slider level
-	  * @return Returns the value of the volume slider.
-	  */
-	 public float getVolume() {
-		 return slider.getValue();
-	 }
 
 	public static void requestAssets(AssetManager manager) {
 		manager.load("titleOptionScreen.png", Texture.class);
-		manager.load("Packs/Slider.pack", TextureAtlas.class);
 		manager.load("Packs/ButtonsEditor.pack", TextureAtlas.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
 	}

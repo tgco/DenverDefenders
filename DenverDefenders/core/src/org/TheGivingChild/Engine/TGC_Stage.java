@@ -16,7 +16,8 @@ public class TGC_Stage extends Stage{
 	/**Override the back button to show the main menu for Android*/
 	@Override
 	public boolean keyDown(int keyCode) {
-		if(keyCode == Keys.BACK){
+		if(keyCode == Keys.BACK || keyCode == Keys.B){
+			// A transition would look nicer here
 			ScreenAdapterManager.getInstance().show(ScreenAdapterEnums.MAIN);
 	    }
 		return super.keyDown(keyCode);
