@@ -6,6 +6,7 @@ import org.TheGivingChild.Engine.XML.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 
+// Moves the object with its velocity and acceleration values.  Supports only constant acceleration.
 public class MovesAttribute extends Attribute {
 
 	public MovesAttribute(ObjectMap<String, String> args) {
@@ -27,6 +28,7 @@ public class MovesAttribute extends Attribute {
 	
 	public void setup(GameObject myObject){
 		super.setup(myObject);
+		// Set the start v and a
 		myObject.setVelocity(Float.parseFloat(args.get("vx")), Float.parseFloat(args.get("vy")));
 		myObject.setAcceleration(Float.parseFloat(args.get("ax")), Float.parseFloat(args.get("ay")));
 	}

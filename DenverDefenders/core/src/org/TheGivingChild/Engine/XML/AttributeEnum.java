@@ -18,13 +18,10 @@ import com.badlogic.gdx.utils.ObjectMap;
  * Each Attribute must implement update, setup, getVariableNames, getValues, and getXMLName
  * @author Kevin D
  */
-// Convenience Enum wrapper to convert a string in a level file into an object of the correct class
+// Convenience enum wrapper to convert a string in a level file into an object of the correct attribute class
 public enum AttributeEnum {
-	/* each type will have a update method and a setValues method which all take in an Array<String>
-	 * each type can have private fields
-	 */	
 	/**
-	 * If the object will EVER move, must have moves attribute, it has two values, initial x velocity, and initial y velocity, upon setup, it sets its GameObject's velocity to them
+	 * If the object will EVER move on its own, must have moves attribute.
 	 */
 	MOVES {
 		//velocity is stored in GameObject, but moves actually simulates it moving and updates the location, no other attribute should change location unless you are doing so to make some other crazy stuffs happen
@@ -100,9 +97,6 @@ public enum AttributeEnum {
 		}
 	};
 	
-	/**
-	 * @param 	A string(read in from the XML_Reader) to be converted into the associated Attribute
-	 * @return	The Attribute associated with the given string
-	 */
+	// Constructs the appropriate object
 	public abstract Attribute construct(ObjectMap<String, String> args);
 }

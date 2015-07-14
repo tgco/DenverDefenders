@@ -31,19 +31,13 @@ public class ScreenLevel extends ScreenAdapter{
 		logicPaused = true;
 	}
 	
-	/**
-	 * Called when the level is complete and is returning to the main screen.
-	 * Nulls everything since they are initialized whenever ScreenLevel is shown.
-	 */
+	// Runs when this screen is not active anymore
 	@Override
 	public void hide() {
 		logicPaused = true;
 	}
 	
-	/**
-	 * Called when the ScreenLevel is supposed to be shown. It initializes with the given level. 
-	 * It resets all objects in the level and loads them.
-	 */
+	// Runs when this screen becomes active
 	@Override
 	public void show() {
 		// Load objects to game's stage
@@ -66,11 +60,11 @@ public class ScreenLevel extends ScreenAdapter{
 		batch.begin();
 		batch.draw((Texture) game.getAssetManager().get("LevelBackgrounds/" + currentLevel.getLevelImage()),0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		for (GameObject g : currentLevel.getGameObjects()) {
-			if(!g.isDisposed()){
+			if(!g.isDestroyed()){
 				batch.draw(g.getTexture(), g.getX(), g.getY(),g.getTextureWidth(), g.getTextureHeight());
 			}
 		}
-		//only draw if level depends on time and there is time remaining on the clock
+		//only draw clock if level depends on time and there is time remaining on the clock
 		if ( (currentLevel.getLoseConditions().containsKey("timeout") || currentLevel.getWinConditions().containsKey("timeout")) && !MinigameClock.getInstance().outOfTime()) {
 			MinigameClock.getInstance().draw(batch, game.getAssetManager());
 		}
@@ -79,6 +73,7 @@ public class ScreenLevel extends ScreenAdapter{
 		if (!logicPaused) {
 			currentLevel.update();
 			if (currentLevel.getCompleted()) {
+				// Done, build a transition
 				String text = buildResponseText(currentLevel.getWon());
 				// Alert maze that the minigame was won so the child will follow
 				((ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.MAZE)).setLevelWon(currentLevel.getWon());

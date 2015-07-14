@@ -3,7 +3,7 @@ package org.TheGivingChild.Engine.PowerUps;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
-// Wrapper that can construct correct powerup from a string
+// Convenience enum wrapper that can construct correct power up from a string
 public enum PowerUpEnum {
 	MASK {
 		@Override
@@ -24,8 +24,9 @@ public enum PowerUpEnum {
 		}
 	};
 	
+	// Return the correct object
 	public abstract PowerUp construct();
-	// Request the assets needed to draw the powerup and the button
+	// Request the assets needed to draw the power up and the button for it
 	public abstract void requestAssets(AssetManager manager);
 	// Return the description of the power for an unlock screen
 	public abstract String description();

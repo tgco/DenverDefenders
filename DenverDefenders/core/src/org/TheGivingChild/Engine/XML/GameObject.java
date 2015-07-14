@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  * Used to store all information on each object within the game<br>
- * extends Actor
  * @author Mostly Kevin D
  */
 public class GameObject extends Actor {
@@ -23,11 +22,13 @@ public class GameObject extends Actor {
 	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
 	private float[] initialVelocity;
-	private float[] acceleration;
+	private float[] acceleration; // no initial since only constant accelerations are currently supported
 	private float[] position;
 	private float[] initialPosition;
-	private boolean disposed;
+	// If true, this object will be removed from the level until reset
+	private boolean destroyed;
 	private Texture texture;
+	// Scale to be applied to image size for drawing
 	private float objectScaleX, objectScaleY;
 	// Attributes which run every frame
 	private Array<Attribute> continuousAttributes;
@@ -35,7 +36,7 @@ public class GameObject extends Actor {
 	private Array<Attribute> triggeredAttributes;
 
 	public GameObject(ObjectMap<String, String> args, Array<Attribute> continuousAttributes, Array<Attribute> triggeredAttributes){
-		disposed = false;
+		destroyed = false;
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = args.get("image");
@@ -59,6 +60,7 @@ public class GameObject extends Actor {
 		} 
 		else y = Float.parseFloat(args.get("y"));
 		
+		// Adjust to actual screen size in pixels
 		float adjustedX = x/1024f * Gdx.graphics.getWidth();
 		float adjustedY = y/600f * Gdx.graphics.getHeight();
 		position = new float[] { adjustedX, adjustedY };
@@ -80,6 +82,7 @@ public class GameObject extends Actor {
 			att.setup(this);
 		}
 		
+		// Save this afterwards in case an attribute set the initial values
 		initialVelocity = new float[] {velocity[0],velocity[1]};
 	}
 	
@@ -101,12 +104,13 @@ public class GameObject extends Actor {
 		
 	}
 
+	// Updates all continuous attributes
 	public void update(Level level){
 		for (Attribute att : continuousAttributes)
 			att.update(level);
 	}
 	
-	// Registers the triggered attributes under the condition in the map.  Adds the condition if it is not set yet.
+	// Registers the triggered attributes under the condition in the passed map.  Adds the condition as a key if it is not set yet.
 	public void register(ObjectMap<String, Array<Attribute> > observerMap) {
 		for (Attribute att : triggeredAttributes) {
 			String trigger = att.getTrigger();
@@ -123,16 +127,17 @@ public class GameObject extends Actor {
 	public String getImageFilename() {
 		return imageFilename;
 	}
-	public void dispose(){
-		disposed = true;
+	public void destroy(){
+		destroyed = true;
 	}
+	// Resets velocity, position, and destroyed status
 	public void resetObject(){
 		setVelocity(initialVelocity[0], initialVelocity[1]);
 		setPosition(initialPosition[0], initialPosition[1]);
-		disposed = false;
+		destroyed = false;
 	}
-	public boolean isDisposed(){
-		return disposed;
+	public boolean isDestroyed(){
+		return destroyed;
 	}
 	public float[] getVelocity() {
 		return velocity;
@@ -151,9 +156,11 @@ public class GameObject extends Actor {
 	public Texture getTexture(){
 		return texture;
 	}
+	// Returns the scaled texture width
 	public float getTextureWidth(){
 		return texture.getWidth()*objectScaleX;
 	}
+	// Returns the scaled texture height
 	public float getTextureHeight(){
 		return texture.getHeight()*objectScaleY;
 	}

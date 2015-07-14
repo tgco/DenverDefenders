@@ -1,6 +1,6 @@
 package org.TheGivingChild.Engine.Maze;
 
-// Graph vertex used to store parent field for BFS and a property for minigame tile etc
+// Graph vertex used to store parent field for BFS and a property for minigame tile, etc
 public class Vertex {
 	// parent field for BFS tree
 	private Direction parent;

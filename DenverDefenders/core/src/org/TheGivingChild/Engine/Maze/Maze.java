@@ -8,13 +8,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.utils.Array;
 
-// Reads the tiled map and creates the maze as 2d array/graph hybrid class.
+// Reads the tiled map and creates the maze as 2d array/graph object.
+// Author: Walter Schlosser
 public class Maze {
 	// Array of vertex, entry is null if no road is there
 	private Vertex[][] mazeArray;
 	// Pixel size for tiles
 	private int pixWidth, pixHeight;
-	// Reference to base and minigame entries for easy access
+	// Reference to base and minigame tiles for easy access without a full iteration over the map
 	private Vertex heroHQTile;
 	private Array<Vertex> minigameTiles;
 	
@@ -29,6 +30,7 @@ public class Maze {
 		// Fill array with tiles as vertices from the map layer
 		for (int i = 0; i < walkableLayer.getHeight(); i++) {
 			for (int j = 0; j < walkableLayer.getWidth(); j++) {
+				// get cell, account for the coordinate differences between Tiled and libGDX
 				Cell cell = walkableLayer.getCell(j, i);
 				if (cell != null) {
 					// Create vertex with correct world coords, account for the difference in array/getCell coordinates
@@ -47,7 +49,7 @@ public class Maze {
 		}
 	}
 	
-	// Returns the vertex at thee given world coordinates
+	// Returns the vertex at the given world coordinates
 	public Vertex getTileAt(float x, float y) {
 		// Find indices
 		int col = (int) (x/pixWidth);
@@ -82,7 +84,6 @@ public class Maze {
 		return null;
 	}
 	
-	// UNTESTED
 	// Uses a Breadth First graph search to construct a BFS Tree with the parent pointers in each Vertex
 	// Begins at the source and continues until the destination is found
 	public void bfSearch(Vertex source, Vertex destination) {
@@ -157,7 +158,7 @@ public class Maze {
 		return minigameTiles;
 	}
 	
-	// Debug console printing
+	// Debug console printing to check that maze in Tiled has been converted correctly
 	public void printMaze() {
 		for (int i = 0; i < mazeArray.length; i++) {
 			for (int j = 0; j < mazeArray[i].length; j++) {

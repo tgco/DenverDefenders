@@ -25,7 +25,7 @@ public enum InputListenerEnums{
 				//touch up disposes the game object when it is clicked.
 				@Override
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					object.dispose();
+					object.destroy();
 				}
 			});
 		}
@@ -84,6 +84,7 @@ public enum InputListenerEnums{
 				}
 				
 				@Override
+				// REFACTOR: if certain time has passed, fling should not work
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					// Find distance from center of object
 					float deltaX = x - object.getWidth()/2;
@@ -95,6 +96,5 @@ public enum InputListenerEnums{
 		}
 	};
 	//every enum needs to override this abstract method, and return an Input Listener
-	/**Abstract method that game objects can use to add listeners.*/
 	public abstract InputListener construct(GameObject object, ObjectMap<String, String> args);
 }

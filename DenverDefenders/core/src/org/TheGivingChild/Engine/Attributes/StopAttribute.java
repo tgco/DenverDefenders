@@ -14,7 +14,7 @@ public class StopAttribute extends Attribute {
 	@Override
 	public void update(Level level) {
 		myObject.setVelocity(0, 0);
-		super.update(level);
+		super.update(level); // throw condition if there is one
 	}
 
 }

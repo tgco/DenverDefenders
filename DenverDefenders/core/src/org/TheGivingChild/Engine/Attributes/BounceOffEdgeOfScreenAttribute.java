@@ -5,7 +5,7 @@ import org.TheGivingChild.Engine.XML.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 
-// Bounces the object off the edge of the screen
+// Bounces the object off the edge of the screen by setting velocity appropriately
 public class BounceOffEdgeOfScreenAttribute extends Attribute {
 	
 	public BounceOffEdgeOfScreenAttribute(ObjectMap<String, String> args) {

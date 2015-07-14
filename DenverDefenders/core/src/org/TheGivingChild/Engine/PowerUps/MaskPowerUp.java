@@ -12,9 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+// Power up which shows the player the general direction to the closest kid in the maze.
 public class MaskPowerUp extends PowerUp {
 
 	@Override
+	// Returns true if this power is done
 	public boolean update(ScreenMaze mazeScreen, SpriteBatch batch) {
 		// Find the closest child to the player
 		ChildSprite player = mazeScreen.getPlayerCharacter();
@@ -33,7 +35,7 @@ public class MaskPowerUp extends PowerUp {
 			return true;
 		}
 		
-		// If close enough, this powerup is done, return
+		// If close enough, this power is done, return
 		if (closestDist < mazeScreen.getMaze().getPixWidth()) {
 			return true;
 		}

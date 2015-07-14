@@ -2,22 +2,19 @@ package org.TheGivingChild.Engine;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-// Manages audio settings and allows playback
+// Manages audio settings and allows playback.  Singleton pattern.
+// Author: Walter Schlosser
 public class AudioManager {
 	// Singleton instance
 	private static AudioManager instance;
 	// Reference to game
 	private TGC_Engine game;
 	// Settings
-	public float volume;
+	public float volume; // 0 to 1 inclusive range
 	public boolean soundEnabled;
 	public boolean musicEnabled;
-	public boolean muteAll;
-	// Array of background music
-	private Array<Music> backgroundSounds;
 	// Map of sound name to sound asset
 	private ObjectMap<String, Sound> soundMap;
 	// Reference to currently selected song
@@ -30,53 +27,46 @@ public class AudioManager {
 	}
 	
 	public AudioManager() {
-		backgroundSounds = new Array<Music>();
 		soundMap = new ObjectMap<String, Sound>();
+		// Default settings
 		soundEnabled = true;
 		musicEnabled = true;
-		muteAll = false;
 		volume = 1.0f;
 	}
 	
 	// Sets up sound references
 	public void initialize(TGC_Engine game) {
 		this.game = game;
-	
-		backgroundSounds.add(game.getAssetManager().get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class));
-		
-		addAvailableSound("sounds/click.wav");
+		this.addAvailableSound("sounds/click.wav");
 	}
 	
 	// Adds the sound name to the map
 	public void addAvailableSound(String soundFile) {
-		//Load sound, this should be refactored
+		//Load sound, this should be refactored, it is currently synchronous
 		game.getAssetManager().load(soundFile, Sound.class);
 		game.getAssetManager().finishLoadingAsset(soundFile);
 		soundMap.put(soundFile, game.getAssetManager().get(soundFile, Sound.class));
 	}
 	
-	// Selects a random background song and plays it
+	// Begins looping background song
 	public void playBackgroundMusic() {
-		backgroundSoundToPlay = backgroundSounds.random();
+		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
 		backgroundSoundToPlay.setVolume(volume);
 		backgroundSoundToPlay.setLooping(true);
 		backgroundSoundToPlay.play();
 	}
 	
-	// Plays the sound file
+	// Plays the sound file if sound is enabled
 	public void play(String fileName) {
-		if (soundEnabled && !muteAll)
+		if (soundEnabled)
 			soundMap.get(fileName).play(volume);
-	}
-	
-	public void setMuteAll(boolean muteAll) {
-		this.muteAll = muteAll;
 	}
 	
 	public void setVolume(float volume) {
 		this.volume = volume;
 	}
 	
+	// Sets music enabled bool and plays the music if enabled is true
 	public void setMusicEnabled(boolean enabled) {
 		musicEnabled = enabled;
 		if (enabled && !backgroundSoundToPlay.isPlaying())
@@ -90,9 +80,7 @@ public class AudioManager {
 	}
 	
 	public void dispose() {
-		for (Music m : backgroundSounds) {
-			m.dispose();
-		}
+		backgroundSoundToPlay.dispose();
 		for (Sound s : soundMap.values()) {
 			s.dispose();
 		}

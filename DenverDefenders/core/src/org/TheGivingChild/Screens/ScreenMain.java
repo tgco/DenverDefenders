@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  * This class creates the main screen that is first seen when the game is started. It allows
  * for navigation between all screens that we have created. It has a table of buttons on
  * the bottom of the screen that allow you to navigate to the play screen, how to play
- * screen, editor screen, and options screen.
+ * screen, and options screen.
  * @author ctokunag
  */
 class ScreenMain extends ScreenAdapter {
@@ -42,9 +42,6 @@ class ScreenMain extends ScreenAdapter {
 		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
 		labelTable = createLabel();
-		
-		// Start background music
-		AudioManager.getInstance().playBackgroundMusic();
 	}
 
 	private Table createMainScreenTable() {

@@ -11,9 +11,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * It holds the {@link com.badlogic.gdx.assets.AssetManager AssetManager} which allows easy access to all of our assets.
  * It also holds the {@link org.TheGivingChild.Engine.XML.XML_Reader XML Reader} that some screens use themselves. 
  * 
- * @author Jack Wesley Nelson, Corey Tokunaga-Reichert, Kevin Day, Milton Tzimourakas, Nathaniel Jacobi
+ * @author Jack Wesley Nelson, Corey Tokunaga-Reichert, Kevin Day, Milton Tzimourakas, Nathaniel Jacobi, Walter Schlosser
  *
  */
 public class TGC_Engine extends Game {
@@ -38,16 +36,14 @@ public class TGC_Engine extends Game {
 	public ProgressionData data;
 	/**The stage to place actors to.*/
 	private TGC_Stage stage;
-	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for our {@link com.badlogic.gdx.scenes.scene2d.ui.Button Buttons}.*/
+	/**{@link #bitmapFontButton} is the {@link com.badlogic.gdx.graphics.g2d.BitmapFont BitmapFont} used for labels*/
 	private BitmapFont bitmapFontButton; 
 	/** Asset manager used for the whole game. It is preferred that all assets use this manager for loading */
 	private AssetManager manager;
-	/**{@link #reader} allows minigames to be read in.*/
+	/**{@link #reader} allows mini games to be read in.*/
 	private XML_Reader reader;
-	/**{@link #batch} is used for drawing objects to the screen during {@link #render()};*/
-	private Batch batch;
 	
-	// True if debugging features should be used
+	// True if debug bounds drawing should be used
 	public boolean debug = false;
 
 	/**{@link #create()} is called when the game is initially launched. Initializes files, and variables needed.*/
@@ -63,7 +59,7 @@ public class TGC_Engine extends Game {
 		// Calculate font scale
 		globalFontScale = Gdx.graphics.getWidth()/Gdx.graphics.getPpiX() * 0.25f;
 		
-		// Init asset manager and load assets for the splash screen (the first screen), and the screen manager
+		// Init asset manager and completely load assets for the splash screen (the first screen), and the screen manager
 		manager = new AssetManager();
 		// Set custom loader for tiled maps
 		manager.setLoader(TiledMap.class, new TmxMapLoader());
@@ -72,7 +68,7 @@ public class TGC_Engine extends Game {
 		
 		manager.finishLoading();
 		
-		/* These assets will load during the splash screen */
+		/* Any following assets in this constructor will load during the splash screen */
 		// UI materials
 		manager.load("SemiTransparentBG.png", Texture.class);
 		manager.load("Packs/Buttons.pack", TextureAtlas.class);
@@ -89,15 +85,13 @@ public class TGC_Engine extends Game {
 		// READER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
 		reader = new XML_Reader();
 
-		//button stuff
+		// Font initialized to generic
 		bitmapFontButton = new BitmapFont();
-		//create the stage
+		// Create the stage
 		stage = new TGC_Stage();
 
-		//Game input processor
+		// Game input processor
 		Gdx.input.setInputProcessor(stage);
-
-		batch = new SpriteBatch();
 	}
 
 	/**{@link #dispose()} handles the resource disposal when {@link TGC_Engine} exits.*/
@@ -106,21 +100,20 @@ public class TGC_Engine extends Game {
 		super.dispose();
 		//dispose the screen manager, and in doing so all screens
 		ScreenAdapterManager.getInstance().dispose();
-		batch.dispose();
 		bitmapFontButton.dispose();
 		// may double dispose audio, but runs on app quit.
 		AudioManager.getInstance().dispose();
 		manager.dispose();
 	};
-	/**{@link #getBitmapFontButton()} returns {@link #bitmapFontButton}.*/
+	
 	public BitmapFont getBitmapFontButton(){
 		return bitmapFontButton;
 	}
-	/**{@link #getStage()} returns {@link #stage}. */
+
 	public Stage getStage() {
 		return stage;
 	}	
-	/**{@link #getAssetManager()} returns {@link #manager}. */
+
 	public AssetManager getAssetManager() {
 		return manager;
 	}
@@ -142,11 +135,13 @@ public class TGC_Engine extends Game {
 	/**{@link #render()} handles rendering the main stage, as well as calling the render of the current {@link ScreenAdapter} being shown.*/
 	@Override
 	public void render() {
+		// Clear screen to white
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Calls render on current screen
 		super.render();
 		globalClock += Gdx.graphics.getDeltaTime();
+		// Catch stage input and draw
 		stage.act();
 		stage.draw();
 		// DEBUG BOUNDS DRAWING

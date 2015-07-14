@@ -6,8 +6,9 @@ import org.TheGivingChild.Engine.XML.Level;
 import com.badlogic.gdx.utils.ObjectMap;
 
 // Attributes belong to a game object and are allowed to change its properties every frame in the update call
+// Author: Walter Schlosser
 public abstract class Attribute {
-	// List of values this attribute needs to operate
+	// List of values this attribute needs to work, retrieved from xml file
 	protected ObjectMap<String, String> args;
 	// Reference to the object this attribute modifies
 	protected GameObject myObject;
@@ -17,7 +18,9 @@ public abstract class Attribute {
 	protected String throwCondition;
 	
 	public Attribute(ObjectMap<String, String> args) { 
+		// Set args and trigger conditions
 		this.args = args;
+		// The following may be null if not specified (not needed)
 		trigger = args.get("on");
 		throwCondition = args.get("throws");
 	}
@@ -30,7 +33,9 @@ public abstract class Attribute {
 		this.myObject = myObject;
 	};
 	/**
-	 * Used to simulate the specific behavior for each game object, called each frame
+	 * Used to simulate the specific behavior for each game object, called each frame if continuous
+	 * or called when notified of the trigger condition if triggered.
+	 * 
 	 * @param	myObject	the GameObject that currently holds the given attribute
 	 * @param	allObjects	all of the gameObjects within the given level
 	 */

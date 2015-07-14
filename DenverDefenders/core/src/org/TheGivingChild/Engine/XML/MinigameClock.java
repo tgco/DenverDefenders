@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Serves as the gameclock for the minigames
- * Static clock is only created once.
+ * Singleton
  *<p>
  *-Final to avoid inheritance
  *</p>
@@ -23,6 +23,7 @@ public final class  MinigameClock {
 	/**Boolean to keep track of whether time remains*/
 	private boolean outOfTime = false;
 	
+	// Size to draw the clock image
 	private static final float CLOCK_SIZE = Gdx.graphics.getHeight()/5f;
 	
 	private static MinigameClock clock;
@@ -64,15 +65,13 @@ public final class  MinigameClock {
 		
 	/**
 	 * Decrements the level time remaining by time since the last frame.
-	 * Checks if level is out of time and raises a flag if it is.
+	 * Checks if level is out of time and sets flag if it is.
 	 */
 	public void progress() {
-		remaining -= Gdx.graphics.getDeltaTime();
-				
+		remaining -= Gdx.graphics.getDeltaTime();		
 		if(remaining <= 0) {
 			outOfTime = true;
 		}
-		
 	}
 
 	public double getRemainingTime() {

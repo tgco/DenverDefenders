@@ -3,17 +3,18 @@ package org.TheGivingChild.Engine;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-// This class stores all info for what is currently unlocked in the game
+// Stores all info for what is currently unlocked in the game.  Saved and loaded to maintain player progress.
+// Author: Walter Schlosser
 public class ProgressionData {
 	// Number of mazes unlocked
 	private int totsLevelsUnlocked;
 	private int kidsLevelsUnlocked;
 	
-	// Maps the level to beat to the powerup that is unlocked
+	// Maps the level to the power that is unlocked when said level is beat
 	private ObjectMap<Integer, String> kidsPowerUps;
 	private ObjectMap<Integer, String> totsPowerUps;
 	
-	// Array of powerups that have been unlocked
+	// Array of powerup names that have been unlocked already
 	private Array<String> kidsUnlockedPowerUps;
 	private Array<String> totsUnlockedPowerUps;
 	
@@ -21,7 +22,7 @@ public class ProgressionData {
 		totsLevelsUnlocked = 1;
 		kidsLevelsUnlocked = 1;
 		
-		// Construct the map that has powerups
+		// Construct the map that has powerup unlock infor
 		// Might be better to read from an init file at app start
 		kidsPowerUps = new ObjectMap<Integer, String>();
 		totsPowerUps = new ObjectMap<Integer, String>();
@@ -34,20 +35,22 @@ public class ProgressionData {
 		totsUnlockedPowerUps = new Array<String>();
 	}
 	
+	// Returns the number of unlocked levels for the passed mode, "kids" or "tots"
 	public int getNumberLevelsUnlocked(String totsOrKids) {
 		if (totsOrKids.equals("tots")) {
 			return totsLevelsUnlocked;
 		} else return kidsLevelsUnlocked;
 	}
 	
+	// Returns array of unlocked power names for the passed mode, "kids" or "tots"
 	public Array<String> getUnlockedPowerUps(String totsOrKids) {
 		if (totsOrKids.equals("tots")) {
 			return totsUnlockedPowerUps;
 		} else return kidsUnlockedPowerUps;
 	}
 	
-	// Unlocks a new level if highest level unlocked was beaten
-	// Checks powerups unlocked as well
+	// Unlocks a new level and power if highest level previously unlocked was beaten
+	// Returns true if a power was unlocked
 	public boolean unlockLevelCheck(int mazeNumberBeat, String totsOrKids) {
 		if (totsOrKids.equals("tots")) {
 			if (mazeNumberBeat >= totsLevelsUnlocked) {
@@ -62,7 +65,8 @@ public class ProgressionData {
 		}
 	}
 	
-	// Checks if the level beaten unlocked a powerup
+	// Returns true and adds the unlocked power to the array of powers unlocked if the passed maze number beat
+	// unlocks a power
 	public boolean unlockPowerUpCheck(int mazeNumberBeat, String totsOrKids) {
 		Array<String> powerUps;
 		ObjectMap<Integer, String> powerUpMap;

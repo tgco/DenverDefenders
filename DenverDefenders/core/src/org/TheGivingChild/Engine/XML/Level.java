@@ -9,24 +9,30 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
+// Contains info from xml level file after compiled into objects.  Progresses the level's gameplay.
+// Author: Kevin Day, Walter Schlosser
 public class Level {
 	private String name;
+	// Image name to be drawn as background
 	private String background;
 	private Array<GameObject> objects;
+	// Maps string condition to if it has occured yet
 	private ObjectMap<String, Boolean> winConditions;
 	private ObjectMap<String, Boolean> loseConditions;
 	// Maps a condition to the list of Attributes to notify
 	private ObjectMap<String, Array<Attribute> > triggeredObservers;
+	// True if level is done
 	private boolean completed;
+	// True if player won the level
 	private boolean won;
+	// Description shown on a transition into this level
 	private String description;
 
-	// Length for a level in seconds
+	// Length for a level in seconds REFACTOR: Should set from xml
 	private int levelTime = 5;
 	
 	// True if this level is a boss game at the end of a maze
 	private boolean bossGame;
-	
 	
 	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
 		this.name = name;
@@ -54,7 +60,7 @@ public class Level {
 		
 		// CHECK FOR CONCURRENT MODIFICATION ERRORS
 		for (int i = 0; i < objects.size; i++) {
-			if(!objects.get(i).isDisposed())
+			if(!objects.get(i).isDestroyed())
 				objects.get(i).update(this);
 			else
 				objects.removeIndex(i);

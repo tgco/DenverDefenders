@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
+// Stage for unlocked power ups shown/used as the maze screen HUD
+// Author: Walter Schlosser
 public class PowerUpStage extends Stage {
 	private Table powerupButtons;
 	private static final float BUTTON_SIZE = Gdx.graphics.getHeight()/6f;

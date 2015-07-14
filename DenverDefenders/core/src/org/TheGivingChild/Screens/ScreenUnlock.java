@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 // Displays an unlocked power and its description
+// Author: Walter Schlosser
 public class ScreenUnlock extends ScreenAdapter {
 	private TGC_Engine game;
 	private Table unlockTable;

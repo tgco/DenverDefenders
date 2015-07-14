@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * {@link ChildSprite} controls the behavior for the children within the maze.
  * The main player sprite within the maze is also a ChildSprite, but never utilizes the followSprite method, and has it's own logic for movement within {@link org.TheGivingChild.Screens.ScreenMaze ScreenMaze}
- * @author Jack Wesley Nelson
+ * @author Jack Wesley Nelson, Walter Schlosser
  */
 public class ChildSprite extends Sprite {
-	/**{@link #saved} is a boolean to keep track of whether the sprite has been saved.*/
+	/**{@link #saved} is a boolean to keep track of whether the sprite has been saved at the headquarters.*/
 	private boolean saved;
-	// True if this child has begun following
+	// True if this child has begun following the main character
 	private boolean follow;
 	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
 	private float moveSpeed;
@@ -19,14 +19,14 @@ public class ChildSprite extends Sprite {
 	 * @param childTexture The texture that the sprite will draw.
 	 */
 	public ChildSprite(Texture childTexture) {
-		super(childTexture);;
+		super(childTexture);
 		saved = false;
 		moveSpeed = 0;
 		follow = false;
 	}
 	/**
-	 * Moves the {@link ChildSprite} to the position of the {@link MinigameRectangle} passed in.
-	 * @param rect contains the new position coordinates.
+	 * Moves the {@link ChildSprite} to the position of the {@link Vertex} passed in.
+	 * @param tile contains the new position coordinates.
 	 */
 	public void moveTo(Vertex tile) {
 		this.setPosition(tile.getX(), tile.getY());
@@ -68,40 +68,24 @@ public class ChildSprite extends Sprite {
 			break;
 		}
 		
-		// Linearly interpolate to the position
-		//Vector2 pos = new Vector2(this.getX(), this.getY());
-		//pos.lerp(new Vector2(placeAt.getX() + offsetX, placeAt.getY() + offsetY), Gdx.graphics.getDeltaTime());
 		this.setX(placeAt.getX() + offsetX);
 		this.setY(placeAt.getY() + offsetY);
 	}
-	/**
-	 * Sets the {@link #moveSpeed}.
-	 * @param f {@link #moveSpeed} will be set to this.
-	 */
+
 	public void setSpeed(float f)
 	{
 		moveSpeed = f;
 	}
-	/**
-	 * returns {@link #moveSpeed}.
-	 * @return {@link #saved}
-	 */
+
 	public float getSpeed()
 	{
 		return moveSpeed;
 	}
-	/**
-	 * returns {@link #saved}.
-	 * @return {@link #saved}
-	 */
+
 	public boolean getSaved() {
 		return saved;
 	}
-	/**
-	 * sets {@link #saved} to the boolean passed in.
-	 * Sets follow to false.
-	 * @param isSaved {@link #saved} is set to this.
-	 */
+
 	public void setSaved(boolean isSaved) {
 		saved = isSaved;
 	}

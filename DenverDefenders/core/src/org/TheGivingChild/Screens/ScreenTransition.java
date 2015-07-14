@@ -23,7 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
-// This class takes a reference to two screens and transfers between them.  It displays a fact, and also loads any required assets for the incoming screen.
+// This class takes a reference to two screen enums and transfers between them.
+// Asks the incoming screen for which assets to load and completes the loading before
+// setting the new screen.
+// Author: Walter Schlosser
 public class ScreenTransition extends ScreenAdapter {
 	// The current screen which is exiting
 	private ScreenAdapterEnums screenOut;
@@ -51,6 +54,7 @@ public class ScreenTransition extends ScreenAdapter {
 	private Button nextButton;
 	
 	// If true, calls init on the screen about to be shown
+	// REFACTOR: this is a workaround to call init on the maze screen by casting since init is not in the base class.  Could be better.
 	private boolean initCall;
 	
 	// Constructor that builds a transition with a random fact

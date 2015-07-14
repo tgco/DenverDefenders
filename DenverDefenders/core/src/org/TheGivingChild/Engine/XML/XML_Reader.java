@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 /**
  * Used to read in an .xml file and compile a Level object from it<br>
  * Call setupNewFile to setup the given level, and compileLevel to get the actual Level object
- * @author Kevin D
+ * @author Kevin D, Walter Schlosser
  */
 public class XML_Reader {
 	/** The libGDX XmlReader used to parse the .xml file*/
@@ -29,7 +29,7 @@ public class XML_Reader {
 		String xml_file ="";
 		try{
 			xml_file = file.readString();
-		} catch(Exception e) {System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e);}
+		} catch(Exception e) { System.out.println("Error opening xml file. Filename: " + XML_Filename + "Exception: " + e); }
 		root = reader.parse(xml_file);
 	}
 	/**

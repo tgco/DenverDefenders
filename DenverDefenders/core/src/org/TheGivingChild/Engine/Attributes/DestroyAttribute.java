@@ -4,7 +4,7 @@ import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
-// Destroys the object.  Used as a triggered attribute
+// Destroys the object. Typically used as a triggered attribute since object cannot be recovered without resetting the level
 public class DestroyAttribute extends Attribute {
 
 	public DestroyAttribute(ObjectMap<String, String> args) {
@@ -14,7 +14,7 @@ public class DestroyAttribute extends Attribute {
 	@Override
 	public void update(Level level) {
 		super.update(level);
-		myObject.dispose();
+		myObject.destroy();
 	}
 
 }

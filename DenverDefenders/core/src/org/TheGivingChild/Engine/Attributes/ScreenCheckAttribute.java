@@ -5,7 +5,7 @@ import org.TheGivingChild.Engine.XML.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 
-// Checks if object is off of the selected sides of the screen and throws the selected condition if true
+// Checks if object is off of the selected sides of the screen and throws the passed condition if true
 public class ScreenCheckAttribute extends Attribute {
 	private String side;
 	
@@ -32,7 +32,7 @@ public class ScreenCheckAttribute extends Attribute {
 		
 		// Throw condition
 		if (offScreen) {
-			super.update(level);
+			super.update(level); // throws the condition
 		}
 	}
 

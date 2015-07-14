@@ -7,7 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 /**
  * <p>This class is used as the main stage in TGC_Engine.</p>
- * <p>Used as the main inputProcessor except when the {@link org.TheGivingChild.Screens.ScreenMaze} is shown.</p>
+ * <p>Overriden to have default Android back key functionality.</p>
  * 
  * @author janelson
  *

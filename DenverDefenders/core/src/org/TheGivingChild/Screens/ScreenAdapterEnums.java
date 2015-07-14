@@ -13,7 +13,7 @@ import com.badlogic.gdx.assets.AssetManager;
  */
 public enum ScreenAdapterEnums {
 	/**
-	 * Maze selction screen
+	 * Maze selection screen
 	 */
 	MAZE_SELECT {
 		@Override

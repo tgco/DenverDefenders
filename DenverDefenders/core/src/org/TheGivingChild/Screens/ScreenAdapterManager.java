@@ -13,13 +13,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.IntMap;
 /**
  * 
- * The {@link ScreenAdapterManager} follows the Singleton pattern.
+ * Singleton
  * <p>
  * -Keeps track of all {@link Instance}s of screens.
  * </p>
- * <p>
- *-Handles screenTransitions via {@link #screenTransitionIn()} and {@link #screenTransitionOut()}.
- *</p>
  *<p>
  *-Handles disposal of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} when the program ends. (Assuming the {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} disposal methods are correct)
  *</p>
@@ -88,6 +85,7 @@ public final class ScreenAdapterManager {
 		screens.remove(screenEnum.ordinal()).dispose();
 	}
 	
+	// Returns the instance of the screen object that corresponds to the enum
 	public ScreenAdapter getScreenFromEnum(ScreenAdapterEnums screenEnum) {
 		if (!screens.containsKey(screenEnum.ordinal())) {
 			screens.put(screenEnum.ordinal(), screenEnum.getScreenInstance());
@@ -97,20 +95,14 @@ public final class ScreenAdapterManager {
 	
 	/**
 	 * <p>Get a reference to the calling TGC_Engine</p>
-	 * <p>Load the .pack of ScreenTransitions</p>
-	 * <p>Finish loading the pack, since we need transitions everywhere.</p>
-	 * <p>Create a TextureAtlas from the .pack</p>
-	 * <p>Fill the screenTransitons Texture array using the TextureAtlas</p>
-	 * <p>Set the needed variables, specifically:</p>
-	 * <p>	-screenTransition state</p>
-	 * <p>	-screenStartPositions</p>
+	 * 
 	 * @param game is the reference to the TGC_Engine that calls initialize
 	 */
 	public void initialize(TGC_Engine game) {
 		this.game = game;
 		backgroundRegion = new TextureRegion(game.getAssetManager().get("ColdMountain.png", Texture.class));
 	}
-	/**Draws the {@link #backgroundRegion} to the screen, allowing for resizing. */
+	/**Draws the {@link #backgroundRegion} to the screen*/
 	public void backgroundImage() {
 		batch.begin();
 		batch.draw(backgroundRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -119,12 +111,9 @@ public final class ScreenAdapterManager {
 
 	/**
 	 * <p>The show method used to switch to other screenAdapters</p>
-	 * <p>Show the screen in the argument, hide the current.</p>
-	 * <p>If the game is null, then we have no screens to show.</p>
 	 * <p>Check if {@link #screens} contains this {@link ScreenAdapterEnums} enumeration.</p>
-	 * <p>If not, then add the screenAdapter to the map.</p>
-	 * <p>Reset the starting locations for screenTransitions</p>
-	 * <p>set {@link #screenTransitionInComplete} to false</p>
+	 * <p>If not, then construct and add the screenAdapter to the map, and then set as the active screen</p>
+	 * 
 	 * @param screenEnum The screen to switch to.
 	 */
 	public void show(ScreenAdapterEnums screenEnum) {

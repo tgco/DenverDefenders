@@ -4,7 +4,7 @@ import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
-// Set the lowest y value this object can have
+// Set the lowest y value this object can have.  Motion stops when this value is reached
 public class FloorAttribute extends Attribute {
 	private float floorY;
 
@@ -17,6 +17,7 @@ public class FloorAttribute extends Attribute {
 	public void update(Level level) {
 		if (myObject.getY() <= floorY) {
 			super.update(level);
+			// stop and place just above to avoid repeated collision
 			myObject.setVelocity(0, 0);
 			myObject.setPosition(myObject.getX(), floorY + 1);
 		}

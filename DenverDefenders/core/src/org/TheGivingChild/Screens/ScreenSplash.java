@@ -37,6 +37,8 @@ public class ScreenSplash extends ScreenAdapter {
 		if (game.getAssetManager().update() && splashScreenTimer < 0 && !transitionInit) {
 			// Initialize audio management since audio is loaded during splash
 			AudioManager.getInstance().initialize(game);
+			// Start background music
+			AudioManager.getInstance().playBackgroundMusic();
 			transitionInit = true;
 			// Transition to main screen when splash and loading done
 			ScreenTransition splashToMain = new ScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN);

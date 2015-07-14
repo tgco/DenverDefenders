@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 // Continuous attribute that checks collisions with the specified other objects, and throws a corresponding condition
 public class CollidesAttribute extends Attribute {
+	// Object ids that this object should check for
 	Array<Integer> collideIDs;
 
 	public CollidesAttribute(ObjectMap<String, String> args) {
@@ -32,7 +33,7 @@ public class CollidesAttribute extends Attribute {
 				Rectangle otherRect = new Rectangle(other.getX(), other.getY(), other.getWidth(), other.getHeight());
 				if (myRect.overlaps(otherRect)) {
 					// construct condition and throw a notification
-					String condition = "collide_" + String.valueOf(myObject.getID()) + "_" + other.getID();
+					String condition = "collide_" + myObject.getID() + "_" + other.getID();
 					level.throwCondition(condition);
 				}
 			}

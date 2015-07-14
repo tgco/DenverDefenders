@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 
 // Maps inputs to operations on the maze screen
+// Author: Milton Tzimourakas, Walter Schlosser, 
 public class MazeInputProcessor implements InputProcessor {
 	/** Vector to store the last touch of the user */
 	private Vector2 lastTouch;
@@ -94,7 +95,7 @@ public class MazeInputProcessor implements InputProcessor {
 		}
 		//otherwise y>=x so move vertically 
 		else {
-			// Y screen axis points down
+			// NOTE: Y axis points down for touch coords
 			if(delta.y > 0)	{
 				mazeScreen.setTargetDirection(Direction.DOWN);
 			}

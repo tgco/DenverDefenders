@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.XML.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 
+// REFACTOR: An edge bounce attrib with side args could combine this with the other bouce off edge attrib
 public class BounceOffTopAndBottomAttribute extends Attribute {
 	
 	public BounceOffTopAndBottomAttribute(ObjectMap<String, String> args) {
