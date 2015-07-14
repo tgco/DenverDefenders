@@ -13,12 +13,14 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  * Used to store all information on each object within the game<br>
- * @author Mostly Kevin D
+ * @author Kevin D
  */
 public class GameObject extends Actor {
 	/** Unique ID assigned to each GameObject*/
 	private int id;
 	private String imageFilename;
+	// Scale set from args if available to apply to the size of the image
+	private float imageScale;
 	/** Two element velocity array<br> First element is X velocity, second is Y velocity */
 	private float[] velocity;
 	private float[] initialVelocity;
@@ -40,7 +42,11 @@ public class GameObject extends Actor {
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = args.get("image");
-		
+		// scale set to zero to denote if nothing was declared in xml
+		imageScale = 0;
+		if (args.containsKey("imageScale"))
+			imageScale = Float.parseFloat(args.get("imageScale"));
+
 		// Set position based on screen pixels, xml is defined based on 1024x600 screen
 		float x, y;
 		// Random check
@@ -59,19 +65,19 @@ public class GameObject extends Actor {
 			y = rand.nextInt(upper - lower) + lower;
 		} 
 		else y = Float.parseFloat(args.get("y"));
-		
+
 		// Adjust to actual screen size in pixels
 		float adjustedX = x/1024f * Gdx.graphics.getWidth();
 		float adjustedY = y/600f * Gdx.graphics.getHeight();
 		position = new float[] { adjustedX, adjustedY };
-		
+
 		this.continuousAttributes = continuousAttributes;
 		this.triggeredAttributes = triggeredAttributes;
-		
+
 		//initialize a velocity of 0
 		velocity = new float[] { 0, 0 };
 		acceleration = new float[] { 0, 0 };
-		
+
 		setPosition( position[0], position[1]);
 		initialPosition = position;
 		// Run any setup necessary for attributes
@@ -81,27 +87,27 @@ public class GameObject extends Actor {
 		for (Attribute att : triggeredAttributes) {
 			att.setup(this);
 		}
-		
+
 		// Save this afterwards in case an attribute set the initial values
 		initialVelocity = new float[] {velocity[0],velocity[1]};
 	}
-	
+
 	// Retrieves the texture from the asset manager and sets scale
 	public void retrieveTexture(AssetManager manager) {
 		texture = manager.get("LevelImages/" + imageFilename, Texture.class);
-		//scale the object to the width of the new screen
+		// Set the size appropriately
+		// Default, scale as if the texture width is the desired width on a 1024 wide screen
 		objectScaleX = Gdx.graphics.getWidth()/1024f;
-		//scale the object to the height of the new screen
+		// Default, scale as if the texture height is the desired height on a 600 height screen
 		objectScaleY = Gdx.graphics.getHeight()/600f;
-		//scale small objects an additional 100%
-		if(texture.getWidth() <= 32 && texture.getHeight() <= 32){
-			objectScaleX *= 2;
-			objectScaleY *= 2;
+		if (imageScale != 0) {
+			objectScaleX *= imageScale;
+			objectScaleY *= imageScale;
 		}
-		
-		//set the bounds to be as large as the textures size
+
+		//set the bounds to be as large as the desired size
 		setBounds(getX(), getY(), texture.getWidth()*objectScaleX, texture.getHeight()*objectScaleY);
-		
+
 	}
 
 	// Updates all continuous attributes
@@ -109,7 +115,7 @@ public class GameObject extends Actor {
 		for (Attribute att : continuousAttributes)
 			att.update(level);
 	}
-	
+
 	// Registers the triggered attributes under the condition in the passed map.  Adds the condition as a key if it is not set yet.
 	public void register(ObjectMap<String, Array<Attribute> > observerMap) {
 		for (Attribute att : triggeredAttributes) {

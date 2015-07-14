@@ -8,7 +8,7 @@
 	</object>
 
 	<!-- Apples -->
-	<object id="1" image="Apple1.png" x="50" y="500">
+	<object id="1" image="Apple1.png" imageScale="4" x="50" y="450" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -18,7 +18,7 @@
 		</triggered>
 		<input type="tap_set_velocity" vx="0" vy="-600" />
 	</object>
-	<object id="2" image="Apple1.png" x="50" y="500">
+	<object id="2" image="Apple1.png" imageScale="4" x="50" y="450" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -28,7 +28,7 @@
 		</triggered>
 		<input type="tap_set_velocity" vx="0" vy="-600" />
 	</object>
-	<object id="3" image="Apple1.png" x="50" y="500">
+	<object id="3" image="Apple1.png" imageScale="4" x="50" y="450" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />

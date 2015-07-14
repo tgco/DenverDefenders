@@ -1,6 +1,6 @@
 <level name="Fruit Catch" background="Table.png" description="Catch all the food!">
 	<!-- Fruit -->
-	<object id="0" image="Apple1.png" x="rand_100_900" y="900">
+	<object id="0" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="900" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -9,7 +9,7 @@
 			<att type="destroy" on="collide_11_0" throws="destroy0" />
 		</triggered>
 	</object>
-	<object id="1" image="Banana1.png" x="rand_100_900" y="1000">
+	<object id="1" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="1000" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -18,7 +18,7 @@
 			<att type="destroy" on="collide_11_1" throws="destroy1" />
 		</triggered>
 	</object>
-	<object id="2" image="Cherries1.png" x="rand_100_900" y="1100">
+	<object id="2" image="Cherries1.png" imageScale="3.25" x="rand_100_900" y="1100" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -27,7 +27,7 @@
 			<att type="destroy" on="collide_11_2" throws="destroy2" />
 		</triggered>
 	</object>
-	<object id="3" image="Cherries2.png" x="rand_100_900" y="1200">
+	<object id="3" image="Cherries2.png" imageScale="3.25" x="rand_100_900" y="1200" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -36,7 +36,7 @@
 			<att type="destroy" on="collide_11_3" throws="destroy3" />
 		</triggered>
 	</object>
-	<object id="4" image="Grapes_light.png" x="rand_100_900" y="1300">
+	<object id="4" image="Grapes_light.png" imageScale="3.25" x="rand_100_900" y="1300" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -45,7 +45,7 @@
 			<att type="destroy" on="collide_11_4"  throws="destroy4" />
 		</triggered>
 	</object>
-	<object id="5" image="Icecream1.png" x="rand_100_900" y="1400">
+	<object id="5" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1400" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -54,7 +54,7 @@
 			<att type="destroy" on="collide_11_5" throws="destroy5" />
 		</triggered>
 	</object>
-	<object id="6" image="Icecream1.png" x="rand_100_900" y="1500">
+	<object id="6" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1500" >
 		<continuous>
 			<att type="moves" vx="0" vy="-350" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
@@ -65,7 +65,7 @@
 	</object>
 
 	<!-- basket -->
-	<object id="11" image="basket_new.png" x="500" y="50">
+	<object id="11" image="basket_new.png" imageScale="1.5" x="500" y="50">
 		<continuous>
 			<att type="collides" with="0,1,2,3,4,5,6" />
 		</continuous>

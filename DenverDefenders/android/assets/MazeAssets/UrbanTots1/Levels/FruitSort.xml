@@ -1,20 +1,20 @@
 <level name="Fruit Sort" background="Table.png" description="Drag the fruit to the correct basket!">
 	<!-- Apples -->
-	<object id="0" image="Apple1.png" x="rand_100_900" y="rand_200_500">
+	<object id="0" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_11_0" throws="destroy0" />
 			<att type="destroy" on="collide_12_0" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="1" image="Apple1.png" x="rand_100_900" y="rand_200_500">
+	<object id="1" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_11_1" throws="destroy1" />
 			<att type="destroy" on="collide_12_1" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="2" image="Apple1.png" x="rand_100_900" y="rand_200_500">
+	<object id="2" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_11_2" throws="destroy2" />
 			<att type="destroy" on="collide_12_2" throws="lose" />
@@ -23,21 +23,21 @@
 	</object>
 
 	<!-- Bananas -->
-	<object id="3" image="Banana1.png" x="rand_100_900" y="rand_200_500">
+	<object id="3" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_12_3" throws="destroy3" />
 			<att type="destroy" on="collide_11_3" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="4" image="Banana1.png" x="rand_100_900" y="rand_200_500">
+	<object id="4" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_12_4" throws="destroy4" />
 			<att type="destroy" on="collide_11_4" throws="lose" />
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="5" image="Banana1.png" x="rand_100_900" y="rand_200_500">
+	<object id="5" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
 		<triggered>
 			<att type="destroy" on="collide_12_5" throws="destroy5" />
 			<att type="destroy" on="collide_11_5" throws="lose" />
