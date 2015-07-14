@@ -60,8 +60,8 @@ public class TGC_Engine extends Game {
 		
 		// Init global clock
 		globalClock = 0;
-		// Calculate font scale
-		globalFontScale = Gdx.graphics.getWidth()/Gdx.graphics.getPpiX() * 0.25f;
+		// Calculate font scale, default scale set for a 1024x600 screen (the desktop app size)
+		globalFontScale = Gdx.graphics.getWidth()/1024f * 2.5f;
 		
 		// Init asset manager and completely load assets for the splash screen (the first screen), and the screen manager
 		manager = new AssetManager();
