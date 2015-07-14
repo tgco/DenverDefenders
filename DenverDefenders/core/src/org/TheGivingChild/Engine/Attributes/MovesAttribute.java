@@ -20,9 +20,9 @@ public class MovesAttribute extends Attribute {
 		float vy = myObject.getVelocity()[1] + Gdx.graphics.getDeltaTime()*myObject.getAcceleration()[1];
 		myObject.setVelocity(vx, vy);
 		
-		// Update position
-		float x = myObject.getX() + Gdx.graphics.getDeltaTime()*vx;
-		float y = myObject.getY() + Gdx.graphics.getDeltaTime()*vy;
+		// Update position after scaling velocity.  The set velocity is at pixels/sec for a 1024x600 screen
+		float x = myObject.getX() + Gdx.graphics.getDeltaTime() * (vx * Gdx.graphics.getWidth()/1024f);
+		float y = myObject.getY() + Gdx.graphics.getDeltaTime() * (vy * Gdx.graphics.getHeight()/600f);
 		myObject.setPosition(x, y);
 	}
 	
