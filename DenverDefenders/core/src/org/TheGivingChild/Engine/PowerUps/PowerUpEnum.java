@@ -22,6 +22,24 @@ public enum PowerUpEnum {
 		public String description() {
 			return "The mask will show you the direction to the closest kid in the maze!";
 		}
+	},
+	CAPE {
+		@Override
+		public PowerUp construct() {
+			return new CapePowerUp();
+		}
+
+		@Override
+		public void requestAssets(AssetManager manager) {
+			manager.load("PowerUps/cape/button.png", Texture.class);
+			manager.load("PowerUps/cape/buttonUsed.png", Texture.class);
+		}
+
+		@Override
+		public String description() {
+			return "The cape will let you see a larger portion of the maze!";
+		}
+		
 	};
 	
 	// Return the correct object

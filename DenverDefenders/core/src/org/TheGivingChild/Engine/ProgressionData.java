@@ -19,7 +19,7 @@ public class ProgressionData {
 	private Array<String> totsUnlockedPowerUps;
 	
 	public ProgressionData() {
-		totsLevelsUnlocked = 3;
+		totsLevelsUnlocked = 1;
 		kidsLevelsUnlocked = 1;
 		
 		// Construct the map that has powerup unlock infor
@@ -29,6 +29,9 @@ public class ProgressionData {
 		// Level one beat unlocks...
 		kidsPowerUps.put(1, "mask");
 		totsPowerUps.put(1, "mask");
+		
+		kidsPowerUps.put(2, "cape");
+		totsPowerUps.put(2, "cape");
 		
 		// Array of unlocked powers
 		kidsUnlockedPowerUps = new Array<String>();
