@@ -1,6 +1,8 @@
 package org.TheGivingChild.Engine.Maze;
 
-import com.badlogic.gdx.Gdx;
+import org.TheGivingChild.Engine.Maze.Movement.InputMoveModule;
+import org.TheGivingChild.Engine.Maze.Movement.MoveModule;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,96 +17,24 @@ public class PlayerSprite extends Sprite {
 	// Walking animations
 	private Animation walkD, walkR, walkU, walkL;
 	private Animation currentWalkSequence;
-	// The direction the player is moving and the direction the player wants to move
-	private Direction moveDirection;
-	private Direction targetDirection;
-	// The target tile the character is moving to
-	private Vertex target;
 	// Speed this char moves at
 	private float speed;
+	// Move logic object
+	private MoveModule moveModule;
 
 	public PlayerSprite(Texture drawTexture) {
 		super(drawTexture);
 		speed = 0;
 		// Default health
 		health = 3;
+		// Default moving logic
+		moveModule = new InputMoveModule();
 	}
 
-	// Determines how to move the player.
+	// Delegates to the current logic module
 	// Returns true if the player moves, false if wall collision
 	public boolean move(Maze maze) {
-		boolean moved = false;
-		// Calculate amount to move in a frame
-		float spriteMoveX = 0;
-		float spriteMoveY = 0;
-		float delta = 0;
-		boolean reached = false;
-		switch(moveDirection) {
-		case UP:
-			spriteMoveY = speed*Gdx.graphics.getDeltaTime();
-			delta = target.getY() - getY();
-			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
-			break;
-		case DOWN:
-			spriteMoveY = -speed*Gdx.graphics.getDeltaTime();
-			delta = target.getY() - getY();
-			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
-			break;
-		case RIGHT:
-			spriteMoveX = speed*Gdx.graphics.getDeltaTime();
-			delta = target.getX() - getX();
-			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
-			break;
-		case LEFT:
-			spriteMoveX = -speed*Gdx.graphics.getDeltaTime();
-			delta = target.getX() - getX();
-			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
-			break;
-		}
-
-		// Update position
-		if (reached) {
-			// New direction check
-			if (targetDirection != moveDirection) {
-				Vertex next = maze.getTileRelativeTo(target, targetDirection);
-				if (next != null) {
-					// snap to target and move in new direction
-					setPosition(target.getX(), target.getY());
-					target = next;
-					moveDirection = targetDirection;
-					setCurrentWalkSequence(targetDirection);
-				} else {
-					// can't go in target direction yet, continue in move direction
-					next = maze.getTileRelativeTo(target, moveDirection);
-					if (next != null) {
-						target = next;
-						setPosition(getX() + spriteMoveX, getY() + spriteMoveY);
-						moved = true;
-					} else {
-						// No where to go, snap to target
-						setPosition(target.getX(), target.getY());
-					}
-				}
-			} else {
-				// REFACTOR THESE IF ELSE BLOCKS, CODE IS COPIED BETWEEN THEM
-				// Reached target, try to continue in same direction or just snap to target
-				Vertex next = maze.getTileRelativeTo(target, moveDirection);
-				if (next != null) {
-					target = next;
-					setPosition(getX() + spriteMoveX, getY() + spriteMoveY);
-					moved = true;
-				} else {
-					// No where to go, snap to target
-					setPosition(target.getX(), target.getY());
-				}
-			}
-		} else {
-			// Haven't reached target yet, move toward it
-			moved = true;
-			setPosition(getX() + spriteMoveX, getY() + spriteMoveY);
-		}
-
-		return moved;
+		return moveModule.move(this, maze);
 	}
 
 	// Builds animation sequences from the asset manager
@@ -183,17 +113,18 @@ public class PlayerSprite extends Sprite {
 			break;
 		}
 	}
-
+	
+	// Delegates to move module
 	public void setMoveDirection(Direction moveDirection) {
-		this.moveDirection = moveDirection;
+		moveModule.setMoveDirection(moveDirection);
 	}
 
 	public void setTargetDirection(Direction targetDirection) {
-		this.targetDirection = targetDirection;
+		moveModule.setTargetDirection(targetDirection);
 	}
 
 	public void setTarget(Vertex target) {
-		this.target = target;
+		moveModule.setTarget(target);
 	}
 	/**
 	 * returns the scaled width.
