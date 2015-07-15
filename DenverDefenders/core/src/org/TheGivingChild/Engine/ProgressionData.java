@@ -22,7 +22,7 @@ public class ProgressionData {
 		totsLevelsUnlocked = 1;
 		kidsLevelsUnlocked = 1;
 		
-		// Construct the map that has powerup unlock infor
+		// Construct the map that has powerup unlock info
 		// Might be better to read from an init file at app start
 		kidsPowerUps = new ObjectMap<Integer, String>();
 		totsPowerUps = new ObjectMap<Integer, String>();

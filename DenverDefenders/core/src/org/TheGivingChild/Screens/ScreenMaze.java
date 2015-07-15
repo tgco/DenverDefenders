@@ -8,6 +8,7 @@ import org.TheGivingChild.Engine.Maze.ChildSprite;
 import org.TheGivingChild.Engine.Maze.Direction;
 import org.TheGivingChild.Engine.Maze.Maze;
 import org.TheGivingChild.Engine.Maze.MazeInputProcessor;
+import org.TheGivingChild.Engine.Maze.PlayerSprite;
 import org.TheGivingChild.Engine.Maze.PowerUpStage;
 import org.TheGivingChild.Engine.Maze.Vertex;
 import org.TheGivingChild.Engine.PowerUps.PowerUp;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -39,62 +41,54 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class ScreenMaze extends ScreenAdapter {
-	/** Map to be displayed */
-	private TiledMap map;
 	/** Orthographic Camera to look at map from top down */
 	private OrthographicCamera camera;
 	/** Tiled map renderer to display the map */
 	private TiledMapRenderer mapRenderer;
 	/** Sprite, SpriteBatch, and Texture for users sprite */
 	private SpriteBatch spriteBatch;
-	private Animation walkD, walkR, walkU, walkL;
-	private Animation currentWalkSequence;
-	private ChildSprite playerCharacter;
-	// The direction the player is moving and the direction the player wants to move
-	private Direction moveDirection;
-	private Direction targetDirection;
-	// The target tile the character is moving to
-	private Vertex target;
+	// Main character
+	private PlayerSprite playerCharacter;
 	// The input processor that allows player movement on drag
 	private InputProcessor mazeInput;
-
 	private TGC_Engine game;
+	// All the children for the maze
 	private Array<ChildSprite> mazeChildren;
+	// Duplicate reference to the ones that are following
 	private Array<ChildSprite> followers;
-
+	// Draw responsibilities
 	private Texture backdropTexture;
-
-	private ChildSprite lastChild;
-
 	private Texture heartTexture;
-	private int playerHealth;
-
+	// Set on collide with child, used to have a reference to set as a follower if needed
+	private ChildSprite lastChild;
 	//True if game progression logic is paused
 	private boolean logicPaused;
 	// True if won the minigame returned from
 	private boolean levelWon;
 	// True if all the children were found and the maze has been won
 	private boolean mazeWon;
-
-	// The name of the maze which corresponds to the assets directory to look into
-	public static String activeMaze = "UrbanMaze1";
 	// The maze object that manages allowed movement
 	private Maze maze;
 	// Stage which contains the powerup buttons
 	private PowerUpStage powerUpStage;
 	// Array of currently active powerups
 	private Array<PowerUp> activePowerUps;
-
+	/**{@link #currentLevel} keeps track of the current level being played.*/
+	private Level currentLevel;
+	
+	/*
+	 * Static vars used to set which assets must be loaded to construct/init the screen.
+	 */
 	/**{@link #levelSet} is the container for levels to be played during a maze.*/
 	private static Array<Level> levelSet = new Array<Level>();
+	// The boss level for this maze
+	private static Level bossLevel;
+	// The name of the maze which corresponds to the assets directory to look into
+	public static String activeMaze = "UrbanMaze1";
 	// The number of this maze.  Used to determine if another maze is unlocked on winning
 	public static int mazeNumber;
 	// Type of the maze, kids or tots
 	public static String mazeType;
-	/**{@link #currentLevel} keeps track of the current level being played.*/
-	private Level currentLevel;
-	// The boss level for this maze
-	private static Level bossLevel;
 
 	/**
 	 * Creates a new maze screen and draws the players sprite on it.
@@ -120,10 +114,9 @@ public class ScreenMaze extends ScreenAdapter {
 		levelWon = false;
 		mazeWon = false;
 		currentLevel = null;
-		playerHealth = 3;
 		lastChild = null;
 
-		map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
+		TiledMap map = game.getAssetManager().get("MazeAssets/" + activeMaze + "/" + activeMaze + ".tmx", TiledMap.class);
 		mapRenderer = new OrthogonalTiledMapRenderer(map);
 
 		// Generate maze structure
@@ -132,39 +125,43 @@ public class ScreenMaze extends ScreenAdapter {
 		// Construct the powerup stage
 		powerUpStage = new PowerUpStage(game, this);
 
-		// Setup animations (textures were loaded during screen transition)
-		buildAnimations(game.getAssetManager(), 0.1f);
-		playerCharacter = new ChildSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
+		// Build the character
+		playerCharacter = new PlayerSprite(game.getAssetManager().get("ObjectImages/temp_hero_D_1.png", Texture.class));
+		playerCharacter.buildAnimations(game.getAssetManager(), 0.1f);
 		playerCharacter.setOrigin(0, 0);
 		playerCharacter.setSpeed(4*maze.getPixHeight());
 		playerCharacter.setScale(.75f,.75f);
-
+		playerCharacter.setHealth(3);
 		//Get the rect for the heros headquarters
 		Vertex heroHQVertex = maze.getHeroHQTile();
 		playerCharacter.setPosition(heroHQVertex.getX(), heroHQVertex.getY());
-		
 		// move directions
-		moveDirection = Direction.DOWN;
-		targetDirection = Direction.DOWN;
-		target = maze.getTileAt(playerCharacter.getX(), playerCharacter.getY());
-		currentWalkSequence = walkD;
-
+		playerCharacter.setMoveDirection(Direction.DOWN);
+		playerCharacter.setTargetDirection(Direction.DOWN);
+		playerCharacter.setTarget(maze.getTileAt(playerCharacter.getX(), playerCharacter.getY()));
+		playerCharacter.setCurrentWalkSequence(Direction.DOWN);
+		
+		// Camera settings
 		camera.setToOrtho(false,12*maze.getPixWidth(), 7.5f*maze.getPixHeight());
 		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
 		camera.update();
-
+		
+		// Clear arrays to build new child objects
 		mazeChildren.clear();
 		followers.clear();
+		// Clear any powers
 		activePowerUps.clear();
-
-		populate();
-
+		
+		// Creates child objects around the maze and stores them in the passed array
+		populate(maze, mazeChildren);
+		
+		// Retrieve drawing responsibilities
 		backdropTexture = game.getAssetManager().get("MazeAssets/" + activeMaze + "/backdrop.png");
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 	}
 
 
-	public void populate() {
+	public void populate(Maze maze, Array<ChildSprite> mazeChildren) {
 		//get the amount of spots possible to fill
 		int maxAmount = maze.getMinigameTiles().size;
 		//chose a percentage to try and fill
@@ -240,7 +237,7 @@ public class ScreenMaze extends ScreenAdapter {
 		spriteDrawWithOffset(playerCharacter, spriteBatch);
 
 		// player hearts
-		for (int i=0; i<playerHealth; i++) {
+		for (int i = 0; i < playerCharacter.getHealth(); i++) {
 			float xPos = camera.position.x - camera.viewportWidth/2;
 			float heartSize = camera.viewportHeight/10;
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
@@ -270,7 +267,7 @@ public class ScreenMaze extends ScreenAdapter {
 	}
 	
 	// Draws the player in the center of its tile
-	public void spriteDrawWithOffset(ChildSprite sprite, SpriteBatch batch) {
+	public void spriteDrawWithOffset(Sprite sprite, SpriteBatch batch) {
 		float oldX = sprite.getX();
 		float oldY = sprite.getY();
 		// Find offset
@@ -314,8 +311,7 @@ public class ScreenMaze extends ScreenAdapter {
 			}
 
 			// Animation update
-			TextureRegion frame = currentWalkSequence.getKeyFrame(game.getGlobalClock(), true);
-			playerCharacter.setTexture(frame.getTexture());
+			playerCharacter.animationUpdate(game.getGlobalClock(), true);
 		}
 
 		/*
@@ -335,7 +331,7 @@ public class ScreenMaze extends ScreenAdapter {
 		}
 
 		// Check if lost the maze (no hearts left) and set state appropriately
-		if ( loseMazeCheck(playerHealth) ) {
+		if ( loseMazeCheck(playerCharacter.getHealth()) ) {
 			mazeWon = false;
 			return ScreenAdapterEnums.MAIN;
 		}
@@ -345,78 +341,7 @@ public class ScreenMaze extends ScreenAdapter {
 	
 	// Updates the players position, true if moved, false if hit a wall
 	public boolean moveUpdate() {
-		boolean moved = false;
-		// Calculate amount to move in a frame
-		float spriteMoveX = 0;
-		float spriteMoveY = 0;
-		float delta = 0;
-		boolean reached = false;
-		switch(moveDirection) {
-		case UP:
-			spriteMoveY = playerCharacter.getSpeed()*Gdx.graphics.getDeltaTime();
-			delta = target.getY() - playerCharacter.getY();
-			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
-			break;
-		case DOWN:
-			spriteMoveY = -playerCharacter.getSpeed()*Gdx.graphics.getDeltaTime();
-			delta = target.getY() - playerCharacter.getY();
-			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
-			break;
-		case RIGHT:
-			spriteMoveX = playerCharacter.getSpeed()*Gdx.graphics.getDeltaTime();
-			delta = target.getX() - playerCharacter.getX();
-			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
-			break;
-		case LEFT:
-			spriteMoveX = -playerCharacter.getSpeed()*Gdx.graphics.getDeltaTime();
-			delta = target.getX() - playerCharacter.getX();
-			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
-			break;
-		}
-		
-		// Update position
-		if (reached) {
-			// New direction check
-			if (targetDirection != moveDirection) {
-				Vertex next = maze.getTileRelativeTo(target, targetDirection);
-				if (next != null) {
-					// snap to target and move in new direction
-					playerCharacter.setPosition(target.getX(), target.getY());
-					target = next;
-					moveDirection = targetDirection;
-					setPlayerAnim(targetDirection);
-				} else {
-					// can't go in target direction yet, continue in move direction
-					next = maze.getTileRelativeTo(target, moveDirection);
-					if (next != null) {
-						target = next;
-						playerCharacter.setPosition(playerCharacter.getX() + spriteMoveX, playerCharacter.getY() + spriteMoveY);
-						moved = true;
-					} else {
-						// No where to go, snap to target
-						playerCharacter.setPosition(target.getX(), target.getY());
-					}
-				}
-			} else {
-				// REFACTOR THESE IF ELSE BLOCKS, CODE IS COPIED BETWEEN THEM
-				// Reached target, try to continue in same direction or just snap to target
-				Vertex next = maze.getTileRelativeTo(target, moveDirection);
-				if (next != null) {
-					target = next;
-					playerCharacter.setPosition(playerCharacter.getX() + spriteMoveX, playerCharacter.getY() + spriteMoveY);
-					moved = true;
-				} else {
-					// No where to go, snap to target
-					playerCharacter.setPosition(target.getX(), target.getY());
-				}
-			}
-		} else {
-			// Haven't reached target yet, move toward it
-			moved = true;
-			playerCharacter.setPosition(playerCharacter.getX() + spriteMoveX, playerCharacter.getY() + spriteMoveY);
-		}
-	
-		return moved;
+		return playerCharacter.move(maze);
 	}
 
 	// True if the passed rectangle collides with a rectangle in the collision layer
@@ -526,7 +451,7 @@ public class ScreenMaze extends ScreenAdapter {
 				unoccupied.get(newPositionIndex).setOccupied(true);
 				lastChild.moveTo(unoccupied.get(newPositionIndex));
 			}
-			playerHealth--;
+			playerCharacter.setHealth(playerCharacter.getHealth() - 1);
 		}
 	}
 
@@ -557,44 +482,7 @@ public class ScreenMaze extends ScreenAdapter {
 		this.levelWon = levelWon;
 	}
 
-	// Builds animation sequences from the asset manager
-	public void buildAnimations(AssetManager manager, float animationSpeed) {
-		// Build walk down animation
-		Array<TextureRegion> downWalk = new Array<TextureRegion>();
-		String format;
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
-			downWalk.add(new TextureRegion(manager.get(format,Texture.class)));
-		}
-		walkD = new Animation(animationSpeed, downWalk);
-
-		// Build walk up animation
-		Array<TextureRegion> upWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
-			upWalk.add(new TextureRegion(manager.get(format,Texture.class)));
-		}
-		walkU = new Animation(animationSpeed, upWalk);
-
-		// Buld walk right animation
-		Array<TextureRegion> rightWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
-			rightWalk.add(new TextureRegion(manager.get(format, Texture.class)));
-		}
-		walkR = new Animation(animationSpeed, rightWalk);
-
-		// Build walk left animation
-		Array<TextureRegion> leftWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
-			leftWalk.add(new TextureRegion(manager.get(format, Texture.class)));
-		}
-		walkL = new Animation(animationSpeed, leftWalk);
-
-	}
-
-	public ChildSprite getPlayerCharacter() {
+	public PlayerSprite getPlayerCharacter() {
 		return playerCharacter;
 	}
 	
@@ -608,29 +496,6 @@ public class ScreenMaze extends ScreenAdapter {
 	
 	public Maze getMaze() {
 		return maze;
-	}
-
-	// Sets move speed vars and animation
-	public void setPlayerAnim(Direction d) {
-		switch(d) {
-		case UP:
-			currentWalkSequence = walkU;
-			break;
-		case DOWN:
-			currentWalkSequence = walkD;
-			break;
-		case RIGHT:
-			currentWalkSequence = walkR;
-			break;
-		case LEFT:
-			currentWalkSequence = walkL;
-			break;
-		}
-	}
-	
-	// Sets the target direction for the player to move
-	public void setTargetDirection(Direction d) {
-		this.targetDirection = d;
 	}
 
 	/**{@link #selectLevel()} handles setting {@link #currentLevel} to which minigame should be played.*/
@@ -668,30 +533,8 @@ public class ScreenMaze extends ScreenAdapter {
 	}
 
 	public static void requestAssets(AssetManager manager) {
-		String format;
-		// Down anim
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
-			manager.load(format,Texture.class);
-		}
-
-		// Up anim
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
-			manager.load(format,Texture.class);
-		}
-
-		// Right anim
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
-			manager.load(format, Texture.class);
-		}
-
-		// Left anim
-		for (int i = 1; i <= 8; i++) {
-			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
-			manager.load(format, Texture.class);
-		}
+		// Player sprite
+		PlayerSprite.requestAssets(manager);
 
 		// Child sprite
 		manager.load("MazeAssets/" + activeMaze + "/childSprite.png", Texture.class);
@@ -705,7 +548,7 @@ public class ScreenMaze extends ScreenAdapter {
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 
-		// Load levels
+		// Load levels ( sets boss game )
 		loadLevelSet(ScreenAdapterManager.getInstance().game);
 
 		// Minigame assets
@@ -719,8 +562,8 @@ public class ScreenMaze extends ScreenAdapter {
 			}
 		}
 		// Boss game
-		// Background assets
 		String background = bossLevel.getLevelImage();
+		// Background assets
 		manager.load("LevelBackgrounds/" + background, Texture.class);
 		// Object assets
 		for (GameObject ob : bossLevel.getGameObjects()) {

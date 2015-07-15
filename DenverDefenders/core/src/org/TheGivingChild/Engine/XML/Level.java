@@ -4,8 +4,6 @@ import org.TheGivingChild.Engine.Attributes.Attribute;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 

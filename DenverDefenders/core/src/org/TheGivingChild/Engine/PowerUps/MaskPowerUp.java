@@ -1,6 +1,7 @@
 package org.TheGivingChild.Engine.PowerUps;
 
 import org.TheGivingChild.Engine.Maze.ChildSprite;
+import org.TheGivingChild.Engine.Maze.PlayerSprite;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 import org.TheGivingChild.Screens.ScreenMaze;
 
@@ -19,7 +20,7 @@ public class MaskPowerUp extends PowerUp {
 	// Returns true if this power is done
 	public boolean update(ScreenMaze mazeScreen, SpriteBatch batch) {
 		// Find the closest child to the player
-		ChildSprite player = mazeScreen.getPlayerCharacter();
+		PlayerSprite player = mazeScreen.getPlayerCharacter();
 		Vector2 playerPos = new Vector2(player.getX(), player.getY());
 		ChildSprite closest = null;
 		float closestDist = Float.POSITIVE_INFINITY;

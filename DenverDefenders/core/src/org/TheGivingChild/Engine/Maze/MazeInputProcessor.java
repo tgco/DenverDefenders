@@ -86,10 +86,10 @@ public class MazeInputProcessor implements InputProcessor {
 		if (Math.abs(delta.x) > Math.abs(delta.y)) {
 			//if the change was positive, move right, else move left
 			if(delta.x > 0)  {
-				mazeScreen.setTargetDirection(Direction.RIGHT);
+				mazeScreen.getPlayerCharacter().setTargetDirection(Direction.RIGHT);
 			}
 			if(delta.x < 0) {
-				mazeScreen.setTargetDirection(Direction.LEFT);
+				mazeScreen.getPlayerCharacter().setTargetDirection(Direction.LEFT);
 			}
 
 		}
@@ -97,10 +97,10 @@ public class MazeInputProcessor implements InputProcessor {
 		else {
 			// NOTE: Y axis points down for touch coords
 			if(delta.y > 0)	{
-				mazeScreen.setTargetDirection(Direction.DOWN);
+				mazeScreen.getPlayerCharacter().setTargetDirection(Direction.DOWN);
 			}
 			if(delta.y < 0) {
-				mazeScreen.setTargetDirection(Direction.UP);
+				mazeScreen.getPlayerCharacter().setTargetDirection(Direction.UP);
 			}
 		}
 		return true;

@@ -33,7 +33,7 @@ public class ChildSprite extends Sprite {
 	}
 
 	// Sets this sprite one tile away from the passed sprite
-	public void followSprite(ChildSprite followMe, Maze maze){
+	public void followSprite(Sprite followMe, Maze maze){
 		// BFS to find the sprite
 		Vertex dest = maze.getTileAt(followMe.getX(), followMe.getY());
 		Vertex src = maze.getTileAt(this.getX(), this.getY());
