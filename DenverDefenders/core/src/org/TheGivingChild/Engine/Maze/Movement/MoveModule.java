@@ -8,7 +8,7 @@ import org.TheGivingChild.Engine.Maze.Vertex;
 // A move module contains logic for how to move a sprite
 public interface MoveModule {
 	// Moves the passed sprite through the maze tiles
-	// Return true if the sprite moves succesfully
+	// Return true if the sprite moves successfully
 	public boolean move(PlayerSprite sprite, Maze maze);
 	// Respond to a request to change the current move direction
 	public void setMoveDirection(Direction dir);
