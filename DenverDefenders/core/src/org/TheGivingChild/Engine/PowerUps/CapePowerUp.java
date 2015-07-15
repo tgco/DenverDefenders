@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 // Zooms the camera out to increase the original viewport size for a set time
 // Also doubles the players speed
-public class CapePowerUp extends PowerUp {
+public class CapePowerUp implements PowerUp {
 	// Zoom states
 	private enum ZoomState { WAIT, OUT, PAUSED, IN; }
 	private ZoomState zoomState = ZoomState.WAIT;

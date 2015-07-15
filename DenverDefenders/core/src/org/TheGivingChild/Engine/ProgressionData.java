@@ -33,9 +33,16 @@ public class ProgressionData {
 		kidsPowerUps.put(2, "cape");
 		totsPowerUps.put(2, "cape");
 		
+		kidsPowerUps.put(3, "bicycle");
+		totsPowerUps.put(3, "bicycle");
+		
 		// Array of unlocked powers
 		kidsUnlockedPowerUps = new Array<String>();
 		totsUnlockedPowerUps = new Array<String>();
+		
+		// FOR TESTING
+		kidsUnlockedPowerUps.add("bicycle");
+		totsUnlockedPowerUps.add("bicycle");
 	}
 	
 	// Returns the number of unlocked levels for the passed mode, "kids" or "tots"

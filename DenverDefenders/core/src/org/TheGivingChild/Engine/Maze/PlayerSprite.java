@@ -95,6 +95,10 @@ public class PlayerSprite extends Sprite {
 	public int getHealth() {
 		return health;
 	}
+	
+	public void setMoveModule(MoveModule module) {
+		this.moveModule = module;
+	}
 
 	// Sets the correct animation based on the direction
 	public void setCurrentWalkSequence(Direction dir) {

@@ -37,7 +37,25 @@ public enum PowerUpEnum {
 
 		@Override
 		public String description() {
-			return "The cape will let you see a larger portion of the maze!";
+			return "The cape will let you move fast and see a larger portion of the maze for a while!";
+		}
+		
+	},
+	BICYCLE {
+		@Override
+		public PowerUp construct() {
+			return new BicyclePowerUp();
+		}
+
+		@Override
+		public void requestAssets(AssetManager manager) {
+			manager.load("PowerUps/bicycle/button.png", Texture.class);
+			manager.load("PowerUps/bicycle/buttonUsed.png", Texture.class);
+		}
+
+		@Override
+		public String description() {
+			return "The bicycle will take you back to the Hero Headquarters automatically!";
 		}
 		
 	};

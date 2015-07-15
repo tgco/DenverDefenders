@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 // Power up which shows the player the general direction to the closest kid in the maze.
-public class MaskPowerUp extends PowerUp {
+public class MaskPowerUp implements PowerUp {
 
 	@Override
 	// Returns true if this power is done
