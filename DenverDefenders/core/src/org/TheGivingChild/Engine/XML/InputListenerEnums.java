@@ -1,5 +1,9 @@
 package org.TheGivingChild.Engine.XML;
 
+import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
@@ -66,6 +70,25 @@ public enum InputListenerEnums{
 					float moveY = 0;
 					if (dragX) moveX = x-object.getWidth()/2;
 					if (dragY) moveY = y-object.getHeight()/2;
+					//Clip to only on screen movement
+					// X Clip
+					if (moveX > 0) {
+						if (object.getX() + object.getWidth() + moveX > Gdx.graphics.getWidth())
+							moveX = 0;
+					}
+					else if (moveX < 0) {
+						if (object.getX() + moveX < 0)
+							moveX = 0;
+					}
+					// Y clip
+					if (moveY > 0) {
+						if (object.getY() + object.getHeight() + moveY > Gdx.graphics.getHeight())
+							moveY = 0;
+					}
+					else if (moveY < 0) {
+						if (object.getY() + moveY < 0)
+							moveY = 0;
+					}
 						
 					object.moveBy(moveX, moveY);
 				};
@@ -77,15 +100,22 @@ public enum InputListenerEnums{
 		@Override
 		public InputListener construct(final GameObject object, ObjectMap<String, String> args) {
 			final float sensitivity = Float.parseFloat(args.get("sensitivity"));
+			// TGC_Engine is currently the only way to access the global clock
+			final TGC_Engine game = ScreenAdapterManager.getInstance().game;
 			return(new InputListener() {
+				private float time;
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					// Get touch down time
+					time = game.getGlobalClock();
 					return true;
 				}
 				
 				@Override
 				// REFACTOR: if certain time has passed, fling should not work
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+					// Return if too much time passed (not a fling)
+					if (game.getGlobalClock() - time > 1f) return;
 					// Find distance from center of object
 					float deltaX = x - object.getWidth()/2;
 					float deltaY = y - object.getHeight()/2;

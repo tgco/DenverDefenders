@@ -24,14 +24,11 @@ public class BicyclePowerUp implements PowerUp {
 		case SEARCHING:
 			// Find and construct the path, set to auto move
 			player.setMoveModule(buildPathModule(player, mazeScreen.getMaze()));
-			System.out.println("Move mod made and set");
 			// Speed increase
 			player.setSpeed(1.5f * player.getSpeed());
 			state = SearchState.FOLLOWING;
-			System.out.println("state set to following");
 			break;
 		case FOLLOWING:
-			System.out.println("following state update");
 			// True if path is done, set player move to input based again
 			if (pathOverCheck(player, mazeScreen.getMaze())) {
 				player.setMoveModule(new InputMoveModule());
@@ -52,12 +49,10 @@ public class BicyclePowerUp implements PowerUp {
 	private PathMoveModule buildPathModule(PlayerSprite player, Maze maze) {
 		// BFS from hq to player
 		maze.bfSearch(maze.getHeroHQTile(), maze.getTileAt(player.getX(), player.getY()));
-		System.out.println("finished bfs");
 		// Build array from BFS tree
 		Array<Direction> path = new Array<Direction>();
 		Vertex currentTile = maze.getTileAt(player.getX(), player.getY());
 		while (currentTile.getParent() != null) {
-			System.out.println("building path...");
 			path.add(currentTile.getParent());
 			currentTile = maze.getTileRelativeTo(currentTile, currentTile.getParent());
 		}

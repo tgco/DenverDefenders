@@ -19,7 +19,7 @@ public class ProgressionData {
 	private Array<String> totsUnlockedPowerUps;
 	
 	public ProgressionData() {
-		totsLevelsUnlocked = 1;
+		totsLevelsUnlocked = 2;
 		kidsLevelsUnlocked = 1;
 		
 		// Construct the map that has powerup unlock info
