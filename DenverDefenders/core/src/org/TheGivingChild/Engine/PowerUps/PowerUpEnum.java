@@ -58,6 +58,25 @@ public enum PowerUpEnum {
 			return "The bicycle will take you back to the Hero Headquarters automatically!";
 		}
 		
+	},
+	BACKPACK {
+
+		@Override
+		public PowerUp construct() {
+			return new BackpackPowerUp();
+		}
+
+		@Override
+		public void requestAssets(AssetManager manager) {
+			manager.load("PowerUps/backpack/button.png", Texture.class);
+			manager.load("PowerUps/backpack/buttonUsed.png", Texture.class);
+		}
+
+		@Override
+		public String description() {
+			return "The backpack lets a kid lead you to the next kid in the maze!";
+		}
+		
 	};
 	
 	// Return the correct object

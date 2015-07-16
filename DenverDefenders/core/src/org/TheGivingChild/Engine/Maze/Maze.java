@@ -90,8 +90,10 @@ public class Maze {
 		// Reinit discovered fields
 		for (int i = 0; i < mazeArray.length; i++) {
 			for (int j = 0; j < mazeArray[0].length; j++) {
-				if (mazeArray[i][j] != null)
+				if (mazeArray[i][j] != null) {
 					mazeArray[i][j].setDiscovered(false);
+					mazeArray[i][j].setParent(null);
+				}
 			}
 		}
 		// BFS queue
