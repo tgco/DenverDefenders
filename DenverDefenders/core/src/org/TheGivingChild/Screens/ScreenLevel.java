@@ -2,6 +2,7 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.GameObject;
+import org.TheGivingChild.Engine.XML.InputModule;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.MinigameClock;
 
@@ -22,6 +23,8 @@ public class ScreenLevel extends ScreenAdapter{
 	private SpriteBatch batch;
 	private TGC_Engine game;
 	private boolean logicPaused;
+	// Throws appropriate input events to the level
+	private InputModule inputModule;
 	
 	public ScreenLevel() {
 		batch = new SpriteBatch();
@@ -29,6 +32,7 @@ public class ScreenLevel extends ScreenAdapter{
 		currentLevel = null;
 		// No logic until show
 		logicPaused = true;
+		inputModule = new InputModule();
 	}
 	
 	// Runs when this screen is not active anymore
@@ -72,6 +76,8 @@ public class ScreenLevel extends ScreenAdapter{
 		batch.end();
 		if (!logicPaused) {
 			currentLevel.update();
+			// Send input events to level
+			inputModule.poll(currentLevel);
 			if (currentLevel.getCompleted()) {
 				// Done, build a transition
 				String text = buildResponseText(currentLevel.getWon());
@@ -81,6 +87,8 @@ public class ScreenLevel extends ScreenAdapter{
 				if (currentLevel.isBossGame()) {
 					// Check for unlock
 					if (game.data.unlockLevelCheck(ScreenMaze.mazeNumber, ScreenMaze.mazeType)) {
+						// Save data
+						game.data.save();
 						// Go to unlock screen
 						Array<String> powers = game.data.getUnlockedPowerUps(ScreenMaze.mazeType);
 						String newPower = powers.get(powers.size - 1);
@@ -89,8 +97,6 @@ public class ScreenLevel extends ScreenAdapter{
 					} else
 						// go to main
 						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
-					// Save data
-					game.data.save();
 				}
 				else
 					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);

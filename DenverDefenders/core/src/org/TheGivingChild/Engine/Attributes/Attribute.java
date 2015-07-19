@@ -16,6 +16,8 @@ public abstract class Attribute {
 	protected String trigger;
 	// The condition this attribute throws, if any
 	protected String throwCondition;
+	// If listening to generic input events, this string will be set with the name of the event and args
+	protected String argString;
 	
 	public Attribute(ObjectMap<String, String> args) { 
 		// Set args and trigger conditions
@@ -45,4 +47,6 @@ public abstract class Attribute {
 	};
 	
 	public String getTrigger() { return trigger; }
+	
+	public void setArgString(String s) { this.argString = s; }
 }

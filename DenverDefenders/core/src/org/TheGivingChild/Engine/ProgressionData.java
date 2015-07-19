@@ -21,8 +21,8 @@ public class ProgressionData {
 	private Array<String> totsUnlockedPowerUps;
 	
 	public ProgressionData() {
-		totsLevelsUnlocked = 3;
-		kidsLevelsUnlocked = 2;
+		totsLevelsUnlocked = 1;
+		kidsLevelsUnlocked = 1;
 		
 		// Construct the map that has powerup unlock info
 		// Might be better to read from an init file at app start
@@ -39,7 +39,7 @@ public class ProgressionData {
 		totsPowerUps.put(3, "bicycle");
 		
 		kidsPowerUps.put(4, "backpack");
-		kidsPowerUps.put(4, "backpack");
+		totsPowerUps.put(4, "backpack");
 		
 		// Array of unlocked powers
 		kidsUnlockedPowerUps = new Array<String>();
@@ -55,6 +55,7 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("bicycle");
 		kidsUnlockedPowerUps.add("backpack");
 		totsUnlockedPowerUps.add("backpack");
+		save();
 		*/
 		
 	}
@@ -90,6 +91,7 @@ public class ProgressionData {
 		}
 		for (String s : totsUnlockedPowerUps) {
 			prefs.putBoolean("tots" + s, true);
+			System.out.println("saved tots: " + s);
 		}
 		prefs.flush();
 	}

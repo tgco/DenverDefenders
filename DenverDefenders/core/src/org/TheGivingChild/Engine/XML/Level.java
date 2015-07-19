@@ -94,6 +94,21 @@ public class Level {
 		if (loseConditions.containsKey(condition)) loseConditions.put(condition, true);
 	}
 	
+	// Notifies observers of input events, args are sent in the string
+	public void throwInputCondition(String condition) {
+		if (condition == null) return;
+		//System.out.println("caught: " + condition);
+		// Get observers of input name
+		Array<Attribute> observers = triggeredObservers.get(condition.split("_")[0]);
+		// Update after setting the argument string
+		if (observers != null) {
+			for (Attribute att : observers) {
+				att.setArgString(condition);
+				att.update(this);
+			}
+		}
+	}
+	
 	// Sets the texture for each object from the asset manager
 	public void setObjectTextures(AssetManager manager) {
 		for (GameObject ob : objects) {
