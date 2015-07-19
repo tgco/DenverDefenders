@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Maze;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
@@ -12,8 +13,11 @@ public class ChildSprite extends Sprite {
 	private boolean saved;
 	// True if this child has begun following the main character
 	private boolean follow;
-	/**{@link #moveSpeed} keeps track of how fast objects should move around the screen.*/
-	private float moveSpeed;
+	// Speed to move
+	private float speed;
+	// Direction this sprite is moving
+	private Direction moveDirection;
+
 	/**
 	 * {@link #ChildSprite(Texture)} is the constructor for {@link ChildSprite}.
 	 * @param childTexture The texture that the sprite will draw.
@@ -21,7 +25,7 @@ public class ChildSprite extends Sprite {
 	public ChildSprite(Texture childTexture) {
 		super(childTexture);
 		saved = false;
-		moveSpeed = 0;
+		speed = 0;
 		follow = false;
 	}
 	/**
@@ -32,54 +36,73 @@ public class ChildSprite extends Sprite {
 		this.setPosition(tile.getX(), tile.getY());
 	}
 
-	// Sets this sprite one tile away from the passed sprite
+	// Causes this sprite to follow the passed sprite along the maze path
 	public void followSprite(Sprite followMe, Maze maze){
-		// BFS to find the sprite
-		Vertex dest = maze.getTileAt(followMe.getX(), followMe.getY());
-		Vertex src = maze.getTileAt(this.getX(), this.getY());
-		// Same tile check
-		if (dest == src) return;
-		
+		// Find the path to the target sprite
+		Vertex src = maze.getTileAt(followMe.getX(), followMe.getY());
+		Vertex dest = maze.getTileAt(this.getX(), this.getY());
+		if (src == dest) return;
+		// Builds src -> dest tree
+		maze.bfSearch(dest, src);
+		// Find adjacent tile
+		Vertex moveHere = maze.getTileRelativeTo(src, src.getParent());
+		// Build dest -> src tree
 		maze.bfSearch(src, dest);
-		// count distance to dest (idea for fixing corner issues)
-		int count = 1;
-		Vertex at = dest;
-		while (maze.getTileRelativeTo(at, at.getParent()) != src) {
-			at = maze.getTileRelativeTo(at, at.getParent());
-			count++;
+		float spriteMoveX = 0;
+		float spriteMoveY = 0;
+		float delta = 0;
+		// Determine target
+		Vertex myTile = maze.getTileAt(this.getX(), this.getY());
+		Vertex target;
+		if (myTile.getX() != getX() || myTile.getY() != getY()) {
+			// Make sure snapped to a tile first before finding a new target
+			target = myTile;
 		}
-		
-		// place one tile away in the direction of the discovery with same offset from corner as the sprite to follow
-		Vertex placeAt = maze.getTileRelativeTo(dest, dest.getParent());
-		float offsetX = 0;
-		float offsetY = 0;
+		else target = maze.getTileRelativeTo(dest, dest.getParent());
+		boolean reached = false;
 		switch(dest.getParent()) {
 		case UP:
-			offsetY = followMe.getY() - dest.getY();
+			spriteMoveY = speed*Gdx.graphics.getDeltaTime();
+			delta = target.getY() - getY();
+			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
 			break;
 		case DOWN:
-			offsetY = followMe.getY() - dest.getY();
+			spriteMoveY = -speed*Gdx.graphics.getDeltaTime();
+			delta = target.getY() - getY();
+			if (Math.abs(delta) < Math.abs(spriteMoveY)) reached = true;
 			break;
 		case RIGHT:
-			offsetX = followMe.getX() - dest.getX();
+			spriteMoveX = speed*Gdx.graphics.getDeltaTime();
+			delta = target.getX() - getX();
+			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
 			break;
 		case LEFT:
-			offsetX = followMe.getX() - dest.getX();
+			spriteMoveX = -speed*Gdx.graphics.getDeltaTime();
+			delta = target.getX() - getX();
+			if (Math.abs(delta) < Math.abs(spriteMoveX)) reached = true;
 			break;
 		}
 		
-		this.setX(placeAt.getX() + offsetX);
-		this.setY(placeAt.getY() + offsetY);
+		if (reached) {
+			// snap to targ
+			this.setX(target.getX());
+			this.setY(target.getY());
+		}
+		else {
+			// Move towards targ
+			this.setX(this.getX() + spriteMoveX);
+			this.setY(this.getY() + spriteMoveY);
+		}
 	}
 
 	public void setSpeed(float f)
 	{
-		moveSpeed = f;
+		speed = f;
 	}
 
 	public float getSpeed()
 	{
-		return moveSpeed;
+		return speed;
 	}
 
 	public boolean getSaved() {
@@ -89,7 +112,7 @@ public class ChildSprite extends Sprite {
 	public void setSaved(boolean isSaved) {
 		saved = isSaved;
 	}
-	
+
 	public void setFollow(boolean b) {
 		this.follow = b;
 	}

@@ -89,6 +89,8 @@ public class ScreenLevel extends ScreenAdapter{
 					} else
 						// go to main
 						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
+					// Save data
+					game.data.save();
 				}
 				else
 					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);

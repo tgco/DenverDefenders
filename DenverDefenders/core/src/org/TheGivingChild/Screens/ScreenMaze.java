@@ -188,6 +188,7 @@ public class ScreenMaze extends ScreenAdapter {
 			child.setBounds(child.getX(), child.getY(), child.getWidth(), child.getHeight());
 			//set the position to the minigame rect
 			child.setPosition(toFill.getX(), toFill.getY());
+			child.setSpeed(4*maze.getPixHeight());
 			mazeChildren.add(child);
 			// Mark vertex
 			toFill.setOccupied(true);
@@ -220,8 +221,6 @@ public class ScreenMaze extends ScreenAdapter {
 		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
-		// render the powerup stage
-		powerUpStage.draw();
 
 		// character, children and hearts batch
 		spriteBatch.begin();
@@ -241,6 +240,7 @@ public class ScreenMaze extends ScreenAdapter {
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
 			spriteBatch.draw(heartTexture, xPos + (heartSize*i), yPos, heartSize, heartSize);
 		}
+		
 		// Update powerups with the batch active to allow drawing
 		if (!logicPaused) {
 			for (PowerUp p : activePowerUps) {
@@ -251,6 +251,9 @@ public class ScreenMaze extends ScreenAdapter {
 		}
 
 		spriteBatch.end();
+		
+		// render the powerup stage
+		powerUpStage.draw();
 
 		if (!logicPaused) {
 			// Update logic
@@ -299,15 +302,6 @@ public class ScreenMaze extends ScreenAdapter {
 		
 		// true if player moved without wall collisions
 		if (moveUpdate()) {
-			//update follower positions
-			if(followers.size > 0) {
-				followers.get(0).followSprite(playerCharacter, maze);
-
-				for(int i = 1; i <followers.size; i++) {
-					followers.get(i).followSprite(followers.get(i-1), maze);
-				}
-			}
-
 			// Animation update
 			playerCharacter.animationUpdate(game.getGlobalClock(), true);
 		}
@@ -339,6 +333,14 @@ public class ScreenMaze extends ScreenAdapter {
 	
 	// Updates the players position, true if moved, false if hit a wall
 	public boolean moveUpdate() {
+		//update follower positions
+		if(followers.size > 0) {
+			followers.get(0).followSprite(playerCharacter, maze);
+
+			for(int i = 1; i <followers.size; i++) {
+				followers.get(i).followSprite(followers.get(i-1), maze);
+			}
+		}
 		return playerCharacter.move(maze);
 	}
 

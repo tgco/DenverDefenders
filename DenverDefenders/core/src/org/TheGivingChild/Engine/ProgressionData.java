@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -19,8 +21,8 @@ public class ProgressionData {
 	private Array<String> totsUnlockedPowerUps;
 	
 	public ProgressionData() {
-		totsLevelsUnlocked = 2;
-		kidsLevelsUnlocked = 1;
+		totsLevelsUnlocked = 3;
+		kidsLevelsUnlocked = 2;
 		
 		// Construct the map that has powerup unlock info
 		// Might be better to read from an init file at app start
@@ -44,6 +46,7 @@ public class ProgressionData {
 		totsUnlockedPowerUps = new Array<String>();
 		
 		// FOR TESTING, SET ALL TO UNLOCKED
+		/*
 		kidsUnlockedPowerUps.add("mask");
 		totsUnlockedPowerUps.add("mask");
 		kidsUnlockedPowerUps.add("cape");
@@ -52,6 +55,43 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("bicycle");
 		kidsUnlockedPowerUps.add("backpack");
 		totsUnlockedPowerUps.add("backpack");
+		*/
+		
+	}
+	
+	// Loads data from prefs
+	public void load() {
+		Preferences prefs = Gdx.app.getPreferences("save_data");
+		totsLevelsUnlocked = prefs.getInteger("totsLevelsUnlocked", 1);
+		kidsLevelsUnlocked = prefs.getInteger("kidsLevelsUnlocked", 1);
+		for (String s : kidsPowerUps.values()) {
+			String name = "kids" + s;
+			// Read if unlocked
+			if (prefs.getBoolean(name, false)) {
+				kidsUnlockedPowerUps.add(s);
+			}
+		}
+		for (String s : totsPowerUps.values()) {
+			String name = "tots" + s;
+			// Read if unlocked
+			if (prefs.getBoolean(name, false)) {
+				totsUnlockedPowerUps.add(s);
+			}
+		}
+	}
+	
+	// Save data to prefs
+	public void save() {
+		Preferences prefs = Gdx.app.getPreferences("save_data");
+		prefs.putInteger("totsLevelsUnlocked", totsLevelsUnlocked);
+		prefs.putInteger("kidsLevelsUnlocked", kidsLevelsUnlocked);
+		for (String s : kidsUnlockedPowerUps) {
+			prefs.putBoolean("kids" + s, true);
+		}
+		for (String s : totsUnlockedPowerUps) {
+			prefs.putBoolean("tots" + s, true);
+		}
+		prefs.flush();
 	}
 	
 	// Returns the number of unlocked levels for the passed mode, "kids" or "tots"
