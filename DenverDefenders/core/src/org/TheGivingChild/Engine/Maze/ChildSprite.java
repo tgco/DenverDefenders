@@ -15,8 +15,6 @@ public class ChildSprite extends Sprite {
 	private boolean follow;
 	// Speed to move
 	private float speed;
-	// Direction this sprite is moving
-	private Direction moveDirection;
 
 	/**
 	 * {@link #ChildSprite(Texture)} is the constructor for {@link ChildSprite}.

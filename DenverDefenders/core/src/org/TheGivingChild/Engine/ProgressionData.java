@@ -62,6 +62,9 @@ public class ProgressionData {
 	
 	// Loads data from prefs
 	public void load() {
+		// Clear out any strings
+		kidsUnlockedPowerUps.clear();
+		totsUnlockedPowerUps.clear();
 		Preferences prefs = Gdx.app.getPreferences("save_data");
 		totsLevelsUnlocked = prefs.getInteger("totsLevelsUnlocked", 1);
 		kidsLevelsUnlocked = prefs.getInteger("kidsLevelsUnlocked", 1);
