@@ -152,6 +152,11 @@ public class Maze {
 		return pixHeight;
 	}
 	
+	// Returns the size in pixels of the entire maze
+	public int getMazeSize() {
+		return pixWidth * mazeArray.length;
+	}
+	
 	public Vertex getHeroHQTile() {
 		return heroHQTile;
 	}

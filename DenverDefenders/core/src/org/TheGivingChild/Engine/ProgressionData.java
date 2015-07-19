@@ -55,8 +55,11 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("bicycle");
 		kidsUnlockedPowerUps.add("backpack");
 		totsUnlockedPowerUps.add("backpack");
+		totsLevelsUnlocked = 3;
+		kidsLevelsUnlocked = 2;
 		save();
 		*/
+		
 		
 	}
 	

@@ -55,7 +55,6 @@ public class ScreenMaze extends ScreenAdapter {
 	// Duplicate reference to the ones that are following
 	private Array<ChildSprite> followers;
 	// Draw responsibilities
-	private Texture backdropTexture;
 	private Texture heartTexture;
 	// Set on collide with child, used to have a reference to set as a follower if needed
 	private ChildSprite lastChild;
@@ -141,7 +140,7 @@ public class ScreenMaze extends ScreenAdapter {
 		
 		// Camera settings
 		camera.setToOrtho(false,12*maze.getPixWidth(), 7.5f*maze.getPixHeight());
-		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
+		clampCamPosition(camera, playerCharacter, maze);
 		camera.update();
 		
 		// Clear arrays to build new child objects
@@ -154,7 +153,6 @@ public class ScreenMaze extends ScreenAdapter {
 		populate(maze, mazeChildren);
 		
 		// Retrieve drawing responsibilities
-		backdropTexture = game.getAssetManager().get("MazeAssets/" + activeMaze + "/backdrop.png");
 		heartTexture = game.getAssetManager().get("ObjectImages/heart.png");
 	}
 
@@ -214,11 +212,6 @@ public class ScreenMaze extends ScreenAdapter {
 		// link camera to render objects
 		mapRenderer.setView(camera);
 		spriteBatch.setProjectionMatrix(camera.combined);
-
-		//background
-		spriteBatch.begin();
-		spriteBatch.draw(backdropTexture, playerCharacter.getX()-Gdx.graphics.getWidth()/2, playerCharacter.getY()-Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		spriteBatch.end();
 		//render the map
 		mapRenderer.render();
 
@@ -281,8 +274,8 @@ public class ScreenMaze extends ScreenAdapter {
 
 	// Logic for character collisions and screen changes on each frame
 	public ScreenAdapterEnums updateLogic() {
-		// cam position update
-		camera.position.set(playerCharacter.getX(), playerCharacter.getY(), 0);
+		// cam position update, clamped so that area behind the maze is not shown
+		clampCamPosition(camera, playerCharacter, maze);
 		// Catch button presses on stage
 		powerUpStage.act();
 		
@@ -410,6 +403,15 @@ public class ScreenMaze extends ScreenAdapter {
 			break;
 		}
 		return text;
+	}
+	
+	// Sets the cam position to follow the player, but clamped to not look past the
+	// edge of the maze
+	public void clampCamPosition(OrthographicCamera cam, PlayerSprite player, Maze maze) {
+		float x = Math.max(cam.viewportWidth/2, Math.min(maze.getMazeSize() - cam.viewportWidth/2, player.getX()));
+		float y = Math.max(cam.viewportHeight/2, Math.min(maze.getMazeSize() - cam.viewportHeight/2, player.getY()));
+		// Set coords
+		cam.position.set(x, y, 0);
 	}
 
 	/**
@@ -544,7 +546,6 @@ public class ScreenMaze extends ScreenAdapter {
 
 		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
-		manager.load("MazeAssets/" + activeMaze + "/backdrop.png", Texture.class);
 		// Audio assets (loads synchronously)
 		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 
