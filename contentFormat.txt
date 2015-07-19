@@ -12,7 +12,6 @@ Maze
 The following directory and contents should be added to DenverDefenders/android/assets/MazeAssets/
 
 -MyNewMaze
-	backdrop.png
 	childSprite.png
 	preview.png
 	myTileSet.png
@@ -24,11 +23,6 @@ The following directory and contents should be added to DenverDefenders/android/
 		boss.xml
 
 Description of contents:
-	backdrop.png
-		This image file is drawn behind the map so there is a background.  The name of this 
-		file must be backdrop.png, and the image will look best if it matches the tiled map
-		ground layer.
-
 	childSprite.png
 		This is the image used to draw children in the maze.  The name of this file must be
 		childSprite.png
