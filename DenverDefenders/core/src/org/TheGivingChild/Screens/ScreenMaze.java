@@ -15,6 +15,7 @@ import org.TheGivingChild.Engine.PowerUps.PowerUp;
 import org.TheGivingChild.Engine.PowerUps.PowerUpEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
+import org.TheGivingChild.Engine.XML.XML_Reader;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -522,8 +523,8 @@ public class ScreenMaze extends ScreenAdapter {
 		// Load level objects
 		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
 			if (levelFile.name().equals(".DS_Store")) continue; // Dumb OSX issue
-			game.getReader().setupNewFile(levelFile);
-			Level level = game.getReader().compileLevel();
+			XML_Reader read = new XML_Reader(levelFile);
+			Level level = read.compileLevel();
 			// Mark the boss level
 			if (levelFile.name().equals("Boss.xml")) {
 				level.setBossGame(true);

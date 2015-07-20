@@ -8,6 +8,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
@@ -133,6 +135,7 @@ public class ScreenTransition extends ScreenAdapter {
 		TextButtonStyle style = new TextButtonStyle();
 		style.up = skin.getDrawable("Button_Next");
 		style.down = skin.getDrawable("ButtonPressed_Next");
+		style.disabled = new TextureRegionDrawable(new TextureRegion(manager.get("loadingButton.png", Texture.class)));
 		nextButton = new Button(style);
 		nextButton.addListener(new MyChangeListener() {
 			@Override

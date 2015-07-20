@@ -37,7 +37,7 @@ public final class ScreenAdapterManager {
 	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
 	private Batch batch;
 	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
-	public TextureRegion backgroundRegion;
+	private TextureRegion backgroundRegion;
 
 	/**
 	 * Allows access to {@link #instance} from outside the class.

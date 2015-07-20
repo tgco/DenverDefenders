@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine;
 
-import org.TheGivingChild.Engine.XML.XML_Reader;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenAdapterManager;
 
@@ -8,12 +7,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -41,8 +38,6 @@ public class TGC_Engine extends Game {
 	private BitmapFont bitmapFontButton; 
 	/** Asset manager used for the whole game. It is preferred that all assets use this manager for loading */
 	private AssetManager manager;
-	/**{@link #reader} allows mini games to be read in.*/
-	private XML_Reader reader;
 	
 	// True if debug bounds drawing should be used
 	public boolean debug = false;
@@ -72,22 +67,10 @@ public class TGC_Engine extends Game {
 		
 		manager.finishLoading();
 		
-		/* Any following assets in this constructor will load during the splash screen */
-		// UI materials
-		manager.load("SemiTransparentBG.png", Texture.class);
-		manager.load("Packs/Buttons.pack", TextureAtlas.class);
-		// Needed for screen transition
-		manager.load("Packs/ScreenTransitions.pack", TextureAtlas.class);
-		// Game audio
-		manager.load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
-		
 		// Initialize screen management
 		ScreenAdapterManager.getInstance().initialize(this);
 		// Set initial screen to splash
 		setScreen(ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.SPLASH));
-
-		// READER NOT USED IN THIS CLASS, MOVE THEM TO WHERE THEY ARE NEEDED
-		reader = new XML_Reader();
 
 		// Font initialized to generic
 		bitmapFontButton = new BitmapFont();
@@ -120,10 +103,6 @@ public class TGC_Engine extends Game {
 
 	public AssetManager getAssetManager() {
 		return manager;
-	}
-	
-	public XML_Reader getReader() {
-		return reader;
 	}
 	
 	// Returns the global game clock time in seconds

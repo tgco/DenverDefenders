@@ -15,15 +15,21 @@ import com.badlogic.gdx.utils.XmlReader.Element;
  */
 public class XML_Reader {
 	/** The libGDX XmlReader used to parse the .xml file*/
-	private XmlReader reader = new XmlReader();
+	private XmlReader reader;
 	private Element root;//this is the root of the tree that is created by reader.parse(xml_file)
+	
+	// Constructs and parses the file
+	public XML_Reader(FileHandle file) {
+		reader = new XmlReader();
+		setupFile(file);
+	}
 	
 	/**
 	 * Receives a FileHandle, reads in the new file, and parses it into a tree to later be compiled into a Level
 	 * @param The FileHandle containing the information to read from the .xml file
 	 * @see setupNewFile
 	 */
-	public void setupNewFile(FileHandle file){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
+	public void setupFile(FileHandle file){//will read in a new XML file as a big string, will try to leave space for the DHD, needs to be called each time you want to read in a minigame
 		String XML_Filename = new String();
 		XML_Filename = file.name();
 		String xml_file ="";

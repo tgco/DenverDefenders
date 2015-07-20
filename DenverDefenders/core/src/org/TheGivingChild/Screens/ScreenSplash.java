@@ -5,8 +5,10 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class ScreenSplash extends ScreenAdapter {
 	private SpriteBatch batch;
@@ -16,6 +18,8 @@ public class ScreenSplash extends ScreenAdapter {
 	private float splashScreenTimer;
 	// true once auto transition has been initiated
 	private boolean transitionInit;
+	// True once all ui assets have been requested for loading
+	private boolean uiRequested;
 
 	public ScreenSplash() {
 		game = ScreenAdapterManager.getInstance().game;
@@ -23,6 +27,7 @@ public class ScreenSplash extends ScreenAdapter {
 		// Init time to show splash screen in seconds
 		splashScreenTimer = 1.0f;
 		transitionInit = false;
+		uiRequested = false;
 	}
 
 	@Override
@@ -30,6 +35,24 @@ public class ScreenSplash extends ScreenAdapter {
 		batch.begin();
 		batch.draw(game.getAssetManager().get("MainScreen_Splash.png", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
+		
+		// UI asset load
+		if (!uiRequested) {
+			// UI materials
+			game.getAssetManager().load("SemiTransparentBG.png", Texture.class);
+			game.getAssetManager().load("Packs/Buttons.pack", TextureAtlas.class);
+			game.getAssetManager().load("loadingButton.png", Texture.class);
+			// Needed for screen transition
+			game.getAssetManager().load("Packs/ScreenTransitions.pack", TextureAtlas.class);
+			// Game audio
+			game.getAssetManager().load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
+			// Pre loaded during splash to smooth out the ui "comic" transitions
+			ScreenMain.requestAssets(game.getAssetManager());
+			ScreenOptions.requestAssets(game.getAssetManager());
+			ScreenHowToPlay.requestAssets(game.getAssetManager());
+			ScreenMazeSelect.requestAssets(game.getAssetManager());
+			uiRequested = true;
+		}
 		
 		// Decrement timer
 		splashScreenTimer -= delta;
