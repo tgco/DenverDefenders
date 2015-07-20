@@ -2,12 +2,67 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="25" tilewidth="32" tileheight="32" nextobjectid="18">
  <tileset firstgid="1" name="CitySet" tilewidth="32" tileheight="32">
   <image source="TileE-1.png" width="512" height="512"/>
+  <tile id="94">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="126">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="143">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="158">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="159">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
   <tile id="169">
    <properties>
     <property name="heroHQ" value="true"/>
    </properties>
   </tile>
-  <tile id="188">
+  <tile id="174">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="175">
    <properties>
     <property name="minigame" value="true"/>
    </properties>
@@ -20,7 +75,7 @@
  </layer>
  <layer name="Road" width="25" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBiZYD8Qn8ODgfILKLXjHAEzCMmPJDv2UihPDBguYTVqByZYxcCQgC0fj6arUTuGqh2jaZd4sB9H/keqzw9QasdgBQDzRkc/
+   eJxjYBiZYD8Qn4PifiQ2DCdQwY69FMqP2jFqx6gdxIFVwCyLnodBeAMBfQ0k2IELDLWwGrVj1A562tFABzvOM2DmfeR6/QIV7BisAAAxvi4c
   </data>
  </layer>
  <layer name="Buildings" width="25" height="25">

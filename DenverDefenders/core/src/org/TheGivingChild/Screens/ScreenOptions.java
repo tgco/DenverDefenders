@@ -79,7 +79,10 @@ class ScreenOptions extends ScreenAdapter {
 		bs.checked = skin.getDrawable("CheckBox_Checked");
 		bs.up = skin.getDrawable("CheckBox");
 		Button musicCheck = new Button(bs);
-		musicCheck.setChecked(true);
+		if (AudioManager.getInstance().musicEnabled)
+			musicCheck.setChecked(true);
+		else
+			musicCheck.setChecked(false);
 		musicCheck.addListener(new MyChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -90,7 +93,10 @@ class ScreenOptions extends ScreenAdapter {
 			}
 		});
 		Button soundCheck = new Button(bs);
-		soundCheck.setChecked(true);
+		if (AudioManager.getInstance().soundEnabled)
+			soundCheck.setChecked(true);
+		else
+			soundCheck.setChecked(false);
 		soundCheck.addListener(new MyChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -137,6 +143,8 @@ class ScreenOptions extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
+				// Save new audio settings
+				game.data.save();
 				ScreenTransition optionsToMain = new ScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN);
 				game.setScreen(optionsToMain);
 			}

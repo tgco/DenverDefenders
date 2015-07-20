@@ -57,7 +57,7 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("backpack");
 		totsLevelsUnlocked = 3;
 		kidsLevelsUnlocked = 2;
-		save();
+		// Go to options screen and back to run a save operation
 		*/
 		
 		
@@ -97,8 +97,11 @@ public class ProgressionData {
 		}
 		for (String s : totsUnlockedPowerUps) {
 			prefs.putBoolean("tots" + s, true);
-			System.out.println("saved tots: " + s);
 		}
+		// Sound settings
+		AudioManager aud = AudioManager.getInstance();
+		prefs.putBoolean("musicEnabled", aud.musicEnabled);
+		prefs.putBoolean("soundEnabled", aud.soundEnabled);
 		prefs.flush();
 	}
 	

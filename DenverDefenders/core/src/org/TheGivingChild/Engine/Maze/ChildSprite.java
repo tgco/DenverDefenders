@@ -1,6 +1,5 @@
 package org.TheGivingChild.Engine.Maze;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
@@ -37,28 +36,58 @@ public class ChildSprite extends Sprite {
 	// Causes this sprite to follow the passed sprite along the maze path
 	public void followSprite(Sprite followMe, Maze maze){
 		// Find the path to the target sprite
-		Vertex src = maze.getTileAt(followMe.getX(), followMe.getY());
-		Vertex dest = maze.getTileAt(this.getX(), this.getY());
-		if (src == dest) return;
-		// Builds src -> dest tree
-		maze.bfSearch(dest, src);
-		// Find adjacent tile
-		Vertex moveHere = maze.getTileRelativeTo(src, src.getParent());
-		// Build dest -> src tree
-		maze.bfSearch(src, dest);
+		Vertex followTile = maze.getTileAt(followMe.getX(), followMe.getY());
+		Vertex myTile = maze.getTileAt(this.getX(), this.getY());
+		// Same tile check
+		if (followTile == myTile) return;
+		// Build followTile -> myTile tree
+		maze.bfSearch(myTile, followTile);
+		// Adjacent check
+		Vertex adj = maze.getTileRelativeTo(followTile, followTile.getParent());
+		//if (adj == myTile) return;
+		// Else draw on adjacent with same offset
+		float offsetX = 0;
+		float offsetY = 0;
+		switch(followTile.getParent()) {
+		case UP:
+			offsetY = followMe.getY() - followTile.getY();
+			break;
+		case DOWN:
+			offsetY = followMe.getY() - followTile.getY();
+			break;
+		case RIGHT:
+			offsetX = followMe.getX() - followTile.getX();
+			break;
+		case LEFT:
+			offsetX = followMe.getX() - followTile.getX();
+			break;
+		}
+		
+		this.setX(adj.getX() + offsetX);
+		this.setY(adj.getY() + offsetY);
+		
+		/* BROKEN IDEAS
+		// Builds myTile -> followTile tree
+		maze.bfSearch(followTile, myTile);
+		// Find adjacent tile in the path
+		Vertex adj = maze.getTileRelativeTo(myTile, myTile.getParent());
+		// One tile away check
+		if (adj == followTile) return;
+		
+		// Else move to the adjacent tile
 		float spriteMoveX = 0;
 		float spriteMoveY = 0;
 		float delta = 0;
-		// Determine target
-		Vertex myTile = maze.getTileAt(this.getX(), this.getY());
+		// Snap to current tile before attempting to progress
 		Vertex target;
 		if (myTile.getX() != getX() || myTile.getY() != getY()) {
-			// Make sure snapped to a tile first before finding a new target
+			// Not on tile, move to it
 			target = myTile;
 		}
-		else target = maze.getTileRelativeTo(dest, dest.getParent());
+		// Else can move to adj tile
+		else target = adj;
 		boolean reached = false;
-		switch(dest.getParent()) {
+		switch(myTile.getParent()) {
 		case UP:
 			spriteMoveY = speed*Gdx.graphics.getDeltaTime();
 			delta = target.getY() - getY();
@@ -91,6 +120,7 @@ public class ChildSprite extends Sprite {
 			this.setX(this.getX() + spriteMoveX);
 			this.setY(this.getY() + spriteMoveY);
 		}
+		*/
 	}
 
 	public void setSpeed(float f)
