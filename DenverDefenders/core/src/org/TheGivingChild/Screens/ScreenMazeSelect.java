@@ -2,13 +2,15 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
-public class ScreenMazeSelect extends ScreenAdapter {
+public class ScreenMazeSelect extends UIScreenAdapter {
 	private TGC_Engine game;
 	// List of maze names for the super tots levels
 	private static String[] superTotsLevels = { "UrbanTots1", "UrbanTots2", "UrbanTots3" };
@@ -37,7 +39,10 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	private static final float SWITCH_BUTTON_HEIGHT = Gdx.graphics.getHeight()/8f;
 	
 	public ScreenMazeSelect() {
+		// batch for ui screen transition
+		batch = new SpriteBatch();
 		game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
 		// Construct the level selection switch buttons
 		switchTable = constructSwitchButtons();
 	}
@@ -81,7 +86,7 @@ public class ScreenMazeSelect extends ScreenAdapter {
 					ScreenMaze.mazeNumber = j + 1;
 					ScreenMaze.mazeType = unlockDataName;
 					// Create a transition with a requested maze init call
-					ScreenTransition selectToMaze = new ScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE, true);
+					CurtainScreenTransition selectToMaze = new CurtainScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE, true);
 					game.setScreen(selectToMaze);
 				}
 			});
@@ -147,7 +152,9 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().backgroundImage();
+		batch.begin();
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 	
 	@Override
@@ -170,7 +177,7 @@ public class ScreenMazeSelect extends ScreenAdapter {
 	
 	@Override
 	public void dispose() {
-		
+		batch.dispose();
 	}
 	
 	// Request assets for this screen to be loaded.  Called on transition into this screen.

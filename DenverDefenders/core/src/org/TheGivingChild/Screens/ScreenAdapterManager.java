@@ -4,12 +4,7 @@ import org.TheGivingChild.Engine.TGC_Engine;
 
 import sun.security.jca.GetInstance.Instance;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.IntMap;
 /**
  * 
@@ -34,10 +29,6 @@ public final class ScreenAdapterManager {
 	public TGC_Engine game;
 	/**Map of {@link com.badlogic.gdx.ScreenAdapter ScreenAdapters} built from {@link ScreenAdapterEnums}.*/
 	private IntMap<ScreenAdapter> screens;
-	/**{@link SpriteBatch} used for rendering {@link #screenTransitionIn()} and {@link #screenTransitionOut()}. */
-	private Batch batch;
-	/**The texture region that takes {@link #backgroundTexture} and allows it to be stretched when batch.drawn */
-	private TextureRegion backgroundRegion;
 
 	/**
 	 * Allows access to {@link #instance} from outside the class.
@@ -57,7 +48,6 @@ public final class ScreenAdapterManager {
 	 */
 	private ScreenAdapterManager() {
 		screens = new IntMap<ScreenAdapter>();
-		batch = new SpriteBatch();
 	}
 	/**
 	 * dispose the manager
@@ -72,7 +62,6 @@ public final class ScreenAdapterManager {
 		}
 		screens.clear();
 		instance = null;
-		batch.dispose();
 	}
 	/**
 	 * <p>Dispose of the screen corresponding to the enumeration passed in.</p>
@@ -100,13 +89,6 @@ public final class ScreenAdapterManager {
 	 */
 	public void initialize(TGC_Engine game) {
 		this.game = game;
-		backgroundRegion = new TextureRegion(game.getAssetManager().get("ColdMountain.png", Texture.class));
-	}
-	/**Draws the {@link #backgroundRegion} to the screen*/
-	public void backgroundImage() {
-		batch.begin();
-		batch.draw(backgroundRegion, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.end();
 	}
 
 	/**

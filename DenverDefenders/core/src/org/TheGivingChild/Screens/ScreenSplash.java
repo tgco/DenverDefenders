@@ -2,16 +2,16 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-public class ScreenSplash extends ScreenAdapter {
-	private SpriteBatch batch;
+public class ScreenSplash extends UIScreenAdapter {
 	private TGC_Engine game;
 	
 	/**{@link #splashScreenTimer} is the timer for how long the Title Splash Screen is displayed.*/
@@ -23,6 +23,7 @@ public class ScreenSplash extends ScreenAdapter {
 
 	public ScreenSplash() {
 		game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("MainScreen_Splash.png", Texture.class);
 		batch = new SpriteBatch();
 		// Init time to show splash screen in seconds
 		splashScreenTimer = 1.0f;
@@ -33,12 +34,13 @@ public class ScreenSplash extends ScreenAdapter {
 	@Override
 	public void render(float delta) {
 		batch.begin();
-		batch.draw(game.getAssetManager().get("MainScreen_Splash.png", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.end();
 		
 		// UI asset load
 		if (!uiRequested) {
 			// UI materials
+			game.getAssetManager().load("ColdMountain.png", Texture.class);
 			game.getAssetManager().load("SemiTransparentBG.png", Texture.class);
 			game.getAssetManager().load("Packs/Buttons.pack", TextureAtlas.class);
 			game.getAssetManager().load("loadingButton.png", Texture.class);
@@ -66,7 +68,7 @@ public class ScreenSplash extends ScreenAdapter {
 			game.data.load();
 			transitionInit = true;
 			// Transition to main screen when splash and loading done
-			ScreenTransition splashToMain = new ScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN);
+			CurtainScreenTransition splashToMain = new CurtainScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN);
 			game.setScreen(splashToMain);
 		}
 	}

@@ -3,7 +3,7 @@ package org.TheGivingChild.Engine.Maze;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Screens.ScreenAdapterEnums;
 import org.TheGivingChild.Screens.ScreenMaze;
-import org.TheGivingChild.Screens.ScreenTransition;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
@@ -35,7 +35,7 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keyCode) {
 		if(keyCode == Keys.BACK || keyCode == Keys.B){
-			ScreenTransition mazeToMain = new ScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
+			CurtainScreenTransition mazeToMain = new CurtainScreenTransition(ScreenAdapterEnums.MAZE, ScreenAdapterEnums.MAIN);
 			game.setScreen(mazeToMain);
 	    }
 		return true;

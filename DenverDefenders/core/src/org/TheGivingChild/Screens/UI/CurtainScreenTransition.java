@@ -1,12 +1,14 @@
-package org.TheGivingChild.Screens;
+package org.TheGivingChild.Screens.UI;
 
 import java.util.Random;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.ScreenAdapterEnums;
+import org.TheGivingChild.Screens.ScreenAdapterManager;
+import org.TheGivingChild.Screens.ScreenMaze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,21 +31,12 @@ import com.badlogic.gdx.utils.Array;
 // Asks the incoming screen for which assets to load and completes the loading before
 // setting the new screen.
 // Author: Walter Schlosser
-public class ScreenTransition extends ScreenAdapter {
-	// The current screen which is exiting
-	private ScreenAdapterEnums screenOut;
-	// The screen to transition into
-	private ScreenAdapterEnums screenIn;
-	// Reference to manager to progress loading
-	private AssetManager manager;
+public class CurtainScreenTransition extends ScreenTransition {
 	// Two curtain textures to close/open
 	private Array<TextureRegion> transitionTextures;
 	// The coordinate of the transition textures
 	private float transitionTextureX;
 	private SpriteBatch batch;
-	// State to determine how to move curtains
-	private enum TransitionState { CLOSING, DONE, ASSETREQUEST, CLOSED, OPENING; }
-	private TransitionState state;
 	// Time for curtains to open/close
 	private float transitionTime;
 	private Random rand;
@@ -60,15 +53,12 @@ public class ScreenTransition extends ScreenAdapter {
 	private boolean initCall;
 	
 	// Constructor that builds a transition with a random fact
-	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
-		this.screenOut = screenOut;
-		this.screenIn = screenIn;
-		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
+		super(screenOut, screenIn);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		state = TransitionState.CLOSING;
 		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
@@ -78,15 +68,12 @@ public class ScreenTransition extends ScreenAdapter {
 	}
 	
 	// Constructor that builds a transition with given text
-	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, String text) {
-		this.screenOut = screenOut;
-		this.screenIn = screenIn;
-		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
+	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, String text) {
+		super(screenOut, screenIn);
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		state = TransitionState.CLOSING;
 		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
@@ -96,16 +83,13 @@ public class ScreenTransition extends ScreenAdapter {
 	}
 	
 	// Constructor that builds a transition with a random fact and calls init on screenIn
-	public ScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, boolean initCall) {
-		this.screenOut = screenOut;
-		this.screenIn = screenIn;
+	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, boolean initCall) {
+		super(screenOut, screenIn);
 		this.initCall = initCall;
-		manager = ScreenAdapterManager.getInstance().game.getAssetManager();
 		transitionTextures = new Array<TextureRegion>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		state = TransitionState.CLOSING;
 		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
@@ -141,7 +125,7 @@ public class ScreenTransition extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
-				state = TransitionState.OPENING;
+				state = TransitionState.DRAW_OUT;
 				container.remove();
 			}
 		});
@@ -184,21 +168,21 @@ public class ScreenTransition extends ScreenAdapter {
 		
 		// Update movement of transition textures
 		switch (state) {
-		case CLOSING:
+		case DRAW_IN:
 			ScreenAdapterManager.getInstance().getScreenFromEnum(screenOut).render(delta);
-			if (close(delta) == true) state = TransitionState.DONE;
+			if (close(delta) == true) state = TransitionState.MESSAGE_SET;
 			break;
-		case DONE:
+		case MESSAGE_SET:
 			addTables(ScreenAdapterManager.getInstance().game);
-			state = TransitionState.ASSETREQUEST;
+			state = TransitionState.ASSET_REQUEST;
 			break;
-		case ASSETREQUEST:
+		case ASSET_REQUEST:
 			requestAssets();
-			state = TransitionState.CLOSED;
-		case CLOSED:
+			state = TransitionState.WAIT_FOR_LOAD;
+		case WAIT_FOR_LOAD:
 			processRequests();
 			break;
-		case OPENING:
+		case DRAW_OUT:
 			ScreenAdapterManager.getInstance().getScreenFromEnum(screenIn).render(delta);
 			if (open(delta) == true) ScreenAdapterManager.getInstance().show(screenIn);
 			break;
@@ -254,5 +238,10 @@ public class ScreenTransition extends ScreenAdapter {
 	@Override
 	public void hide() {
 		factTable.remove();
+	}
+	
+	@Override
+	public void dispose() {
+		batch.dispose();
 	}
 }

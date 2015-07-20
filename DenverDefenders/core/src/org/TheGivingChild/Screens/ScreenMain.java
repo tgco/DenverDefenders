@@ -2,11 +2,14 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -23,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  * screen, and options screen.
  * @author ctokunag
  */
-class ScreenMain extends ScreenAdapter {
+class ScreenMain extends UIScreenAdapter {
 	private float buttonHeight;
 	private Table mainScreenTable, labelTable;
 	private Skin skin;
@@ -37,7 +40,10 @@ class ScreenMain extends ScreenAdapter {
 												};
 	
 	public ScreenMain() {
+		// batch is needed for screen transition
+		batch = new SpriteBatch();
 		game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
 		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
 		labelTable = createLabel();
@@ -66,7 +72,7 @@ class ScreenMain extends ScreenAdapter {
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
 					// Create a transition
-					ScreenTransition mainToOther = new ScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]); // INTRODUCES DEPENDENCY ON ORDER OF THE ENUM
+					CurtainScreenTransition mainToOther = new CurtainScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]); // INTRODUCES DEPENDENCY ON ORDER OF THE ENUM
 					game.setScreen(mainToOther);
 				}
 			});
@@ -92,7 +98,9 @@ class ScreenMain extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().backgroundImage();
+		batch.begin();
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 
 	@Override
@@ -112,7 +120,7 @@ class ScreenMain extends ScreenAdapter {
 	@Override
 	public void dispose() {
 		skin.dispose();
-		return;
+		batch.dispose();
 	}
 
 	public static void requestAssets(AssetManager manager) {

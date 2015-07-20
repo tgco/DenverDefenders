@@ -5,6 +5,7 @@ import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.InputModule;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.MinigameClock;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -83,7 +84,7 @@ public class ScreenLevel extends ScreenAdapter{
 				String text = buildResponseText(currentLevel.getWon());
 				// Alert maze that the minigame was won so the child will follow
 				((ScreenMaze) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.MAZE)).setLevelWon(currentLevel.getWon());
-				ScreenTransition levelToOther;
+				CurtainScreenTransition levelToOther;
 				if (currentLevel.isBossGame()) {
 					// Check for unlock
 					if (game.data.unlockLevelCheck(ScreenMaze.mazeNumber, ScreenMaze.mazeType)) {
@@ -93,13 +94,13 @@ public class ScreenLevel extends ScreenAdapter{
 						Array<String> powers = game.data.getUnlockedPowerUps(ScreenMaze.mazeType);
 						String newPower = powers.get(powers.size - 1);
 						ScreenUnlock.powerUpName = newPower;
-						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.UNLOCK, text);
+						levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.UNLOCK, text);
 					} else
 						// go to main
-						levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
+						levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
 				}
 				else
-					levelToOther = new ScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
+					levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
 				game.setScreen(levelToOther);
 			}
 		}

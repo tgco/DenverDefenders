@@ -16,6 +16,7 @@ import org.TheGivingChild.Engine.PowerUps.PowerUpEnum;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 import org.TheGivingChild.Engine.XML.XML_Reader;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -255,7 +256,7 @@ public class ScreenMaze extends ScreenAdapter {
 			// Init screen transition if necessary
 			if (screenSwitch != null) {
 				String text = buildResponseText(screenSwitch);
-				ScreenTransition mazeToOther = new ScreenTransition(ScreenAdapterEnums.MAZE, screenSwitch, text);
+				CurtainScreenTransition mazeToOther = new CurtainScreenTransition(ScreenAdapterEnums.MAZE, screenSwitch, text);
 				game.setScreen(mazeToOther);
 			}
 		}

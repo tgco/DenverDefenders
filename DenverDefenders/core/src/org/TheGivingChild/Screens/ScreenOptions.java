@@ -3,9 +3,10 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,10 +23,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 
-class ScreenOptions extends ScreenAdapter {
+class ScreenOptions extends UIScreenAdapter {
 	private Table optionsTable;
 	private TGC_Engine game;
-	private SpriteBatch batch;
 	private Texture title;
 	
 	private final static float CHECK_SIZE = Gdx.graphics.getWidth()/20f;
@@ -34,6 +34,7 @@ class ScreenOptions extends ScreenAdapter {
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
 		batch = new SpriteBatch();
 		optionsTable = createOptionsTable();
 		title = game.getAssetManager().get("titleOptionScreen.png", Texture.class);
@@ -41,11 +42,9 @@ class ScreenOptions extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		// Background
-		ScreenAdapterManager.getInstance().backgroundImage();
-		
-		// Title
+		// Title + Background
 		batch.begin();
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
 		batch.end();
 	}
@@ -145,7 +144,7 @@ class ScreenOptions extends ScreenAdapter {
 				super.changed(event, actor);
 				// Save new audio settings
 				game.data.save();
-				ScreenTransition optionsToMain = new ScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN);
+				CurtainScreenTransition optionsToMain = new CurtainScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN);
 				game.setScreen(optionsToMain);
 			}
 		});

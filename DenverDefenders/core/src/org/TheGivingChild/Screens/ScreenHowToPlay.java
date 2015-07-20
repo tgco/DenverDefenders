@@ -2,14 +2,14 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -28,9 +28,8 @@ import com.badlogic.gdx.utils.Align;
  * game will be played. It also allows navigation to any other screen as well.
  * @author ctokunag
  */
-class ScreenHowToPlay extends ScreenAdapter{
+class ScreenHowToPlay extends UIScreenAdapter {
 	private Texture title;
-	private Batch batch;
 	private Table table;
 	private Table messageTable;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
@@ -42,8 +41,10 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
 		batch = new SpriteBatch();
 		skin = new Skin();
+		title = game.getAssetManager().get("titleHowToPlayScreen.png");
 		table = createButtons();
 		messageTable = createMessage();
 	}
@@ -75,7 +76,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
-					ScreenTransition htpToOther = new ScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen);
+					CurtainScreenTransition htpToOther = new CurtainScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen);
 					game.setScreen(htpToOther);
 				}
 			});
@@ -115,12 +116,9 @@ class ScreenHowToPlay extends ScreenAdapter{
 	
 	@Override
 	public void render(float delta) {
-		title = game.getAssetManager().get("titleHowToPlayScreen.png");
-		Gdx.gl.glClearColor(0, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		ScreenAdapterManager.getInstance().backgroundImage();
-		//shows HTP title
+		// Title + background
 		batch.begin();
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
 		batch.end();
 	}
@@ -134,6 +132,7 @@ class ScreenHowToPlay extends ScreenAdapter{
 	@Override
 	public void dispose() {
 		skin.dispose();
+		batch.dispose();
 	}
 
 	public static void requestAssets(AssetManager manager) {

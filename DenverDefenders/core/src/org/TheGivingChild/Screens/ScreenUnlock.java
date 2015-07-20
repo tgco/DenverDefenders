@@ -3,12 +3,14 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.PowerUps.PowerUpEnum;
+import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -21,14 +23,16 @@ import com.badlogic.gdx.utils.Align;
 
 // Displays an unlocked power and its description
 // Author: Walter Schlosser
-public class ScreenUnlock extends ScreenAdapter {
+public class ScreenUnlock extends UIScreenAdapter {
 	private TGC_Engine game;
 	private Table unlockTable;
 	
 	public static String powerUpName;
 	
 	public ScreenUnlock() {
+		batch = new SpriteBatch();
 		this.game = ScreenAdapterManager.getInstance().game;
+		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
 	}
 	
 	// Builds the table with the name and description of the power up
@@ -63,7 +67,7 @@ public class ScreenUnlock extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
-				ScreenTransition unlockToMain = new ScreenTransition(ScreenAdapterEnums.UNLOCK, ScreenAdapterEnums.MAIN);
+				CurtainScreenTransition unlockToMain = new CurtainScreenTransition(ScreenAdapterEnums.UNLOCK, ScreenAdapterEnums.MAIN);
 				game.setScreen(unlockToMain);
 			}
 		});
@@ -84,7 +88,9 @@ public class ScreenUnlock extends ScreenAdapter {
 	
 	@Override
 	public void render(float delta) {
-		ScreenAdapterManager.getInstance().backgroundImage();
+		batch.begin();
+		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.end();
 	}
 	
 	@Override

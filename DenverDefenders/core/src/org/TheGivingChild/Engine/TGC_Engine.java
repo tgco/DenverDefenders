@@ -63,7 +63,6 @@ public class TGC_Engine extends Game {
 		// Set custom loader for tiled maps
 		manager.setLoader(TiledMap.class, new TmxMapLoader());
 		manager.load("MainScreen_Splash.png", Texture.class); // splash background
-		manager.load("ColdMountain.png", Texture.class); // main ui background is drawn from the screen manager (refactor this)
 		
 		manager.finishLoading();
 		
