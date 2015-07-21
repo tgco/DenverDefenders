@@ -48,7 +48,7 @@ public class ScreenSplash extends UIScreenAdapter {
 			// Needed for screen transition
 			game.getAssetManager().load("Packs/ScreenTransitions.pack", TextureAtlas.class);
 			// Game audio
-			game.getAssetManager().load("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
+			game.getAssetManager().load("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
 			// Pre loaded during splash to smooth out the ui "comic" transitions
 			ScreenMain.requestAssets(game.getAssetManager());
 			ScreenOptions.requestAssets(game.getAssetManager());
@@ -71,6 +71,8 @@ public class ScreenSplash extends UIScreenAdapter {
 			// Transition to main screen when splash and loading done
 			ComicScreenTransition splashToMain = new ComicScreenTransition(ScreenAdapterEnums.SPLASH, ScreenAdapterEnums.MAIN, Direction.RIGHT);
 			game.setScreen(splashToMain);
+			// Play a punch sound
+			AudioManager.getInstance().playPunchSound();
 		}
 	}
 	

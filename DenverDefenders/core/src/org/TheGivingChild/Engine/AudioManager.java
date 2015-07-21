@@ -1,5 +1,7 @@
 package org.TheGivingChild.Engine;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
@@ -21,6 +23,9 @@ public class AudioManager {
 	private ObjectMap<String, Sound> soundMap;
 	// Reference to currently selected song
 	private Music backgroundSoundToPlay;
+	
+	// Random generator
+	private Random rand;
 
 	public static AudioManager getInstance() {
 		if (instance == null)
@@ -30,6 +35,7 @@ public class AudioManager {
 
 	public AudioManager() {
 		soundMap = new ObjectMap<String, Sound>();
+		rand = new Random();
 		// Load settings
 		Preferences prefs = Gdx.app.getPreferences("save_data");
 		soundEnabled = prefs.getBoolean("soundEnabled", true);
@@ -41,6 +47,9 @@ public class AudioManager {
 	public void initialize(TGC_Engine game) {
 		this.game = game;
 		this.addAvailableSound("sounds/click.wav");
+		this.addAvailableSound("sounds/punch1.mp3");
+		this.addAvailableSound("sounds/punch2.mp3");
+		this.addAvailableSound("sounds/punch3.mp3");
 	}
 
 	// Adds the sound name to the map
@@ -53,8 +62,8 @@ public class AudioManager {
 
 	// Begins looping background song
 	public void playBackgroundMusic() {
-		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/03_Chibi_Ninja.wav", Music.class);
-		backgroundSoundToPlay.setVolume(volume);
+		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
+		backgroundSoundToPlay.setVolume(.5f);
 		backgroundSoundToPlay.setLooping(true);
 		if (musicEnabled) {
 			backgroundSoundToPlay.play();
@@ -66,9 +75,14 @@ public class AudioManager {
 		if (soundEnabled)
 			soundMap.get(fileName).play(volume);
 	}
-
-	public void setVolume(float volume) {
-		this.volume = volume;
+	
+	// Plays a random "punch" sound
+	public void playPunchSound() {
+		if (soundEnabled) {
+			int num = rand.nextInt(3) + 1;
+			String name = "sounds/punch" + num + ".mp3";
+			soundMap.get(name).play(volume);
+		}
 	}
 
 	// Sets music enabled bool and plays the music if enabled is true

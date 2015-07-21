@@ -19,7 +19,8 @@ public class MyChangeListener extends ChangeListener{
 	/**changed is overridden to add sound to UI elements. */
 	@Override
 	public void changed(ChangeEvent event, Actor actor) {
-		AudioManager.getInstance().play("sounds/click.wav");
+		//AudioManager.getInstance().play("sounds/click.wav");
+		AudioManager.getInstance().playPunchSound();
 	}
 
 }

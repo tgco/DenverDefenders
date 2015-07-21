@@ -100,6 +100,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		// Clamp 0 to 1
 		float clampedAlpha = Math.max(0, Math.min(1, alpha));
 		// Draw grayscale
+		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		grayScale.draw(batch, clampedAlpha);
 		batch.end();
@@ -126,6 +127,11 @@ public class ComicScreenTransition extends ScreenTransition {
 			cam.update();
 			screenA.getSpriteBatch().setProjectionMatrix(cam.combined);
 			screenA.render(Gdx.graphics.getDeltaTime());
+			// gray scale
+			batch.setProjectionMatrix(cam.combined);
+			batch.begin();
+			grayScale.draw(batch, 1);
+			batch.end();
 			//draw screen B with translation
 			Vector3 temp = cam.position.cpy();
 			Vector3 delta = cam.position.cpy().sub(camTarget);
@@ -133,7 +139,7 @@ public class ComicScreenTransition extends ScreenTransition {
 			cam.update();
 			screenB.getSpriteBatch().setProjectionMatrix(cam.combined);
 			screenB.render(Gdx.graphics.getDeltaTime());
-			// gray scale
+			batch.setProjectionMatrix(cam.combined);
 			batch.begin();
 			grayScale.draw(batch, 1);
 			batch.end();
@@ -172,6 +178,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		// Clamp 0 to 1
 		float clampedAlpha = Math.max(0, Math.min(1, alpha));
 		// Draw grayscale
+		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		grayScale.draw(batch, clampedAlpha);
 		batch.end();
