@@ -2,7 +2,8 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Engine.Maze.Direction;
+import org.TheGivingChild.Screens.UI.ComicScreenTransition;
 import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
@@ -68,11 +69,16 @@ class ScreenMain extends UIScreenAdapter {
 			final int j = i;
 			//button to transition to different screens.
 			b.addListener(new MyChangeListener(){
+				// Comic transition direction
+				Direction dir;
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
 					// Create a transition
-					CurtainScreenTransition mainToOther = new CurtainScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2]); // INTRODUCES DEPENDENCY ON ORDER OF THE ENUM
+					if (j/2 % 2 == 0)
+						dir = Direction.RIGHT;
+					else dir = Direction.LEFT;
+					ComicScreenTransition mainToOther = new ComicScreenTransition(ScreenAdapterEnums.MAIN, ScreenAdapterEnums.values()[j/2], dir); // INTRODUCES DEPENDENCY ON ORDER OF THE ENUM
 					game.setScreen(mainToOther);
 				}
 			});

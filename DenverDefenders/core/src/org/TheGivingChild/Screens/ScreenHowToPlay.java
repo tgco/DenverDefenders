@@ -2,13 +2,13 @@ package org.TheGivingChild.Screens;
 
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Engine.Maze.Direction;
+import org.TheGivingChild.Screens.UI.ComicScreenTransition;
 import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -73,10 +73,14 @@ class ScreenHowToPlay extends UIScreenAdapter {
 			final ScreenAdapterEnums inScreen = choice;
 			//listener to change screens on button press
 			tb.addListener(new MyChangeListener(){
+				Direction dir;
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					super.changed(event, actor);
-					CurtainScreenTransition htpToOther = new CurtainScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen);
+					// pick comic direction
+					if (inScreen == ScreenAdapterEnums.MAZE_SELECT) dir = Direction.RIGHT;
+					else dir = Direction.LEFT;
+					ComicScreenTransition htpToOther = new ComicScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen, dir);
 					game.setScreen(htpToOther);
 				}
 			});

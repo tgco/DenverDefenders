@@ -121,7 +121,7 @@ public class TGC_Engine extends Game {
 		fps.log();
 
 		// Clear screen to white
-		Gdx.gl.glClearColor(1,1,1,1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		// Calls render on current screen
 		super.render();

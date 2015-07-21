@@ -104,7 +104,6 @@ public class ScreenMaze extends ScreenAdapter {
 		activePowerUps = new Array<PowerUp>();
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.update();
 	}
 
 	// Must run before starting a new maze, sets state appropriately

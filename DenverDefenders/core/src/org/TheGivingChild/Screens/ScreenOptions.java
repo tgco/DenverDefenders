@@ -3,7 +3,8 @@ package org.TheGivingChild.Screens;
 import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.MyChangeListener;
 import org.TheGivingChild.Engine.TGC_Engine;
-import org.TheGivingChild.Screens.UI.CurtainScreenTransition;
+import org.TheGivingChild.Engine.Maze.Direction;
+import org.TheGivingChild.Screens.UI.ComicScreenTransition;
 import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
@@ -144,7 +145,7 @@ class ScreenOptions extends UIScreenAdapter {
 				super.changed(event, actor);
 				// Save new audio settings
 				game.data.save();
-				CurtainScreenTransition optionsToMain = new CurtainScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN);
+				ComicScreenTransition optionsToMain = new ComicScreenTransition(ScreenAdapterEnums.OPTIONS, ScreenAdapterEnums.MAIN, Direction.LEFT);
 				game.setScreen(optionsToMain);
 			}
 		});
