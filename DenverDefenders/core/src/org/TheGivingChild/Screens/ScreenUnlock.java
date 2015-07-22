@@ -32,7 +32,7 @@ public class ScreenUnlock extends UIScreenAdapter {
 	public ScreenUnlock() {
 		batch = new SpriteBatch();
 		this.game = ScreenAdapterManager.getInstance().game;
-		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
+		background = game.getAssetManager().get("UIBackgrounds/unlock.png", Texture.class);
 	}
 	
 	// Builds the table with the name and description of the power up
@@ -44,6 +44,7 @@ public class ScreenUnlock extends UIScreenAdapter {
 		// Create labels and button
 		LabelStyle ls = new LabelStyle();
 		ls.font = new BitmapFont();
+		ls.background = new TextureRegionDrawable(new TextureRegion(game.getAssetManager().get("SemiTransparentBG.png", Texture.class)));
 		Label unlockMessageLabel = new Label(unlockMessage, ls);
 		unlockMessageLabel.setColor(1, 1, 1, 1);
 		// Font scale set
@@ -111,6 +112,7 @@ public class ScreenUnlock extends UIScreenAdapter {
 	public static void requestAssets(AssetManager manager) {
 		// Load the button image
 		manager.load("PowerUps/" + powerUpName + "/button.png", Texture.class);
+		manager.load("UIBackgrounds/unlock.png", Texture.class);
 	}
 
 }

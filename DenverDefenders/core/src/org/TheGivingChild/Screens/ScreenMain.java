@@ -8,15 +8,12 @@ import org.TheGivingChild.Screens.UI.UIScreenAdapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -29,7 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  */
 class ScreenMain extends UIScreenAdapter {
 	private float buttonHeight;
-	private Table mainScreenTable, labelTable;
+	private Table mainScreenTable;
+	private Texture title;
 	private Skin skin;
 	private TGC_Engine game;
 	private String[] buttonAtlasNamesArray = {"ButtonPressed_MainScreen_Play", 
@@ -44,10 +42,10 @@ class ScreenMain extends UIScreenAdapter {
 		// batch is needed for screen transition
 		batch = new SpriteBatch();
 		game = ScreenAdapterManager.getInstance().game;
-		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
+		background = game.getAssetManager().get("UIBackgrounds/main.png", Texture.class);
+		title = game.getAssetManager().get("UIBackgrounds/title.png", Texture.class);
 		skin = new Skin();
 		mainScreenTable = createMainScreenTable();
-		labelTable = createLabel();
 	}
 
 	private Table createMainScreenTable() {
@@ -56,7 +54,7 @@ class ScreenMain extends UIScreenAdapter {
 		//adds the proper textures to skin from the asset manager
 		skin.addRegions((TextureAtlas) game.getAssetManager().get("Packs/Buttons.pack"));
 		//variable to keep track of button height for table positioning
-		int widthDivider = (buttonAtlasNamesArray.length/2);
+		int widthDivider = (buttonAtlasNamesArray.length/2 + 1);
 		//iterate over button pack names in order to check
 		for(int i = 0; i < buttonAtlasNamesArray.length-1; i += 2 ){
 			ButtonStyle bs = new ButtonStyle();
@@ -86,33 +84,18 @@ class ScreenMain extends UIScreenAdapter {
 		table.setPosition(Gdx.graphics.getWidth()/2, buttonHeight/2);
 		return table;
 	}
-	
-	public Table createLabel() {
-		Table table = new Table();
-		skin.add("labelBack",game.getAssetManager().get("SemiTransparentBG.png"));
-		LabelStyle ls = new LabelStyle();
-		ls.font = game.getBitmapFontButton();
-		ls.background = skin.getDrawable("labelBack");
-		Label gameName = new Label("Denver Defenders", ls);
-		gameName.setFontScale(game.getGlobalFontScale()*3f);
-		gameName.setColor(Color.WHITE);
-		table.add(gameName).top();
-		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
-		return table;
-	}
 
 	@Override
 	public void render(float delta) {
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(title, 1f/4f*Gdx.graphics.getWidth(), 2f/5f*Gdx.graphics.getHeight(), 1f/2f*Gdx.graphics.getWidth(), 1f/5f*Gdx.graphics.getHeight());
 		batch.end();
 	}
 
 	@Override
 	public void show() {
 		// Add buttons when screen is shown
-		game.getStage().addActor(labelTable);
 		game.getStage().addActor(mainScreenTable);
 	}
 
@@ -120,7 +103,6 @@ class ScreenMain extends UIScreenAdapter {
 	public void hide() {
 		// Hide buttons on screen switch
 		mainScreenTable.remove();
-		labelTable.remove();
 	}
 	
 	@Override
@@ -130,6 +112,7 @@ class ScreenMain extends UIScreenAdapter {
 	}
 
 	public static void requestAssets(AssetManager manager) {
-		
+		manager.load("UIBackgrounds/main.png", Texture.class);
+		manager.load("UIBackgrounds/title.png", Texture.class);
 	}
 }

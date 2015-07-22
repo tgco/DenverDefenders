@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 // Gray scales out, moves to other screen, gray scales in
 public class ComicScreenTransition extends ScreenTransition {
@@ -25,9 +26,11 @@ public class ComicScreenTransition extends ScreenTransition {
 	private SpriteBatch batch;
 	// Coordinates of where the camera should end
 	private Vector3 camTarget;
+	// Array of generic panels to draw around the scene
+	private Array<Texture> genericPanels;
 	
 	// Multiplier for cam zoom dimensions each frame
-	private static final float ZOOM_AMOUNT = 1.002f;
+	private static final float ZOOM_AMOUNT = 1.005f;
 
 	public ComicScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, Direction dir) {
 		super(screenOut, screenIn);
@@ -49,6 +52,12 @@ public class ComicScreenTransition extends ScreenTransition {
 			camTarget = new Vector3(3f/2f * Gdx.graphics.getWidth(), -Gdx.graphics.getHeight()/2f, 0);
 			break;
 		}
+		// Get three generic panels
+		genericPanels = new Array<Texture>();
+		genericPanels.add(manager.get("UIBackgrounds/generic1.png", Texture.class));
+		genericPanels.add(manager.get("UIBackgrounds/generic2.png", Texture.class));
+		genericPanels.add(manager.get("UIBackgrounds/generic3.png", Texture.class));
+		genericPanels.shuffle();
 	}
 	
 	@Override
@@ -96,7 +105,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		// Render the screen
 		ScreenAdapterManager.getInstance().getScreenFromEnum(screen).render(Gdx.graphics.getDeltaTime());
 		// Find new alpha
-		alpha += 2.5 * Gdx.graphics.getDeltaTime();
+		alpha += 3 * Gdx.graphics.getDeltaTime();
 		// Clamp 0 to 1
 		float clampedAlpha = Math.max(0, Math.min(1, alpha));
 		// Draw grayscale
@@ -106,7 +115,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		batch.end();
 		
 		// Wait till 2 to stall on the leaving screen for a bit
-		if (alpha >= 1.5) {
+		if (alpha >= 1.25) {
 			alpha = 1;
 			return true;
 		}
@@ -123,14 +132,17 @@ public class ComicScreenTransition extends ScreenTransition {
 		if (manager.update()) {
 			// find new camera coordinates
 			cam.position.interpolate(camTarget, 2*Gdx.graphics.getDeltaTime(), Interpolation.swingOut);
-			//draw screen A with current cam position
 			cam.update();
+			//draw screen A with current cam position
 			screenA.getSpriteBatch().setProjectionMatrix(cam.combined);
 			screenA.render(Gdx.graphics.getDeltaTime());
-			// gray scale
+			// gray scale and three generic panels w/r/t screen A coordinates
 			batch.setProjectionMatrix(cam.combined);
 			batch.begin();
 			grayScale.draw(batch, 1);
+			batch.draw(genericPanels.get(0), -Gdx.graphics.getWidth(), 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.draw(genericPanels.get(1), Gdx.graphics.getWidth(), 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.draw(genericPanels.get(2), 0, -Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();
 			//draw screen B with translation
 			Vector3 temp = cam.position.cpy();
@@ -174,7 +186,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		// Render the screen
 		ScreenAdapterManager.getInstance().getScreenFromEnum(screen).render(Gdx.graphics.getDeltaTime());
 		// Find new alpha
-		alpha -= 2.5 * Gdx.graphics.getDeltaTime();
+		alpha -= 3 * Gdx.graphics.getDeltaTime();
 		// Clamp 0 to 1
 		float clampedAlpha = Math.max(0, Math.min(1, alpha));
 		// Draw grayscale
@@ -183,7 +195,7 @@ public class ComicScreenTransition extends ScreenTransition {
 		grayScale.draw(batch, clampedAlpha);
 		batch.end();
 
-		if (alpha <= -0.5) {
+		if (alpha <= -0.25) {
 			cam.viewportWidth = Gdx.graphics.getWidth();
 			cam.viewportHeight = Gdx.graphics.getHeight();
 			cam.update();

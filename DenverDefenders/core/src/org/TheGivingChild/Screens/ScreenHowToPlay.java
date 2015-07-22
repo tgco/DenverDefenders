@@ -41,7 +41,7 @@ class ScreenHowToPlay extends UIScreenAdapter {
 	
 	public ScreenHowToPlay() {
 		game = ScreenAdapterManager.getInstance().game;
-		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
+		background = game.getAssetManager().get("UIBackgrounds/howtoplay.png", Texture.class);
 		batch = new SpriteBatch();
 		skin = new Skin();
 		title = game.getAssetManager().get("titleHowToPlayScreen.png");
@@ -123,7 +123,7 @@ class ScreenHowToPlay extends UIScreenAdapter {
 		// Title + background
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-2f*title.getHeight());
 		batch.end();
 	}
 	
@@ -141,6 +141,7 @@ class ScreenHowToPlay extends UIScreenAdapter {
 
 	public static void requestAssets(AssetManager manager) {
 		manager.load("titleHowToPlayScreen.png", Texture.class);
+		manager.load("UIBackgrounds/howtoplay.png", Texture.class);
 	}
 	
 }

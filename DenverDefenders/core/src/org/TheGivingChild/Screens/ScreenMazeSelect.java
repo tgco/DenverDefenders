@@ -42,7 +42,7 @@ public class ScreenMazeSelect extends UIScreenAdapter {
 		// batch for ui screen transition
 		batch = new SpriteBatch();
 		game = ScreenAdapterManager.getInstance().game;
-		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
+		background = game.getAssetManager().get("UIBackgrounds/mazeselect.png", Texture.class);
 		// Construct the level selection switch buttons
 		switchTable = constructSwitchButtons();
 	}
@@ -205,5 +205,6 @@ public class ScreenMazeSelect extends UIScreenAdapter {
 		manager.load("kidsSwitchButton.png", Texture.class);
 		// Load locked image
 		manager.load("locked.png", Texture.class);
+		manager.load("UIBackgrounds/mazeselect.png", Texture.class);
 	}
 }

@@ -41,12 +41,18 @@ public class ScreenSplash extends UIScreenAdapter {
 		// UI asset load
 		if (!uiRequested) {
 			// UI materials
-			game.getAssetManager().load("ColdMountain.png", Texture.class);
 			game.getAssetManager().load("SemiTransparentBG.png", Texture.class);
 			game.getAssetManager().load("Packs/Buttons.pack", TextureAtlas.class);
 			game.getAssetManager().load("loadingButton.png", Texture.class);
-			// Needed for screen transition
-			game.getAssetManager().load("Packs/ScreenTransitions.pack", TextureAtlas.class);
+			// Needed for "curtain" screen transition
+			game.getAssetManager().load("UIBackgrounds/transition1left.png", Texture.class);
+			game.getAssetManager().load("UIBackgrounds/transition1right.png", Texture.class);
+			game.getAssetManager().load("UIBackgrounds/transition2left.png", Texture.class);
+			game.getAssetManager().load("UIBackgrounds/transition2right.png", Texture.class);
+			// Needed for "comic" screen transition
+			game.getAssetManager().load("UIBackgrounds/generic1.png", Texture.class);
+			game.getAssetManager().load("UIBackgrounds/generic2.png", Texture.class);
+			game.getAssetManager().load("UIBackgrounds/generic3.png", Texture.class);
 			// Game audio
 			game.getAssetManager().load("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
 			// Pre loaded during splash to smooth out the ui "comic" transitions

@@ -30,12 +30,12 @@ class ScreenOptions extends UIScreenAdapter {
 	private Texture title;
 	
 	private final static float CHECK_SIZE = Gdx.graphics.getWidth()/20f;
-	private static final float REST_WIDTH = Gdx.graphics.getWidth()/8f;
+	private static final float RESET_WIDTH = Gdx.graphics.getWidth()/8f;
 	private static final float RESET_HEIGHT = Gdx.graphics.getHeight()/10f;
 
 	public ScreenOptions() {
 		game = ScreenAdapterManager.getInstance().game;
-		background = game.getAssetManager().get("ColdMountain.png", Texture.class);
+		background = game.getAssetManager().get("UIBackgrounds/options.png", Texture.class);
 		batch = new SpriteBatch();
 		optionsTable = createOptionsTable();
 		title = game.getAssetManager().get("titleOptionScreen.png", Texture.class);
@@ -46,7 +46,7 @@ class ScreenOptions extends UIScreenAdapter {
 		// Title + Background
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-title.getHeight());
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-2*title.getHeight());
 		batch.end();
 	}
 	
@@ -152,7 +152,7 @@ class ScreenOptions extends UIScreenAdapter {
 		
 		// Create table/rows and add pieces
 		Table checkBoxes = new Table();
-		checkBoxes.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/2f);
+		checkBoxes.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/3f);
 		checkBoxes.align(Align.center);
 		checkBoxes.add(musicCheck).size(CHECK_SIZE, CHECK_SIZE);
 		checkBoxes.add(music).pad(0, 0, 0, CHECK_SIZE*5f);
@@ -162,7 +162,7 @@ class ScreenOptions extends UIScreenAdapter {
 		Table reset = new Table();
 		reset.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/4f);
 		reset.align(Align.center);
-		reset.add(resetButton).size(REST_WIDTH, RESET_HEIGHT).pad(RESET_HEIGHT/2f, 0, RESET_HEIGHT/2f, 0);
+		reset.add(resetButton).size(RESET_WIDTH, RESET_HEIGHT).pad(RESET_HEIGHT/2f, 0, RESET_HEIGHT/2f, 0);
 		
 		Table back = new Table();
 		back.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/4f);
@@ -172,9 +172,9 @@ class ScreenOptions extends UIScreenAdapter {
 		Table table = new Table();
 		table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		table.align(Align.bottom);
-		table.add(checkBoxes).pad(0, 0, Gdx.graphics.getHeight()/6f, 0);
+		table.add(checkBoxes).pad(0, 0, Gdx.graphics.getHeight()/10f, 0);
 		table.row();
-		table.add(reset).pad(0, 0, Gdx.graphics.getHeight()/8f, 0);
+		table.add(reset).pad(0, 0, Gdx.graphics.getHeight()/10f, 0);
 		table.row();
 		table.add(back);
 
@@ -186,5 +186,6 @@ class ScreenOptions extends UIScreenAdapter {
 		manager.load("resetButton.png", Texture.class);
 		manager.load("resetButtonPressed.png", Texture.class);
 		manager.load("Packs/CheckBoxes.pack", TextureAtlas.class);
+		manager.load("UIBackgrounds/options.png", Texture.class);
 	}
 }

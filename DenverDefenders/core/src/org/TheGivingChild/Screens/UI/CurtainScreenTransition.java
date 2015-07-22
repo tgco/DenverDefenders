@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -33,12 +32,12 @@ import com.badlogic.gdx.utils.Array;
 // Author: Walter Schlosser
 public class CurtainScreenTransition extends ScreenTransition {
 	// Two curtain textures to close/open
-	private Array<TextureRegion> transitionTextures;
+	private Array<Texture> transitionTextures;
 	// The coordinate of the transition textures
 	private float transitionTextureX;
 	private SpriteBatch batch;
 	// Time for curtains to open/close
-	private float transitionTime;
+	private static final float TRANSITION_TIME = 0.1f;
 	private Random rand;
 	// Possible facts to show
 	private static final String[] FACTS = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
@@ -47,6 +46,9 @@ public class CurtainScreenTransition extends ScreenTransition {
 			  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
 	private Table factTable;
 	private Button nextButton;
+	// Next button dimensions
+	private static final float BUTTON_WIDTH = Gdx.graphics.getWidth()*4f/9f;
+	private static final float BUTTON_HEIGHT = Gdx.graphics.getHeight()/5f;
 	
 	// If true, calls init on the screen about to be shown
 	// REFACTOR: this is a workaround to call init on the maze screen by casting since init is not in the base class.  Could be better.
@@ -55,11 +57,10 @@ public class CurtainScreenTransition extends ScreenTransition {
 	// Constructor that builds a transition with a random fact
 	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn) {
 		super(screenOut, screenIn);
-		transitionTextures = new Array<TextureRegion>();
+		transitionTextures = new Array<Texture>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
@@ -70,11 +71,10 @@ public class CurtainScreenTransition extends ScreenTransition {
 	// Constructor that builds a transition with given text
 	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, String text) {
 		super(screenOut, screenIn);
-		transitionTextures = new Array<TextureRegion>();
+		transitionTextures = new Array<Texture>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
@@ -86,23 +86,21 @@ public class CurtainScreenTransition extends ScreenTransition {
 	public CurtainScreenTransition(ScreenAdapterEnums screenOut, ScreenAdapterEnums screenIn, boolean initCall) {
 		super(screenOut, screenIn);
 		this.initCall = initCall;
-		transitionTextures = new Array<TextureRegion>();
+		transitionTextures = new Array<Texture>();
 		batch = new SpriteBatch();
 		// Init the position of the transition textures to 0
 		transitionTextureX = 0;
-		transitionTime = 0.3f;
 		rand = new Random();
 		// Get references to the transition textures from an asset manager
 		fillTransitionTextures(transitionTextures, ScreenAdapterManager.getInstance().game.getAssetManager());
 		factTable = buildFactTable(ScreenAdapterManager.getInstance().game.getAssetManager(), FACTS[rand.nextInt(FACTS.length)]);
 	}
 	
-	public void fillTransitionTextures(Array<TextureRegion> transitionTextures, AssetManager manager) {
-		// Retrieve atlas, which must be loaded on initial app creation
-		TextureAtlas screenTransitionAtlas = manager.get("Packs/ScreenTransitions.pack");
-		for(AtlasRegion texture : screenTransitionAtlas.getRegions()){
-			transitionTextures.add(texture);
-		}
+	public void fillTransitionTextures(Array<Texture> transitionTextures, AssetManager manager) {
+		// Pick a random texture set
+		int choice = rand.nextInt(2) + 1;
+		transitionTextures.add(manager.get("UIBackgrounds/transition" + choice + "left.png", Texture.class));
+		transitionTextures.add(manager.get("UIBackgrounds/transition" + choice + "right.png", Texture.class));
 	}
 	
 	// Builds a table for the fact label shown on closed transition
@@ -129,13 +127,14 @@ public class CurtainScreenTransition extends ScreenTransition {
 				container.remove();
 			}
 		});
-		buttonContainer.add(nextButton).center().bottom();
+		buttonContainer.add(nextButton).size(BUTTON_WIDTH, BUTTON_HEIGHT).center().bottom();
 		buttonContainer.setPosition(Gdx.graphics.getWidth()/2, buttonContainer.getHeight());
 		
 		// Build the fact table
 		Table factContainer = new Table();
 		LabelStyle ls = new LabelStyle();
 		ls.font = new BitmapFont();
+		ls.background = new TextureRegionDrawable(new TextureRegion(manager.get("SemiTransparentBG.png", Texture.class)));
 		Label textLabel = new Label(text, ls);
 		textLabel.setColor(1, 1, 1, 1);
 		// Font scale set
@@ -163,8 +162,8 @@ public class CurtainScreenTransition extends ScreenTransition {
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		// Reference to the textures to draw
-		TextureRegion left = transitionTextures.get(0);
-		TextureRegion right = transitionTextures.get(1);
+		Texture left = transitionTextures.get(0);
+		Texture right = transitionTextures.get(1);
 		
 		// Update movement of transition textures
 		switch (state) {
@@ -197,7 +196,7 @@ public class CurtainScreenTransition extends ScreenTransition {
 	
 	// Progresses the transition textures towards each other. True if done
 	public boolean close(float delta) {
-		transitionTextureX += Gdx.graphics.getWidth()/2 * delta/transitionTime;
+		transitionTextureX += Gdx.graphics.getWidth()/2 * delta/TRANSITION_TIME;
 		if (transitionTextureX > Gdx.graphics.getWidth()/2) {
 			// Clean up any peeking through the sides
 			transitionTextureX = Gdx.graphics.getWidth()/2;
@@ -230,7 +229,7 @@ public class CurtainScreenTransition extends ScreenTransition {
 	
 	// Opens transition textures.  True if done.
 	public boolean open(float delta) {
-		transitionTextureX -= Gdx.graphics.getWidth()/2 * delta/transitionTime;
+		transitionTextureX -= Gdx.graphics.getWidth()/2 * delta/TRANSITION_TIME;
 		if (transitionTextureX < 0) return true;
 		return false;
 	}

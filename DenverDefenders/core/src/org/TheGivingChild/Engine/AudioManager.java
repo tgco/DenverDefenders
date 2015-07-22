@@ -63,7 +63,7 @@ public class AudioManager {
 	// Begins looping background song
 	public void playBackgroundMusic() {
 		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
-		backgroundSoundToPlay.setVolume(.5f);
+		backgroundSoundToPlay.setVolume(.75f);
 		backgroundSoundToPlay.setLooping(true);
 		if (musicEnabled) {
 			backgroundSoundToPlay.play();
