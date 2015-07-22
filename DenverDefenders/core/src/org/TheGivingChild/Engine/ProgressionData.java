@@ -57,7 +57,7 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("backpack");
 		totsLevelsUnlocked = 3;
 		kidsLevelsUnlocked = 2;
-		// Go to options screen and back to run a save operation
+		save();
 		*/
 		
 		

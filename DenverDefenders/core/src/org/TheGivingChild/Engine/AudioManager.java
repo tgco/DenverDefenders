@@ -72,8 +72,9 @@ public class AudioManager {
 
 	// Plays the sound file if sound is enabled
 	public void play(String fileName) {
-		if (soundEnabled)
+		if (soundEnabled) {
 			soundMap.get(fileName).play(volume);
+		}
 	}
 	
 	// Plays a random "punch" sound
@@ -81,7 +82,7 @@ public class AudioManager {
 		if (soundEnabled) {
 			int num = rand.nextInt(3) + 1;
 			String name = "sounds/punch" + num + ".mp3";
-			soundMap.get(name).play(volume);
+			play(name);
 		}
 	}
 

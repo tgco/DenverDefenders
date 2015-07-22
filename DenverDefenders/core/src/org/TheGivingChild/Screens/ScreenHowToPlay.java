@@ -123,7 +123,7 @@ class ScreenHowToPlay extends UIScreenAdapter {
 		// Title + background
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-2f*title.getHeight());
+		batch.draw(title, (Gdx.graphics.getWidth()-title.getWidth())/2, Gdx.graphics.getHeight()-1.5f*title.getHeight());
 		batch.end();
 	}
 	
