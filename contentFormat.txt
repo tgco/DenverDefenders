@@ -45,10 +45,11 @@ Description of contents:
 		may be used for aesthetics (a ground and building layer are suggested).
 
 	Levels
-		This directory should contain all the possible minigame .xml files that are randomly
-		selected when a child is found, and the boss.xml game file which is played at the HQ
-		once all kids are saved.  The boss.xml file must be named “boss.xml”.  Other files
-		may be named as desired.
+		This directory should contain a “levels.txt” file that lists the name of all minigame files 
+		that are randomly selected when a child is found, and the Boss.xml game file which is 
+		played at the HQ once all kids are saved.  The Boss.xml file must be named “Boss.xml”, and
+		levels list must be named “levels.txt” and list one game file per line.  The game files
+		are pulled from DenverDefenders/android/assets/Minigames/
 
 Code modification:
 	The name of the directory of the newly added maze must be added to the array of mazes in
@@ -60,8 +61,9 @@ Code modification:
 ===============================
 
 Minigame
-	Minigames are defined by xml files.  The xml file should be placed in the Levels directory
-	of the maze it can appear in (see maze directory structure for more info).
+	Minigames are defined by xml files.  The xml file should be placed in the android/assets/Minigames
+	directory, and the name of the file should be in the “levels.txt” file of the maze it can appear in
+	(see maze directory structure for more info).
 
 General structure
 	<level name=“” background=“” description=“” >
