@@ -1,0 +1,69 @@
+<level name="Fruit Drop" background="outside.png" description="Tap the airplane to drop sandwiches to the kids!">
+	<!-- Airplane -->
+	<object id="0" image="airplaneRight.png" x="0" y="500">
+		<continuous>
+			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
+			<att type="screencheck" side="right" throws="lose" />
+		</continuous>
+	</object>
+
+	<!-- Sandwiches -->
+	<object id="1" image="sandwich.png" x="50" y="450" >
+		<continuous>
+			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_13_1" throws="caught1" />
+		</triggered>
+		<input type="tap_set_velocity" vx="0" vy="-600" />
+	</object>
+	<object id="2" image="sandwich.png" x="50" y="450" >
+		<continuous>
+			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_12_2" throws="caught2" />
+		</triggered>
+		<input type="tap_set_velocity" vx="0" vy="-600" />
+	</object>
+	<object id="3" image="sandwich.png" x="50" y="450" >
+		<continuous>
+			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="lose" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_11_3" throws="caught3" />
+		</triggered>
+		<input type="tap_set_velocity" vx="0" vy="-600" />
+	</object>
+
+	<!-- Kids -->
+	<object id="11" image="kid1.png" x="200" y="0">
+		<continuous>
+			<att type="collides" with="3" />
+		</continuous>
+	</object>
+	<object id="12" image="kid1.png" x="500" y="0">
+		<continuous>
+			<att type="collides" with="2" />
+		</continuous>
+	</object>
+	<object id="13" image="kid1.png" x="800" y="0">
+		<continuous>
+			<att type="collides" with="1" />
+		</continuous>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="caught1" />
+		<cond val="caught2" />
+		<cond val="caught3" />
+	</win>
+
+	<lose>
+		<cond val="lose" />
+	</lose>
+</level>

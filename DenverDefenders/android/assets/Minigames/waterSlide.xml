@@ -1,56 +1,56 @@
-<level name="AvoidBricks" background="Table.png" description="Drag the hero to avoid the bricks!">
+<level name="Water slide" background="water.jpg" description="Drag the hero left and right to avoid the obstacles on the slide!">
 	<!-- Hero -->
-	<object id="0" image="heroFlyRight.png" x="100" y="300">
+	<object id="0" image="heroSlideDown.png" x="524" y="450">
 		<continuous>
 			<att type="collides" with="1,2,3,4,5,6" />
 		</continuous>
-		<input type="draggable" x="false" y="true" />
+		<input type="draggable" x="true" y="false" />
 	</object>
 
 	<!-- Bricks -->
-	<object id="1" image="brick.png" x="1000" y="rand_0_500">
+	<object id="1" image="brick.png" x="rand_20_870" y="0">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_1" throws="lose" />
 		</triggered>
 	</object>
-	<object id="2" image="brick.png" x="1300" y="rand_0_500">
+	<object id="2" image="brick.png" x="rand_20_870" y="-400">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_2" throws="lose" />
 		</triggered>
 	</object>
-	<object id="3" image="brick.png" x="1600" y="rand_0_500">
+	<object id="3" image="brick.png" x="rand_20_870" y="-800">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_3" throws="lose" />
 		</triggered>
 	</object>
-	<object id="4" image="brick.png" x="1900" y="rand_0_500">
+	<object id="4" image="brick.png" x="rand_20_870" y="-1200">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_4" throws="lose" />
 		</triggered>
 	</object>
-	<object id="5" image="brick.png" x="2200" y="rand_0_500">
+	<object id="5" image="brick.png" x="rand_20_870" y="-1600">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_5" throws="lose" />
 		</triggered>
 	</object>
-	<object id="6" image="brick.png" x="2500" y="rand_0_500">
+	<object id="6" image="brick.png" x="rand_20_870" y="-2000">
 		<continuous>
-			<att type="moves" vx="-500" vy="0" ax="0" ay="0" />
+			<att type="moves" vx="0" vy="600" ax="0" ay="0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_0_6" throws="lose" />

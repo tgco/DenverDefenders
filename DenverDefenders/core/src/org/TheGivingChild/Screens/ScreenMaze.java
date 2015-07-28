@@ -515,24 +515,25 @@ public class ScreenMaze extends ScreenAdapter {
 		levelSet.clear();
 		FileHandle dirHandle;
 		if (Gdx.app.getType() == ApplicationType.Desktop) {
-			dirHandle = Gdx.files.internal("./bin/MazeAssets/" + activeMaze);
+			dirHandle = Gdx.files.internal("./bin/MazeAssets/" + activeMaze + "/Levels/");
 		} else {
 			// ApplicationType.Desktop ..
-			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze);
+			dirHandle = Gdx.files.internal("MazeAssets/" + activeMaze + "/Levels/");
 		}
-		// Load level objects
-		for (FileHandle levelFile : dirHandle.child("Levels").list()) {
-			if (levelFile.name().equals(".DS_Store")) continue; // Dumb OSX issue
-			XML_Reader read = new XML_Reader(levelFile);
+		// Load level objects from levels text file
+		FileHandle levelFile = dirHandle.child("levels.txt");
+		String slurp = levelFile.readString();
+		String[] tokens = slurp.split("\n");
+		for (String name : tokens) {
+			FileHandle file = Gdx.files.internal("Minigames/" + name);
+			XML_Reader read = new XML_Reader(file);
 			Level level = read.compileLevel();
-			// Mark the boss level
-			if (levelFile.name().equals("Boss.xml")) {
-				level.setBossGame(true);
-				bossLevel = level;
-			} 
-			else
-				levelSet.add(level);
+			levelSet.add(level);
 		}
+		// Get boss level
+		XML_Reader read = new XML_Reader(dirHandle.child("Boss.xml"));
+		bossLevel = read.compileLevel();
+		bossLevel.setBossGame(true);
 	}
 
 	public static void requestAssets(AssetManager manager) {

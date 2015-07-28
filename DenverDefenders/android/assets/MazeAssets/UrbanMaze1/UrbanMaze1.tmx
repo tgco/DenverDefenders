@@ -2,12 +2,67 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-up" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="335">
  <tileset firstgid="1" name="CitySet" tilewidth="32" tileheight="32">
   <image source="TileE-1.png" trans="808080" width="512" height="512"/>
+  <tile id="94">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="126">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="143">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="158">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="159">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
   <tile id="169">
    <properties>
     <property name="heroHQ" value="true"/>
    </properties>
   </tile>
-  <tile id="205">
+  <tile id="174">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="175">
    <properties>
     <property name="minigame" value="true"/>
    </properties>
@@ -20,7 +75,7 @@
  </layer>
  <layer name="Road" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztWFuOwjAM7FE5Wr/3ChQ1J+BMC7st8g4eZ5y0ErC1FClNxxOb+BE6DIcccogqFzOff59HHGeyzjA3npFxXuHZYpktFqP4ceGYkuQp3jyzv2KXwgOY0BaHp3jz2p5b+XGLjZN3lnZdjIkH/qZbEM+w81//m/0I5mVwpGGv0mtXFv9ufijnyuLN6k7LHGsL1J0f/smsKXGq+MEkyNuaXomeI46ePA/scW15VT9Yv1lj5t63zs/rj4E8k9GzseTFF8pEMJncwznDKDzkvWJLj27x5gyj8GRsUc4p64eNGagdFuPG4RITJxwrZiY1L5srih/ZdfEsaxzMrpAj4syuv5If7LyxLq1jIrbPcAdDG6DfuXqsXrK8YbJFPjv4XbAVnrLO7/mM/3mW/lCYvtVd8fa+G43ID+W3Y3VP4Vx0w/qWkaCmVfky+Yn4bM5nBPK8yhf0BleX2cvuza3C7ihMxBro1ppE3Lq1j/VMlTvrh6Lbg/H27/GD5RkTW+PhzEbEiPecZluUPG/4lvTE2VMTtqpXW+y7tx/KPTSoUe451WIpus+Y/pmqV1ZYzrf2jL3PQNF9Nz+Ue4nS77z4YO8nHssjYmwtbPG7p5ZnJNuzAp5S4383P6BnuPET1JTR6Ibr7Jukh22JK/bb9PQYbx7wVW1h8ol+KP9jgvrmzr34RD9MvFVtUfxg60rtz/QHfC/gq/IpfrD7jRIzLH7YtwXv26ITT0NkS4/03C+AR8Zs1VeAu9TmIo+MyfrxReIK+l2pzaOx7mXjyfs2ZmMIY++a9OuQQ/6zfANeCjLO
+   eJztWVFugzAMzVG5Qa+QG/QI6/d+doCByP8mxpFGVWjfjF+xSZiKxJMiRc6LEyfGdtoQDhw4YEUD/XZondI+iZxxkkGnxmV7qZx2NAaOV8/SXMu8nPUZJ2c/Hm6OHYNvVNp9X+UD7yJbBZwI/Z/wx9+S1NkQbl/IDu95eNeKDu4r29GMV7KFHaewfK/oVwnk6BP16JM4fgXGnUn/R/DFrmiwg6FE/GF87/1a7sOynz3YgfeeQI7+NvjVBfgV+oLUU4vxXox3tz4udUetzLPasUX+KK1jD3ZocSB3/ZbkQVb3IAd9Alvl0M32lXOO0anfc5cb5abV8leyg9035jhsNdBYnYRxbOJoMUyu30JcZPnZghLfcw4/J98xPez9U5PYj8C5b0SPbHJ9ti/LmpbcY4ldjcFWDafb3Fkd98/fedL6a5ETr9rwOA9LTpLf+TSX1R0esBqFwWI3izVev11qyakbETPmlo5vObU6ywEYyxna8X3VhYdPjX51nzt9uyhjvoz+2JK3m8UOJmdx6YnOGa0h+dMSE4ycRfnadziTbWEH8yWLHeJtdAH57K3O7GD1zyX44hXCsnfPPT3JL669eIFzI9/PIp9wkya37MUCS13C/KAn8qXxmtS4HeHIGlpDqfp/LbaocZl8b3ZE6OP75hvkeM+W/zw0uZBV5wUdFr/CvW/xxtX6Fn2RcBjWvrGfzS1hR6n6KhEOi2/RoLNXxlEni28pLKNUXeI5Sznu5Xs4e7OD1TeWnCj8rYI4ljSdU86Ta4rfgWax0FtfMeTUvojoWMvC9aKUHR4/9+p+V+oY2b4MfdbOsBbzYc3HNO6BAwds+AVtfiGD
   </data>
  </layer>
  <layer name="Buildings" width="50" height="50">

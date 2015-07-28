@@ -1,0 +1,60 @@
+<level name="Flower Pick" background="grass.png" description="Drag the flowers to the bucket to make a bouquet!">
+	<!-- flowers -->
+	<object id="0" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_0" throws="destroy0" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="1" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_1" throws="destroy1" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="2" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_2" throws="destroy2" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="3" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_3" throws="destroy3" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="4" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_4" throws="destroy4" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="5" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<triggered>
+			<att type="destroy" on="collide_10_5" throws="destroy5" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- bucket -->
+	<object id="10" image="bucket.png" x="800" y="10">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+		</continuous>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="lose" />
+	</lose>
+</level>

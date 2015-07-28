@@ -1,0 +1,64 @@
+<level name="Plate Fling" background="Table.png" description="Fling the plates to the kids to serve them!">
+	<!-- Kids -->
+	<object id="0" image="kid1.png" x="100" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+	<object id="1" image="kid1.png" x="400" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+	<object id="2" image="kid1.png" x="700" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+
+	<!-- Plates -->
+	<object id="10" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_10" throws="stop0" />
+			<att type="stop" on="collide_1_10" throws="stop1" />
+			<att type="stop" on="collide_2_10" throws="stop2" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+	<object id="11" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_11" throws="stop0" />
+			<att type="stop" on="collide_1_11" throws="stop1" />
+			<att type="stop" on="collide_2_11" throws="stop2" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+	<object id="12" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_12" throws="stop0" />
+			<att type="stop" on="collide_1_12" throws="stop1" />
+			<att type="stop" on="collide_2_12" throws="stop2" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="stop0" />
+		<cond val="stop1" />
+		<cond val="stop2" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

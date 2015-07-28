@@ -1,4 +1,4 @@
-<level name="Window" background="Window.png" description="Clean the dirt off the screen with the sponge!">
+<level name="Window" background="Window.png" description="Play one last game to win!">
 	<!-- Dirt -->
 	<object id="1" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
 		<triggered>

@@ -25,7 +25,7 @@ public class ScreenMazeSelect extends UIScreenAdapter {
 	// List of maze names for the super tots levels
 	private static String[] superTotsLevels = { "UrbanTots1", "UrbanTots2", "UrbanTots3" };
 	// List of maze names for the regular levels
-	private static String[] regularLevels = { "UrbanMaze1", "UrbanMaze2" };
+	private static String[] regularLevels = { "UrbanMaze1", "UrbanMaze2" , "UrbanMaze3"};
 	// Array of created buttons for picking tots levels
 	private Table superTotsButtons;
 	// Array of created buttons for regularLevels
