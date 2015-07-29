@@ -60,8 +60,6 @@ public class ProgressionData {
 		save();
 		*/
 		
-		
-		
 	}
 	
 	// Loads data from prefs
@@ -69,7 +67,7 @@ public class ProgressionData {
 		// Clear out any strings
 		kidsUnlockedPowerUps.clear();
 		totsUnlockedPowerUps.clear();
-		Preferences prefs = Gdx.app.getPreferences("save_data");
+		Preferences prefs = Gdx.app.getPreferences("tgc_defenders_save");
 		totsLevelsUnlocked = prefs.getInteger("totsLevelsUnlocked", 1);
 		kidsLevelsUnlocked = prefs.getInteger("kidsLevelsUnlocked", 1);
 		for (String s : kidsPowerUps.values()) {
@@ -90,7 +88,7 @@ public class ProgressionData {
 	
 	// Save data to prefs
 	public void save() {
-		Preferences prefs = Gdx.app.getPreferences("save_data");
+		Preferences prefs = Gdx.app.getPreferences("tgc_defenders_save");
 		prefs.putInteger("totsLevelsUnlocked", totsLevelsUnlocked);
 		prefs.putInteger("kidsLevelsUnlocked", kidsLevelsUnlocked);
 		for (String s : kidsUnlockedPowerUps) {

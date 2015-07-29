@@ -124,9 +124,9 @@ class ScreenOptions extends UIScreenAdapter {
 			public void changed(ChangeEvent event, Actor actor) {
 				super.changed(event, actor);
 				// Should set a confirm dialog here or touchup/down to implement holding the button for a while to reset
-				Gdx.app.getPreferences("save_data").clear();
+				Gdx.app.getPreferences("tgc_defenders_save").clear();
 				// Flush to persist
-				Gdx.app.getPreferences("save_data").flush();
+				Gdx.app.getPreferences("tgc_defenders_save").flush();
 				// Reload
 				game.data.load();
 			}

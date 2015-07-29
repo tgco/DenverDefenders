@@ -27,6 +27,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -34,6 +35,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 /**
  *Maze screen that the user will navigate around.
  *Player will be able to trigger a miniGame by finding a child in the maze.
@@ -54,10 +56,14 @@ public class ScreenMaze extends ScreenAdapter {
 	private TGC_Engine game;
 	// All the children for the maze
 	private Array<ChildSprite> mazeChildren;
+	// Kids moved to this array when saved
+	private Array<ChildSprite> savedChildren;
 	// Duplicate reference to the ones that are following
 	private Array<ChildSprite> followers;
 	// Draw responsibilities
 	private Texture heartTexture;
+	private Texture childTexture;
+	private BitmapFont font;
 	// Set on collide with child, used to have a reference to set as a follower if needed
 	private ChildSprite lastChild;
 	//True if game progression logic is paused
@@ -100,10 +106,13 @@ public class ScreenMaze extends ScreenAdapter {
 		game = ScreenAdapterManager.getInstance().game;
 		mazeInput = new MazeInputProcessor(this, this.game);
 		mazeChildren = new Array<ChildSprite>();
+		savedChildren = new Array<ChildSprite>();
 		followers = new Array<ChildSprite>();
 		activePowerUps = new Array<PowerUp>();
 		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera();
+		font = new BitmapFont();
+		font.getData().setScale(game.getGlobalFontScale()/2);
 	}
 
 	// Must run before starting a new maze, sets state appropriately
@@ -146,10 +155,13 @@ public class ScreenMaze extends ScreenAdapter {
 		
 		// Clear arrays to build new child objects
 		mazeChildren.clear();
+		savedChildren.clear();
 		followers.clear();
 		// Clear any powers
 		activePowerUps.clear();
 		
+		// Get the loaded texture for maze kids
+		childTexture = game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class);
 		// Creates child objects around the maze and stores them in the passed array
 		populate(maze, mazeChildren);
 		
@@ -180,7 +192,7 @@ public class ScreenMaze extends ScreenAdapter {
 		// Fill them
 		for (Vertex toFill : fillThese) {
 			//create a new child with the texture
-			ChildSprite child = new ChildSprite(game.getAssetManager().get("MazeAssets/" + activeMaze + "/childSprite.png",Texture.class));
+			ChildSprite child = new ChildSprite(childTexture);
 			child.setOrigin(0, 0);
 			child.setScale(.5f);
 			//reset the bounds, as suggested after scaling
@@ -223,6 +235,9 @@ public class ScreenMaze extends ScreenAdapter {
 		for(ChildSprite s : mazeChildren) {
 			spriteDrawWithOffset(s, spriteBatch);
 		}
+		for (ChildSprite s : savedChildren) {
+			spriteDrawWithOffset(s, spriteBatch);
+		}
 		
 		// Player draw in center of tile
 		spriteDrawWithOffset(playerCharacter, spriteBatch);
@@ -234,6 +249,11 @@ public class ScreenMaze extends ScreenAdapter {
 			float yPos = camera.position.y + camera.viewportHeight/2 - heartSize;
 			spriteBatch.draw(heartTexture, xPos + (heartSize*i), yPos, heartSize, heartSize);
 		}
+		
+		// Remaining children counter
+		// Draw counter
+		spriteBatch.draw(childTexture, camera.position.x - camera.viewportWidth/2f, camera.position.y + camera.viewportHeight*3f/10f, camera.viewportHeight/10f, camera.viewportHeight/10f);
+		font.draw(spriteBatch, " x " + mazeChildren.size, camera.position.x - camera.viewportWidth/2f + camera.viewportHeight/10f, camera.position.y + camera.viewportHeight*4f/10f);
 		
 		// Update powerups with the batch active to allow drawing
 		if (!logicPaused) {
@@ -310,10 +330,13 @@ public class ScreenMaze extends ScreenAdapter {
 		}
 
 		// Check if won the maze (all are saved) and set state appropriately if true
-		if ( winMazeCheck(mazeChildren) ) {
+		if ( winMazeCheck(savedChildren, mazeChildren) ) {
 			mazeWon = true;
-			// go to the boss game
-			return ScreenAdapterEnums.LEVEL;
+			// go to the boss game if exists or main
+			if (bossLevel == null)
+				return ScreenAdapterEnums.MAIN;
+			else
+				return ScreenAdapterEnums.LEVEL;
 		}
 
 		// Check if lost the maze (no hearts left) and set state appropriately
@@ -367,14 +390,18 @@ public class ScreenMaze extends ScreenAdapter {
 	}
 
 	// True if the game is won (all kids saved), also sets game state appropriately
-	public boolean winMazeCheck(Array<ChildSprite> children) {
-		if (allSaved(children)) {
-			// Play the boss minigame
-			ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
-			currentLevel = bossLevel;
-			currentLevel.resetLevel();
-			levelScreen.setCurrentLevel(currentLevel);
-			currentLevel.setObjectTextures(game.getAssetManager());
+	public boolean winMazeCheck(Array<ChildSprite> savedChildren, Array<ChildSprite> mazeChildren) {
+		// No child found yet check
+		if (savedChildren.size == 0) return false;
+		if (mazeChildren.size == 0 && allSaved(savedChildren)) {
+			// Play the boss minigame if there is one
+			if (bossLevel != null) {
+				ScreenLevel levelScreen = (ScreenLevel) ScreenAdapterManager.getInstance().getScreenFromEnum(ScreenAdapterEnums.LEVEL);
+				currentLevel = bossLevel;
+				currentLevel.resetLevel();
+				levelScreen.setCurrentLevel(currentLevel);
+				currentLevel.setObjectTextures(game.getAssetManager());
+			}
 			return true;
 		}
 		return false;
@@ -434,6 +461,8 @@ public class ScreenMaze extends ScreenAdapter {
 			// won the minigame
 			//add the follower from this minigame panel
 			followers.add(lastChild);
+			mazeChildren.removeValue(lastChild, false);
+			savedChildren.add(lastChild); // Used for counting how many children are left to save
 			lastChild.setFollow(true);
 			maze.getTileAt(lastChild.getX(), lastChild.getY()).setOccupied(false);
 		} 
@@ -530,10 +559,14 @@ public class ScreenMaze extends ScreenAdapter {
 			Level level = read.compileLevel();
 			levelSet.add(level);
 		}
-		// Get boss level
-		XML_Reader read = new XML_Reader(dirHandle.child("Boss.xml"));
-		bossLevel = read.compileLevel();
-		bossLevel.setBossGame(true);
+		// Get boss level if one exists
+		FileHandle bossHandle = dirHandle.child("Boss.xml");
+		if (bossHandle.exists()) {
+			XML_Reader read = new XML_Reader(bossHandle);
+			bossLevel = read.compileLevel();
+			bossLevel.setBossGame(true);
+		} else bossLevel = null;
+		
 	}
 
 	public static void requestAssets(AssetManager manager) {
@@ -565,12 +598,15 @@ public class ScreenMaze extends ScreenAdapter {
 			}
 		}
 		// Boss game
-		String background = bossLevel.getLevelImage();
-		// Background assets
-		manager.load("LevelBackgrounds/" + background, Texture.class);
-		// Object assets
-		for (GameObject ob : bossLevel.getGameObjects()) {
-			manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
+		
+		if (bossLevel != null) {
+			String background = bossLevel.getLevelImage();
+			// Background assets
+			manager.load("LevelBackgrounds/" + background, Texture.class);
+			// Object assets
+			for (GameObject ob : bossLevel.getGameObjects()) {
+				manager.load("LevelImages/" + ob.getImageFilename(), Texture.class);
+			}
 		}
 		
 		// Load clock for time based minigames
