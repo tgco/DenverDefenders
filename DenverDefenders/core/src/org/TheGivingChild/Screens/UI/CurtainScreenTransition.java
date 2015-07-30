@@ -43,7 +43,25 @@ public class CurtainScreenTransition extends ScreenTransition {
 	private static final String[] FACTS = {"The number of children living in poverty has increased 85 percent since 2000.\n--Colorado Coalition for the Homeless",
 			  "The key characteristics of the 1/3 of children who end up making it in life have high self-esteem, hope (future sense of self), good social skills, positive peer influence, self-confidence and independence.\n--Heart and Hand",
 			  "Heart and Hand provides hot, nutritious meals to kids along with academic support and enrichment activities!",
-			  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!"};
+			  "Many people don't know this but Heart and Hand is a disguise for Hero Headquarters...And Hero Headquarters needs your Superhero powers! Are you ready to help?!",
+			  "How do YOU feel when you're hungry?",
+			  "In 2013, 14.7 million (20%) of children in the US lived in poverty.\n--US Census Bureau",
+			  "In the US today, 16 million children face hunger - that's 1 in 5 (feedingamerica.org). In other words, there are 4 in 5 kids who can be superheroes for those around the world!",
+			  "Child hunger is a reality but YOU can make it history!\n--nokidhungry.org",
+			  "Have you ever NOT been able to have fun because you were hungry?",
+			  "Kids who are hungry often have a difficult time focusing in class and having energy to pursuit a healthy future.",
+			  "Every day educators across the country see students who can't succeed because of hunger.\n--hungerinourschools.org",
+			  "Just as hunger knows no age, neither does fighting it. We all have a role to play in solving hunger, whether old or young. Children can make a positive difference in the lives of other kids in need\n--feedingamerica.org",
+			  "Have you ever had to go to school without eating breakfast that morning?",
+			  "3 out of 4 public shool teachers say that students regularly come to school hungry.\n--hungerinourschools.org",
+			  "If someone asked you to write down what you ate for the week at home, would you have a long list? Some kids have an empty list and an empty tummy because they don't have the option to eat at home.",
+			  "$1 can give a child 10 meals!\n--nokidhungry.org",
+			  "Hunger hurts our countries future.\n--hungerinourschools.org",
+			  "We can't be a strong America if we don't have strong kids\n--Billy Shore",
+			  "Many schools have breakfast programs, but unfortunately kids can't always get there in time due to issure with late transportation.\n--hungerinourshcools.org",
+			  "Hunger is not an embarrassing issue!",
+			  "With breakfast, educators see a profound change for the better: 73% see kids paying better attention in class. 53% see improved attendance. 48% see few disciplinary problems.\n--hungerinourschools.org",
+			  "New UN estimates show an additional $160 per year for each person living in extreme poverty will end chronic hunger." };
 	private Table factTable;
 	private Button nextButton;
 	// Next button dimensions
