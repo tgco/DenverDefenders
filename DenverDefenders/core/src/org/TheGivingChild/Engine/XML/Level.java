@@ -26,14 +26,16 @@ public class Level {
 	// Description shown on a transition into this level
 	private String description;
 
-	// Length for a level in seconds REFACTOR: Should set from xml
-	private int levelTime = 5;
+	// Length for a level in seconds DEFAULT: 5s
+	// NOTE: if win/lose conditions do not contain timeout, a clock is not drawn or used
+	private int levelTime;
 	
 	// True if this level is a boss game at the end of a maze
 	private boolean bossGame;
 	
-	public Level(String name, String background, String description, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
-		this.name = name;
+	public Level(ObjectMap<String, String> args, ObjectMap<String, Boolean> winConditions, ObjectMap<String, Boolean> loseConditions, Array<GameObject> objects) {
+		this.name = args.get("name", "");
+		this.levelTime = Integer.parseInt(args.get("time", "5"));
 		this.objects = objects;
 		// Have objects register their triggered attributes in the map as observers
 		triggeredObservers = new ObjectMap<String, Array<Attribute> >();
@@ -43,10 +45,10 @@ public class Level {
 		this.winConditions = winConditions;
 		this.loseConditions = loseConditions;
 		
-		this.background = background;
+		this.background = args.get("background", "Table.png");
 		
 		completed = false;
-		this.description = description;
+		this.description = args.get("description", "");
 		
 		bossGame = false;
 	}

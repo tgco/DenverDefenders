@@ -42,10 +42,8 @@ public class GameObject extends Actor {
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = args.get("image");
-		// scale set to zero to denote if nothing was declared in xml
-		imageScale = 0;
-		if (args.containsKey("imageScale"))
-			imageScale = Float.parseFloat(args.get("imageScale"));
+		// scale default is zero to denote if nothing was declared in xml
+		imageScale = Float.parseFloat(args.get("imageScale", "0"));
 
 		// Set position based on screen pixels, xml is defined based on 1024x600 screen
 		float x, y;

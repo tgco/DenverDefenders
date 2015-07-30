@@ -44,9 +44,7 @@ public class XML_Reader {
 	 * @see		compileLevel
 	 */
 	public Level compileLevel() {
-		return new Level(root.getAttribute("name"),
-				root.getAttribute("background"),
-				root.getAttribute("description"),
+		return new Level(root.getAttributes(),
 				compileWinConditions(),
 				compileLoseConditions(),
 				compileGameObjects());

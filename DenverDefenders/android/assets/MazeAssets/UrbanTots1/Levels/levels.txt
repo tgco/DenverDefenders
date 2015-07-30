@@ -1,15 +1,1 @@
-airplaneSandwichDrop.xml
-AvoidBricks.xml
-CherryPick.xml
-flowerFling.xml
-flowerPick.xml
-FruitCatch.xml
-FruitPick.xml
-FruitSort.xml
-heroAppleDrop.xml
-lunchPack.xml
 PlateFling.xml
-rakeLeaves.xml
-trashRecycle.xml
-waterSlide.xml
-Window.xml
