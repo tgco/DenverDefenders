@@ -20,12 +20,15 @@ public class ProgressionData {
 	private Array<String> kidsUnlockedPowerUps;
 	private Array<String> totsUnlockedPowerUps;
 	
+	// True if first play (used to display overlay)
+	public boolean firstPlay;
+	
 	public ProgressionData() {
 		totsLevelsUnlocked = 1;
 		kidsLevelsUnlocked = 1;
+		firstPlay = true;
 		
 		// Construct the map that has powerup unlock info
-		// Might be better to read from an init file at app start
 		kidsPowerUps = new ObjectMap<Integer, String>();
 		totsPowerUps = new ObjectMap<Integer, String>();
 		// Level one beat unlocks...
@@ -57,6 +60,7 @@ public class ProgressionData {
 		totsUnlockedPowerUps.add("backpack");
 		totsLevelsUnlocked = 5;
 		kidsLevelsUnlocked = 5;
+		firstPlay = false;
 		save();
 		*/
 		
@@ -70,6 +74,7 @@ public class ProgressionData {
 		Preferences prefs = Gdx.app.getPreferences("tgc_defenders_save");
 		totsLevelsUnlocked = prefs.getInteger("totsLevelsUnlocked", 1);
 		kidsLevelsUnlocked = prefs.getInteger("kidsLevelsUnlocked", 1);
+		firstPlay = prefs.getBoolean("firstPlay", true);
 		for (String s : kidsPowerUps.values()) {
 			String name = "kids" + s;
 			// Read if unlocked
@@ -91,6 +96,7 @@ public class ProgressionData {
 		Preferences prefs = Gdx.app.getPreferences("tgc_defenders_save");
 		prefs.putInteger("totsLevelsUnlocked", totsLevelsUnlocked);
 		prefs.putInteger("kidsLevelsUnlocked", kidsLevelsUnlocked);
+		prefs.putBoolean("firstPlay", firstPlay);
 		for (String s : kidsUnlockedPowerUps) {
 			prefs.putBoolean("kids" + s, true);
 		}

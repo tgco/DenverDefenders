@@ -82,6 +82,9 @@ class ScreenHowToPlay extends UIScreenAdapter {
 					else dir = Direction.LEFT;
 					ComicScreenTransition htpToOther = new ComicScreenTransition(ScreenAdapterEnums.HOW_TO_PLAY, inScreen, dir);
 					game.setScreen(htpToOther);
+					// No longer first play
+					game.data.firstPlay = false;
+					game.data.save();
 				}
 			});
 		}

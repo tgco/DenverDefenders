@@ -90,6 +90,9 @@ class ScreenMain extends UIScreenAdapter {
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.draw(title, 1f/4f*Gdx.graphics.getWidth(), 2f/5f*Gdx.graphics.getHeight(), 1f/2f*Gdx.graphics.getWidth(), 1f/5f*Gdx.graphics.getHeight());
+		if (game.data.firstPlay) {
+			batch.draw(game.getAssetManager().get("overlay.png", Texture.class), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
 		batch.end();
 	}
 

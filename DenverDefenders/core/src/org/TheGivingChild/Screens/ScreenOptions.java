@@ -128,6 +128,7 @@ class ScreenOptions extends UIScreenAdapter {
 				// Flush to persist
 				Gdx.app.getPreferences("tgc_defenders_save").flush();
 				// Reload
+				//game.data.save();
 				game.data.load();
 			}
 		});

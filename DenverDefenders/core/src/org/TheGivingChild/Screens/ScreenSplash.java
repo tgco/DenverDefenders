@@ -44,6 +44,7 @@ public class ScreenSplash extends UIScreenAdapter {
 			game.getAssetManager().load("SemiTransparentBG.png", Texture.class);
 			game.getAssetManager().load("Packs/Buttons.pack", TextureAtlas.class);
 			game.getAssetManager().load("loadingButton.png", Texture.class);
+			game.getAssetManager().load("overlay.png", Texture.class);
 			// Needed for "curtain" screen transition
 			game.getAssetManager().load("UIBackgrounds/transition1left.png", Texture.class);
 			game.getAssetManager().load("UIBackgrounds/transition1right.png", Texture.class);

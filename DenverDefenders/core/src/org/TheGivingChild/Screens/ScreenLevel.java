@@ -1,5 +1,6 @@
 package org.TheGivingChild.Screens;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.InputModule;
@@ -99,8 +100,10 @@ public class ScreenLevel extends ScreenAdapter{
 						// go to main
 						levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAIN, text);
 				}
-				else
-					levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE, text);
+				else {
+					levelToOther = new CurtainScreenTransition(ScreenAdapterEnums.LEVEL, ScreenAdapterEnums.MAZE);
+					playResponseSound(currentLevel.getWon());
+				}
 				game.setScreen(levelToOther);
 			}
 		}
@@ -116,5 +119,13 @@ public class ScreenLevel extends ScreenAdapter{
 			return "You won!";
 		else
 			return "You lost";
+	}
+	
+	// Plays the win or lose jingle
+	public void playResponseSound(boolean won) {
+		if (won)
+			AudioManager.getInstance().play("sounds/win_game.mp3");
+		else
+			AudioManager.getInstance().play("sounds/lose_game.mp3");
 	}
 }

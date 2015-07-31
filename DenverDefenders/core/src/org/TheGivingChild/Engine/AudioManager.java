@@ -50,6 +50,8 @@ public class AudioManager {
 		this.addAvailableSound("sounds/punch1.mp3");
 		this.addAvailableSound("sounds/punch2.mp3");
 		this.addAvailableSound("sounds/punch3.mp3");
+		this.addAvailableSound("sounds/win_game.mp3");
+		this.addAvailableSound("sounds/lose_game.mp3");
 	}
 
 	// Adds the sound name to the map
@@ -63,7 +65,7 @@ public class AudioManager {
 	// Begins looping background song
 	public void playBackgroundMusic() {
 		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
-		backgroundSoundToPlay.setVolume(.75f);
+		backgroundSoundToPlay.setVolume(.65f);
 		backgroundSoundToPlay.setLooping(true);
 		if (musicEnabled) {
 			backgroundSoundToPlay.play();
