@@ -332,8 +332,19 @@ public class ScreenMaze extends ScreenAdapter {
 		if ( winMazeCheck(savedChildren, mazeChildren) ) {
 			mazeWon = true;
 			// go to the boss game if exists or main
-			if (bossLevel == null)
+			if (bossLevel == null) {
+				// no boss, do an unlock check
+				if (game.data.unlockLevelCheck(ScreenMaze.mazeNumber, ScreenMaze.mazeType)) {
+					// Save data
+					game.data.save();
+					// Go to unlock screen
+					Array<String> powers = game.data.getUnlockedPowerUps(ScreenMaze.mazeType);
+					String newPower = powers.get(powers.size - 1);
+					ScreenUnlock.powerUpName = newPower;
+					return ScreenAdapterEnums.UNLOCK;
+				}
 				return ScreenAdapterEnums.MAIN;
+			}
 			else
 				return ScreenAdapterEnums.LEVEL;
 		}
@@ -418,7 +429,7 @@ public class ScreenMaze extends ScreenAdapter {
 	public String buildResponseText(ScreenAdapterEnums toScreen) {
 		String text;
 		switch (toScreen) {
-		case MAIN:
+		case MAIN: case UNLOCK:
 			if (mazeWon) text = "You saved all the kids! Congratulations!";
 			else text = "You ran out of hearts, try again!";
 			break;

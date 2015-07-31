@@ -1,0 +1,47 @@
+<level name="Balloon Pop" background="outside.png" description="Tap balloons to pop them!">
+	<!-- balloons -->
+	<object id="1" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy1" />
+		</triggered>
+	</object>
+	<object id="2" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy2" />
+		</triggered>
+	</object>
+	<object id="3" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy3" />
+		</triggered>
+	</object>
+	<object id="4" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy4" />
+		</triggered>
+	</object>
+	<object id="5" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy5" />
+		</triggered>
+	</object>
+	<object id="6" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<triggered>
+			<att type="tap_destroy" on="touch" throws="destroy6" />
+		</triggered>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+		<cond val="destroy6" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

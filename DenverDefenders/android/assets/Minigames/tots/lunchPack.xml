@@ -1,0 +1,98 @@
+<level name="Lunch" background="Table.png" description="Tap to pack lunch!">
+	<!-- Good food -->
+	<object id="0" image="Watermellon1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_0" throws="destroy0" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="1" image="Cherry.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_1" throws="destroy1" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="2" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_2" throws="destroy2" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="3" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_3" throws="destroy3" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="4" image="Grape.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_4" throws="destroy4" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="5" image="Kiwi.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_10_5" throws="destroy5" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+
+	<!-- Bad food -->
+	<object id="6" image="Sundae1.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="300" vy="300" />
+	</object>
+	<object id="7" image="Lollipop2.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="-100" vy="600" />
+	</object>
+	<object id="8" image="Candy2.png" imageScale="3.25" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="-600" vy="100" />
+	</object>
+
+	<!-- Lunchbox -->
+	<object id="10" image="lunchbox.png" x="500" y="50">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5,6,7,8" />
+		</continuous>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

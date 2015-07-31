@@ -88,6 +88,9 @@ public class ScreenMazeSelect extends UIScreenAdapter {
 					// Create a transition with a requested maze init call
 					CurtainScreenTransition selectToMaze = new CurtainScreenTransition(ScreenAdapterEnums.MAZE_SELECT, ScreenAdapterEnums.MAZE, true);
 					game.setScreen(selectToMaze);
+					// Remove any tutorial overlays
+					game.data.firstPlay = false;
+					game.data.save();
 				}
 			});
 			// Add button

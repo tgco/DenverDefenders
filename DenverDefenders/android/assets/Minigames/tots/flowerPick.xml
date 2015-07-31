@@ -1,0 +1,78 @@
+<level name="Flower Pick" background="grass.png" description="Tap flowers to pick them!">
+	<!-- flowers -->
+	<object id="0" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_0" throws="destroy0" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="1" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_1" throws="destroy1" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="2" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_2" throws="destroy2" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="3" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_3" throws="destroy3" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="4" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_4" throws="destroy4" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="5" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_10_5" throws="destroy5" />
+			<att type="move_to_object" id="10" speed="700" on="touch" />
+		</triggered>
+	</object>
+
+	<!-- bucket -->
+	<object id="10" image="bucket.png" x="800" y="10">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+		</continuous>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

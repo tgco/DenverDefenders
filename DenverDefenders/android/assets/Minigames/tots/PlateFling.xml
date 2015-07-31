@@ -1,0 +1,58 @@
+<level name="Plate Fling" background="Table.png" description="Tap plates to serve lunch!">
+	<!-- Kids -->
+	<object id="0" image="kid1.png" x="100" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+	<object id="1" image="kid1.png" x="400" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+	<object id="2" image="kid1.png" x="700" y="500">
+		<continuous>
+			<att type="collides" with="10,11,12" />
+		</continuous>
+	</object>
+
+	<!-- Plates -->
+	<object id="10" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_0_10" throws="stop0" />
+			<att type="move_to_object" id="0" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="11" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_1_11" throws="stop1" />
+			<att type="move_to_object" id="1" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="12" image="plate.png" x="512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_2_12" throws="stop2" />
+			<att type="move_to_object" id="2" speed="700" on="touch" />
+		</triggered>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="stop0" />
+		<cond val="stop1" />
+		<cond val="stop2" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

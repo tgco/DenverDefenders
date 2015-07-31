@@ -1,0 +1,60 @@
+<level name="Rake the leaves" background="grass.png" description="Tap leaves to rake them up!">
+	<!-- leaves -->
+	<object id="1" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy1" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+	<object id="2" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy2" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+	<object id="3" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy3" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+	<object id="4" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy4" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+	<object id="5" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+	<object id="6" image="leaves.png" x="rand_100_900" y="rand_100_500">
+		<continuous>
+			<att type="screencheck" side="bottom" throws="destroy6" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-700" />
+	</object>
+    
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+		<cond val="destroy6" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

@@ -1,0 +1,86 @@
+<level name="Trash Recycle" background="Table.png" description="Tap to sort the trash from the recycleables!">
+	<!-- Trash -->
+	<object id="0" image="trashApple.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_0" throws="destroy0" />
+			<att type="move_to_object" id="11" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="1" image="trashApple.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_1" throws="destroy1" />
+			<att type="move_to_object" id="11" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="2" image="trashApple.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_2" throws="destroy2" />
+			<att type="move_to_object" id="11" speed="700" on="touch" />
+		</triggered>
+	</object>
+
+	<!-- Recycle -->
+	<object id="3" image="plasticBottle.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_12_3" throws="destroy3" />
+			<att type="move_to_object" id="12" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="4" image="plasticBottle.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_12_4" throws="destroy4" />
+			<att type="move_to_object" id="12" speed="700" on="touch" />
+		</triggered>
+	</object>
+	<object id="5" image="plasticBottle.jpg" x="rand_100_900" y="rand_200_500" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_12_5" throws="destroy5" />
+			<att type="move_to_object" id="12" speed="700" on="touch" />
+		</triggered>
+	</object>
+
+	<!-- trash can -->
+	<object id="11" image="trashcan.png" x="300" y="10">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+		</continuous>
+	</object>
+	<!-- recycle can -->
+	<object id="12" image="recyclecan.png" x="600" y="10">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+		</continuous>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

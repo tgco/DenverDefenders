@@ -7,9 +7,11 @@ import org.TheGivingChild.Engine.Attributes.CollidesAttribute;
 import org.TheGivingChild.Engine.Attributes.DestroyAttribute;
 import org.TheGivingChild.Engine.Attributes.FloorAttribute;
 import org.TheGivingChild.Engine.Attributes.FollowsObjectYAttribute;
+import org.TheGivingChild.Engine.Attributes.MoveToObjectAttribute;
 import org.TheGivingChild.Engine.Attributes.MovesAttribute;
 import org.TheGivingChild.Engine.Attributes.ScreenCheckAttribute;
 import org.TheGivingChild.Engine.Attributes.StopAttribute;
+import org.TheGivingChild.Engine.Attributes.TapDestroyAttribute;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -38,6 +40,14 @@ public enum AttributeEnum {
 		public Attribute construct(ObjectMap<String, String> args) {
 			return new DestroyAttribute(args);
 		}
+	},
+	TAP_DESTROY {
+
+		@Override
+		public Attribute construct(ObjectMap<String, String> args) {
+			return new TapDestroyAttribute(args);
+		}
+		
 	},
 	/**
 	 * Continuously checks for collision with objects of passed ids and throws a corresponding condition
@@ -73,6 +83,13 @@ public enum AttributeEnum {
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
 			return new FollowsObjectYAttribute(args);
+		}
+	},
+	MOVE_TO_OBJECT {
+
+		@Override
+		public Attribute construct(ObjectMap<String, String> args) {
+			return new MoveToObjectAttribute(args);
 		}
 	},
 	/**

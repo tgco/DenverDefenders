@@ -1,0 +1,59 @@
+<level name="Fruit Pick" background="trees.jpg" description="Tap the fruit to pick it off the tree!">
+	<!-- Fruit -->
+	<object id="0" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+	<object id="1" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor1" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+	<object id="2" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor2" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+	<object id="3" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor3" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+	<object id="4" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor4" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+	<object id="5" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<input type="tap_set_velocity" vx="0" vy="-500" />
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="floor0" />
+		<cond val="floor1" />
+		<cond val="floor2" />
+		<cond val="floor3" />
+		<cond val="floor4" />
+		<cond val="floor5" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>
