@@ -74,7 +74,6 @@ public enum InputListenerEnums{
 				}
 				
 				@Override
-				// REFACTOR: if certain time has passed, fling should not work
 				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 					// Return if too much time passed (not a fling)
 					if (game.getGlobalClock() - time > 1f) return;

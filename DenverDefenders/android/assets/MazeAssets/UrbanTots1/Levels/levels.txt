@@ -1,1 +1,2 @@
-tots/Window.xml
+tots/waterVeggies.xml
+tots/veggiePlant.xml
