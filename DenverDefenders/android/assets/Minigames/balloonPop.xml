@@ -1,33 +1,51 @@
 <level name="Balloon Pop" background="outside.png" description="Tap balloons to pop them!">
 	<!-- balloons -->
 	<object id="1" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy1" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy1" />
+			<att type="destroy" on="destroy1" />
 		</triggered>
 	</object>
 	<object id="2" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy2" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy2" />
+			<att type="destroy" on="destroy2" />
 		</triggered>
 	</object>
 	<object id="3" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy3" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy3" />
+			<att type="destroy" on="destroy3" />
 		</triggered>
 	</object>
 	<object id="4" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy4" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy4" />
+			<att type="destroy" on="destroy4" />
 		</triggered>
 	</object>
 	<object id="5" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy5" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy5" />
+			<att type="destroy" on="destroy5" />
 		</triggered>
 	</object>
 	<object id="6" image="balloonGreen.png" x="rand_100_900" y="rand_10_500">
+		<continuous>
+			<att type="catch_touch" throws="destroy6" />
+		</continuous>
 		<triggered>
-			<att type="tap_destroy" on="touch" throws="destroy6" />
+			<att type="destroy" on="destroy6" />
 		</triggered>
 	</object>
 

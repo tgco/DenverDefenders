@@ -323,11 +323,6 @@ public class ScreenMaze extends ScreenAdapter {
 		 * Possible screen changes
 		 */
 
-		// Minigame check
-		if (minigameCollisionCheck(spriteRec, mazeChildren)) {
-			return ScreenAdapterEnums.LEVEL;
-		}
-
 		// Check if won the maze (all are saved) and set state appropriately if true
 		if ( winMazeCheck(savedChildren, mazeChildren) ) {
 			mazeWon = true;
@@ -353,6 +348,11 @@ public class ScreenMaze extends ScreenAdapter {
 		if ( loseMazeCheck(playerCharacter.getHealth()) ) {
 			mazeWon = false;
 			return ScreenAdapterEnums.MAIN;
+		}
+		
+		// Minigame check
+		if (minigameCollisionCheck(spriteRec, mazeChildren)) {
+			return ScreenAdapterEnums.LEVEL;
 		}
 
 		return null;

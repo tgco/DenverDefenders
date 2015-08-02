@@ -3,55 +3,61 @@
 	<object id="0" image="flower1.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch0" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_0" throws="destroy0" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch0" />
 		</triggered>
 	</object>
 	<object id="1" image="flower1.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch1" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_1" throws="destroy1" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch1" />
 		</triggered>
 	</object>
 	<object id="2" image="flower2.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch2" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_2" throws="destroy2" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch2" />
 		</triggered>
 	</object>
 	<object id="3" image="flower2.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch3" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_3" throws="destroy3" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch3" />
 		</triggered>
 	</object>
 	<object id="4" image="flower3.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch4" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_4" throws="destroy4" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch4" />
 		</triggered>
 	</object>
 	<object id="5" image="flower3.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch5" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_10_5" throws="destroy5" />
-			<att type="move_to_object" id="10" speed="700" on="touch" />
+			<att type="move_to_object" id="10" speed="700" on="touch5" />
 		</triggered>
 	</object>
 

@@ -16,44 +16,6 @@ import com.badlogic.gdx.utils.ObjectMap;
  */
 
 public enum InputListenerEnums{
-	/**This destroys the game object when clicked.*/
-	TAP_DESTROY {
-		@Override
-		public InputListener construct(final GameObject object, ObjectMap<String, String> args) {
-			//return a new input listener, overriding needed interactions
-			return(new InputListener(){
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					return true;
-				}
-				//touch up disposes the game object when it is clicked.
-				@Override
-				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					object.destroy();
-				}
-			});
-		}
-	},
-	// Sets velocity on tap
-	TAP_SET_VELOCITY {
-		@Override
-		public InputListener construct(final GameObject object, ObjectMap<String, String> args) {
-			// Get velocity args
-			final float vx = Float.parseFloat(args.get("vx"));
-			final float vy = Float.parseFloat(args.get("vy"));
-			return(new InputListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					return true;
-				}
-				
-				@Override
-				public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-					object.setVelocity(vx, vy);
-				}
-			});
-		}
-	},
 	/**This drags the object to follow the current position of a drag event*/
 	DRAGGABLE {
 		@Override

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 // Sends generic input events to a mini game level by polling for events
 public class InputModule {
-	// Checks for input and throws an appropriate condition
+	// Checks for input and throws an appropriate condition when touch released
 	public void poll(Level level) {
 		if (Gdx.input.justTouched()) {
 			// Get screen coordinates

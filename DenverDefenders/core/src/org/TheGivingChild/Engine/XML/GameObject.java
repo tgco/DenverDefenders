@@ -123,6 +123,10 @@ public class GameObject extends Actor {
 			observerMap.get(trigger).add(att);
 		}
 	}
+	
+	public Array<Attribute> getContinuousAttributes() {
+		return continuousAttributes;
+	}
 
 	public int getID() {
 		return id;

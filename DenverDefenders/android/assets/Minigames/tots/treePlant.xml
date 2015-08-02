@@ -1,0 +1,85 @@
+<level name="Tree plant" background="grass.png" description="Tap dirt mounds to plant trees!">
+	<!-- 6 dirt mounds -->
+	<object id="0" image="dirtMound.png" imageScale="0.75" x="145" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch0" />
+		</continuous>
+	</object>
+
+	<object id="1" image="dirtMound.png" imageScale="0.75" x="435" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch1" />
+		</continuous>
+	</object>
+
+	<object id="2" image="dirtMound.png" imageScale="0.75" x="730" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch2" />
+		</continuous>
+	</object>
+
+	<!-- Upper row -->
+	<object id="3" image="dirtMound.png" imageScale="0.75" x="145" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch3" />
+		</continuous>
+	</object>
+
+	<object id="4" image="dirtMound.png" imageScale="0.75" x="435" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch4" />
+		</continuous>
+	</object>
+
+	<object id="5" image="dirtMound.png" imageScale="0.75" x="730" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch5" />
+		</continuous>
+	</object>
+
+	<!-- 6 trees move to center of mound on the touch events -->
+	<object id="10" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="0" on="touch0" />
+		</triggered>
+	</object>
+	<object id="11" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="1" on="touch1" />
+		</triggered>
+	</object>
+	<object id="12" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="2" on="touch2" />
+		</triggered>
+	</object>
+	<object id="13" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="3" on="touch3" />
+		</triggered>
+	</object>
+	<object id="14" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="4" on="touch4" />
+		</triggered>
+	</object>
+	<object id="15" image="tree.png" x="2000" y="0">
+		<triggered>
+			<att type="place_at_object" id="5" on="touch5" />
+		</triggered>
+	</object>
+
+	<!-- win on all touches done -->
+	<win>
+		<cond val="touch0" />
+		<cond val="touch1" />
+		<cond val="touch2" />
+		<cond val="touch3" />
+		<cond val="touch4" />
+		<cond val="touch5" />
+	</win>
+
+	<lose>
+		<cond val="never" />
+	</lose>
+</level>

@@ -8,41 +8,46 @@
 	</object>
 
 	<!-- Apples -->
-	<object id="1" image="Apple1.png" imageScale="4" x="50" y="450" >
+	<object id="1" image="Apple1.png" imageScale="3.5" x="50" y="450" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
+			<att type="catch_touch" throws="touch1" />
 		</continuous>
 		<triggered>
-			<att type="stop" on="collide_13_1" throws="caught1" />
+			<att type="stop" on="collide_11_1" throws="caught1" />
+			<att type="set_velocity" vx="0" vy="-700" on="touch1" />
 		</triggered>
-		<input type="tap_set_velocity" vx="0" vy="-600" />
 	</object>
-	<object id="2" image="Apple1.png" imageScale="4" x="50" y="450" >
+	<object id="2" image="Apple1.png" imageScale="3.5" x="50" y="750" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
+			<att type="catch_touch" throws="touch2" />
 		</continuous>
 		<triggered>
 			<att type="stop" on="collide_12_2" throws="caught2" />
+			<att type="set_velocity" vx="0" vy="-700" on="touch2" />
+			<att type="move_by" dy="-300" on="touch1" />
 		</triggered>
-		<input type="tap_set_velocity" vx="0" vy="-600" />
 	</object>
-	<object id="3" image="Apple1.png" imageScale="4" x="50" y="450" >
+	<object id="3" image="Apple1.png" imageScale="3.5" x="50" y="750" >
 		<continuous>
 			<att type="moves" vx="200" vy="0" ax="0" ay="0" />
 			<att type="screencheck" side="bottom" throws="lose" />
+			<att type="catch_touch" throws="touch3" />
 		</continuous>
 		<triggered>
-			<att type="stop" on="collide_11_3" throws="caught3" />
+			<att type="stop" on="collide_13_3" throws="caught3" />
+			<att type="set_velocity" vx="0" vy="-700" on="touch3" />
+			<att type="move_by" dy="-300" on="touch2" />
 		</triggered>
-		<input type="tap_set_velocity" vx="0" vy="-600" />
 	</object>
 
 	<!-- Kids -->
 	<object id="11" image="kid1.png" x="200" y="0">
 		<continuous>
-			<att type="collides" with="3" />
+			<att type="collides" with="1" />
 		</continuous>
 	</object>
 	<object id="12" image="kid1.png" x="500" y="0">
@@ -52,7 +57,7 @@
 	</object>
 	<object id="13" image="kid1.png" x="800" y="0">
 		<continuous>
-			<att type="collides" with="1" />
+			<att type="collides" with="3" />
 		</continuous>
 	</object>
 

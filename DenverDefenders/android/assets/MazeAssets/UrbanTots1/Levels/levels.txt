@@ -1,2 +1,1 @@
-tots/balloonPop.xml
-tots/bubblePop.xml
+tots/Window.xml

@@ -99,7 +99,12 @@ public class Level {
 	// Notifies observers of input events, args are sent in the string
 	public void throwInputCondition(String condition) {
 		if (condition == null) return;
-		//System.out.println("caught: " + condition);
+		// Set everyones arg string for continuous att's
+		for (GameObject o : objects) {
+			for (Attribute att : o.getContinuousAttributes()) {
+				att.setArgString(condition);
+			}
+		}
 		// Get observers of input name
 		Array<Attribute> observers = triggeredObservers.get(condition.split("_")[0]);
 		// Update after setting the argument string

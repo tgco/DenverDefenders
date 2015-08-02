@@ -4,43 +4,61 @@
 		<continuous>
 			<att type="floor" y="50" throws="floor0" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch0" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch0" />
+		</triggered>
 	</object>
 	<object id="1" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<continuous>
 			<att type="floor" y="50" throws="floor1" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch1" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch1" />
+		</triggered>
 	</object>
 	<object id="2" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<continuous>
 			<att type="floor" y="50" throws="floor2" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch2" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch2" />
+		</triggered>
 	</object>
 	<object id="3" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<continuous>
 			<att type="floor" y="50" throws="floor3" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch3" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch3" />
+		</triggered>
 	</object>
 	<object id="4" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<continuous>
 			<att type="floor" y="50" throws="floor4" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch4" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch4" />
+		</triggered>
 	</object>
 	<object id="5" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<continuous>
 			<att type="floor" y="50" throws="floor5" />
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch5" />
 		</continuous>
-		<input type="tap_set_velocity" vx="0" vy="-500" />
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch5" />
+		</triggered>
 	</object>
 
 	<!-- win and lose conditions -->
