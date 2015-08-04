@@ -24,7 +24,7 @@ public class ScreenCheckAttribute extends Attribute {
 			if (myObject.getY() + myObject.getTextureHeight() < 0) offScreen = true;
 		}
 		else if (side.equals("left")) {
-			if (myObject.getX() - myObject.getTextureWidth() < 0) offScreen = true;
+			if (myObject.getX() + myObject.getTextureWidth() < 0) offScreen = true;
 		}
 		else if (side.equals("right")) {
 			if (myObject.getX() > Gdx.graphics.getWidth()) offScreen = true;

@@ -1,18 +1,18 @@
 package org.TheGivingChild.Engine.XML;
 
 import org.TheGivingChild.Engine.Attributes.Attribute;
-import org.TheGivingChild.Engine.Attributes.BounceOffEdgeOfScreenAttribute;
-import org.TheGivingChild.Engine.Attributes.BounceOffTopAndBottomAttribute;
 import org.TheGivingChild.Engine.Attributes.CatchTouchAttribute;
 import org.TheGivingChild.Engine.Attributes.CollidesAttribute;
 import org.TheGivingChild.Engine.Attributes.DestroyAttribute;
+import org.TheGivingChild.Engine.Attributes.FlagAttribute;
+import org.TheGivingChild.Engine.Attributes.FlagCheckAttribute;
 import org.TheGivingChild.Engine.Attributes.FloorAttribute;
-import org.TheGivingChild.Engine.Attributes.FollowsObjectYAttribute;
 import org.TheGivingChild.Engine.Attributes.MoveByAttribute;
 import org.TheGivingChild.Engine.Attributes.MoveToObjectAttribute;
 import org.TheGivingChild.Engine.Attributes.MovesAttribute;
 import org.TheGivingChild.Engine.Attributes.PlaceAtObjectAttribute;
 import org.TheGivingChild.Engine.Attributes.ScreenCheckAttribute;
+import org.TheGivingChild.Engine.Attributes.SetPositionAttribute;
 import org.TheGivingChild.Engine.Attributes.SetVelocityAttribute;
 import org.TheGivingChild.Engine.Attributes.StopAttribute;
 
@@ -69,32 +69,21 @@ public enum AttributeEnum {
 			return new CollidesAttribute(args);
 		}
 	},
-	/**
-	 * Causes objects to collide with and bounce off of the edge of the screen
-	 */
-	BOUNCEOFFEDGEOFSCREEN{
+	FLAG {
+
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
-			return new BounceOffEdgeOfScreenAttribute(args);
+			return new FlagAttribute(args);
 		}
+		
 	},
-	/**
-	 * Causes objects to collide with and bounce off of the top and bottom of the screen, collisions are perfectly ellastic
-	 */
-	BOUNCEOFFTOPANDBOTTOM{
+	FLAG_CHECK {
+
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
-			return new BounceOffTopAndBottomAttribute(args);
+			return new FlagCheckAttribute(args);
 		}
-	},
-	/**
-	 * The attached Object will attempt to math the y position of the other object, it will move towards the object at the predefined speed
-	 */
-	FOLLOWSOBJECTY{
-		@Override
-		public Attribute construct(ObjectMap<String, String> args) {
-			return new FollowsObjectYAttribute(args);
-		}
+		
 	},
 	// Sets velocity towards the passed object
 	MOVE_TO_OBJECT {
@@ -127,6 +116,14 @@ public enum AttributeEnum {
 		@Override
 		public Attribute construct(ObjectMap<String, String> args) {
 			return new SetVelocityAttribute(args);
+		}
+		
+	},
+	SET_POSITION {
+
+		@Override
+		public Attribute construct(ObjectMap<String, String> args) {
+			return new SetPositionAttribute(args);
 		}
 		
 	},

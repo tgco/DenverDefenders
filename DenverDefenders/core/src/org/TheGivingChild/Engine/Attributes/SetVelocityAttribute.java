@@ -4,6 +4,7 @@ import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
+// Sets velocity on trigger
 public class SetVelocityAttribute extends Attribute {
 
 	public SetVelocityAttribute(ObjectMap<String, String> args) {

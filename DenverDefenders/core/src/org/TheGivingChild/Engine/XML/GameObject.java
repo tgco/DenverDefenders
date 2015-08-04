@@ -123,9 +123,13 @@ public class GameObject extends Actor {
 			observerMap.get(trigger).add(att);
 		}
 	}
-	
+
 	public Array<Attribute> getContinuousAttributes() {
 		return continuousAttributes;
+	}
+	
+	public Array<Attribute> getTriggeredAttributes() {
+		return triggeredAttributes;
 	}
 
 	public int getID() {
@@ -143,6 +147,13 @@ public class GameObject extends Actor {
 		setVelocity(initialVelocity[0], initialVelocity[1]);
 		setPosition(initialPosition[0], initialPosition[1]);
 		destroyed = false;
+		// Run any setup necessary for attributes
+		for(Attribute att : continuousAttributes) {
+			att.setup(this);
+		}
+		for (Attribute att : triggeredAttributes) {
+			att.setup(this);
+		}
 	}
 	public boolean isDestroyed(){
 		return destroyed;

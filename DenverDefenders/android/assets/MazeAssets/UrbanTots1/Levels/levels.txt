@@ -1,2 +1,1 @@
-tots/waterVeggies.xml
-tots/veggiePlant.xml
+kids/gardening.xml
