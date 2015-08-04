@@ -28,8 +28,13 @@ public class MovesAttribute extends Attribute {
 	
 	public void setup(GameObject myObject){
 		super.setup(myObject);
+		
+		float vx = Float.parseFloat(args.get("vx", "0"));
+		float vy = Float.parseFloat(args.get("vy", "0"));
+		float ax = Float.parseFloat(args.get("ax", "0"));
+		float ay = Float.parseFloat(args.get("ay", "0"));
 		// Set the start v and a
-		myObject.setVelocity(Float.parseFloat(args.get("vx")), Float.parseFloat(args.get("vy")));
-		myObject.setAcceleration(Float.parseFloat(args.get("ax")), Float.parseFloat(args.get("ay")));
+		myObject.setVelocity(vx, vy);
+		myObject.setAcceleration(ax,ay);
 	}
 }

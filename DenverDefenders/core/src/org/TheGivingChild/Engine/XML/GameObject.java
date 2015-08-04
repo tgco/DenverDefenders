@@ -29,6 +29,8 @@ public class GameObject extends Actor {
 	private float[] initialPosition;
 	// If true, this object will be removed from the level until reset
 	private boolean destroyed;
+	// If true, position of this object can't change
+	private boolean frozen;
 	private Texture texture;
 	// Scale to be applied to image size for drawing
 	private float objectScaleX, objectScaleY;
@@ -39,6 +41,7 @@ public class GameObject extends Actor {
 
 	public GameObject(ObjectMap<String, String> args, Array<Attribute> continuousAttributes, Array<Attribute> triggeredAttributes){
 		destroyed = false;
+		frozen = false;
 		//set values from args
 		id = Integer.parseInt(args.get("id"));
 		imageFilename = args.get("image");
@@ -142,11 +145,18 @@ public class GameObject extends Actor {
 	public void destroy(){
 		destroyed = true;
 	}
+	public void freeze() {
+		frozen = true;
+	}
+	public void unfreeze() {
+		frozen = false;
+	}
 	// Resets velocity, position, and destroyed status
 	public void resetObject(){
 		setVelocity(initialVelocity[0], initialVelocity[1]);
 		setPosition(initialPosition[0], initialPosition[1]);
 		destroyed = false;
+		frozen = false;
 		// Run any setup necessary for attributes
 		for(Attribute att : continuousAttributes) {
 			att.setup(this);
@@ -163,6 +173,11 @@ public class GameObject extends Actor {
 	}
 	public float[] getAcceleration() {
 		return acceleration;
+	}
+	@Override
+	public void setPosition(float x, float y) {
+		if (frozen) return;
+		super.setPosition(x, y);
 	}
 	public void setVelocity(float vx, float vy) {
 		velocity[0] = vx;

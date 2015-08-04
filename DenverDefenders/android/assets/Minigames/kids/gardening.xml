@@ -1,4 +1,4 @@
-<level name="Gardening" time="100" background="null.png" description="Drag to sort seeds, tap to plant them, and tap to water your garden!">
+<level name="Gardening" time="50" background="null.png" description="Drag to sort seeds, tap to plant them, and tap to water your garden!">
 	<!-- table background -->
 	<object id="-1" image="../LevelBackgrounds/Table.png" x="0" y="0" >
 		<continuous>

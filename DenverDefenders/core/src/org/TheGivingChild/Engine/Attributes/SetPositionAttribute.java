@@ -14,11 +14,12 @@ public class SetPositionAttribute extends Attribute {
 	
 	@Override
 	public void update(Level level) {
+		super.update(level);
 		float x = Float.parseFloat(args.get("x", String.valueOf(myObject.getX())));
 		float y = Float.parseFloat(args.get("y", String.valueOf(myObject.getY())));
 		// Scale
-		x = Gdx.graphics.getWidth()/1024f;
-		y = Gdx.graphics.getHeight()/600f;
+		x = x*Gdx.graphics.getWidth()/1024f;
+		y = y*Gdx.graphics.getHeight()/600f;
 		myObject.setPosition(x, y);
 	}
 }

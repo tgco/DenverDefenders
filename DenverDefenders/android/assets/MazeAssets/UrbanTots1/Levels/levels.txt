@@ -1,1 +1,1 @@
-kids/gardening.xml
+kids/appleCollect.xml
