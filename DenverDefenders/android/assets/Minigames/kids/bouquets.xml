@@ -1,0 +1,210 @@
+<level name="Bouquets" time="50" background="null.png" description="Drag to collect the flowers, and fling some bouquets to everyone!">
+	<!-- moveable grass background -->
+	<object id="-1" image="../LevelBackgrounds/grass.png" imageScale="1.422" x="0" y="0" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="right" throws="startbouquet" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+	</object>
+
+	<!-- 6 flowers to drag to the bucket -->
+	<object id="0" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_0" throws="destroy0" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="1" image="flower1.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_1" throws="destroy1" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="2" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_2" throws="destroy2" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="3" image="flower2.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_3" throws="destroy3" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="4" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_4" throws="destroy4" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="5" image="flower3.png" x="rand_50_400" y="rand_10_400" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="10" on="collide_10_5" throws="destroy5" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- bucket -->
+	<object id="10" image="bucket.png" x="800" y="10">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="destroy" on="startbouquet" />
+		</triggered>
+	</object>
+
+	<!-- && CONDITION UTILITY -->
+	<object id="-2" image="null.png" x="0" y="700" >
+		<continuous>
+			<att type="flag_check" throws="picked" />
+		</continuous>
+		<triggered>
+			<att type="flag" on="destroy0" />
+			<att type="flag" on="destroy1" />
+			<att type="flag" on="destroy2" />
+			<att type="flag" on="destroy3" />
+			<att type="flag" on="destroy4" />
+			<att type="flag" on="destroy5" />
+		</triggered>
+	</object>
+
+	<!-- FLING BOUQUET GAME START -->
+	<object id="-3" image="../LevelBackgrounds/Table.png" x="-1024" y="0" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="0" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+	</object>
+
+	<!-- three kids that want bouquets -->
+	<object id="11" image="kid1.png" x="-924" y="500">
+		<continuous>
+			<att type="collides" with="20,21,22" />
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="100" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+	</object>
+	<object id="12" image="kid1.png" x="-624" y="500">
+		<continuous>
+			<att type="collides" with="20,21,22" />
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="400" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+	</object>
+	<object id="13" image="kid1.png" x="-324" y="500">
+		<continuous>
+			<att type="collides" with="20,21,22" />
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="700" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+	</object>
+
+	<!-- Bouquets to fling -->
+	<object id="20" image="bouquet.png" x="-512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_11_20" throws="stop20" />
+			<att type="stop" on="collide_12_20" throws="stop21" />
+			<att type="stop" on="collide_13_20" throws="stop22" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="512" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+	<object id="21" image="bouquet.png" x="-512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_11_21" throws="stop20" />
+			<att type="stop" on="collide_12_21" throws="stop21" />
+			<att type="stop" on="collide_13_21" throws="stop22" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="512" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+	<object id="22" image="bouquet.png" x="-512" y="100">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="stop" on="collide_11_22" throws="stop20" />
+			<att type="stop" on="collide_12_22" throws="stop21" />
+			<att type="stop" on="collide_13_22" throws="stop22" />
+			<att type="set_velocity" vx="3000" on="picked" />
+			<att type="set_position" x="512" on="startbouquet" />
+			<att type="set_velocity" vx="0" on="startbouquet" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<!-- win/lose -->
+	<win>
+		<cond val="stop20" />
+		<cond val="stop21" />
+		<cond val="stop22" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

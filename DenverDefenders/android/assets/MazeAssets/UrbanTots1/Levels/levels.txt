@@ -1,1 +1,1 @@
-kids/appleCollect.xml
+kids/bouquets.xml
