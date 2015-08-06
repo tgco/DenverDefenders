@@ -1,1 +1,1 @@
-kids/bouquets.xml
+kids/vending.xml
