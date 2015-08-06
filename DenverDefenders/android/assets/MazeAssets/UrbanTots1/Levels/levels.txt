@@ -1,1 +1,1 @@
-kids/vending.xml
+kids/pizzaboy.xml

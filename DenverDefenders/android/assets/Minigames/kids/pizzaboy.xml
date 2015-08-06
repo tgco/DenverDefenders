@@ -1,0 +1,177 @@
+<level name="Pizza boy" time="50" background="road.png" description="Fling to deliver your pizzas before time runs out!">
+	<!-- two backgrounds to create scrolling -->
+	<object id="-2" image="../LevelBackgrounds/road.png" x="0" y="0" >
+		<continuous>
+			<att type="moves" vx="-512" />
+			<att type="screencheck" side="left" throws="tile1left" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="1024" on="tile1left" />
+		</triggered>
+	</object>
+	<object id="-1" image="../LevelBackgrounds/road.png" x="1024" y="0" >
+		<continuous>
+			<att type="moves" vx="-512" />
+			<att type="screencheck" side="left" throws="tile2left" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="1024" on="tile2left" />
+		</triggered>
+	</object>
+
+	<!-- Hero with pizzas -->
+	<object id="-3" image="heroFlyRight.png" x="50" y="50" >
+	</object>
+
+	<!-- 6 pizzas -->
+	<object id="0" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave0" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave0" />
+			<att type="stop" on="collide_10_0" throws="stop0" />
+			<att type="set_velocity" vx="-512" on="collide_10_0" />
+			<att type="stop" on="collide_11_0" throws="stop0" />
+			<att type="set_velocity" vx="-512" on="collide_11_0" />
+			<att type="stop" on="collide_12_0" throws="stop0" />
+			<att type="set_velocity" vx="-512" on="collide_12_0" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<object id="1" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave1" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave1" />
+			<att type="stop" on="collide_10_1" throws="stop1" />
+			<att type="set_velocity" vx="-512" on="collide_10_1" />
+			<att type="stop" on="collide_11_1" throws="stop1" />
+			<att type="set_velocity" vx="-512" on="collide_11_1" />
+			<att type="stop" on="collide_12_1" throws="stop1" />
+			<att type="set_velocity" vx="-512" on="collide_12_1" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<object id="2" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave2" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave2" />
+			<att type="stop" on="collide_10_2" throws="stop2" />
+			<att type="set_velocity" vx="-512" on="collide_10_2" />
+			<att type="stop" on="collide_11_2" throws="stop2" />
+			<att type="set_velocity" vx="-512" on="collide_11_2" />
+			<att type="stop" on="collide_12_2" throws="stop2" />
+			<att type="set_velocity" vx="-512" on="collide_12_2" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<object id="3" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave3" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave3" />
+			<att type="stop" on="collide_10_3" throws="stop3" />
+			<att type="set_velocity" vx="-512" on="collide_10_3" />
+			<att type="stop" on="collide_11_3" throws="stop3" />
+			<att type="set_velocity" vx="-512" on="collide_11_3" />
+			<att type="stop" on="collide_12_3" throws="stop3" />
+			<att type="set_velocity" vx="-512" on="collide_12_3" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<object id="4" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave4" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave4" />
+			<att type="stop" on="collide_10_4" throws="stop4" />
+			<att type="set_velocity" vx="-512" on="collide_10_4" />
+			<att type="stop" on="collide_11_4" throws="stop4" />
+			<att type="set_velocity" vx="-512" on="collide_11_4" />
+			<att type="stop" on="collide_12_4" throws="stop4" />
+			<att type="set_velocity" vx="-512" on="collide_12_4" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<object id="5" image="pizza.png" x="180" y="50" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave5" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave5" />
+			<att type="stop" on="collide_10_5" throws="stop5" />
+			<att type="set_velocity" vx="-512" on="collide_10_5" />
+			<att type="stop" on="collide_11_5" throws="stop5" />
+			<att type="set_velocity" vx="-512" on="collide_11_5" />
+			<att type="stop" on="collide_12_5" throws="stop5" />
+			<att type="set_velocity" vx="-512" on="collide_12_5" />
+		</triggered>
+		<input type="flingable" sensitivity="10" />
+	</object>
+
+	<!-- three houses cycle across the screen moving left -->
+	<object id="10" image="house.png" x="rand_1024_1324" y="300" >
+		<continuous>
+			<att type="moves" vx="-512" />
+			<att type="collides" with="0,1,2,3,4,5" />
+			<att type="screencheck" side="left" throws="leave10" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="1124" on="leave10" />
+		</triggered>
+	</object>
+
+	<object id="11" image="house.png" x="rand_1624_1924" y="300" >
+		<continuous>
+			<att type="moves" vx="-512" />
+			<att type="collides" with="0,1,2,3,4,5" />
+			<att type="screencheck" side="left" throws="leave11" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="1124" on="leave11" />
+		</triggered>
+	</object>
+
+	<object id="12" image="house.png" x="rand_2224_2524" y="300" >
+		<continuous>
+			<att type="moves" vx="-512" />
+			<att type="collides" with="0,1,2,3,4,5" />
+			<att type="screencheck" side="left" throws="leave12" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="1124" on="leave12" />
+		</triggered>
+	</object>
+
+	<!-- win/lose -->
+	<win>
+		<cond val="stop0" />
+		<cond val="stop1" />
+		<cond val="stop2" />
+		<cond val="stop3" />
+		<cond val="stop4" />
+		<cond val="stop5" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+
+</level>
