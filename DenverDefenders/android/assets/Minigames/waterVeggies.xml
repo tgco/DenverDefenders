@@ -1,0 +1,129 @@
+<level name="Water veggies" time="5" background="grass.png" description="Tap the veggies to water them!">
+	<!-- 6 dirt mounds -->
+	<object id="0" image="dirtMound.png" imageScale="0.75" x="145" y="10" />
+	<object id="1" image="dirtMound.png" imageScale="0.75" x="435" y="10" />
+	<object id="2" image="dirtMound.png" imageScale="0.75" x="730" y="10" />
+	<!-- Upper row -->
+	<object id="3" image="dirtMound.png" imageScale="0.75" x="145" y="230" />
+	<object id="4" image="dirtMound.png" imageScale="0.75" x="435" y="230" />
+	<object id="5" image="dirtMound.png" imageScale="0.75" x="730" y="230" />
+
+	<!-- 6 veggies on mounds respond to touch -->
+	<object id="10" image="tomatoPlant.png" x="154" y="10" >
+		<continuous>
+			<att type="catch_touch" throws="touch10" />
+			<att type="collides" with="20" />
+		</continuous>
+	</object>
+
+	<object id="11" image="tomatoPlant.png" x="444" y="10" >
+		<continuous>
+			<att type="catch_touch" throws="touch11" />
+			<att type="collides" with="21" />
+		</continuous>
+	</object>
+
+	<object id="12" image="tomatoPlant.png" x="739" y="10" >
+		<continuous>
+			<att type="catch_touch" throws="touch12" />
+			<att type="collides" with="22" />
+		</continuous>
+	</object>
+
+	<object id="13" image="tomatoPlant.png" x="154" y="230" >
+		<continuous>
+			<att type="catch_touch" throws="touch13" />
+			<att type="collides" with="23" />
+		</continuous>
+	</object>
+
+	<object id="14" image="tomatoPlant.png" x="444" y="230" >
+		<continuous>
+			<att type="catch_touch" throws="touch14" />
+			<att type="collides" with="24" />
+		</continuous>
+	</object>
+
+	<object id="15" image="tomatoPlant.png" x="739" y="230" >
+		<continuous>
+			<att type="catch_touch" throws="touch15" />
+			<att type="collides" with="25" />
+		</continuous>
+	</object>
+
+	<!-- 6 water drops that fall on veggie touch -->
+	<object id="20" image="waterDrop.png" x="197" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch10" />
+			<att type="destroy" on="collide_10_20" throws="destroy20" />
+		</triggered>
+	</object>
+
+	<object id="21" image="waterDrop.png" x="487" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch11" />
+			<att type="destroy" on="collide_11_21" throws="destroy21" />
+		</triggered>
+	</object>
+
+	<object id="22" image="waterDrop.png" x="782" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch12" />
+			<att type="destroy" on="collide_12_22" throws="destroy22" />
+		</triggered>
+	</object>
+
+	<object id="23" image="waterDrop.png" x="197" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch13" />
+			<att type="destroy" on="collide_13_23" throws="destroy23" />
+		</triggered>
+	</object>
+
+	<object id="24" image="waterDrop.png" x="487" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch14" />
+			<att type="destroy" on="collide_14_24" throws="destroy24" />
+		</triggered>
+	</object>
+
+	<object id="25" image="waterDrop.png" x="782" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-800" on="touch15" />
+			<att type="destroy" on="collide_15_25" throws="destroy25" />
+		</triggered>
+	</object>
+
+	<!-- win and lose -->
+
+	<win>
+		<cond val="destroy20" />
+		<cond val="destroy21" />
+		<cond val="destroy22" />
+		<cond val="destroy23" />
+		<cond val="destroy24" />
+		<cond val="destroy25" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

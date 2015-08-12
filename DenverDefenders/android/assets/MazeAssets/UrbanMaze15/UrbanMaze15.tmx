@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="TileE-1" tilewidth="32" tileheight="32">
+  <image source="TileE-1.png" width="512" height="512"/>
+  <tile id="94">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="126">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="143">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="158">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="159">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="169">
+   <properties>
+    <property name="heroHQ" value="true"/>
+   </properties>
+  </tile>
+  <tile id="174">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+  <tile id="175">
+   <properties>
+    <property name="minigame" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKHrH+qzLcdAwVVTVVVVVVVVVVXV5w+Sej/i
+  </data>
+ </layer>
+ <layer name="Road" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztWdttwzAM1KZdRRu4I+S7K6RB9d+0zUhtABtQGZK608N2AB8gOKYpUidaFK2EcODAenj5a99EO2W/U6WNpZ3n6yTs1eDSoH9RZC2+a+3U9N0rj5/wGO8E+l5+azZYW9p9Kzx7Gg/WlhXHrXggsXwGHshzhoecl1TwleMjPM7plRinRAT00fzAxMfzU2ObiYec/yng84mMK5dJ25/Bzk33diPts2NjdHuutxb7cSU/o+23xsPa186K7GToeu/hl6E7NfCIhG6v2I2IR6v/PfCQuajUZC6yfJXslHKe528URsWeQe33j7dmE+EnzxuTItNsaegxl8z+jcjZeprRY2xsyUPWito+YcV5TzzQ7wBkjPL+PkdW3nkmHj2+/9E+EfStyd/E67YlD1QeK2zukYeHZY+Qe7XcX7Qckgzf6DisuvbVkHs5DJ0TZm1HiIWNmrp/BA8EWq1QY2trHrVnCdHQ3QMPuZ/LtZqAcaE5biQP5iyH5SHleW5Zatybo19CLY/38D9WV0XH6suOi9UfGQ/Ju/c3YB7ffD2k+Xm+Zry4s+/VWqjNP5q+V+tqkPkmEX2kbk8eUsbWBEgsSzV7a+3fw0YPHsv6kf+pWvuJtp6tc8O8/2geni0tfzHxsHxEsL+msyceaP8ccb7K2l3WJKUzRHY9abotPFryuscDOWuVc2WdkyI52/vPm9lzo7geOPCM+AVPkd15
+  </data>
+ </layer>
+ <layer name="Buildings" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzVWjtuFEEQnSvAAZAgdQQ3gJUhIOIv2cnysZEgWgkSOwXJfEI24BNsiuAQnAHfwNwAX4BqeQqen171Z2Zs5CeVqma2u3dq61V3dc8edF33y+SgUUef1bar7V/xHPNDk99mm+5adfRZbbva/iV9cORDkpXZq58m3RnDvj2/x8NkZfZq/wz4cYNs9APjcb1v43p2JKsa4e/cBPucyXlh73bdjx0T1e6OyV0a8wHZ9sxz5xXG437fxnXvxxwl+q342REXTS4J+7n58Az8wM8emzyhcZ6SHcVju2+z3cXAmHH8ThrMqyge+Fw3g7EwZhy/hCgmtZiBbfGa7wIHmFdRPPC5Ij8wZjXxawX6YZyb74AfzKsoHvhc7sce6YRlkCfrAzXa7ofKcwb6kZuvWnFvoEbb/VB5zpyN1g/F9xose701UKONvCohikfE98smV4Q9Fj4Wjqn8WIDtfE/cjuLBvPI4XjW5Juyx8LFwTPdjs9NzH84/UTwiXt0yuS1sxF6jjWPhmLOMD+xHFI+TmEenRk08VL/0u/h6hOvSQ5NH0M7nSZ4vcY7G+gmB90t5HvmB8dgI+vp6xOsSwudJNV86sH6K7rsfvG65jng11f4jisdJoiYeaxWC7VU8uH3Eq6GI8jzi1VSIeDUUKs+9Jna9Tn2WdP3C5KUYu3XNRB6izbFM4D2b4pXXxK6x9lF4ZfJa3M+tmcp35KGaI5awz2KoPPea2PVW1LmA3JoZ+T4UUZ6rtrn5Bz9bBG2mBn6PigfnhyO3HuQ+U2Be8XeWNKMmPxhq76Pw3fj8ref0V+I284q/s6QZSzHvcn4wcO9j63qqVY7B4/3Fnv2zySeTj5kcxe+q1Yya9fwD9cG9j9Um6exJ4r09+zuTtyZvCn6MRUueT4FoX87neKXaZtGV87y2vmo5X/SaLrcvR47W1JoIVZfkap/oXLME9yO3L89xlMF1k6pLsPbhvUV0rslg3kRnYI4lcaC2ZnZ/WuNRwlq/J2HeuB+18WzlVSkeCFXr8T33g3njftTGMwLHzdESD3U+wvfcD0aJVzy3584kFFryQ52P8D33I8qPofNEhA3QU76PKuVHxKvaOVy9J0poOS9R3OTftJQf6txwCkT72hnVEbN/+tj92lx1P9S54YJ0CWoPFsWj1o8LGVF+qHPDhNxej6H2YGPjUYvSfDUWUX11mn7gnIh27l0PX5f84HdDfp/ne/U+KfKDz1si5GpKvi7xqnRWosZUfYbEI1dT8nUpz9VZifo91fskrMP/V35MMTbW4afpB/LKJMWqa9FD+iitpKLPX161/t9p7P+rIq2ktk+6Nl8G/f/K9Zi+qJXU9knXfwBqMzP9
+  </data>
+ </layer>
+</map>

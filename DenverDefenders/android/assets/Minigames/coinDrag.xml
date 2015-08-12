@@ -1,0 +1,135 @@
+<level name="Vending" time="10" background="Table.png" description="Drag coins to the slot to buy sandwiches" >
+	<!-- Vending machine -->
+	<object id="-1" image="vendingMachine.png" x="574" y="0" />
+	
+	<!-- 6 coins to drag to the slot -->
+	<object id="0" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_0" throws="destroy0" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="1" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_1" throws="destroy1" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="2" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_2" throws="destroy2" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="3" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_3" throws="destroy3" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="4" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_4" throws="destroy4" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="5" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_5" throws="destroy5" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- coin slot on vending machine -->
+	<object id="10" image="slot.png" x="610" y="325" >
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5" />
+		</continuous>
+	</object>
+
+	<!-- Sandwiches shoot out of slot -->
+	<object id="20" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave20" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave20" />
+			<att type="set_position" x="600" on="destroy0" />
+			<att type="set_velocity" vx="-1500" on="destroy0" />
+		</triggered>
+	</object>
+
+	<object id="21" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave21" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave21" />
+			<att type="set_position" x="600" on="destroy1" />
+			<att type="set_velocity" vx="-1500" on="destroy1" />
+		</triggered>
+	</object>
+
+	<object id="22" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave22" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave22" />
+			<att type="set_position" x="600" on="destroy2" />
+			<att type="set_velocity" vx="-1500" on="destroy2" />
+		</triggered>
+	</object>
+
+	<object id="23" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave23" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave23" />
+			<att type="set_position" x="600" on="destroy3" />
+			<att type="set_velocity" vx="-1500" on="destroy3" />
+		</triggered>
+	</object>
+
+	<object id="24" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave24" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave24" />
+			<att type="set_position" x="600" on="destroy4" />
+			<att type="set_velocity" vx="-1500" on="destroy4" />
+		</triggered>
+	</object>
+
+	<object id="25" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave25" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave25" />
+			<att type="set_position" x="600" on="destroy5" />
+			<att type="set_velocity" vx="-1500" on="destroy5" />
+		</triggered>
+	</object>
+
+	<win>
+		<cond val="destroy0" />
+		<cond val="destroy1" />
+		<cond val="destroy2" />
+		<cond val="destroy3" />
+		<cond val="destroy4" />
+		<cond val="destroy5" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

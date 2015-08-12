@@ -1,1 +1,0 @@
-The assets in this folder are used for testing.  They must be moved to the android project assets folder to make available in the project.
