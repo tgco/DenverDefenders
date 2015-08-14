@@ -1,0 +1,352 @@
+<level name="Gardening" time="14" background="null.png" description="Drag to sort seeds, tap to plant them, and tap to water your garden!">
+	<!-- table background -->
+	<object id="-1" image="../LevelBackgrounds/Table.png" x="0" y="0" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<!-- Once exit left, start the planting mini game -->
+			<att type="screencheck" side="left" throws="beginplant" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="destroy" on="beginplant" />
+		</triggered>
+	</object>
+	<!-- tomato seed packs -->
+	<object id="0" image="tomatoSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_10_0" throws="destroy0" />
+			<att type="destroy" on="collide_11_0" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="1" image="tomatoSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_10_1" throws="destroy1" />
+			<att type="destroy" on="collide_11_1" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="2" image="tomatoSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_10_2" throws="destroy2" />
+			<att type="destroy" on="collide_11_2" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="6" image="tomatoSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_10_6" throws="destroy6" />
+			<att type="destroy" on="collide_11_6" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- carrot seed packs -->
+	<object id="3" image="carrotSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_11_3" throws="destroy3" />
+			<att type="destroy" on="collide_10_3" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="4" image="carrotSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_11_4" throws="destroy4" />
+			<att type="destroy" on="collide_10_4" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="5" image="carrotSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_11_5" throws="destroy5" />
+			<att type="destroy" on="collide_10_5" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="7" image="carrotSeeds.png" imageScale=".8" x="rand_100_900" y="rand_250_500">
+		<triggered>
+			<att type="destroy" on="collide_11_7" throws="destroy7" />
+			<att type="destroy" on="collide_10_7" throws="timeout" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<!-- bowls for seeds -->
+	<object id="10" image="tomatoBowl.png" x="200" y="100" >
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5,6,7" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="destroy" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="11" image="carrotBowl.png" x="700" y="100" >
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5,6,7" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="destroy" on="beginplant" />
+		</triggered>
+	</object>
+
+	<!-- CONDITION CHECKER FOR ALL SEEDS DESTROYED -->
+	<object id="1000" image="null.png" x="-10" y="-10" >
+		<continuous>
+			<att type="flag_check" throws="sorted" />
+		</continuous>
+		<triggered>
+			<att type="flag" on="destroy0" />
+			<att type="flag" on="destroy1" />
+			<att type="flag" on="destroy2" />
+			<att type="flag" on="destroy3" />
+			<att type="flag" on="destroy4" />
+			<att type="flag" on="destroy5" />
+			<att type="flag" on="destroy6" />
+			<att type="flag" on="destroy7" />
+		</triggered>
+	</object>
+
+	<!-- PLANTING MINIGAME -->
+	<!-- background -->
+	<object id="-2" image="../LevelBackgrounds/grass.png" imageScale="1.422" x="1024" y="0" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_position" x="0" y="0" on="beginplant" />
+		</triggered>
+	</object>
+	<!-- 6 dirt mounds -->
+	<object id="20" image="dirtMound.png" imageScale="0.75" x="1169" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch20" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<object id="21" image="dirtMound.png" imageScale="0.75" x="1459" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch21" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<object id="22" image="dirtMound.png" imageScale="0.75" x="1754" y="10">
+		<continuous>
+			<att type="catch_touch" throws="touch22" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<!-- Upper row -->
+	<object id="23" image="dirtMound.png" imageScale="0.75" x="1169" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch23" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<object id="24" image="dirtMound.png" imageScale="0.75" x="1459" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch24" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<object id="25" image="dirtMound.png" imageScale="0.75" x="1754" y="230">
+		<continuous>
+			<att type="catch_touch" throws="touch25" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+
+	<!-- 6 plants move to center of mound on the touch events -->
+	<object id="30" image="carrotBush.png" x="-1000" y="00">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="40" />
+			<att type="catch_touch" throws="touch30" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="20" on="touch20" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="31" image="carrotBush.png" x="-1000" y="0">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="41" />
+			<att type="catch_touch" throws="touch31" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="21" on="touch21" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="32" image="carrotBush.png" x="-1000" y="0">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="42" />
+			<att type="catch_touch" throws="touch32" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="22" on="touch22" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="33" image="tomatoPlant.png" x="-1000" y="0">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="43" />
+			<att type="catch_touch" throws="touch33" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="23" on="touch23" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="34" image="tomatoPlant.png" x="-1000" y="0">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="44" />
+			<att type="catch_touch" throws="touch34" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="24" on="touch24" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<object id="35" image="tomatoPlant.png" x="-1000" y="0">
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="collides" with="45" />
+			<att type="catch_touch" throws="touch35" />
+		</continuous>
+		<triggered>
+			<att type="place_at_object" id="25" on="touch25" />
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+		</triggered>
+	</object>
+	<!-- 6 drops to water the plants -->
+	<object id="40" image="waterDrop.png" x="1221" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch30" />
+			<att type="destroy" on="collide_30_40" throws="destroy40" />
+		</triggered>
+	</object>
+	<object id="41" image="waterDrop.png" x="1511" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch31" />
+			<att type="destroy" on="collide_31_41" throws="destroy41" />
+		</triggered>
+	</object>
+	<object id="42" image="waterDrop.png" x="1806" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch32" />
+			<att type="destroy" on="collide_32_42" throws="destroy42" />
+		</triggered>
+	</object>
+	<object id="43" image="waterDrop.png" x="1221" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch33" />
+			<att type="destroy" on="collide_33_43" throws="destroy43" />
+		</triggered>
+	</object>
+	<object id="44" image="waterDrop.png" x="1511" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch34" />
+			<att type="destroy" on="collide_34_44" throws="destroy44" />
+		</triggered>
+	</object>
+	<object id="45" image="waterDrop.png" x="1806" y="600" >
+		<continuous>
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="-3000" on="sorted" />
+			<att type="set_velocity" vx="0" on="beginplant" />
+			<att type="set_velocity" vy="-800" on="touch35" />
+			<att type="destroy" on="collide_35_45" throws="destroy45" />
+		</triggered>
+	</object>
+
+	<!-- win and lose conditions -->
+	<win>
+		<cond val="destroy40" />
+		<cond val="destroy41" />
+		<cond val="destroy42" />
+		<cond val="destroy43" />
+		<cond val="destroy44" />
+		<cond val="destroy45" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

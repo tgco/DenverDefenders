@@ -1,4 +1,4 @@
-<level name="Apple collect" time="50" background="null.png" description="Tap to climb the tree, then drag apples to the basket!">
+<level name="Apple collect" time="15" background="null.png" description="Tap to climb the tree, then drag apples to the basket!">
 	<!-- a "stopper" that prevents the treetop tile from scrolling too far -->
 	<object id="-1" image="null.png" x="0" y="25" >
 		<continuous>
@@ -26,7 +26,12 @@
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="4" image="../LevelBackgrounds/treetop.png" x="0" y="2400">
+	<object id="5" image="../LevelBackgrounds/trunk.png" x="0" y="2400">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+		</triggered>
+	</object>
+	<object id="4" image="../LevelBackgrounds/treetop.png" x="0" y="3000">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="set_position" y="0" on="collide_-1_4" />
@@ -34,7 +39,7 @@
 		</triggered>
 	</object>
 	<!-- 6 apples on tree to drag to basket -->
-	<object id="10" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="10" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -44,7 +49,7 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
-	<object id="11" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="11" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -54,7 +59,7 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
-	<object id="12" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="12" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -64,7 +69,7 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
-	<object id="13" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="13" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -74,7 +79,7 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
-	<object id="14" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="14" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -84,7 +89,7 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
-	<object id="15" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2650_2900">
+	<object id="15" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="move_by" dy="-25" on="collide_-1_4" />
@@ -94,10 +99,30 @@
 		<input type="draggable" x="true" y="true" />
 	</object>
 
+	<object id="16" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_4" />
+			<att type="freeze" on="collide_-1_4" />
+			<att type="destroy" on="collide_20_16" throws="destroy16" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="17" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_3250_3500">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_4" />
+			<att type="freeze" on="collide_-1_4" />
+			<att type="destroy" on="collide_20_17" throws="destroy17" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
 	<!-- The apple basket -->
 	<object id="20" image="basket_new.png" x="-300" y="50">
 		<continuous>
-			<att type="collides" with="10,11,12,13,14,15" />
+			<att type="collides" with="10,11,12,13,14,15,16,17" />
 		</continuous>
 		<triggered>
 			<att type="set_position" x="800" on="collide_-1_4" />
@@ -112,6 +137,8 @@
 		<cond val="destroy13" />
 		<cond val="destroy14" />
 		<cond val="destroy15" />
+		<cond val="destroy16" />
+		<cond val="destroy17" />
 	</win>
 
 	<lose>

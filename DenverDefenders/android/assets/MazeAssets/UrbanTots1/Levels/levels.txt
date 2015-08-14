@@ -1,1 +1,1 @@
-kids/vending.xml
+kids/tableSetHard.xml

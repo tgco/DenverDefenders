@@ -1,4 +1,4 @@
-<level name="Bouquets" time="50" background="null.png" description="Drag to collect the flowers, and fling some bouquets to everyone!">
+<level name="Bouquets" time="10" background="null.png" description="Drag to collect the flowers, and fling some bouquets to everyone!">
 	<!-- moveable grass background -->
 	<object id="-1" image="../LevelBackgrounds/grass.png" imageScale="1.422" x="0" y="0" >
 		<continuous>
@@ -11,7 +11,7 @@
 		</triggered>
 	</object>
 
-	<!-- 6 flowers to drag to the bucket -->
+	<!-- 3 flowers to drag to the bucket -->
 	<object id="0" image="flower1.png" x="rand_50_400" y="rand_10_400" >
 		<continuous>
 			<att type="moves" />
@@ -45,44 +45,11 @@
 		</triggered>
 		<input type="draggable" x="true" y="true" />
 	</object>
-	<object id="3" image="flower2.png" x="rand_50_400" y="rand_10_400" >
-		<continuous>
-			<att type="moves" />
-		</continuous>
-		<triggered>
-			<att type="place_at_object" id="10" on="collide_10_3" throws="destroy3" />
-			<att type="set_velocity" vx="3000" on="picked" />
-			<att type="destroy" on="startbouquet" />
-		</triggered>
-		<input type="draggable" x="true" y="true" />
-	</object>
-	<object id="4" image="flower3.png" x="rand_50_400" y="rand_10_400" >
-		<continuous>
-			<att type="moves" />
-		</continuous>
-		<triggered>
-			<att type="place_at_object" id="10" on="collide_10_4" throws="destroy4" />
-			<att type="set_velocity" vx="3000" on="picked" />
-			<att type="destroy" on="startbouquet" />
-		</triggered>
-		<input type="draggable" x="true" y="true" />
-	</object>
-	<object id="5" image="flower3.png" x="rand_50_400" y="rand_10_400" >
-		<continuous>
-			<att type="moves" />
-		</continuous>
-		<triggered>
-			<att type="place_at_object" id="10" on="collide_10_5" throws="destroy5" />
-			<att type="set_velocity" vx="3000" on="picked" />
-			<att type="destroy" on="startbouquet" />
-		</triggered>
-		<input type="draggable" x="true" y="true" />
-	</object>
 
 	<!-- bucket -->
 	<object id="10" image="bucket.png" x="800" y="10">
 		<continuous>
-			<att type="collides" with="0,1,2,3,4,5" />
+			<att type="collides" with="0,1,2" />
 			<att type="moves" />
 		</continuous>
 		<triggered>
@@ -100,9 +67,6 @@
 			<att type="flag" on="destroy0" />
 			<att type="flag" on="destroy1" />
 			<att type="flag" on="destroy2" />
-			<att type="flag" on="destroy3" />
-			<att type="flag" on="destroy4" />
-			<att type="flag" on="destroy5" />
 		</triggered>
 	</object>
 

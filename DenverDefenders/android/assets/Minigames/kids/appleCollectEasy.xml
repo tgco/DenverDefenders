@@ -1,0 +1,93 @@
+<level name="Apple collect" time="15" background="null.png" description="Tap to climb the tree, then drag apples to the basket!">
+	<!-- a "stopper" that prevents the treetop tile from scrolling too far -->
+	<object id="-1" image="null.png" x="0" y="25" >
+		<continuous>
+			<att type="collides" with="3" />
+		</continuous>
+	</object>
+	<!-- 4 tree tiles and a tree top tile that scroll down with tap -->
+	<object id="0" image="../LevelBackgrounds/trunk.png" x="0" y="0">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+		</triggered>
+	</object>
+	<object id="1" image="../LevelBackgrounds/trunk.png" x="0" y="600">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+		</triggered>
+	</object>
+	<object id="2" image="../LevelBackgrounds/trunk.png" x="0" y="1200">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+		</triggered>
+	</object>
+	<object id="3" image="../LevelBackgrounds/treetop.png" x="0" y="1800">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="set_position" y="0" on="collide_-1_3" />
+			<att type="freeze" on="collide_-1_3" />
+		</triggered>
+	</object>
+	<!-- 4 apples on tree to drag to basket -->
+	<object id="10" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2050_2300">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_3" />
+			<att type="freeze" on="collide_-1_3" />
+			<att type="destroy" on="collide_20_10" throws="destroy10" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="11" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2050_2300">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_3" />
+			<att type="freeze" on="collide_-1_3" />
+			<att type="destroy" on="collide_20_11" throws="destroy11" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="12" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2050_2300">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_3" />
+			<att type="freeze" on="collide_-1_3" />
+			<att type="destroy" on="collide_20_12" throws="destroy12" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<object id="13" image="Apple1.png" imageScale="3.5" x="rand_170_855" y="rand_2050_2300">
+		<triggered>
+			<att type="move_by" dy="-50" on="touch" />
+			<att type="move_by" dy="-25" on="collide_-1_3" />
+			<att type="freeze" on="collide_-1_3" />
+			<att type="destroy" on="collide_20_13" throws="destroy13" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- The apple basket -->
+	<object id="20" image="basket_new.png" x="-300" y="50">
+		<continuous>
+			<att type="collides" with="10,11,12,13" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="800" on="collide_-1_3" />
+		</triggered>
+	</object>
+
+
+	<win>
+		<cond val="destroy10" />
+		<cond val="destroy11" />
+		<cond val="destroy12" />
+		<cond val="destroy13" />
+	</win>
+
+	<lose>
+		<cond val="timeout" />
+	</lose>
+</level>

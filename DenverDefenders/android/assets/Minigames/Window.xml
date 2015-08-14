@@ -32,7 +32,7 @@
 	</object>
     
     <!-- Rag -->
-    <object id="0" image="Sponge_REPLACEME.png" x="500" y="275">
+    <object id="0" image="Sponge.png" x="500" y="275">
         <continuous>
             <att type="collides" with="1,2,3,4,5,6" />
         </continuous>
