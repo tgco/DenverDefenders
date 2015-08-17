@@ -1,55 +1,294 @@
-<level name="Window" background="Window.png" description="Play one last game to win!">
-	<!-- Dirt -->
-	<object id="1" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
+<level name="Vending Machine" time="5" background="null.png" description="Drag as many coins as you can to buy everyone sandwiches!" >
+	<!-- Mobile background object -->
+	<object id="-2" image="../LevelBackgrounds/Table.png" x="0" y="0" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="right" throws="startfling" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_1" throws="destroy1" />
+			<att type="set_velocity" vx="3000" on="coinsdone" />
+			<att type="destroy" on="startfling" />
 		</triggered>
 	</object>
-	<object id="2" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
-		<triggered>
-			<att type="destroy" on="collide_0_2" throws="destroy2" />
-		</triggered>
-	</object>
-	<object id="3" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
-		<triggered>
-			<att type="destroy" on="collide_0_3" throws="destroy3" />
-		</triggered>
-	</object>
-	<object id="4" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
-		<triggered>
-			<att type="destroy" on="collide_0_4" throws="destroy4" />
-		</triggered>
-	</object>
-	<object id="5" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
-		<triggered>
-			<att type="destroy" on="collide_0_5" throws="destroy5" />
-		</triggered>
-	</object>
-	<object id="6" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
-		<triggered>
-			<att type="destroy" on="collide_0_6" throws="destroy6" />
-		</triggered>
-	</object>
-    
-    <!-- Rag -->
-    <object id="0" image="Sponge_REPLACEME.png" x="500" y="275">
-        <continuous>
-            <att type="collides" with="1,2,3,4,5,6" />
-        </continuous>
-        <input type="draggable" x="true" y="true" />
-    </object>
 
-	<!-- win and lose conditions -->
+	<!-- Vending machine -->
+	<object id="-1" image="vendingMachine.png" x="574" y="0" >
+		<continuous>
+			<att type="moves" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="coinsdone" />
+			<att type="destroy" on="startfling" />
+		</triggered>
+	</object>
+
+	<!-- 8 coins to drag to the slot -->
+	<object id="0" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_0" throws="destroy0" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="1" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_1" throws="destroy1" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="2" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_2" throws="destroy2" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="3" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_3" throws="destroy3" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="4" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_4" throws="destroy4" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="5" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_5" throws="destroy5" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="6" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_6" throws="destroy6" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="7" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_7" throws="destroy7" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+
+	<!-- coin slot on vending machine -->
+	<object id="10" image="slot.png" x="610" y="325" >
+		<continuous>
+			<att type="moves" />
+			<att type="collides" with="0,1,2,3,4,5,6,7,70,72,74,76,78,80" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vx="3000" on="coinsdone" />
+			<att type="destroy" on="startfling" />
+		</triggered>
+	</object>
+
+	<!-- Sandwiches shoot out of slot -->
+	<object id="20" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave20" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave20" />
+			<att type="set_position" x="600" on="destroy0" />
+			<att type="set_velocity" vx="-1500" on="destroy0" />
+		</triggered>
+	</object>
+
+	<object id="21" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave21" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave21" />
+			<att type="set_position" x="600" on="destroy1" />
+			<att type="set_velocity" vx="-1500" on="destroy1" />
+		</triggered>
+	</object>
+
+	<object id="22" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave22" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave22" />
+			<att type="set_position" x="600" on="destroy2" />
+			<att type="set_velocity" vx="-1500" on="destroy2" />
+		</triggered>
+	</object>
+
+	<object id="23" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave23" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave23" />
+			<att type="set_position" x="600" on="destroy3" />
+			<att type="set_velocity" vx="-1500" on="destroy3" />
+		</triggered>
+	</object>
+
+	<object id="24" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave24" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave24" />
+			<att type="set_position" x="600" on="destroy4" />
+			<att type="set_velocity" vx="-1500" on="destroy4" />
+		</triggered>
+	</object>
+
+	<object id="25" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave25" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave25" />
+			<att type="set_position" x="600" on="destroy5" />
+			<att type="set_velocity" vx="-1500" on="destroy5" />
+		</triggered>
+	</object>
+
+	<object id="26" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave26" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="leave26" />
+			<att type="set_position" x="600" on="destroy6" />
+			<att type="set_velocity" vx="-1500" on="destroy6" />
+		</triggered>
+	</object>
+
+	<object id="27" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy7" />
+			<att type="set_velocity" vx="-1500" on="destroy7" />
+		</triggered>
+	</object>
+
+	<!-- Additional Coins/Sandwiches -->
+	<object id="70" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_70" throws="destroy70" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="71" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy70" />
+			<att type="set_velocity" vx="-1500" on="destroy70" />
+		</triggered>
+	</object>
+
+	<object id="72" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_72" throws="destroy72" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="73" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy72" />
+			<att type="set_velocity" vx="-1500" on="destroy72" />
+		</triggered>
+	</object>
+
+	<object id="74" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_74" throws="destroy74" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="75" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy74" />
+			<att type="set_velocity" vx="-1500" on="destroy74" />
+		</triggered>
+	</object>
+
+	<object id="76" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_76" throws="destroy76" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="77" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy76" />
+			<att type="set_velocity" vx="-1500" on="destroy76" />
+		</triggered>
+	</object>
+
+	<object id="78" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_78" throws="destroy78" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="79" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy78" />
+			<att type="set_velocity" vx="-1500" on="destroy78" />
+		</triggered>
+	</object>
+
+	<object id="80" image="coin.png" x="100" y="300" >
+		<triggered>
+			<att type="destroy" on="collide_10_80" throws="destroy80" />
+		</triggered>
+		<input type="draggable" x="true" y="true" />
+	</object>
+	<object id="81" image="sandwich.png" x="2000" y="70" >
+		<continuous>
+			<att type="moves" />
+			<att type="screencheck" side="left" throws="leave27" />
+		</continuous>
+		<triggered>
+			<att type="set_position" x="600" on="destroy80" />
+			<att type="set_velocity" vx="-1500" on="destroy80" />
+		</triggered>
+	</object>
+	
+	<!-- win/lose -->
 	<win>
-		<cond val="destroy1" />
-		<cond val="destroy2" />
-		<cond val="destroy3" />
-		<cond val="destroy4" />
-		<cond val="destroy5" />
-		<cond val="destroy6" />
+		<cond val="timeout" />
 	</win>
 
 	<lose>
-		<cond val="timeout" />
+		<cond val="never" />
 	</lose>
 </level>

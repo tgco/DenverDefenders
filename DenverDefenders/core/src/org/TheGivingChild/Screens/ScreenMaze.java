@@ -2,7 +2,6 @@ package org.TheGivingChild.Screens;
 
 import java.util.Random;
 
-import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.TGC_Engine;
 import org.TheGivingChild.Engine.Maze.ChildSprite;
 import org.TheGivingChild.Engine.Maze.Direction;
@@ -591,8 +590,6 @@ public class ScreenMaze extends ScreenAdapter {
 
 		// UI and background
 		manager.load("ObjectImages/heart.png", Texture.class);
-		// Audio assets (loads synchronously)
-		AudioManager.getInstance().addAvailableSound("sounds/bounce.wav");
 
 		// Load levels ( sets boss game )
 		loadLevelSet(ScreenAdapterManager.getInstance().game);

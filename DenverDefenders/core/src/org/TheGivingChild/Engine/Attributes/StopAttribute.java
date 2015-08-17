@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.ObjectMap;
@@ -15,6 +16,7 @@ public class StopAttribute extends Attribute {
 	public void update(Level level) {
 		myObject.setVelocity(0, 0);
 		super.update(level); // throw condition if there is one
+		AudioManager.getInstance().play("sounds/pop.mp3");
 	}
 
 }

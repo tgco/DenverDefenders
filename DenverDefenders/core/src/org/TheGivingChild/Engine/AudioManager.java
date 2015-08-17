@@ -46,12 +46,15 @@ public class AudioManager {
 	// Sets up sound references
 	public void initialize(TGC_Engine game) {
 		this.game = game;
-		this.addAvailableSound("sounds/click.wav");
+		// transition punch sounds
 		this.addAvailableSound("sounds/punch1.mp3");
 		this.addAvailableSound("sounds/punch2.mp3");
 		this.addAvailableSound("sounds/punch3.mp3");
+		// win/lose sound
 		this.addAvailableSound("sounds/win_game.mp3");
 		this.addAvailableSound("sounds/lose_game.mp3");
+		// game sounds
+		this.addAvailableSound("sounds/pop.mp3");
 	}
 
 	// Adds the sound name to the map

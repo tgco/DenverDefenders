@@ -1,6 +1,6 @@
 <level name="Gardening" time="14" background="null.png" description="Drag to sort seeds, tap to plant them, and tap to water your garden!">
 	<!-- table background -->
-	<object id="-1" image="../LevelBackgrounds/Table.png" x="0" y="0" >
+	<object id="-1" image="Table.png" x="0" y="0" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
 			<!-- Once exit left, start the planting mini game -->
@@ -117,7 +117,7 @@
 
 	<!-- PLANTING MINIGAME -->
 	<!-- background -->
-	<object id="-2" image="../LevelBackgrounds/grass.png" imageScale="1.422" x="1024" y="0" >
+	<object id="-2" image="grass.png" imageScale="1.422" x="1024" y="0" >
 		<continuous>
 			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
 		</continuous>

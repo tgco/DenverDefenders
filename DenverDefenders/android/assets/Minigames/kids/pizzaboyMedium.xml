@@ -1,6 +1,6 @@
 <level name="Pizza boy" time="8" background="road.png" description="Fling to deliver your pizzas before time runs out!">
 	<!-- two backgrounds to create scrolling -->
-	<object id="-2" image="../LevelBackgrounds/road.png" x="0" y="0" >
+	<object id="-2" image="road.png" x="0" y="0" >
 		<continuous>
 			<att type="moves" vx="-700" />
 			<att type="screencheck" side="left" throws="tile1left" />
@@ -9,7 +9,7 @@
 			<att type="set_position" x="1024" on="tile1left" />
 		</triggered>
 	</object>
-	<object id="-1" image="../LevelBackgrounds/road.png" x="1024" y="0" >
+	<object id="-1" image="road.png" x="1024" y="0" >
 		<continuous>
 			<att type="moves" vx="-700" />
 			<att type="screencheck" side="left" throws="tile2left" />

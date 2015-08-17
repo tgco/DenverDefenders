@@ -1,55 +1,522 @@
-<level name="Window" background="Window.png" description="Play one last game to win!">
-	<!-- Dirt -->
-	<object id="1" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
+<level name="Fruit Pick Boss" time="8" background="trees.jpg" description="Tap as many fruits as you can so everyone can eat!">
+	<!-- Fruit -->
+	<object id="0" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch0" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_1" throws="destroy1" />
+			<att type="set_velocity" vy="-700" on="touch0" />
 		</triggered>
 	</object>
-	<object id="2" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
+	<object id="1" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor1" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch1" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_2" throws="destroy2" />
+			<att type="set_velocity" vy="-700" on="touch1" />
 		</triggered>
 	</object>
-	<object id="3" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
+	<object id="2" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor2" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch2" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_3" throws="destroy3" />
+			<att type="set_velocity" vy="-700" on="touch2" />
 		</triggered>
 	</object>
-	<object id="4" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
+	<object id="3" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor3" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch3" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_4" throws="destroy4" />
+			<att type="set_velocity" vy="-700" on="touch3" />
 		</triggered>
 	</object>
-	<object id="5" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
+	<object id="4" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor4" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch4" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_5" throws="destroy5" />
+			<att type="set_velocity" vy="-700" on="touch4" />
 		</triggered>
 	</object>
-	<object id="6" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
+	<object id="5" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch5" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_6" throws="destroy6" />
+			<att type="set_velocity" vy="-700" on="touch5" />
 		</triggered>
 	</object>
-    
-    <!-- Rag -->
-    <object id="0" image="Sponge_REPLACEME.png" x="500" y="275">
-        <continuous>
-            <att type="collides" with="1,2,3,4,5,6" />
-        </continuous>
-        <input type="draggable" x="true" y="true" />
-    </object>
+	<object id="6" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch6" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch6" />
+		</triggered>
+	</object>
+	<object id="7" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch7" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch7" />
+		</triggered>
+	</object>
+	<object id="8" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch8" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch8" />
+		</triggered>
+	</object>
+	<object id="9" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch9" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch9" />
+		</triggered>
+	</object>
+	<object id="10" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch10" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch10" />
+		</triggered>
+	</object>
+	<object id="11" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch11" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch11" />
+		</triggered>
+	</object>
+	<object id="12" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch12" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch12" />
+		</triggered>
+	</object>
+	<object id="13" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch13" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch13" />
+		</triggered>
+	</object>
+	<object id="14" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch14" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch14" />
+		</triggered>
+	</object>
+	<object id="15" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch15" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch15" />
+		</triggered>
+	</object>
+	<object id="16" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch16" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch16" />
+		</triggered>
+	</object>
+	<object id="17" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch17" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch17" />
+		</triggered>
+	</object>
+	<object id="18" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch18" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch18" />
+		</triggered>
+	</object>
+	<object id="19" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch19" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch19" />
+		</triggered>
+	</object>
+	<object id="20" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch20" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch20" />
+		</triggered>
+	</object>
+	<object id="21" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch21" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch21" />
+		</triggered>
+	</object>
+	<object id="22" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch22" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch22" />
+		</triggered>
+	</object>
+	<object id="23" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch23" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch23" />
+		</triggered>
+	</object>
+	<object id="24" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch24" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch24" />
+		</triggered>
+	</object>
+	<object id="25" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch25" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch25" />
+		</triggered>
+	</object>
+	<object id="26" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch26" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch26" />
+		</triggered>
+	</object>
+	<object id="27" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch27" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch27" />
+		</triggered>
+	</object>
+	<object id="28" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch28" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch28" />
+		</triggered>
+	</object>
+	<object id="29" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch29" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch29" />
+		</triggered>
+	</object>
+	<object id="30" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch30" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch30" />
+		</triggered>
+	</object>
+	<object id="31" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch31" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch31" />
+		</triggered>
+	</object>
+	<object id="32" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch32" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch32" />
+		</triggered>
+	</object>
+	<object id="33" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch33" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch33" />
+		</triggered>
+	</object>
+	<object id="34" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch34" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch34" />
+		</triggered>
+	</object>
+	<object id="35" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch35" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch35" />
+		</triggered>
+	</object>
+	<object id="36" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch36" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch36" />
+		</triggered>
+	</object>
+	<object id="37" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch37" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch37" />
+		</triggered>
+	</object>
+	<object id="38" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch38" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch38" />
+		</triggered>
+	</object>
+	<object id="39" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch39" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch39" />
+		</triggered>
+	</object>
+	<object id="40" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch40" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch40" />
+		</triggered>
+	</object>
+	<object id="41" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch41" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch41" />
+		</triggered>
+	</object>
+	<object id="42" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch42" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch42" />
+		</triggered>
+	</object>
+	<object id="43" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch43" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch43" />
+		</triggered>
+	</object>
+	<object id="44" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch44" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch44" />
+		</triggered>
+	</object>
+	<object id="45" image="Apple1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor0" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch45" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch45" />
+		</triggered>
+	</object>
+	<object id="46" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch46" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch46" />
+		</triggered>
+	</object>
+	<object id="47" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch47" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch47" />
+		</triggered>
+	</object>
+	<object id="48" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch48" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch48" />
+		</triggered>
+	</object>
+	<object id="49" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch49" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch49" />
+		</triggered>
+	</object>
+	<object id="50" image="Banana1.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
+		<continuous>
+			<att type="floor" y="50" throws="floor5" />
+			<att type="moves" vx="0" vy="0" ax="0" ay="0" />
+			<att type="catch_touch" throws="touch50" />
+		</continuous>
+		<triggered>
+			<att type="set_velocity" vy="-700" on="touch50" />
+		</triggered>
+	</object>
 
 	<!-- win and lose conditions -->
 	<win>
-		<cond val="destroy1" />
-		<cond val="destroy2" />
-		<cond val="destroy3" />
-		<cond val="destroy4" />
-		<cond val="destroy5" />
-		<cond val="destroy6" />
+		<cond val="timeout" />
 	</win>
 
 	<lose>
-		<cond val="timeout" />
+		<cond val="never" />
 	</lose>
 </level>

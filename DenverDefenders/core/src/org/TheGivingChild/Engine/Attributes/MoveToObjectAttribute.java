@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
@@ -22,6 +23,8 @@ public class MoveToObjectAttribute extends Attribute {
 		Vector2 vel = new Vector2(follow.getX() - myObject.getX(), follow.getY() - myObject.getY()).nor();
 		vel.scl(Float.parseFloat(args.get("speed")));
 		myObject.setVelocity(vel.x, vel.y);
+		
+		AudioManager.getInstance().play("sounds/pop.mp3");
 	}
 
 }

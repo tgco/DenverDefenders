@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.XML.Level;
 
 import com.badlogic.gdx.utils.ObjectMap;
@@ -15,6 +16,8 @@ public class DestroyAttribute extends Attribute {
 	public void update(Level level) {
 		super.update(level);
 		myObject.destroy();
+		// play sounds
+		AudioManager.getInstance().play("sounds/pop.mp3");
 	}
 
 }

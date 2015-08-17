@@ -24,25 +24,27 @@ public class ProgressionData {
 	public boolean firstPlay;
 	
 	public ProgressionData() {
+		
 		totsLevelsUnlocked = 1;
 		kidsLevelsUnlocked = 1;
 		firstPlay = true;
+		
 		
 		// Construct the map that has powerup unlock info
 		kidsPowerUps = new ObjectMap<Integer, String>();
 		totsPowerUps = new ObjectMap<Integer, String>();
 		// Level one beat unlocks...
-		kidsPowerUps.put(1, "mask");
+		kidsPowerUps.put(3, "mask");
 		totsPowerUps.put(1, "mask");
 		
-		kidsPowerUps.put(2, "cape");
-		totsPowerUps.put(2, "cape");
+		kidsPowerUps.put(6, "bicycle");
+		totsPowerUps.put(2, "bicycle");
 		
-		kidsPowerUps.put(3, "bicycle");
-		totsPowerUps.put(3, "bicycle");
+		kidsPowerUps.put(9, "backpack");
+		totsPowerUps.put(3, "backpack");
 		
-		kidsPowerUps.put(4, "backpack");
-		totsPowerUps.put(4, "backpack");
+		kidsPowerUps.put(12, "cape");
+		totsPowerUps.put(4, "cape");
 		
 		// Array of unlocked powers
 		kidsUnlockedPowerUps = new Array<String>();
@@ -63,9 +65,6 @@ public class ProgressionData {
 		firstPlay = false;
 		save();
 		*/
-		
-		
-		
 	}
 	
 	// Loads data from prefs

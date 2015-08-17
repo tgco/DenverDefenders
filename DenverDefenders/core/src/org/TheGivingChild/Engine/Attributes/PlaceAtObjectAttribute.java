@@ -1,5 +1,6 @@
 package org.TheGivingChild.Engine.Attributes;
 
+import org.TheGivingChild.Engine.AudioManager;
 import org.TheGivingChild.Engine.XML.GameObject;
 import org.TheGivingChild.Engine.XML.Level;
 
@@ -21,6 +22,8 @@ public class PlaceAtObjectAttribute extends Attribute {
 		float centerY = moveTo.getY() + moveTo.getHeight()/2f;
 		// place at
 		myObject.setPosition(centerX - myObject.getWidth()/2f, centerY);
+		
+		AudioManager.getInstance().play("sounds/pop.mp3");
 	}
 
 }

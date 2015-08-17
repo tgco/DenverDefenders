@@ -1,4 +1,4 @@
-<level name="Cherry Pick" background="trees.jpg" description="Drag all the cherries to the bowl to collect them!">
+<level name="Cherry Pick" time="6" background="trees.jpg" description="Drag all the cherries to the bowl to collect them!">
 	<!-- Cherries -->
 	<object id="0" image="Cherry.png" imageScale="3.5" x="rand_100_900" y="rand_400_500" >
 		<triggered>
@@ -54,6 +54,6 @@
 		<cond val="destroy5" />
 	</win>
 	<lose>
-		<cond val="never" />
+		<cond val="timeout" />
 	</lose>
 </level>

@@ -1,6 +1,6 @@
 <level name="Bouquets" time="10" background="null.png" description="Drag to collect the flowers, and fling some bouquets to everyone!">
 	<!-- moveable grass background -->
-	<object id="-1" image="../LevelBackgrounds/grass.png" imageScale="1.422" x="0" y="0" >
+	<object id="-1" image="grass.png" imageScale="1.422" x="0" y="0" >
 		<continuous>
 			<att type="moves" />
 			<att type="screencheck" side="right" throws="startbouquet" />
@@ -71,7 +71,7 @@
 	</object>
 
 	<!-- FLING BOUQUET GAME START -->
-	<object id="-3" image="../LevelBackgrounds/Table.png" x="-1024" y="0" >
+	<object id="-3" image="Table.png" x="-1024" y="0" >
 		<continuous>
 			<att type="moves" />
 		</continuous>

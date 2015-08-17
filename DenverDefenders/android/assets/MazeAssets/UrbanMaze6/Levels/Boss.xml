@@ -1,55 +1,303 @@
-<level name="Window" background="Window.png" description="Play one last game to win!">
-	<!-- Dirt -->
-	<object id="1" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
+<level name="Fruit Catch" time="5" background="Table.png" description="Catch as much fruit as you can for everyone!">
+	<!-- Fruit -->
+	<object id="0" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="900" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom0" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_1" throws="destroy1" />
+			<att type="destroy" on="collide_11_0" throws="destroy0" />
+			<att type="set_position" y="900" on="bottom0" />
 		</triggered>
 	</object>
-	<object id="2" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
+	<object id="1" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="1000" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom1" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_2" throws="destroy2" />
+			<att type="destroy" on="collide_11_1" throws="destroy1" />
+			<att type="set_position" y="1000" on="bottom1" />
 		</triggered>
 	</object>
-	<object id="3" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
+	<object id="2" image="Cherries1.png" imageScale="3.25" x="rand_100_900" y="1100" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom2" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_3" throws="destroy3" />
+			<att type="destroy" on="collide_11_2" throws="destroy2" />
+			<att type="set_position" y="1100" on="bottom2" />
 		</triggered>
 	</object>
-	<object id="4" image="Dirt1.png" x="rand_100_900" y="rand_10_500">
+	<object id="3" image="Cherries2.png" imageScale="3.25" x="rand_100_900" y="1200" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom3" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_4" throws="destroy4" />
+			<att type="destroy" on="collide_11_3" throws="destroy3" />
+			<att type="set_position" y="1200" on="bottom3" />
 		</triggered>
 	</object>
-	<object id="5" image="Dirt2.png" x="rand_100_900" y="rand_10_500">
+	<object id="4" image="Grapes_light.png" imageScale="3.25" x="rand_100_900" y="1300" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom4" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_5" throws="destroy5" />
+			<att type="destroy" on="collide_11_4"  throws="destroy4" />
+			<att type="set_position" y="1300" on="bottom4" />
 		</triggered>
 	</object>
-	<object id="6" image="Dirt3.png" x="rand_100_900" y="rand_10_500">
+	<object id="5" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1400" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom5" />
+		</continuous>
 		<triggered>
-			<att type="destroy" on="collide_0_6" throws="destroy6" />
+			<att type="destroy" on="collide_11_5" throws="destroy5" />
+			<att type="set_position" y="1400" on="bottom5" />
 		</triggered>
 	</object>
-    
-    <!-- Rag -->
-    <object id="0" image="Sponge_REPLACEME.png" x="500" y="275">
-        <continuous>
-            <att type="collides" with="1,2,3,4,5,6" />
-        </continuous>
-        <input type="draggable" x="true" y="true" />
-    </object>
+	<object id="6" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1500" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom6" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_6" throws="destroy6" />
+			<att type="set_position" y="1500" on="bottom6" />
+		</triggered>
+	</object>
+
+	<object id="20" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="900" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom20" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_20" throws="destroy20" />
+			<att type="set_position" y="900" on="bottom20" />
+		</triggered>
+	</object>
+	<object id="21" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="1000" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom21" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_21" throws="destroy21" />
+			<att type="set_position" y="1000" on="bottom21" />
+		</triggered>
+	</object>
+	<object id="22" image="Cherries1.png" imageScale="3.25" x="rand_100_900" y="1100" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom22" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_22" throws="destroy22" />
+			<att type="set_position" y="1100" on="bottom22" />
+		</triggered>
+	</object>
+	<object id="23" image="Cherries2.png" imageScale="3.25" x="rand_100_900" y="1200" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom23" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_23" throws="destroy23" />
+			<att type="set_position" y="1200" on="bottom23" />
+		</triggered>
+	</object>
+	<object id="24" image="Grapes_light.png" imageScale="3.25" x="rand_100_900" y="1300" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom24" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_24"  throws="destroy24" />
+			<att type="set_position" y="1300" on="bottom24" />
+		</triggered>
+	</object>
+	<object id="25" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1400" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom25" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_25" throws="destroy25" />
+			<att type="set_position" y="1400" on="bottom25" />
+		</triggered>
+	</object>
+	<object id="26" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1500" >
+		<continuous>
+			<att type="moves" vx="0" vy="-850" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom26" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_26" throws="destroy26" />
+			<att type="set_position" y="1500" on="bottom26" />
+		</triggered>
+	</object>
+
+	<object id="30" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="900" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom30" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_30" throws="destroy30" />
+			<att type="set_position" y="900" on="bottom30" />
+		</triggered>
+	</object>
+	<object id="31" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="1000" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom31" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_31" throws="destroy31" />
+			<att type="set_position" y="1000" on="bottom31" />
+		</triggered>
+	</object>
+	<object id="32" image="Cherries1.png" imageScale="3.25" x="rand_100_900" y="1100" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom32" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_32" throws="destroy32" />
+			<att type="set_position" y="1100" on="bottom32" />
+		</triggered>
+	</object>
+	<object id="33" image="Cherries2.png" imageScale="3.25" x="rand_100_900" y="1200" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom33" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_33" throws="destroy33" />
+			<att type="set_position" y="1200" on="bottom33" />
+		</triggered>
+	</object>
+	<object id="34" image="Grapes_light.png" imageScale="3.25" x="rand_100_900" y="1300" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom34" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_34"  throws="destroy34" />
+			<att type="set_position" y="1300" on="bottom34" />
+		</triggered>
+	</object>
+	<object id="35" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1400" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom35" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_35" throws="destroy35" />
+			<att type="set_position" y="1400" on="bottom35" />
+		</triggered>
+	</object>
+	<object id="36" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="1500" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1050" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom36" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_36" throws="destroy36" />
+			<att type="set_position" y="1500" on="bottom36" />
+		</triggered>
+	</object>
+
+	<object id="40" image="Apple1.png" imageScale="3.25" x="rand_100_900" y="1300" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom40" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_40" throws="destroy40" />
+			<att type="set_position" y="900" on="bottom40" />
+		</triggered>
+	</object>
+	<object id="41" image="Banana1.png" imageScale="3.25" x="rand_100_900" y="1400" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom41" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_41" throws="destroy41" />
+			<att type="set_position" y="1000" on="bottom41" />
+		</triggered>
+	</object>
+	<object id="42" image="Cherries1.png" imageScale="3.25" x="rand_100_900" y="1800" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom42" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_42" throws="destroy42" />
+			<att type="set_position" y="1100" on="bottom2" />
+		</triggered>
+	</object>
+	<object id="43" image="Cherries2.png" imageScale="3.25" x="rand_100_900" y="2000" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom43" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_43" throws="destroy43" />
+			<att type="set_position" y="1200" on="bottom43" />
+		</triggered>
+	</object>
+	<object id="4" image="Grapes_light.png" imageScale="3.25" x="rand_100_900" y="2400" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom44" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_44"  throws="destroy44" />
+			<att type="set_position" y="1300" on="bottom44" />
+		</triggered>
+	</object>
+	<object id="5" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="2800" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom45" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_45" throws="destroy45" />
+			<att type="set_position" y="1400" on="bottom45" />
+		</triggered>
+	</object>
+	<object id="46" image="Icecream1.png" imageScale="3.25" x="rand_100_900" y="3200" >
+		<continuous>
+			<att type="moves" vx="0" vy="-1350" ax="0" ay="0" />
+			<att type="screencheck" side="bottom" throws="bottom46" />
+		</continuous>
+		<triggered>
+			<att type="destroy" on="collide_11_46" throws="destroy46" />
+			<att type="set_position" y="1500" on="bottom46" />
+		</triggered>
+	</object>
+
+	<!-- basket -->
+	<object id="11" image="basket_new.png" imageScale="1.5" x="500" y="50">
+		<continuous>
+			<att type="collides" with="0,1,2,3,4,5,6,20,21,22,23,24,25,26,30,31,32,33,34,35,36,40,41,42,43,45,46" />
+		</continuous>
+		<input type="draggable" x="true" y="false" />
+	</object>
 
 	<!-- win and lose conditions -->
 	<win>
-		<cond val="destroy1" />
-		<cond val="destroy2" />
-		<cond val="destroy3" />
-		<cond val="destroy4" />
-		<cond val="destroy5" />
-		<cond val="destroy6" />
+		<cond val="timeout" />
 	</win>
 
 	<lose>
-		<cond val="timeout" />
+		<cond val="never" />
 	</lose>
 </level>

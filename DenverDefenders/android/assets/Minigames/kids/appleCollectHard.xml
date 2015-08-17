@@ -6,32 +6,32 @@
 		</continuous>
 	</object>
 	<!-- 4 tree tiles and a tree top tile that scroll down with tap -->
-	<object id="0" image="../LevelBackgrounds/trunk.png" x="0" y="0">
+	<object id="0" image="trunk.png" x="0" y="0">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="1" image="../LevelBackgrounds/trunk.png" x="0" y="600">
+	<object id="1" image="trunk.png" x="0" y="600">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="2" image="../LevelBackgrounds/trunk.png" x="0" y="1200">
+	<object id="2" image="trunk.png" x="0" y="1200">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="3" image="../LevelBackgrounds/trunk.png" x="0" y="1800">
+	<object id="3" image="trunk.png" x="0" y="1800">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="5" image="../LevelBackgrounds/trunk.png" x="0" y="2400">
+	<object id="5" image="trunk.png" x="0" y="2400">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 		</triggered>
 	</object>
-	<object id="4" image="../LevelBackgrounds/treetop.png" x="0" y="3000">
+	<object id="4" image="treetop.png" x="0" y="3000">
 		<triggered>
 			<att type="move_by" dy="-50" on="touch" />
 			<att type="set_position" y="0" on="collide_-1_4" />

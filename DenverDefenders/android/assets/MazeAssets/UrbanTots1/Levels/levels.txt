@@ -1,1 +1,3 @@
-kids/tableSetHard.xml
+tots/veggiePlant.xml
+tots/waterVeggies.xml
+tots/FruitSort.xml
