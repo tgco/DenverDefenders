@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.Array;
 
 // Main player class, handles movement/animation logic
 public class PlayerSprite extends Sprite {
+	
+	private static final int ANIMATION_FRAMES = 3;
 	// Player health
 	private int health;
 	// Walking animations
@@ -42,7 +44,7 @@ public class PlayerSprite extends Sprite {
 		// Build walk down animation
 		Array<TextureRegion> downWalk = new Array<TextureRegion>();
 		String format;
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
 			downWalk.add(new TextureRegion(manager.get(format,Texture.class)));
 		}
@@ -50,7 +52,7 @@ public class PlayerSprite extends Sprite {
 
 		// Build walk up animation
 		Array<TextureRegion> upWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
 			upWalk.add(new TextureRegion(manager.get(format,Texture.class)));
 		}
@@ -58,7 +60,7 @@ public class PlayerSprite extends Sprite {
 
 		// Buld walk right animation
 		Array<TextureRegion> rightWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
 			rightWalk.add(new TextureRegion(manager.get(format, Texture.class)));
 		}
@@ -66,7 +68,7 @@ public class PlayerSprite extends Sprite {
 
 		// Build walk left animation
 		Array<TextureRegion> leftWalk = new Array<TextureRegion>();
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
 			leftWalk.add(new TextureRegion(manager.get(format, Texture.class)));
 		}
@@ -149,25 +151,25 @@ public class PlayerSprite extends Sprite {
 	public static void requestAssets(AssetManager manager) {
 		String format;
 		// Down anim
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_D_%d.png", i);
 			manager.load(format,Texture.class);
 		}
 
 		// Up anim
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_U_%d.png", i);
 			manager.load(format,Texture.class);
 		}
 
 		// Right anim
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_R_%d.png", i);
 			manager.load(format, Texture.class);
 		}
 
 		// Left anim
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= ANIMATION_FRAMES; i++) {
 			format = String.format("ObjectImages/temp_hero_L_%d.png", i);
 			manager.load(format, Texture.class);
 		}

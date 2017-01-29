@@ -1,4 +1,4 @@
-<level name="Water slide" background="water.jpg" description="Drag the hero left and right to avoid the obstacles on the slide!">
+<level name="Water slide" background="water.png" description="Drag the hero left and right to avoid the obstacles on the slide!">
 	<!-- Hero -->
 	<object id="0" image="heroSlideDown.png" x="524" y="450">
 		<continuous>

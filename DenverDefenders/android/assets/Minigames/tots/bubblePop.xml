@@ -1,4 +1,4 @@
-<level name="Bubble Pop" background="water.jpg" description="Tap bubbles to pop them!">
+<level name="Bubble Pop" background="water.png" description="Tap bubbles to pop them!">
 	<!-- bubbles -->
 	<object id="1" image="bubble.png" x="rand_100_900" y="rand_10_500">
 		<continuous>
