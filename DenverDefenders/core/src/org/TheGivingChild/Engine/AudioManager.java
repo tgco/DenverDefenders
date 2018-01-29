@@ -67,7 +67,7 @@ public class AudioManager {
 
 	// Begins looping background song
 	public void playBackgroundMusic() {
-		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
+		backgroundSoundToPlay = game.getAssetManager().get("sounds/backgroundMusic/spy-secret-agent-loop.wav", Music.class);
 		backgroundSoundToPlay.setVolume(.65f);
 		backgroundSoundToPlay.setLooping(true);
 		if (musicEnabled) {

@@ -55,7 +55,7 @@ public class ScreenSplash extends UIScreenAdapter {
 			game.getAssetManager().load("UIBackgrounds/generic2.png", Texture.class);
 			game.getAssetManager().load("UIBackgrounds/generic3.png", Texture.class);
 			// Game audio
-			game.getAssetManager().load("sounds/backgroundMusic/adamWestBatman.mp3", Music.class);
+			game.getAssetManager().load("sounds/backgroundMusic/spy-secret-agent-loop.wav", Music.class);
 			// Pre loaded during splash to smooth out the ui "comic" transitions
 			ScreenMain.requestAssets(game.getAssetManager());
 			ScreenOptions.requestAssets(game.getAssetManager());
